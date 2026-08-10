@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS 문화적응 스트레스 ML — 4차시 강의 슬라이드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP */
+        * { box-sizing: border-box; }
+        body {
+            background-color: #1a1c22;
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            padding: 40px 0;
+            place-items: center;
+            font-family: 'Lato', 'Nanum Gothic', sans-serif;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #0a0e14;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Abstract Background Decoration */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 50px;
+            left: 60px;
+            width: 100px;
+            height: 4px;
+            background-color: #00f2ff;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; margin: 0; }
+        .slide-title {
+            font-size: 44px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            border-left: 6px solid #00f2ff;
+            padding-left: 20px;
+            z-index: 1;
+            max-width: 1100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+        }
+
+        p, li, td, th { font-size: 20px; color: #b0b0b0; line-height: 1.6; }
+        strong { color: #00f2ff; }
+
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            z-index: 1;
+            gap: 20px;
+        }
+
+        /* Layouts */
+        .title-layout { text-align: center; align-items: center; justify-content: center; height: 100%; }
+        .title-layout h1 { font-size: 80px; margin-bottom: 20px; color: #00f2ff; }
+        .title-layout .subtitle { font-size: 28px; color: #ffffff; margin-top: 20px; }
+
+        .section-title-layout { text-align: center; justify-content: center; height: 100%; }
+        .section-title-layout h2 { font-size: 64px; color: #ffffff; }
+        .section-title-layout hr { width: 120px; border: 2px solid #00f2ff; margin: 30px auto; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
+        .tiled-content { display: flex; gap: 30px; width: 100%; }
+        .tile { 
+            flex: 1; background: #151a21; padding: 40px; border-radius: 15px; 
+            border-bottom: 4px solid #00f2ff; text-align: center;
+        }
+        .tile .icon { font-size: 50px; color: #adff2f; margin-bottom: 20px; }
+        .tile h3 { font-size: 24px; color: #ffffff; margin-bottom: 15px; }
+
+        .image-wrapper { 
+            width: 100%; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #333; 
+            background: #151a21;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .bullet-list i { position: absolute; left: 0; top: 5px; color: #00f2ff; font-size: 22px; }
+
+        .table-layout table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table-layout th { background: #151a21; color: #00f2ff; text-align: left; padding: 20px; border-bottom: 2px solid #333; }
+        .table-layout td { padding: 20px; border-bottom: 1px solid #222; color: #ffffff; }
+
+        /* Formula Container */
+        #formula-container { background: #000; padding: 25px; border-radius: 10px; border-left: 4px solid #adff2f; display: inline-block; }
+
+        /* Bleed Image Right Custom */
+        .bleed-image-layout { padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+        .bleed-image-layout .content-container { padding: 60px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .bleed-image-layout .image-container { width: 100%; height: 720px; background: #151a21; }
+        .bleed-image-layout img { width: 100%; height: 720px; object-fit: cover; }
+
+        /* Code Block (초심자 슬라이드용) */
+        .code-block {
+            background: #000;
+            padding: 30px 35px;
+            border-radius: 10px;
+            border-left: 4px solid #adff2f;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+        }
+        .code-block .kw { color: #ff79c6; }       /* 키워드 */
+        .code-block .fn { color: #50fa7b; }       /* 함수 */
+        .code-block .str { color: #f1fa8c; }      /* 문자열 */
+        .code-block .num { color: #bd93f9; }      /* 숫자 */
+        .code-block .cm  { color: #6272a4; font-style: italic; } /* 주석 */
+        .code-block .var { color: #8be9fd; }      /* 변수 */
+
+        /* 2열 스텝 카드 (Colab 조작용) */
+        .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        .step-card {
+            background: #151a21;
+            padding: 22px 26px;
+            border-radius: 12px;
+            border-left: 4px solid #00f2ff;
+        }
+        .step-card h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #00f2ff;
+            margin: 0 0 8px 0;
+        }
+        .step-card p { font-size: 16px; margin: 0; color: #cfcfcf; }
+        .step-card code {
+            background: #000;
+            color: #adff2f;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        /* 슬라이드 번호 + 푸터 (program4 추가) */
+        .slide-no { position:absolute; bottom:24px; right:32px; font-size:14px; color:#3a4250; letter-spacing:1px; z-index:2; }
+        .kicker { color:#00f2ff; letter-spacing:3px; font-size:15px; font-weight:700; margin-bottom:12px; }
+        .src-tag { display:inline-block; background:#151a21; color:#adff2f; padding:3px 10px; border-radius:6px; font-size:14px; margin-right:6px; }
+        .finding { background:#101820; border-left:4px solid #adff2f; padding:18px 24px; border-radius:8px; }
+        .finding b { color:#adff2f; }
+    </style>
+</head>
+<body>
+<!-- 1 Title -->
+<div class="slide-container" id="s1">
+  <div class="content-area title-layout">
+    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:60px;">성능이 좋아 보이면 의심하라</h1>
+    <p class="subtitle">선을 긋고, 데이터를 나누고, 일부러 부정행위를 저질러 본다</p>
+    <p style="margin-top:40px;font-weight:700;letter-spacing:2px;color:#adff2f;">4차시 · 조작적 정의 · train/test split · 클래스 불균형 · 데이터 누출</p>
+  </div>
+  <div class="slide-no">01</div>
+</div>
+
+<!-- 2 훅 -->
+<div class="slide-container" id="s2">
+  <h2 class="slide-title">오늘 만들 두 개의 "좋아 보이는" 숫자</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th style="width:190px;">숫자</th><th>어떻게 나오나</th><th>왜 쓸모없나</th></tr>
+      <tr><td><b style="color:#adff2f;font-size:26px;">정확도 66%</b></td><td>전원을 "고스트레스 아님"으로 찍는다</td><td>고스트레스를 <b style="color:#ff8080;">한 명도</b> 못 찾는다</td></tr>
+      <tr><td><b style="color:#adff2f;font-size:26px;">AUC 1.0</b></td><td>6차 스트레스 점수로 6차 고스트레스를 맞힌다</td><td><b style="color:#ff8080;">답을 보고 답을 맞혔다</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:22px;">
+      <p style="margin:0;font-size:21px;color:#fff;">오늘은 이 둘을 <b>직접 만들어 보고</b>, 왜 쓰레기인지 <b style="color:#adff2f;">스스로 설명</b>하게 된다.</p>
+    </div>
+  </div>
+  <div class="slide-no">02</div>
+</div>
+
+<!-- 3 아젠다 -->
+<div class="slide-container" id="s3">
+  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <div class="content-area">
+    <div class="step-grid">
+      <div class="step-card"><h4>Step 0 · 재료 확인</h4><p>표가 성립하는가 — id 유일 · target 결측 · 6차 컬럼</p></div>
+      <div class="step-card"><h4>Step 1 · 조작적 정의</h4><p>선을 긋는다는 것 · <strong>임상 진단이 아니다</strong></p></div>
+      <div class="step-card"><h4>Step 2 · train/test split</h4><p>시험 문제를 미리 보지 않는다</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 3 · 순서가 전부다 ⚠️</h4><p><strong>첫 봉우리</strong> — cutoff 는 train 에서만</p></div>
+      <div class="step-card"><h4>Step 4 · 클래스 불균형</h4><p>accuracy 가 거짓말하는 법 · Dummy baseline</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 5~7 · 누출 🔥</h4><p><strong>백미</strong> — AUC 1.0 만들기 → 세 얼굴 → 테스트로 못 박기</p></div>
+    </div>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">🔒 <strong>오늘 test 는 열지 않는다.</strong> 만들어 놓고 봉인한다 — 모든 평가는 train 안 5-fold CV.</p>
+  </div>
+  <div class="slide-no">03</div>
+</div>
+
+<!-- 4 지도 -->
+<div class="slide-container" id="s4">
+  <h2 class="slide-title">지난 시간 ↔ 오늘 — 8차시 지도</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th style="width:80px;">차시</th><th>심리학</th><th>IT / 머신러닝</th><th>산출물</th></tr>
+      <tr><td>1~2 ✅</td><td>문화적응 스트레스 · 심리척도 · 역채점</td><td>feature/target · pandas · ID join</td><td>variables.yaml</td></tr>
+      <tr><td>3 ✅</td><td>분포 · 상관 · Cronbach α</td><td>집계 · 시각화 · 클리닝</td><td>figures · 역채점 교정</td></tr>
+      <tr><td><strong>4 (오늘)</strong></td><td><strong>조작적 정의 · 임상 cut-off 와의 차이</strong></td><td><strong>split · 불균형 · 데이터 누출 · baseline</strong></td><td><strong>high_stress 라벨 · test_no_leakage</strong></td></tr>
+      <tr><td>5</td><td>예측변수와 결과의 관계 · 방향</td><td>로지스틱 회귀 · 계수 · 표준화</td><td>표준화 계수</td></tr>
+      <tr><td>6~8</td><td>선형성 → 해석 → 보고</td><td>트리/포레스트 → 중요도 → 재현성</td><td>metrics · final_report</td></tr>
+    </table>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b>"누출 사례를 스스로 설명할 수 있다."</b> — 오늘은 배우는 게 아니라 <b style="color:#adff2f;">직접 저질러 본다.</b></p>
+    </div>
+  </div>
+  <div class="slide-no">04</div>
+</div>
+
+<!-- 5 목표 -->
+<div class="slide-container" id="s5">
+  <h2 class="slide-title">오늘(4차시)의 목표</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:22px;">
+      <li><i class="fa-solid fa-1"></i> <strong>조작적 정의</strong>가 무엇이고 무엇이 <strong>아닌지</strong>(임상 진단 아님) 설명한다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>train/test split</strong> 을 하고 <strong>cutoff 를 train 에서만</strong> 계산한다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>클래스 불균형</strong>에서 accuracy 가 왜 거짓말하는지 보인다</li>
+      <li><i class="fa-solid fa-4"></i> <strong>데이터 누출</strong>을 일부러 일으켜 AUC 1.0 을 만들고, 왜 쓰레기인지 설명한다</li>
+    </ul>
+    <p style="font-size:19px;margin-top:10px;color:#8892a4;">※ 오늘의 문장: <b style="color:#adff2f">AUC 1.0 은 축하가 아니라 경보다.</b></p>
+  </div>
+  <div class="slide-no">05</div>
+</div>
+
+<!-- 6 Step0 -->
+<div class="slide-container" id="s6">
+  <h2 class="slide-title">Step 0 — 재료 확인: 표가 성립하는가</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">3차시가 교정한 <code>modeling_frame.parquet</code> — <strong>1,321행 × 21열</strong>. 분석 전에 세 가지를 확인한다.</p>
+    <div class="code-block" style="margin-top:14px;font-size:18px;">① id 중복 <span class="num">0</span>개        ✅   <span class="cm"># 아니면 → 같은 사람이 train·test 양쪽에 (성능 과대추정)</span>
+② target 결측 <span class="num">0</span>개    ✅   <span class="cm"># 아니면 → NaN >= cutoff 가 False 라 조용히 '음성' 라벨</span>
+③ 6차 컬럼 없음        ✅   <span class="cm"># 아니면 → 시간 누출 (오늘 Step 5 의 그것)</span></div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">세 가지 모두 <b style="color:#ff8080;">깨져도 에러가 안 난다.</b> 그래서 매번 명시적으로 센다 — 2차시부터 반복된 습관이다.</p>
+    </div>
+  </div>
+  <div class="slide-no">06</div>
+</div>
+
+<!-- 7 조작적 정의 -->
+<div class="slide-container" id="s7">
+  <h2 class="slide-title">Step 1 — 조작적 정의: 선을 긋는다는 것</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">스트레스 점수는 1.00~4.00 의 <strong>연속된 숫자</strong>다. 그런데 우리가 하려는 건 <strong>분류</strong> — 예/아니오 문제다.<br>연속을 둘로 나누려면 <b style="color:#adff2f;">선(cutoff)</b> 을 그어야 한다.</p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:22px;color:#fff;">우리가 긋는 선:<br><b style="color:#adff2f;">학습 데이터 점수의 상위 25%(75 백분위수) 이상 → high_stress = 1</b></p>
+    </div>
+    <p style="font-size:20px;margin-top:20px;color:#fff;">이것을 <strong>조작적 정의(operational definition)</strong> 라고 한다 —<br>
+    <span style="color:#8892a4;">"연구자가 분석을 위해 <b>정한</b> 기준". 발견한 것이 아니라 <b style="color:#ffd479;">정한</b> 것이다.</span></p>
+  </div>
+  <div class="slide-no">07</div>
+</div>
+
+<!-- 8 이것이 아닌 것 -->
+<div class="slide-container" id="s8">
+  <h2 class="slide-title">Step 1 — 🔴 이것이 아닌 것 (연구윤리)</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th style="width:230px;">이것이 아니다</th><th>왜</th></tr>
+      <tr><td><strong>임상 진단</strong></td><td>정신과 의사가 면담·검사로 내리는 판단이 아니다</td></tr>
+      <tr><td><strong>임상 cut-off</strong></td><td>검증된 절단점(예: CES-D 16점)이 아니다 — <b style="color:#ff8080;">우리가 그 자리에서 만든 선</b>이다</td></tr>
+      <tr><td><strong>실제 고위험군</strong></td><td>상위 25%는 <b>이 표본 안에서의 상대적 위치</b>일 뿐이다</td></tr>
+    </table>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">표현 규칙 — 8차시 보고서까지 끝까지 지킨다:<br>
+      ❌ "고위험 청소년을 <b>판별</b>하였다"<br>
+      ✅ "본 연구에서 <b style="color:#adff2f;">조작적으로 정의한</b> 고스트레스 집단을 <b>분류</b>하였다"</p>
+    </div>
+  </div>
+  <div class="slide-no">08</div>
+</div>
+
+<!-- 9 부등호 -->
+<div class="slide-container" id="s9">
+  <h2 class="slide-title">Step 1 — 부등호 하나가 142명을 옮긴다 (TODO)</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:19px;">cutoff = <span class="num">1.500</span>
+
+>= (이상)  →  <span class="num">447</span>명 = <span class="num">33.8%</span>      <span class="cm"># 우리 파이프라인의 규칙</span>
+>  (초과)  →  <span class="num">305</span>명 = <span class="num">23.1%</span>
+동점자     →  <span style="color:#ffd479;">142</span>명   <span class="cm"># 3차시에 본 그 덩어리</span></div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">"<b>상위 25%</b>" 라는 한 문장 뒤에 이런 선택이 숨어 있다. 전체의 <b style="color:#ffd479;">10.7%</b> 가 부등호 하나로 움직인다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">어느 쪽이 옳은가? <b>정답이 없다.</b> 우리는 <code>>=</code> 를 쓰고, <b style="color:#adff2f;">그 선택과 실제 비율을 함께 보고한다.</b> 숨기지 않는 것이 정답이다.</p>
+  </div>
+  <div class="slide-no">09</div>
+</div>
+
+<!-- 10 split 비유 -->
+<div class="slide-container" id="s10">
+  <h2 class="slide-title">Step 2 — train/test split: 기출문제를 외운 학생</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">시험 공부를 하며 <strong>기출문제 100개를 외웠다.</strong> 그 100개로 시험을 보면 100점이다.<br>
+    그 점수는 <b style="color:#ff8080;">"새 문제를 풀 수 있는가"</b> 에 대해 아무것도 말해 주지 않는다.</p>
+    <div class="two-column" style="margin-top:20px;">
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>train (학습) · 80%</b><br>모델을 학습시키고, 튜닝하고, <b style="color:#adff2f;">cutoff 를 정한다</b></p></div>
+      <div class="finding" style="border-left-color:#ff6b6b;"><p style="margin:0;font-size:19px;color:#fff;"><b>test (시험) · 20%</b><br><b style="color:#ff8080;">마지막에 딱 한 번.</b><br>그전에는 쳐다보지도 않는다</p></div>
+    </div>
+    <p style="font-size:19px;margin-top:18px;color:#adff2f;">🔒 오늘 우리는 test 를 <strong>열지 않는다.</strong> 모든 평가는 train 안 <strong>5겹 교차검증(5-fold CV)</strong> 으로 —<br>
+    <span style="color:#8892a4;font-size:18px;">train 을 다시 5조각으로 나눠, 4조각으로 배우고 1조각으로 채점하기를 5번 돌려 평균 낸다.</span></p>
+  </div>
+  <div class="slide-no">10</div>
+</div>
+
+<!-- 11 split 실행 -->
+<div class="slide-container" id="s11">
+  <h2 class="slide-title">Step 2 — 1,056 / 265, 그리고 stratify 의 순환</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">idx_tr, idx_te = <span class="fn">train_test_split</span>(frame.index,
+    test_size=cfg[<span class="str">"test_size"</span>], random_state=cfg[<span class="str">"random_seed"</span>],
+    stratify=(scores >= scores.<span class="fn">median</span>()).<span class="fn">astype</span>(int))
+<span class="cm"># → train 1,056명 · test 265명 · 겹치는 사람 0명</span></div>
+    <p style="font-size:19px;margin-top:14px;"><span class="src-tag">random_state=42</span> 안 고정하면 실행할 때마다 다른 사람이 train 에 들어가고 성능도 매번 달라진다 → <strong>재현 불가</strong>. 42 라는 숫자에 의미는 없다. <b style="color:#adff2f;">"고정했다"는 사실</b>이 중요하다.</p>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:18px;color:#fff;"><b>stratify 의 순환 문제</b> — 진짜 라벨로 층화하고 싶지만, 라벨은 <b>train cutoff</b> 가 있어야 생기고 cutoff 는 <b>split</b> 이 있어야 정한다. <b style="color:#ffd479;">닭과 달걀</b>이다.<br>
+      → 6차 점수의 <b>median 기준 임시 구분</b>으로 층화한다. 분할 균형에만 쓰고 <b style="color:#adff2f;">라벨 정의에는 쓰지 않는다</b> — 이 타협을 코드 주석과 문서에 적는다.</p>
+    </div>
+  </div>
+  <div class="slide-no">11</div>
+</div>
+
+<!-- 12 순서 -->
+<div class="slide-container" id="s12">
+  <h2 class="slide-title">Step 3 — 순서가 전부다 ⚠️</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:19px;"><span style="color:#ff8080;">❌ 틀린 순서</span>   전체 1,321명 점수를 보고 선을 긋는다  →  나눈다
+
+<span style="color:#adff2f;">✅ 옳은 순서</span>   나눈다  →  train 1,056명 점수만 보고 선을 긋는다  →  그 선을 전체에 적용</div>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">전체를 보고 선을 그으면 <b style="color:#ff8080;">test 응답자들의 점수가 선의 위치를 결정하는 데 참여</b>한다.<br>
+      test 는 "한 번도 안 본 새 사람들"이어야 하는데, 이미 한 번 본 셈이 된다 → <b>데이터 누출</b>.</p>
+    </div>
+    <p style="font-size:20px;margin-top:20px;color:#fff;">🎯 비유: 시험 문제의 <strong>합격선</strong>을, 채점할 학생들의 <strong>답안을 미리 보고</strong> 정하는 것.<br>
+    <span style="font-size:18px;color:#8892a4;">문제를 안 보여줬어도 <b>합격선이 그들의 점수에 맞춰져 있다.</b></span></p>
+  </div>
+  <div class="slide-no">12</div>
+</div>
+
+<!-- 13 실측: 차이 0명 -->
+<div class="slide-container" id="s13">
+  <h2 class="slide-title">Step 3 — 그런데 실측해 보면… 차이가 0명이다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:19px;">전체로 계산한 cutoff  = <span class="num">1.5000</span>
+train 으로 계산한 cutoff = <span class="num">1.5000</span>
+라벨이 달라진 사람      = <span style="color:#ffd479;">0명</span></div>
+    <p style="font-size:20px;margin-top:18px;color:#fff;">3차시에 본 그 <strong>거대한 동점 덩어리</strong>(1.50 에 142명) 때문에, 어느 쪽을 봐도 선이 <b>같은 자리</b>에 떨어졌다.</p>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:22px;color:#fff;">그럼 규칙을 안 지켜도 되나?<br><b style="color:#ff8080;">— 다음 슬라이드.</b></p>
+    </div>
+  </div>
+  <div class="slide-no">13</div>
+</div>
+
+<!-- 14 안전벨트 -->
+<div class="slide-container" id="s14">
+  <h2 class="slide-title">Step 3 — 규칙은 결과가 아니라 절차다 🔴</h2>
+  <div class="content-area">
+    <div class="finding" style="font-size:24px;">
+      <p style="margin:0;color:#fff;">🚗 <b style="color:#adff2f;">안전벨트를 맸는데 사고가 안 났다고 해서, 안전벨트가 쓸모없는 것이 아니다.</b></p>
+    </div>
+    <ul class="bullet-list" style="font-size:20px;margin-top:20px;">
+      <li><i class="fa-solid fa-circle-exclamation"></i> 이번엔 <strong>우연히</strong> 같았다. 다른 데이터 · 다른 seed · 다른 분위수에서는 달라진다</li>
+      <li><i class="fa-solid fa-circle-exclamation"></i> 결정적으로 — <strong>미리 확인할 방법이 없다.</strong> "차이가 없을 테니 대충 하자"는 차이가 있는지 <b>확인한 뒤에야</b> 할 수 있는 말인데, 확인하려면 이미 전체를 봐야 한다</li>
+      <li><i class="fa-solid fa-circle-check"></i> 우리가 한 일: <strong>규칙대로 하고, 차이가 없었다는 사실까지 기록했다.</strong> 그게 전부다</li>
+    </ul>
+  </div>
+  <div class="slide-no">14</div>
+</div>
+
+<!-- 15 불균형 -->
+<div class="slide-container" id="s15">
+  <h2 class="slide-title">Step 4 — 클래스 불균형: 가장 게으른 모델</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">train 의 고스트레스는 <strong>33.7%</strong>(356명 / 1,056명) — 약 <strong>2:1 불균형</strong>이다.</p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:21px;color:#fff;">가장 게으른 모델을 만들어 보자 —<br><b style="color:#adff2f;">"전원 고스트레스 아님"</b> 이라고만 답하는 모델. 학습을 <b>전혀 하지 않는다.</b></p>
+    </div>
+    <p style="font-size:21px;margin-top:22px;color:#fff;">이런 걸 <strong>더미 분류기(DummyClassifier)</strong> 라고 한다.<br>그런데도 정답률이 꽤 나온다. <b style="color:#ffd479;">얼마나 나올까?</b></p>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">(먼저 예측해 보게 한다 — 손을 들게 한다.)</p>
+  </div>
+  <div class="slide-no">15</div>
+</div>
+
+<!-- 16 accuracy 함정 -->
+<div class="slide-container" id="s16">
+  <h2 class="slide-title">Step 4 — 정확도가 더 낮은 모델이 더 좋은 모델</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th>모델 (train 5-fold CV)</th><th>accuracy</th><th>AUC</th><th>balanced acc</th><th>recall</th></tr>
+      <tr><td>Dummy (전부 0)</td><td><b style="color:#adff2f;">.663</b></td><td>.500</td><td>.500</td><td><b style="color:#ff8080;">.000</b></td></tr>
+      <tr><td><strong>로지스틱 회귀</strong></td><td><b style="color:#ff8080;">.612</b></td><td><b style="color:#adff2f;">.653</b></td><td><b style="color:#adff2f;">.613</b></td><td><b style="color:#adff2f;">.615</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">66.3% 가 음성이므로 <b>전부 음성이라고 찍으면 자동으로 66.3%</b> 를 맞힌다.<br>
+      <b style="color:#ff8080;">accuracy 는 다수 클래스의 비율을 그냥 되돌려 주는 지표</b>가 된다.</p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">그래서 우리 규칙(AGENTS.md): <b style="color:#adff2f;">accuracy 단독 보고 금지 · Dummy 를 항상 같이 보고.</b> Dummy 없이 "정확도 66%" 만 보면 대단해 보인다.</p>
+  </div>
+  <div class="slide-no">16</div>
+</div>
+
+<!-- 17 혼동행렬 -->
+<div class="slide-container" id="s17">
+  <h2 class="slide-title">Step 4 — 숫자가 아니라 사람 수로 보면</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;"><span class="cm">로지스틱 회귀</span>                        <span class="cm">Dummy (전부 0)</span>
+              예측0  예측1                     예측0  예측1
+실제 0 (일반)    427   273              실제 0    700     0
+실제 1 (고스트레스) <span style="color:#ff8080;">137</span>   <span class="num">219</span>              실제 1    <span style="color:#ff8080;">356</span>     <span style="color:#ff8080;">0</span></div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">로지스틱: 고스트레스 356명 중 <b style="color:#adff2f;">219명을 찾아내고</b> 137명을 놓쳤다.<br>
+      Dummy: <b style="color:#ff8080;">356명 전원을 놓쳤다.</b> "정확도 66%" 의 실체가 이것이다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">고스트레스 집단을 <b>선별</b>하는 것이 목적이므로 <b style="color:#adff2f;">recall(놓치지 않는 비율)</b> 을 반드시 같이 읽는다.</p>
+  </div>
+  <div class="slide-no">17</div>
+</div>
+
+<!-- 18 부정행위 -->
+<div class="slide-container" id="s18">
+  <h2 class="slide-title">Step 5 — 🔥 오늘의 백미: 일부러 부정행위 하기</h2>
+  <div class="content-area">
+    <p style="font-size:22px;margin:0;">이제 <strong>규칙을 어기면</strong> 성능이 얼마나 좋아지는지 <b style="color:#adff2f;">직접 눈으로</b> 본다.</p>
+    <div class="finding" style="margin-top:22px;">
+      <p style="margin:0;font-size:22px;color:#fff;">우리 target 은 <b>6차 문화적응 스트레스 점수</b>로 만들었다.<br>그렇다면 — <b style="color:#ffd479;">그 6차 점수 자체를 예측 변수로 넣으면?</b></p>
+    </div>
+    <div class="code-block" style="margin-top:20px;font-size:18px;">leak_feats = feats + [<span class="str">"________________"</span>]   <span class="cm"># ← target 을 만든 그 컬럼</span></div>
+    <p style="font-size:19px;margin-top:16px;color:#8892a4;">먼저 <b>예측</b>하게 한다 — AUC 가 얼마나 나올까? (0.7? 0.9?)</p>
+  </div>
+  <div class="slide-no">18</div>
+</div>
+
+<!-- 19 AUC 1.0 -->
+<div class="slide-container" id="s19">
+  <h2 class="slide-title">Step 5 — AUC 1.0000 💥</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:22px;">정직한 모델 (5차 변인만)     AUC = <span class="num">0.6525</span>
+누출 모델   (6차 점수 포함)   AUC = <span style="color:#ff8080;">1.0000</span>   ← ?!</div>
+    <div class="finding" style="margin-top:24px;">
+      <p style="margin:0;font-size:23px;color:#fff;"><b>완벽한 모델</b>이 만들어졌다. 축하할 일일까?<br>
+      <b style="color:#ff8080;">아니다. 이건 성공이 아니라 경보음이다.</b></p>
+    </div>
+    <p style="font-size:20px;margin-top:22px;color:#8892a4;">무슨 일이 일어난 걸까? — 학생에게 먼저 말하게 한다.</p>
+  </div>
+  <div class="slide-no">19</div>
+</div>
+
+<!-- 20 왜 쓰레기인가 -->
+<div class="slide-container" id="s20">
+  <h2 class="slide-title">Step 5 — 왜 이것이 쓰레기인가</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;"><code>high_stress</code> 는 <code>acculturative_stress_w6 >= 1.5</code> 로 <strong>만든</strong> 라벨이다. 그 원본을 feature 로 주면 모델이 할 일은 <b>"1.5 보다 큰가?"</b> 하나뿐 — <b style="color:#ff8080;">예측한 게 아니라 베낀 것이다.</b></p>
+    <ul class="bullet-list" style="font-size:19px;margin-top:14px;">
+      <li><i class="fa-solid fa-1"></i> <strong>실전에서는 그 변수가 없다.</strong> 우리 목표는 "중2 정보로 <b>1년 뒤</b>를 미리 구분"이다. 중3 점수를 이미 안다면 예측할 이유가 없다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>아무것도 배우지 못한다.</strong> 이 모델의 답은 "스트레스가 높으면 스트레스가 높다"뿐이다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>위험하다.</strong> 숫자가 좋으니 아무도 의심하지 않는다 — 조용히 틀린 결론이 배포된다</li>
+    </ul>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 실무에서 갑자기 성능이 튀면 가장 먼저 의심할 것은 모델이 아니라 <b style="color:#adff2f;">데이터 흐름</b>이다.</p>
+    </div>
+  </div>
+  <div class="slide-no">20</div>
+</div>
+
+<!-- 21 누출의 세 얼굴 -->
+<div class="slide-container" id="s21">
+  <h2 class="slide-title">Step 6 — 누출의 세 얼굴</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:19px;margin:0;">방금 본 것은 가장 <b>노골적인</b> 누출이다. 실제로는 훨씬 <b style="color:#ffd479;">알아채기 어려운</b> 형태로 온다.</p>
+    <table style="font-size:18px;">
+      <tr><th style="width:60px;"></th><th style="width:150px;">이름</th><th>무엇</th><th>우리 방어</th></tr>
+      <tr><td>①</td><td><strong>시간 누출</strong></td><td>예측 시점 <b>이후</b>의 정보가 X 에 들어감</td><td><code>assert_no_wave6_predictors()</code></td></tr>
+      <tr><td>②</td><td><strong>라벨 누출</strong></td><td>test 를 보고 <b>cutoff</b> 를 정함</td><td><code>scores.loc[idx_tr]</code> 로만</td></tr>
+      <tr><td>③</td><td><strong>전처리 누출</strong></td><td>전체로 평균·중앙값·<b>변수선택</b>을 fit</td><td>전부 <code>Pipeline</code> 안에</td></tr>
+    </table>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">②와 ③도 ①처럼 극적일까? — 직접 재 본다.</p>
+  </div>
+  <div class="slide-no">21</div>
+</div>
+
+<!-- 22 실측 결과 -->
+<div class="slide-container" id="s22">
+  <h2 class="slide-title">Step 6 — 재 봤더니 결과가 제각각이다</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:18px;">
+      <tr><th>누출</th><th style="width:250px;">실측 차이</th><th>해석</th></tr>
+      <tr><td>① 시간 (6차 점수)</td><td>AUC .653 → <b style="color:#ff8080;">1.000</b></td><td>파국적</td></tr>
+      <tr><td>② 라벨 (cutoff)</td><td>라벨 차이 <b style="color:#ffd479;">0명</b></td><td>이번엔 차이 없었다</td></tr>
+      <tr><td>③ 전처리 (표준화)</td><td><b style="color:#ffd479;">.0001</b></td><td>이번엔 차이 없었다</td></tr>
+      <tr><td>③ 전처리 (<strong>변수 선택</strong>)</td><td>.5025 → <b style="color:#ff8080;">.5877</b></td><td><b style="color:#ff8080;">순수한 잡음</b>으로 성능이 만들어졌다</td></tr>
+    </table>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">마지막 줄: 난수 200개 중 정답과 잘 맞는 5개를 <b>CV 밖에서 미리</b> 골랐다. 전부 잡음인데 AUC .59 —<br>
+      <b style="color:#adff2f;">고르는 순간 이미 정답을 다 봤기 때문이다.</b> 폴드 안에서 고르면 .50(동전 던지기)이 나온다.</p>
+    </div>
+  </div>
+  <div class="slide-no">22</div>
+</div>
+
+<!-- 23 Pipeline + 테스트 -->
+<div class="slide-container" id="s23">
+  <h2 class="slide-title">Step 6~7 — 구조로 막고, 테스트로 못 박는다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">Pipeline([(<span class="str">"prep"</span>, <span class="fn">make_preprocessor</span>()),   <span class="cm"># 결측 대치 + 표준화</span>
+          (<span class="str">"clf"</span>,  <span class="fn">LogisticRegression</span>())])  <span class="cm"># 모델</span>
+<span class="cm"># → fit() 이 불릴 때 전처리도 '그 폴드의 train' 으로만 학습된다</span></div>
+    <p style="font-size:19px;margin-top:12px;">사람이 매번 조심하는 게 아니라, <strong>틀릴 수 없는 모양</strong>으로 만들어 둔 것이다.</p>
+    <div class="table-layout">
+      <table style="font-size:16px;margin-top:6px;">
+        <tr><th style="width:340px;">tests/test_no_leakage.py</th><th>무엇을 막나</th></tr>
+        <tr><td><code>test_wave6_predictor_raises</code></td><td>6차 변수가 X 에 (① 시간 누출)</td></tr>
+        <tr><td><code>test_cutoff_is_computed_from_train_only</code></td><td>cutoff 를 전체로 계산 (② 라벨 누출)</td></tr>
+        <tr><td><code>test_scaler_is_fit_on_train_only</code></td><td>스케일러가 전체로 fit (③ 전처리 누출)</td></tr>
+        <tr><td><code>test_all_models_are_pipelines</code></td><td>전처리가 Pipeline 밖에</td></tr>
+      </table>
+    </div>
+    <p style="font-size:18px;margin-top:10px;color:#8892a4;">6개월 뒤 누가 실수로 규칙을 깨면 <b style="color:#adff2f;">테스트가 빨간불로 알려준다.</b> 착한 의도가 아니라 <b>자동 검사</b>다.</p>
+  </div>
+  <div class="slide-no">23</div>
+</div>
+
+<!-- 24 회고 -->
+<div class="slide-container" id="s24">
+  <h2 class="slide-title">회고 — 3개 질문</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:21px;">
+      <li><i class="fa-solid fa-1"></i> Dummy 의 정확도가 66% 인데도 <strong>쓸모없는</strong> 이유를 친구에게 설명한다면?</li>
+      <li><i class="fa-solid fa-2"></i> 6차 점수를 넣었더니 AUC 가 1.0 이 됐다. <strong>왜 그게 좋은 소식이 아닌가?</strong></li>
+      <li><i class="fa-solid fa-3"></i> cutoff 를 전체로 계산해도 라벨이 하나도 안 바뀌었다. <strong>그런데도 규칙을 지켜야 하는 이유는?</strong></li>
+    </ul>
+    <p style="font-size:18px;margin-top:16px;color:#8892a4;">📝 과제: ① 또 다른 누출 시나리오 하나 상상해 3줄로 (예: "같은 학교 학생이 train·test 로 나뉘면?") ② <code>test_no_leakage.py</code> 테스트 하나 골라 무엇을 막는지 한 문단 ③ 조작적 정의 문장을 연구윤리에 맞게 다시 쓰기</p>
+  </div>
+  <div class="slide-no">24</div>
+</div>
+
+<!-- 25 다음 -->
+<div class="slide-container" id="s25">
+  <h2 class="slide-title">다음 — 5차시 예고</h2>
+  <div class="content-area">
+    <p style="font-size:25px;color:#fff;">오늘 <strong>라벨과 데이터 분할</strong>을 완성했다.<br>다음엔 드디어 <strong>모델을 해석</strong>한다 — 로지스틱 회귀의 <strong>계수</strong>를 읽는다.</p>
+    <div class="finding" style="margin-top:24px;">
+      <p style="margin:0;font-size:21px;color:#fff;">"어떤 변수가 고스트레스 분류와 가장 강하게 관련되는가"에 답한다.<br>
+      그리고 <b style="color:#adff2f;">3차시의 그 문제가 돌아온다</b> — 4점 척도와 5점 척도의 계수를 그대로 비교해도 되는가?<br>
+      답은 <b>"안 된다"</b> 이고, 해결책이 <b style="color:#adff2f;">표준화</b>다.</p>
+    </div>
+    <p style="font-size:20px;margin-top:22px;color:#8892a4;">오늘 배운 문장: <b style="color:#adff2f;">AUC 1.0 은 축하가 아니라 경보다. 규칙은 결과가 아니라 절차로 정당화된다.</b></p>
+  </div>
+  <div class="slide-no">25</div>
+</div>
+</body>
+</html>

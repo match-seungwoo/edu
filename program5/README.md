@@ -18,11 +18,12 @@ Adolescents Using MAPS: An Explainable Machine Learning Approach*
 | 코드북 / 조사표 | ✅ 확보 — 청소년·학부모 코드북 xlsx, 조사표 PDF, 유저가이드 |
 | 변수 후보 체크리스트 | ✅ 생성 — `python scripts/codebook_candidates.py` → `reports/codebook_candidates.md` |
 | `configs/variables.yaml` | 전부 `status: unverified` — **체크리스트를 보고 사람이 검증 후 채운다** (2차시) |
-| 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 38개 통과 — 실데이터 구조 테스트 포함) |
+| 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 40개 통과 — 실데이터 구조 · 누출 방지 테스트 포함) |
 | 1차시 | ✅ 완성 (데이터 없이 진행 가능하도록 설계 · 원자료 수령 반영 갱신) |
 | 2차시 | ✅ 완성 — 코드북 검증·게이트 열기 실습. **variables.yaml 은 수업에서 사람이 채운다** |
 | 3차시 | ✅ 완성 — 신뢰도(α)·분포·상관 EDA. **2차시 판단을 데이터가 채점한다** (역채점 4문항 교정) |
-| 4~8차시 | 3차시 이후 제작 |
+| 4차시 | ✅ 완성 — 조작적 정의·split·불균형·**데이터 누출**. AUC 1.0 을 직접 만들어 본다 |
+| 5~8차시 | 4차시 이후 제작 |
 
 > **데이터가 없으면 `build_dataset.py` 는 일부러 멈춘다.** 추측으로 진행하지 않는 것이
 > 이 프로젝트의 첫 번째 규칙이다.
@@ -83,7 +84,7 @@ MAPS 1기 5차년도 (2015, 중2)          MAPS 1기 6차년도 (2016, 중3)
 | **1** | 문화적응 스트레스, 위험·보호요인, 예측 vs 인과, 연구윤리 | 데이터셋·row/column·feature/target·classification | `README.md` `data_inventory.md` | "무엇을 예측하고 어떤 데이터를 쓰는가"를 설명할 수 있다 |
 | **2** | 심리척도·문항·역채점·척도점수 | pandas, 결측치, ID join | `variables.yaml` `data_quality.md` | 모든 변수의 컬럼명·의미·조사년도·문항범위가 확인됐다 |
 | **3** | 평균·SD·분포·상관·**Cronbach α**, 문항-전체 상관 | 집계, 시각화, 데이터 클리닝 | `session3/`, `reports/figures/`, **갱신된 `variables.yaml`** | 척도 점수를 믿어도 되는지 판정하고, 무엇이 같이 움직이는지 설명할 수 있다 |
-| **4** | 고스트레스 집단의 조작적 정의, 임상 cut-off와의 차이 | train/test split, 클래스 불균형, **데이터 누출**, baseline | `dataset.py` `preprocessing.py` `test_no_leakage.py` | 누출 사례를 스스로 설명할 수 있다 |
+| **4** | 고스트레스 집단의 조작적 정의, 임상 cut-off와의 차이 | train/test split, 클래스 불균형, **데이터 누출**, baseline | `session4/`, `high_stress` 라벨, `test_no_leakage.py` | 누출 사례를 스스로 설명할 수 있다 |
 | **5** | 예측변수와 결과의 관계·방향성 | 로지스틱 회귀, 확률, 계수, 표준화 | `04_logistic_regression` 노트북 | "어떤 변수가 고스트레스 분류와 가장 강하게 관련되나"에 답한다 |
 | **6** | 심리 특성은 선형적으로 작동하는가 | Decision Tree, Random Forest, 과적합, CV | `05_tree_models` 노트북 `model_metrics.csv` | "복잡한 모델이 늘 더 좋은 건 아니다"를 데이터로 보인다 |
 | **7** | 위험요인·보호요인, 인과 vs 예측 | Permutation Importance, 표준화 계수, 오류 분석 | `feature_importance.csv/.png` | "그 결과를 심리학적으로 어디까지 해석할 수 있나"에 답한다 |
@@ -117,6 +118,9 @@ python scripts/build_dataset.py \
 python scripts/run_models.py
 ```
 
+> 4차시(조작적 정의·split·누출)는 `session4/session4.ipynb` 안에서 진행하며,
+> **test 세트를 열지 않는다** — 모든 평가는 train 안 5-fold CV 로 한다.
+>
 > 3차시(EDA·신뢰도)는 `session3/session3.ipynb` 안에서 진행한다. α 는 척도 점수가 아니라
 > **문항 단위**로 계산하므로 원자료를 다시 읽는다. 3차시에서 `reverse_items` 를 교정한 뒤
 > `build_dataset.py` 를 **다시** 실행해 `modeling_frame` 을 갱신한다.
@@ -159,7 +163,7 @@ program5/
 │   ├── codebook_candidates.py → reports/codebook_candidates.md (사람 검증용 후보)
 │   ├── build_dataset.py      → data/processed/ + reports/data_quality.md
 │   └── run_models.py         → reports/model_metrics.csv + figures
-├── tests/                    scoring / dataset / validation / io / no_leakage / outputs / real_data (38개)
+├── tests/                    scoring / dataset / validation / io / no_leakage / outputs / real_data (40개)
 ├── reports/                  자동 생성물 (Git 제외)
 └── session1/ … session8/     sessionN.html · sessionN.ipynb · lecture_notes.md
 ```
@@ -221,6 +225,15 @@ AI는 답안 생성기가 아니라 **pair programmer** 다. `AGENTS.md` 가 그
   스트레스 점수의 75 백분위수는 1.500 인데 그 값에만 142명이 몰려 있어, "상위 25%" 가
   실제로는 **33.8%**(1,321명 중 447명)가 된다. 분위수 0.70 과 0.75 는 아예 같은 cutoff 를
   준다 → 분위수뿐 아니라 **실제 양성 비율을 항상 함께 보고한다** (3차시 Step 6).
+  4차시 실측: train(1,056명) 기준 cutoff 도 1.500 으로 같아 **전체로 계산했을 때와 라벨이
+  하나도 달라지지 않았다**. 규칙(train-only)은 이 결과와 무관하게 유지한다 — 차이가
+  있는지 확인하려면 이미 규칙을 어겨야 하기 때문이다.
+- **부등호 선택.** cutoff 동점자가 142명이라 `>=`(33.8%)와 `>`(23.1%) 중 무엇을 쓰는지가
+  결과를 크게 바꾼다. 본 프로젝트는 `>=` 를 쓰며(`make_high_stress_label`), 8차시에
+  민감도 분석 대상으로 남긴다.
+- **층화 기준의 미세 누출.** train/test 분할의 `stratify` 는 6차 점수의 median-split 을
+  쓰는데, median 은 전체 분포의 통계다. 분할 균형에만 쓰고 라벨 정의에는 쓰지 않지만
+  엄밀히는 미세한 누출이며, 대안(층화 없는 분할)은 클래스 불균형을 악화시킨다 → 기록된 선택이다.
 - **`s_accul_str_10` 의 이질성.** 문항-전체 상관이 .04(6차)·.00(5차)로 낮고, 빼면 α 가
   .757 → .845 로 오른다. 역채점해도 개선되지 않아(α .738) 방향 문제가 아니라 다른
   구성개념(미래 전망)을 반영할 가능성이 있다. **선행연구와의 비교 가능성을 위해 10문항을

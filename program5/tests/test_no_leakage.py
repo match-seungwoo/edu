@@ -58,3 +58,38 @@ def test_train_test_ids_do_not_overlap(fake_wave5, fake_wave6, fake_variables):
     f = build_modeling_frame(fake_wave5, fake_wave6, fake_variables)
     tr, te = train_test_split(f["id"], test_size=0.2, random_state=42)
     assert set(tr).isdisjoint(set(te))
+
+
+def test_cutoff_is_computed_from_train_only():
+    """cutoff 는 train 분포로만 정해져야 한다 — 전체로 정하면 그 자체가 test 누출.
+
+    train 과 전체의 분위수가 다르도록 test 쪽에 큰 값을 몰아 두고,
+    돌려받은 cutoff 가 train 분위수와 같은지 확인한다.
+    """
+    import pandas as pd
+
+    from maps_risk.dataset import make_high_stress_label
+
+    train = pd.Series([1, 1, 1, 1, 2, 2, 2, 3, 3, 4])       # q75 = 3.0
+    test = pd.Series([90, 91, 92, 93, 94])                   # 전체로 계산하면 훨씬 커진다
+    all_scores = pd.concat([train, test], ignore_index=True)
+
+    _, cutoff = make_high_stress_label(train, all_scores, 0.75)
+    assert cutoff == train.quantile(0.75)
+    assert cutoff != all_scores.quantile(0.75), "전체 분포로 cutoff 를 정하고 있다 (누출)"
+
+
+def test_cutoff_labels_apply_train_rule_to_everyone():
+    """train 에서 정한 하나의 cutoff 를 전체에 그대로 적용해야 한다.
+
+    test 를 test 자신의 분위수로 라벨링하면 train/test 의 라벨 의미가 달라진다.
+    """
+    import pandas as pd
+
+    from maps_risk.dataset import make_high_stress_label
+
+    train = pd.Series([1, 2, 3, 4])                          # q75 = 3.25
+    all_scores = pd.Series([1, 2, 3, 4, 3.3, 3.2])
+    labels, cutoff = make_high_stress_label(train, all_scores, 0.75)
+    assert list(labels) == [0, 0, 0, 1, 1, 0]                # 3.3 >= 3.25 · 3.2 < 3.25
+    assert (all_scores >= cutoff).astype(int).tolist() == list(labels)
