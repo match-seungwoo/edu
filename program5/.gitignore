@@ -1,0 +1,19 @@
+# ── MAPS 원자료는 절대 커밋하지 않는다 (양도·대여 금지 조항) ──
+data/raw/*
+!data/raw/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# 산출물
+reports/figures/*.png
+reports/data_inventory.md
+reports/data_quality.md
+reports/model_metrics.csv
+reports/feature_importance*.csv
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
