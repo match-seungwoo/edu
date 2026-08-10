@@ -2,10 +2,15 @@
 
 왜 존재하나: 발표 자료에 그대로 쓸 수 있는 그림을 코드로 재생성 가능하게.
 """
+import sys
 from pathlib import Path
 
 import matplotlib
-matplotlib.use("Agg")  # 화면 없는 환경에서도 저장되게
+# 화면 없는 환경(스크립트·CI)에서도 저장되게 Agg 로 고정한다.
+# 단 노트북 안에서 이 모듈을 import 했을 때까지 백엔드를 바꿔 버리면
+# inline 그림이 화면에 안 뜬다 → IPython 커널 안에서는 건드리지 않는다.
+if "ipykernel" not in sys.modules:
+    matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 from sklearn.metrics import (PrecisionRecallDisplay, RocCurveDisplay)

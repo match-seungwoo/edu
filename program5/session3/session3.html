@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS 문화적응 스트레스 ML — 3차시 강의 슬라이드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP */
+        * { box-sizing: border-box; }
+        body {
+            background-color: #1a1c22;
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            padding: 40px 0;
+            place-items: center;
+            font-family: 'Lato', 'Nanum Gothic', sans-serif;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #0a0e14;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Abstract Background Decoration */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 50px;
+            left: 60px;
+            width: 100px;
+            height: 4px;
+            background-color: #00f2ff;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; margin: 0; }
+        .slide-title {
+            font-size: 44px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            border-left: 6px solid #00f2ff;
+            padding-left: 20px;
+            z-index: 1;
+            max-width: 1100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+        }
+
+        p, li, td, th { font-size: 20px; color: #b0b0b0; line-height: 1.6; }
+        strong { color: #00f2ff; }
+
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            z-index: 1;
+            gap: 20px;
+        }
+
+        /* Layouts */
+        .title-layout { text-align: center; align-items: center; justify-content: center; height: 100%; }
+        .title-layout h1 { font-size: 80px; margin-bottom: 20px; color: #00f2ff; }
+        .title-layout .subtitle { font-size: 28px; color: #ffffff; margin-top: 20px; }
+
+        .section-title-layout { text-align: center; justify-content: center; height: 100%; }
+        .section-title-layout h2 { font-size: 64px; color: #ffffff; }
+        .section-title-layout hr { width: 120px; border: 2px solid #00f2ff; margin: 30px auto; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
+        .tiled-content { display: flex; gap: 30px; width: 100%; }
+        .tile { 
+            flex: 1; background: #151a21; padding: 40px; border-radius: 15px; 
+            border-bottom: 4px solid #00f2ff; text-align: center;
+        }
+        .tile .icon { font-size: 50px; color: #adff2f; margin-bottom: 20px; }
+        .tile h3 { font-size: 24px; color: #ffffff; margin-bottom: 15px; }
+
+        .image-wrapper { 
+            width: 100%; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #333; 
+            background: #151a21;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .bullet-list i { position: absolute; left: 0; top: 5px; color: #00f2ff; font-size: 22px; }
+
+        .table-layout table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table-layout th { background: #151a21; color: #00f2ff; text-align: left; padding: 20px; border-bottom: 2px solid #333; }
+        .table-layout td { padding: 20px; border-bottom: 1px solid #222; color: #ffffff; }
+
+        /* Formula Container */
+        #formula-container { background: #000; padding: 25px; border-radius: 10px; border-left: 4px solid #adff2f; display: inline-block; }
+
+        /* Bleed Image Right Custom */
+        .bleed-image-layout { padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+        .bleed-image-layout .content-container { padding: 60px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .bleed-image-layout .image-container { width: 100%; height: 720px; background: #151a21; }
+        .bleed-image-layout img { width: 100%; height: 720px; object-fit: cover; }
+
+        /* Code Block (초심자 슬라이드용) */
+        .code-block {
+            background: #000;
+            padding: 30px 35px;
+            border-radius: 10px;
+            border-left: 4px solid #adff2f;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+        }
+        .code-block .kw { color: #ff79c6; }       /* 키워드 */
+        .code-block .fn { color: #50fa7b; }       /* 함수 */
+        .code-block .str { color: #f1fa8c; }      /* 문자열 */
+        .code-block .num { color: #bd93f9; }      /* 숫자 */
+        .code-block .cm  { color: #6272a4; font-style: italic; } /* 주석 */
+        .code-block .var { color: #8be9fd; }      /* 변수 */
+
+        /* 2열 스텝 카드 (Colab 조작용) */
+        .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        .step-card {
+            background: #151a21;
+            padding: 22px 26px;
+            border-radius: 12px;
+            border-left: 4px solid #00f2ff;
+        }
+        .step-card h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #00f2ff;
+            margin: 0 0 8px 0;
+        }
+        .step-card p { font-size: 16px; margin: 0; color: #cfcfcf; }
+        .step-card code {
+            background: #000;
+            color: #adff2f;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        /* 슬라이드 번호 + 푸터 (program4 추가) */
+        .slide-no { position:absolute; bottom:24px; right:32px; font-size:14px; color:#3a4250; letter-spacing:1px; z-index:2; }
+        .kicker { color:#00f2ff; letter-spacing:3px; font-size:15px; font-weight:700; margin-bottom:12px; }
+        .src-tag { display:inline-block; background:#151a21; color:#adff2f; padding:3px 10px; border-radius:6px; font-size:14px; margin-right:6px; }
+        .finding { background:#101820; border-left:4px solid #adff2f; padding:18px 24px; border-radius:8px; }
+        .finding b { color:#adff2f; }
+    </style>
+</head>
+<body>
+<!-- 1 Title -->
+<div class="slide-container" id="s1">
+  <div class="content-area title-layout">
+    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:64px;">이 점수를 믿어도 되는가</h1>
+    <p class="subtitle">신뢰도로 지난주의 판단을 채점하고, 분포와 상관으로 변수의 성격을 읽는다</p>
+    <p style="margin-top:40px;font-weight:700;letter-spacing:2px;color:#adff2f;">3차시 · Cronbach α · 분포 · 상관 (EDA)</p>
+  </div>
+  <div class="slide-no">01</div>
+</div>
+
+<!-- 2 훅 -->
+<div class="slide-container" id="s2">
+  <h2 class="slide-title">오늘, 지난주의 판단이 채점받는다</h2>
+  <div class="content-area">
+    <div class="finding" style="font-size:23px;">
+      2차시에 우리는 약속했다 — <b>"역채점을 틀리면 α 가 떨어진다. 다음 주에 시험대에 오른다."</b><br>
+      오늘이 그 다음 주다.
+    </div>
+    <div class="two-column" style="margin-top:26px;">
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>관문 ①</b> 선행연구 α (5차 .76 / 6차 .74)<br>우리 데이터에서 <strong>재현되는가?</strong></p></div>
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>관문 ②</b> 지난주 전원이 "역채점 후보"라 판단한<br><code>s_accul_str_10</code> — <strong>정말 그런가?</strong></p></div>
+    </div>
+    <p style="font-size:19px;margin-top:20px;text-align:center;color:#8892a4;">결론부터 말하면 — 하나는 <b style="color:#adff2f;">통과</b>했고, 하나는 <b style="color:#ff8080;">기각</b>됐다.</p>
+  </div>
+  <div class="slide-no">02</div>
+</div>
+
+<!-- 3 아젠다 -->
+<div class="slide-container" id="s3">
+  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <div class="content-area">
+    <div class="step-grid">
+      <div class="step-card"><h4>Step 0 · 재료 확인</h4><p>게이트가 열려 있는가 · 검증된 것만 들어온다</p></div>
+      <div class="step-card"><h4>Step 1 · 신뢰도(α)</h4><p>이 문항들은 한 팀인가 · <strong>재현 관문</strong></p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 2 · 문항-전체 상관 ⚠️</h4><p><strong>첫 봉우리</strong> — 지난주 놓친 역채점을 잡아낸다</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 3 · 10번 문항의 재판 🔍</h4><p>우리 판단이 틀렸을 때 무엇을 하는가</p></div>
+      <div class="step-card"><h4>Step 4~5 · 분포와 상관</h4><p>평균 · SD · 왜도 · 상관행렬</p></div>
+      <div class="step-card"><h4>Step 6~7 · 동점 · 반영</h4><p>25%가 33.8%가 되는 이유 → 파이프라인 재실행</p></div>
+    </div>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">오늘도 모델은 안 만든다. 대신 <strong>모델에 넣을 변수를 믿어도 되는지</strong> 판정한다.</p>
+  </div>
+  <div class="slide-no">03</div>
+</div>
+
+<!-- 4 지도 -->
+<div class="slide-container" id="s4">
+  <h2 class="slide-title">지난 시간 ↔ 오늘 — 8차시 지도</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th style="width:80px;">차시</th><th>심리학</th><th>IT / 머신러닝</th><th>산출물</th></tr>
+      <tr><td>1 ✅</td><td>문화적응 스트레스 · 예측 vs 인과</td><td>feature / target / classification</td><td>data_inventory.md</td></tr>
+      <tr><td>2 ✅</td><td>심리척도 · 문항 · 역채점</td><td>pandas · 결측치 · ID join</td><td>variables.yaml · data_quality.md</td></tr>
+      <tr><td><strong>3 (오늘)</strong></td><td><strong>평균 · SD · 분포 · 상관 · Cronbach α</strong></td><td><strong>집계 · 시각화 · 데이터 클리닝</strong></td><td><strong>reports/figures/ · variables.yaml 갱신</strong></td></tr>
+      <tr><td>4</td><td>고스트레스 집단의 조작적 정의</td><td>split · 클래스 불균형 · <b>데이터 누출</b></td><td>test_no_leakage.py</td></tr>
+      <tr><td>5~8</td><td>관계의 방향 → 해석 → 보고</td><td>로지스틱 → 트리 → 중요도 → 재현성</td><td>metrics · report</td></tr>
+    </table>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b>"어떤 변수가 높고 낮은지, 무엇이 같이 움직이는지 설명할 수 있다."</b> — 그 전에 <b style="color:#adff2f;">그 점수를 믿어도 되는지</b>부터 판정한다.</p>
+    </div>
+  </div>
+  <div class="slide-no">04</div>
+</div>
+
+<!-- 5 목표 -->
+<div class="slide-container" id="s5">
+  <h2 class="slide-title">오늘(3차시)의 목표</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:23px;">
+      <li><i class="fa-solid fa-1"></i> <strong>Cronbach α</strong> 를 계산하고 선행연구 α 가 <strong>재현되는지</strong> 확인한다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>문항-전체 상관</strong>으로 지난주 놓친 <strong>역채점 문항을 찾아 교정</strong>한다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>분포</strong>(평균 · SD · 왜도)와 <strong>상관</strong>을 읽고 변수의 성격을 설명한다</li>
+      <li><i class="fa-solid fa-4"></i> target 분포의 <strong>동점(ties)</strong> 문제를 발견해 4차시로 넘긴다</li>
+    </ul>
+    <p style="font-size:19px;margin-top:10px;color:#8892a4;">※ 오늘의 문장: <b style="color:#adff2f">"지표가 좋아졌다"와 "옳아졌다"는 다른 말이다.</b></p>
+  </div>
+  <div class="slide-no">05</div>
+</div>
+
+<!-- 6 Step0 -->
+<div class="slide-container" id="s6">
+  <h2 class="slide-title">Step 0 — 재료 확인: 게이트가 열려 있는가</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">variables, modeling = <span class="fn">load_configs</span>(<span class="str">"configs"</span>)
+V   = <span class="fn">verified_constructs</span>(variables, <span class="str">"predictors"</span>)   <span class="cm"># 검증된 것만 들어온다</span>
+pending = <span class="fn">unverified_constructs</span>(variables, <span class="str">"predictors"</span>)
+
+<span class="cm"># 게이트(codebook_verified): ✅ 열림   ·   검증된 예측변인 16개</span>
+<span class="cm"># ⏳ 미검증은 오늘 분석에서 제외된다</span></div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 <b>제안본으로 대신 채우지 않는다. 미검증은 미검증이다.</b><br>
+      2차시에 못 끝낸 구성개념은 오늘도 빠진 채로 간다 — 그게 이 구조의 정직함이다.</p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">그리고 오늘은 <b>원자료</b>가 다시 필요하다 — α 는 척도 점수가 아니라 <b style="color:#adff2f;">문항 단위</b>로 계산하기 때문이다.</p>
+  </div>
+  <div class="slide-no">06</div>
+</div>
+
+<!-- 7 신뢰도란 -->
+<div class="slide-container" id="s7">
+  <h2 class="slide-title">Step 1 — 신뢰도: 이 문항들은 한 팀인가 🧠</h2>
+  <div class="content-area">
+    <p style="font-size:22px;margin:0;">몸무게를 세 번 재서 평균 내는 게 의미 있는 이유는 — <strong>세 번 다 몸무게를 쟀기 때문</strong>이다.<br>두 번은 몸무게, 한 번은 키를 쟀다면 그 평균은 아무 뜻이 없다.</p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;"><b>Cronbach's α</b> = 문항들이 서로 얼마나 <b style="color:#adff2f;">같이 움직이는가</b>를 0~1 로 요약한 값<br>
+      <span style="font-size:18px;color:#8892a4;">— 내적 일관성(internal consistency). 보통 <b>.70 이상</b>이면 수용 가능.</span></p>
+    </div>
+    <p style="font-size:20px;margin-top:20px;color:#fff;">⚠️ α 는 <strong>일관성</strong>이지 <strong>타당도</strong>가 아니다.<br>
+    <span style="font-size:18px;color:#8892a4;">열 문항이 사이좋게 같은 걸 재고 있어도, 그게 "문화적응 스트레스"라는 보장은 α 가 해 주지 않는다.</span></p>
+  </div>
+  <div class="slide-no">07</div>
+</div>
+
+<!-- 8 재현 관문 -->
+<div class="slide-container" id="s8">
+  <h2 class="slide-title">Step 1 — 첫 관문: 선행연구 α 가 재현되는가</h2>
+  <div class="content-area">
+    <div class="code-block">alpha_w6 = scoring.<span class="fn">cronbach_alpha</span>(p6, TGT[<span class="str">"items"</span>])
+alpha_w5 = scoring.<span class="fn">cronbach_alpha</span>(p5, OPT[<span class="str">"previous_acculturative_stress"</span>][<span class="str">"items"</span>])</div>
+    <div class="table-layout">
+      <table style="font-size:19px;margin-top:6px;">
+        <tr><th>척도</th><th>선행연구</th><th>우리 계산 (실측)</th><th>판정</th></tr>
+        <tr><td>6차 문화적응 스트레스 (target)</td><td>.74</td><td><strong>.757</strong></td><td>✅ 재현</td></tr>
+        <tr><td>5차 문화적응 스트레스 (Model B)</td><td>.76</td><td><strong>.762</strong></td><td>✅ 재현</td></tr>
+      </table>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#fff;">이 두 숫자가 뜻하는 것: 우리가 고른 컬럼 10개가 <strong>선행연구가 쓴 그 10개</strong>이고 채점 방식도 같다.<br>
+    <b style="color:#ff8080;">컬럼명을 추측했다면 절대 이 숫자가 안 나온다.</b> — 2차시가 옳았다는 증거다.</p>
+  </div>
+  <div class="slide-no">08</div>
+</div>
+
+<!-- 9 r_it 읽는 법 -->
+<div class="slide-container" id="s9">
+  <h2 class="slide-title">Step 2 — 문항-전체 상관: 범인을 지목하는 도구 ⚠️</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">α 는 척도 <b>전체</b>의 점수라 낮게 나와도 <b style="color:#ff8080;">어느 문항 탓인지</b> 알려주지 않는다.</p>
+    <div class="code-block" style="margin-top:12px;font-size:19px;">각 문항  vs  <span class="var">그 문항을 뺀 나머지 문항들의 평균</span>  →  피어슨 상관</div>
+    <div class="table-layout">
+      <table style="font-size:19px;margin-top:8px;">
+        <tr><th style="width:180px;">값</th><th>뜻</th><th>처방</th></tr>
+        <tr><td><strong>양수 (≈ .3↑)</strong></td><td>나머지와 같은 방향으로 움직인다</td><td>정상</td></tr>
+        <tr><td><b style="color:#ff8080;">음수 (−)</b></td><td>방향이 <strong>반대</strong>다</td><td><strong>역채점 누락</strong> — 뒤집으면 해결</td></tr>
+        <tr><td><b style="color:#ffd479;">0 근처</b></td><td>방향이 아니라 <strong>다른 걸 재고 있다</strong></td><td>역채점해도 <strong>안 좋아진다</strong></td></tr>
+      </table>
+    </div>
+    <p style="font-size:19px;margin-top:12px;color:#adff2f;">🔴 마지막 줄이 오늘 배울 가장 미묘한 구분이다 — <b>음수와 0은 완전히 다른 병이다.</b></p>
+  </div>
+  <div class="slide-no">09</div>
+</div>
+
+<!-- 10 target r_it 실측 -->
+<div class="slide-container" id="s10">
+  <h2 class="slide-title">Step 2 — target 10문항을 스캔해 보면</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">s_accul_str_01_w6   +0.256  <span class="cm">███████</span>
+s_accul_str_02_w6   +0.571  <span class="cm">█████████████████</span>
+s_accul_str_04_w6   +0.655  <span class="cm">███████████████████</span>
+s_accul_str_07_w6   <span class="num">+0.720</span>  <span class="cm">█████████████████████</span>
+s_accul_str_09_w6   +0.694  <span class="cm">████████████████████</span>
+s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm">█</span>   ← ?!</div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">10번은 <b style="color:#ff8080;">음수가 아니다.</b> <b style="color:#ffd479;">0 근처</b>다. — 지난주 우리는 "역채점 후보"라고 했다.<br>
+      이 차이가 무슨 뜻인지는 <b>Step 3</b> 에서 정면으로 다룬다. 일단 넘어간다.</p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">먼저 할 일이 있다 — 2차시에 문항 텍스트를 눈으로 읽은 척도는 <b style="color:#ff8080;">target 하나뿐</b>이었다. 나머지 15개는?</p>
+  </div>
+  <div class="slide-no">10</div>
+</div>
+
+<!-- 11 전 척도 스캔 TODO -->
+<div class="slide-container" id="s11">
+  <h2 class="slide-title">Step 2 실습 — 전 척도를 한 번에 스캔한다 (TODO)</h2>
+  <div class="content-area">
+    <div class="code-block">suspects = {}
+<span class="kw">for</span> name, spec <span class="kw">in</span> V.<span class="fn">items</span>():
+    r = scoring.<span class="fn">item_total_correlations</span>(p5, spec[<span class="str">"items"</span>])
+    bad = [c <span class="kw">for</span> c <span class="kw">in</span> r.index <span class="kw">if</span> r[c] <span class="num">_______</span>]      <span class="cm"># ← 조건을 채워라</span>
+    <span class="kw">if</span> bad: suspects[name] = bad</div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">⚠️ <b>3개 척도</b>가 걸린다 — α 가 <b style="color:#ff8080;">.489 · .543 · .568</b> 로 처참하다.<br>
+      <span style="font-size:18px;color:#8892a4;">참고로 나머지 13개는 .74 ~ .97 로 멀쩡하다. 셋만 유독 낮다.</span></p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">힌트는 슬라이드 09 의 표 두 번째 줄에 있다.</p>
+  </div>
+  <div class="slide-no">11</div>
+</div>
+
+<!-- 12 놓친 4문항 -->
+<div class="slide-container" id="s12">
+  <h2 class="slide-title">Step 2 — 우리가 놓친 4문항 💥</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th style="width:190px;">문항</th><th>텍스트</th><th style="width:150px;">속한 척도</th><th style="width:90px;">r<sub>it</sub></th></tr>
+      <tr><td><code>parenting_b06</code></td><td>부모님은 내가 학교에서 어떻게 생활하는지 <strong>관심을 갖고 물어보신다</strong></td><td>방임</td><td>−.228</td></tr>
+      <tr><td><code>parenting_b07</code></td><td>부모님은 내 몸이나 옷, 이불 등이 깨끗하도록 <strong>항상 신경쓰신다</strong></td><td>방임</td><td>−.178</td></tr>
+      <tr><td><code>learning_a05</code></td><td>나는 공부시간에 <strong>딴 짓을 한다</strong></td><td>학교적응</td><td>−.391</td></tr>
+      <tr><td><code>fr_rela_a04</code></td><td>나는 친구가 하는 일을 <strong>방해한다</strong></td><td>교우관계</td><td>−.087</td></tr>
+    </table>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">읽어 보면 너무 명백하다 — "<b>방임</b>" 척도에 "관심을 갖고 물어보신다"라니.<br>
+      <b style="color:#ff8080;">우리는 지난주에 이걸 놓쳤다.</b> 눈으로 읽은 건 target 10문항뿐이었으니까.</p>
+    </div>
+  </div>
+  <div class="slide-no">12</div>
+</div>
+
+<!-- 13 교정 전후 -->
+<div class="slide-container" id="s13">
+  <h2 class="slide-title">Step 2 — 방향만 되돌렸을 뿐인데</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th>구성개념</th><th>역채점 문항</th><th>α 교정 전</th><th>α 교정 후</th></tr>
+      <tr><td><code>school_adjustment</code></td><td>learning_a05</td><td><b style="color:#ff8080;">.489</b></td><td><b style="color:#adff2f;">.785</b></td></tr>
+      <tr><td><code>peer_relationship</code></td><td>fr_rela_a04</td><td><b style="color:#ff8080;">.543</b></td><td>.626</td></tr>
+      <tr><td><code>parenting_neglect</code></td><td>parenting_b06, b07</td><td><b style="color:#ff8080;">.568</b></td><td><b style="color:#adff2f;">.815</b></td></tr>
+    </table>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">문항을 <b>뺀</b> 게 아니라 <strong>제자리로 돌린</strong> 것이다. 데이터는 하나도 안 버렸다.</p>
+    <p style="font-size:18px;margin-top:8px;color:#8892a4;">※ <code>peer_relationship</code> 은 교정해도 <b style="color:#ffd479;">.626</b> — .70 미만이다. 고쳐지지 않는 것도 있다 → <b>정직하게 한계에 기록</b>한다.</p>
+  </div>
+  <div class="slide-no">13</div>
+</div>
+
+<!-- 14 에디터로 -->
+<div class="slide-container" id="s14">
+  <h2 class="slide-title">Step 2 — 지금, 에디터로 돌아간다 ✍️</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">parenting_neglect:
+  status: <span class="str">verified</span>
+  expected_range: [<span class="num">1</span>, <span class="num">4</span>]
+  reverse_items:
+    - parenting_b06_w5   <span class="cm"># "관심을 갖고 물어보신다" — 방임과 방향 반대</span>
+    - parenting_b07_w5   <span class="cm"># "항상 신경쓰신다"</span></div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:21px;color:#fff;">지난주에 <code>verified</code> 라고 적었던 것을 오늘 <b>고친다.</b><br>
+      <b style="color:#adff2f;">그게 잘못이 아니라, 그게 과학이다.</b> 새 근거가 나오면 판단을 갱신하고, 갱신했다는 사실을 기록한다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:16px;color:#8892a4;">2차시 마지막 문장이 여기서 회수된다 — <b style="color:#adff2f;">"검증은 한 번의 행사가 아니라 계속되는 상태다."</b></p>
+  </div>
+  <div class="slide-no">14</div>
+</div>
+
+<!-- 15 10번 재판 -->
+<div class="slide-container" id="s15">
+  <h2 class="slide-title">Step 3 — 10번 문항의 재판 🔍</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">2차시에 학생 <b>전원</b>이 이렇게 답했고, CHECK 는 ✅ 를 줬다:</p>
+    <div class="code-block" style="margin-top:12px;font-size:17px;">s_accul_str_10  <span class="str">"외국인 부모님 나라보다 한국에서 더 잘 살 수 있을 것이다"</span>  → <span class="num">True</span>  <span class="cm"># 역채점 후보!</span></div>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">논리는 완벽했다. 스트레스 척도인데 이 문항만 <b>긍정 방향</b>이니까.<br>그런데 슬라이드 10 을 다시 보라 — 10번의 r<sub>it</sub> 는 <b style="color:#ff8080;">음수가 아니라</b> <b style="color:#ffd479;">+0.044</b> 였다.</p>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">그래서 오늘 직접 확인한다 — <b>10번을 역채점하면 α 는 오를까, 내릴까?</b><br><span style="font-size:18px;color:#8892a4;">먼저 예측하고, 그다음 실행한다. 예측 없이 실행하면 배우는 게 없다.</span></p>
+    </div>
+  </div>
+  <div class="slide-no">15</div>
+</div>
+
+<!-- 16 결과: 내려간다 -->
+<div class="slide-container" id="s16">
+  <h2 class="slide-title">Step 3 — 음수와 0은 다른 병이다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:20px;">그대로            α = <span class="num">0.757</span>
+10번 역채점 후    α = <span style="color:#ff8080;">0.738</span>   <span class="cm">← 내려갔다</span></div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">역채점은 "<b>방향이 뒤집힌</b> 문항"을 되돌리는 수술이다. 10번의 r<sub>it</sub> 는 거의 <b>0</b> —<br>
+      나머지 9문항과 <b style="color:#ffd479;">아무 방향으로도 같이 움직이지 않는다.</b> 0을 뒤집어도 여전히 0이다.</p>
+    </div>
+    <p style="font-size:20px;margin-top:18px;color:#fff;"><b>심리학적으로 읽으면</b> — 10번은 스트레스가 아니라 <strong>미래 전망·기대</strong>를 재고 있을 수 있다.<br>
+    <span style="font-size:18px;color:#8892a4;">"한국에서 더 잘 살 수 있을 것이다"에 동의하는 것과, 지금 차별로 스트레스를 받는 것은 <b style="color:#adff2f;">서로 배타적이지 않다.</b> 둘 다 참일 수 있어서 상관이 0 근처인 것이다.</span></p>
+  </div>
+  <div class="slide-no">16</div>
+</div>
+
+<!-- 17 빼지 않는다 -->
+<div class="slide-container" id="s17">
+  <h2 class="slide-title">Step 3 — 빼면 α 가 .845 로 뛴다. 그런데 빼지 않는다 🔴</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">alpha_if_deleted:  s_accul_str_10 을 빼면 → α = <span class="num">0.845</span>  <span class="cm">(전체 .757)</span></div>
+    <ul class="bullet-list" style="font-size:19px;margin-top:10px;">
+      <li><i class="fa-solid fa-1"></i> <strong>척도가 달라진다.</strong> 선행연구는 10문항으로 α .74 — 우리도 10문항으로 .757, <b>이미 재현에 성공</b>했다. 9문항으로 바꾸면 그 비교가 무너진다 <span style="color:#8892a4;">(9문항 점수 ↔ 10문항 점수 r = .948 — 얻는 것도 적다)</span></li>
+      <li><i class="fa-solid fa-2"></i> <strong>α 는 목표가 아니라 진단이다.</strong> α 를 올리려고 문항을 빼는 건 <b style="color:#ff8080;">체온계 눈금을 손으로 돌려 열을 내리는 것</b>과 같다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>사후에 데이터를 보고 척도를 바꾸는 것</strong> 자체가 위험하다 — 이 표본에서만 잘 맞는 척도가 된다 (척도 수준의 <b>과적합</b>)</li>
+    </ul>
+    <p style="font-size:19px;margin-top:10px;color:#adff2f;">✅ 대신 <b>기록한다</b> — note 와 8차시 한계 절에, 그리고 <b>9문항 민감도 분석</b>을 예약해 둔다.</p>
+  </div>
+  <div class="slide-no">17</div>
+</div>
+
+<!-- 18 분포 읽는 법 -->
+<div class="slide-container" id="s18">
+  <h2 class="slide-title">Step 4 — 분포: 평균만 보면 속는다</h2>
+  <div class="content-area">
+    <div class="two-column">
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>표준편차 (SD)</b><br>흩어진 정도. <b style="color:#ffd479;">0 에 가까우면 모두가 같은 답</b>을 했다는 뜻 → 아무도 구분 못 하는 변수 → 예측에 쓸모없다.</p></div>
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>왜도 (skewness)</b><br>쏠린 정도. 0 이면 대칭. <b style="color:#ffd479;">양수면 왼쪽에 몰리고 오른쪽 꼬리가 길다</b> — 대부분 낮고 소수만 높다.</p></div>
+    </div>
+    <div class="code-block" style="margin-top:18px;font-size:18px;">f.<span class="fn">describe</span>()  +  f.<span class="fn">skew</span>()      <span class="cm"># 그리고 반드시 히스토그램을 그린다</span>
+<span class="cm"># 숫자 요약은 거짓말을 할 수 있다 — 평균 · SD 가 같아도 모양이 전혀 다를 수 있다</span></div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">분석 frame: <b style="color:#adff2f;">1,321행</b> — 2차시에 손으로 센 그 숫자와 일치하는지 먼저 확인한다.</p>
+  </div>
+  <div class="slide-no">18</div>
+</div>
+
+<!-- 19 그림 4장 -->
+<div class="slide-container" id="s19">
+  <h2 class="slide-title">Step 4 — 그림 4장이 각각 하는 말</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th style="width:180px;">변수</th><th style="width:170px;">실측</th><th>읽는 법</th><th style="width:150px;">이어지는 차시</th></tr>
+      <tr><td>문화적응 스트레스(6차)</td><td>평균 1.42 · 왜도 <b>+1.39</b></td><td>대부분 1점대. 스트레스 높은 학생은 <strong>소수</strong></td><td>4차시 <b>클래스 불균형</b></td></tr>
+      <tr><td>집단괴롭힘</td><td>평균 1.04 · 왜도 <b style="color:#ff8080;">+7.9</b></td><td>거의 전원 "없었다". <strong>사실상 상수</strong> — 아무도 구분 못 한다</td><td>4차시 <b>feature 선별</b></td></tr>
+      <tr><td>한국어 실력</td><td>왜도 <b>−1.61</b></td><td>위쪽에 몰림 = <strong>천장 효과</strong>. 잘하는 학생들 사이 차이가 안 보인다</td><td>7차시 해석의 한계</td></tr>
+      <tr><td>친구지지</td><td>평균 <b>4.13</b></td><td>값이 큰 건 <strong>5점 척도</strong>이기 때문 (대부분 4점)</td><td>5차시 <b>표준화</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">🔴 "친구지지 4.13 &gt; 우울 1.69" 를 보고 <b style="color:#ff8080;">"친구지지가 더 높다"고 말하면 안 된다.</b> 자를 다르게 쓰고 잰 길이다.</p>
+    </div>
+  </div>
+  <div class="slide-no">19</div>
+</div>
+
+<!-- 20 상관 -->
+<div class="slide-container" id="s20">
+  <h2 class="slide-title">Step 5 — 상관: 무엇이 무엇과 같이 움직이나</h2>
+  <div class="content-area">
+    <p style="font-size:19px;margin:0;">크기 감각 (심리학 관례): <strong>.10 작다 · .30 중간 · .50 크다</strong>. 먼저 <b style="color:#adff2f;">부호를 예측</b>하고 실행한다.</p>
+    <div class="code-block" style="margin-top:12px;font-size:17px;">previous_acculturative_stress   r = <span class="num">+0.314</span>  <span class="cm">██████████████████</span>
+depression                      r = +0.239  <span class="cm">██████████████</span>
+peer_support                    r = −0.238  <span class="cm">██████████████</span>
+peer_relationship               r = −0.235  <span class="cm">██████████████</span>
+self_esteem                     r = −0.223  <span class="cm">█████████████</span>
+   ⋮
+bullying                        r = +0.058  <span class="cm">███</span></div>
+    <p style="font-size:19px;margin-top:14px;color:#fff;">부호는 1차시의 <strong>위험요인 / 보호요인</strong> 그림과 정확히 일치한다. 그런데 —<br>
+    <b style="color:#ffd479;">가장 큰 상관도 |r| = .31 이다.</b> 전부 "작다~중간" 구간 → <b>1년 뒤를 맞히는 일은 쉽지 않다.</b></p>
+  </div>
+  <div class="slide-no">20</div>
+</div>
+
+<!-- 21 다중공선성 -->
+<div class="slide-container" id="s21">
+  <h2 class="slide-title">Step 5 — 예측변인끼리도 얽혀 있다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">depression      ↔ life_satisfaction   r = <span style="color:#ff8080;">−0.656</span>
+peer_support    ↔ peer_relationship   r = +0.615
+ego_resilience  ↔ peer_relationship   r = +0.602
+self_esteem     ↔ ego_resilience      r = +0.575</div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">겹치는 정보를 가진 변수를 한 모델에 같이 넣으면 <strong>다중공선성(multicollinearity)</strong> 으로 개별 계수가 불안정해진다 → 5·7차시에 <b>"왜 우울의 계수가 이렇게 작지?"</b> 를 만난다.</p>
+    </div>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">🔴 <b>상관은 인과가 아니다.</b> depression ↔ stress 가 +.24 라고 해서 "우울이 스트레스를 <b style="color:#ff8080;">일으킨다</b>"고 말할 수 없다.<br>
+    <span style="font-size:18px;color:#8892a4;">반대 방향일 수도, 제3의 원인(학교 분위기 등)이 둘 다 만들었을 수도 있다. 우리가 할 수 있는 말은 <b style="color:#adff2f;">"같이 움직인다 / 예측에 기여한다"</b> 까지다.</span></p>
+  </div>
+  <div class="slide-no">21</div>
+</div>
+
+<!-- 22 동점 -->
+<div class="slide-container" id="s22">
+  <h2 class="slide-title">Step 6 — 25%가 25%가 아니다 🔍</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">4차시의 계획: "학습 데이터 스트레스 점수의 <strong>상위 25%</strong> 를 <code>high_stress = 1</code> 로 한다." 깔끔해 보인다. 그런데 —</p>
+    <div class="code-block" style="margin-top:12px;font-size:19px;">cutoff = s.<span class="fn">quantile</span>(<span class="num">0.75</span>)   →  <span class="num">1.500</span>
+고스트레스 = <span style="color:#ff8080;">447명</span> / 1321명 = <span style="color:#ff8080;">33.8%</span>     <span class="cm"># 25% 가 아니다?!</span></div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">10문항 <b>평균</b>은 연속처럼 보이지만 실제로는 <b style="color:#adff2f;">0.1 단위로 뚝뚝 끊긴 값</b>이다 (1.4 · 1.5 · 1.6 …).<br>
+      1.50 점을 받은 사람만 <b>142명</b> — 백분위수는 이들을 쪼갤 수 없어 <b style="color:#ff8080;">전부 같은 쪽으로</b> 보낸다.</p>
+    </div>
+  </div>
+  <div class="slide-no">22</div>
+</div>
+
+<!-- 23 분위수 이동 -->
+<div class="slide-container" id="s23">
+  <h2 class="slide-title">Step 6 — 분위수를 움직여 보면 (실측)</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:20px;">
+      <tr><th>분위수</th><th>cutoff</th><th>고스트레스</th><th>비율</th></tr>
+      <tr><td>0.70</td><td>1.500</td><td>447명</td><td><b style="color:#ffd479;">33.8%</b></td></tr>
+      <tr><td><strong>0.75</strong></td><td><strong>1.500</strong></td><td><strong>447명</strong></td><td><b style="color:#ffd479;">33.8%</b> ← 똑같다</td></tr>
+      <tr><td>0.80</td><td>1.600</td><td>305명</td><td>23.1% ← 갑자기 142명이 넘어간다</td></tr>
+      <tr><td>0.90</td><td>2.000</td><td>138명</td><td>10.4%</td></tr>
+    </table>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">분위수를 조금 움직이면 <b>아무 일도 안 일어나다가</b>, 어느 순간 <b style="color:#ff8080;">100명이 한꺼번에 넘어간다.</b><br>
+      ✅ 규칙: 조작적 정의는 분위수만 적지 말고 <b style="color:#adff2f;">실제 양성 비율을 항상 함께 보고한다.</b></p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">⚠️ 오늘 구한 1.500 은 <b style="color:#ff8080;">진짜 cutoff 가 아니다</b> — 전체 1,321명을 보고 계산했다. 4차시에는 <b style="color:#adff2f;">train 으로 쓸 사람들만 보고</b> 계산한다. 전체 분포로 선을 그으면 그것 자체가 <b>데이터 누출</b>이다.</p>
+  </div>
+  <div class="slide-no">23</div>
+</div>
+
+<!-- 24 회고 -->
+<div class="slide-container" id="s24">
+  <h2 class="slide-title">회고 — 3개 질문</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:22px;">
+      <li><i class="fa-solid fa-1"></i> 선행연구 α 가 재현됐다는 것은 <strong>무엇에 대한 증거</strong>인가? 재현이 안 됐다면 무엇부터 의심하나?</li>
+      <li><i class="fa-solid fa-2"></i> 문항-전체 상관이 <strong>음수</strong>인 것과 <strong>0 근처</strong>인 것은 어떻게 다른가 — 처방도 다른가?</li>
+      <li><i class="fa-solid fa-3"></i> 10번을 빼면 α 가 .757 → .845 로 오른다. <strong>그런데 왜 빼지 않았나?</strong></li>
+    </ul>
+    <p style="font-size:18px;margin-top:16px;color:#8892a4;">📝 과제: 내 구성개념의 α · 문항-전체 상관 표 (교정 전/후) · α &lt; .70 이면 문항 텍스트로 이유 설명 · <code>reverse_items</code> 갱신본 커밋</p>
+  </div>
+  <div class="slide-no">24</div>
+</div>
+
+<!-- 25 다음 -->
+<div class="slide-container" id="s25">
+  <h2 class="slide-title">다음 — 4차시 예고</h2>
+  <div class="content-area">
+    <p style="font-size:25px;color:#fff;">오늘 스트레스 점수의 <strong>분포</strong>를 봤고, 상위 25%가 실제로는 <strong>33.8%</strong> 라는 것도 봤다.<br>
+    다음 주엔 그 선을 <strong>어디에, 어떻게</strong> 긋는지 — 그리고 왜 <strong>train 데이터에서만</strong> 계산해야 하는지를 다룬다.</p>
+    <div class="finding" style="margin-top:24px;">
+      <p style="margin:0;font-size:22px;color:#fff;">4차시의 백미는 <b style="color:#adff2f;">일부러 데이터 누출을 일으켜 보는 것</b>이다.<br>
+      AUC 가 1.0 에 가까운 "완벽한 모델"을 만들고 — <b>왜 그게 쓰레기인지 직접 설명하게 된다.</b></p>
+    </div>
+    <p style="font-size:20px;margin-top:24px;color:#8892a4;">오늘 배운 문장: <b style="color:#adff2f;">"지표가 좋아졌다"와 "옳아졌다"는 다른 말이다.</b></p>
+  </div>
+  <div class="slide-no">25</div>
+</div>
+</body>
+</html>

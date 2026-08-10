@@ -70,3 +70,45 @@ def test_cronbach_alpha_range():
 def test_cronbach_alpha_needs_two_items():
     df = pd.DataFrame({"a": [1, 2, 3]})
     assert np.isnan(scoring.cronbach_alpha(df, ["a"]))
+
+
+def _scale_with(rng, n=400, noise=0.3):
+    """공통 요인 하나로 움직이는 문항 4개를 만든다 (한 척도 흉내)."""
+    base = rng.normal(size=n)
+    return pd.DataFrame({f"i{k}": base + rng.normal(scale=noise, size=n)
+                         for k in range(4)})
+
+
+def test_item_total_correlation_is_negative_for_reversed_item():
+    """방향이 뒤집힌 문항은 문항-전체 상관이 음수로 나온다 — 역채점 누락 신호."""
+    rng = np.random.default_rng(1)
+    df = _scale_with(rng)
+    df["flipped"] = -df["i0"]                      # 방향만 반대인 문항
+    r = scoring.item_total_correlations(df, list(df.columns))
+    assert r["flipped"] < 0 < r["i1"]
+
+
+def test_item_total_correlation_is_near_zero_for_unrelated_item():
+    """무관한 문항은 음수가 아니라 0 근처 — 역채점으로는 해결되지 않는 경우."""
+    rng = np.random.default_rng(2)
+    df = _scale_with(rng)
+    df["unrelated"] = rng.normal(size=len(df))     # 척도와 상관없는 문항
+    r = scoring.item_total_correlations(df, list(df.columns))
+    assert abs(r["unrelated"]) < 0.15
+
+
+def test_alpha_if_deleted_flags_the_item_that_hurts():
+    """척도를 깎아먹는 문항을 빼면 alpha 가 전체보다 높아진다."""
+    rng = np.random.default_rng(3)
+    df = _scale_with(rng)
+    df["unrelated"] = rng.normal(size=len(df))
+    items = list(df.columns)
+    aid = scoring.alpha_if_deleted(df, items)
+    assert aid.idxmax() == "unrelated"
+    assert aid["unrelated"] > scoring.cronbach_alpha(df, items)
+
+
+def test_alpha_if_deleted_needs_three_items():
+    """2문항짜리 척도는 하나를 빼면 alpha 가 정의되지 않는다 → 빈 결과."""
+    df = pd.DataFrame({"a": [1, 2, 3], "b": [1, 2, 3]})
+    assert scoring.alpha_if_deleted(df, ["a", "b"]).empty
