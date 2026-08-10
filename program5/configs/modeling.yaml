@@ -1,0 +1,49 @@
+# 모델링 설정 — 설계문서 §16
+random_seed: 42
+
+test_size: 0.20
+
+cv:
+  folds: 5
+  stratified: true
+
+target:
+  # 학습 데이터의 75 percentile 이상을 high_stress = 1 로 정의한다.
+  # ★ cutoff 는 train 에서만 계산한다 (test 를 보고 정하지 않는다).
+  high_stress_quantile: 0.75
+
+missing:
+  max_feature_missing_rate: 0.30   # 이보다 결측이 많은 feature 는 제외
+
+models:
+
+  dummy:
+    enabled: true
+    strategy: most_frequent
+
+  logistic_regression:
+    enabled: true
+    C: [0.1, 1.0, 10.0]
+    max_iter: 2000
+
+  decision_tree:
+    enabled: true
+    max_depth: [2, 3, 4, 5]
+
+  random_forest:
+    enabled: true
+    n_estimators: 300
+    max_depth: [3, 5, 8, null]
+
+metrics:
+  - roc_auc
+  - average_precision
+  - recall
+  - precision
+  - f1
+  - balanced_accuracy
+
+# 모델 세트 정의
+model_sets:
+  A: psychosocial_only          # 5차 심리사회 변인만
+  B: psychosocial_plus_prior    # + 5차 문화적응 스트레스

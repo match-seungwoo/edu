@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS 문화적응 스트레스 ML — 강의 슬라이드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP */
+        * { box-sizing: border-box; }
+        body {
+            background-color: #1a1c22;
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            padding: 40px 0;
+            place-items: center;
+            font-family: 'Lato', 'Nanum Gothic', sans-serif;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #0a0e14;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Abstract Background Decoration */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 50px;
+            left: 60px;
+            width: 100px;
+            height: 4px;
+            background-color: #00f2ff;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; margin: 0; }
+        .slide-title {
+            font-size: 44px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            border-left: 6px solid #00f2ff;
+            padding-left: 20px;
+            z-index: 1;
+            max-width: 1100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+        }
+
+        p, li, td, th { font-size: 20px; color: #b0b0b0; line-height: 1.6; }
+        strong { color: #00f2ff; }
+
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            z-index: 1;
+            gap: 20px;
+        }
+
+        /* Layouts */
+        .title-layout { text-align: center; align-items: center; justify-content: center; height: 100%; }
+        .title-layout h1 { font-size: 80px; margin-bottom: 20px; color: #00f2ff; }
+        .title-layout .subtitle { font-size: 28px; color: #ffffff; margin-top: 20px; }
+
+        .section-title-layout { text-align: center; justify-content: center; height: 100%; }
+        .section-title-layout h2 { font-size: 64px; color: #ffffff; }
+        .section-title-layout hr { width: 120px; border: 2px solid #00f2ff; margin: 30px auto; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
+        .tiled-content { display: flex; gap: 30px; width: 100%; }
+        .tile { 
+            flex: 1; background: #151a21; padding: 40px; border-radius: 15px; 
+            border-bottom: 4px solid #00f2ff; text-align: center;
+        }
+        .tile .icon { font-size: 50px; color: #adff2f; margin-bottom: 20px; }
+        .tile h3 { font-size: 24px; color: #ffffff; margin-bottom: 15px; }
+
+        .image-wrapper { 
+            width: 100%; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #333; 
+            background: #151a21;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .bullet-list i { position: absolute; left: 0; top: 5px; color: #00f2ff; font-size: 22px; }
+
+        .table-layout table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table-layout th { background: #151a21; color: #00f2ff; text-align: left; padding: 20px; border-bottom: 2px solid #333; }
+        .table-layout td { padding: 20px; border-bottom: 1px solid #222; color: #ffffff; }
+
+        /* Formula Container */
+        #formula-container { background: #000; padding: 25px; border-radius: 10px; border-left: 4px solid #adff2f; display: inline-block; }
+
+        /* Bleed Image Right Custom */
+        .bleed-image-layout { padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+        .bleed-image-layout .content-container { padding: 60px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .bleed-image-layout .image-container { width: 100%; height: 720px; background: #151a21; }
+        .bleed-image-layout img { width: 100%; height: 720px; object-fit: cover; }
+
+        /* Code Block (초심자 슬라이드용) */
+        .code-block {
+            background: #000;
+            padding: 30px 35px;
+            border-radius: 10px;
+            border-left: 4px solid #adff2f;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+        }
+        .code-block .kw { color: #ff79c6; }       /* 키워드 */
+        .code-block .fn { color: #50fa7b; }       /* 함수 */
+        .code-block .str { color: #f1fa8c; }      /* 문자열 */
+        .code-block .num { color: #bd93f9; }      /* 숫자 */
+        .code-block .cm  { color: #6272a4; font-style: italic; } /* 주석 */
+        .code-block .var { color: #8be9fd; }      /* 변수 */
+
+        /* 2열 스텝 카드 (Colab 조작용) */
+        .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        .step-card {
+            background: #151a21;
+            padding: 22px 26px;
+            border-radius: 12px;
+            border-left: 4px solid #00f2ff;
+        }
+        .step-card h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #00f2ff;
+            margin: 0 0 8px 0;
+        }
+        .step-card p { font-size: 16px; margin: 0; color: #cfcfcf; }
+        .step-card code {
+            background: #000;
+            color: #adff2f;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        /* 슬라이드 번호 + 푸터 (program4 추가) */
+        .slide-no { position:absolute; bottom:24px; right:32px; font-size:14px; color:#3a4250; letter-spacing:1px; z-index:2; }
+        .kicker { color:#00f2ff; letter-spacing:3px; font-size:15px; font-weight:700; margin-bottom:12px; }
+        .src-tag { display:inline-block; background:#151a21; color:#adff2f; padding:3px 10px; border-radius:6px; font-size:14px; margin-right:6px; }
+        .finding { background:#101820; border-left:4px solid #adff2f; padding:18px 24px; border-radius:8px; }
+        .finding b { color:#adff2f; }
+    </style>
+</head>
+<body>
+<!-- 1 Title -->
+<div class="slide-container" id="s1">
+  <div class="content-area title-layout">
+    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:64px;">무엇을 예측할 것인가</h1>
+    <p class="subtitle">중2의 환경으로 중3의 문화적응 스트레스를 구분할 수 있는가</p>
+    <p style="margin-top:40px;font-weight:700;letter-spacing:2px;color:#adff2f;">1차시 · 문제 정의와 MAPS 이해</p>
+  </div>
+  <div class="slide-no">01</div>
+</div>
+
+<!-- 2 훅 -->
+<div class="slide-container" id="s2">
+  <h2 class="slide-title">한 문장: 같은 교실, 다른 무게</h2>
+  <div class="content-area">
+    <div class="finding" style="font-size:23px;">
+      같은 반, 같은 다문화가정 배경. 그런데 <b>1년 뒤</b> 어떤 학생은 스트레스가 치솟고,<br>
+      어떤 학생은 그렇지 않다. <b>그 차이는 1년 전에 이미 보였을까?</b>
+    </div>
+    <p style="font-size:25px;margin-top:28px;text-align:center;color:#fff;">
+      우리는 <strong>2015년 중2</strong>의 심리사회적 환경으로<br><strong>2016년 중3</strong>의 고스트레스 집단을 구분해 본다.</p>
+    <p style="font-size:19px;margin-top:18px;text-align:center;color:#8892a4;">— 맞히는 게 목적이 아니라, <b style="color:#adff2f">무엇이 차이를 만드는지</b>를 보는 게 목적이다.</p>
+  </div>
+  <div class="slide-no">02</div>
+</div>
+
+<!-- 3 아젠다 -->
+<div class="slide-container" id="s3">
+  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <div class="content-area">
+    <div class="step-grid">
+      <div class="step-card"><h4>Step 0 · 환경 설정</h4><p>pandas · pyyaml, 프로젝트 폴더 자동 탐색</p></div>
+      <div class="step-card"><h4>Step 1 · 문화적응 스트레스</h4><p>무엇을, 어떻게 재나 (SAFE 10문항)</p></div>
+      <div class="step-card"><h4>Step 2 · 위험 vs 보호요인</h4><p>같은 환경, 다른 결과를 만드는 것</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 3 · 예측 vs 인과 ⚠️</h4><p><strong>오늘의 첫 봉우리</strong> — 가장 많이 틀리는 곳</p></div>
+      <div class="step-card"><h4>Step 4~5 · ML 언어로 번역</h4><p>feature / target / classification, 시간 설계</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 6~7 · 데이터 확인 🔍 + 윤리</h4><p><strong>두 번째 봉우리</strong> — 데이터가 진짜 있나</p></div>
+    </div>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">운영 방식: 셀을 위에서 아래로 하나씩. <code># TODO</code> 채우고 <code># CHECK</code>에서 <strong>✅</strong> 뜨면 다음으로.</p>
+  </div>
+  <div class="slide-no">03</div>
+</div>
+
+<!-- 4 8차시 지도 -->
+<div class="slide-container" id="s4">
+  <h2 class="slide-title">프로젝트 전체 지도 — 8차시</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th style="width:60px;">차시</th><th>심리학</th><th>IT / 머신러닝</th></tr>
+      <tr><td><strong>1 (오늘)</strong></td><td>문화적응 스트레스 · 예측 vs 인과 · 연구윤리</td><td>feature / target / classification</td></tr>
+      <tr><td>2</td><td>심리척도 · 문항 · 역채점</td><td>pandas · 결측치 · ID join</td></tr>
+      <tr><td>3</td><td>평균 · SD · 상관 · Cronbach α</td><td>집계 · 시각화</td></tr>
+      <tr><td>4</td><td>고스트레스 집단의 <strong>조작적 정의</strong></td><td>train/test · 불균형 · <strong>데이터 누출</strong></td></tr>
+      <tr><td>5</td><td>예측변수의 방향성</td><td>로지스틱 회귀 · 표준화 계수</td></tr>
+      <tr><td>6</td><td>심리는 선형적으로 작동하는가</td><td>Decision Tree · Random Forest · 과적합</td></tr>
+      <tr><td>7</td><td>위험요인 · 보호요인</td><td>Permutation Importance</td></tr>
+      <tr><td>8</td><td>결론 · 한계 · 윤리</td><td>재현성 · 최종 리포트</td></tr>
+    </table>
+  </div>
+  <div class="slide-no">04</div>
+</div>
+
+<!-- 5 연구 질문 -->
+<div class="slide-container" id="s5">
+  <h2 class="slide-title">연구 질문 3개</h2>
+  <div class="content-area">
+    <div class="tiled-content">
+      <div class="tile"><div class="icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div><h3>RQ1</h3><p>중2 시점 심리사회적 특성으로<br>1년 후 고스트레스 집단을<br><strong>어느 정도 구분</strong>할 수 있는가?</p></div>
+      <div class="tile" style="border-bottom-color:#adff2f;"><div class="icon" style="color:#00f2ff;"><i class="fa-solid fa-ranking-star"></i></div><h3>RQ2</h3><p>그 구분에 상대적으로<br><strong>중요한 변수</strong>는<br>무엇인가?</p></div>
+      <div class="tile"><div class="icon"><i class="fa-solid fa-code-compare"></i></div><h3>RQ3</h3><p>이전 시점 스트레스를 넣으면<br><strong>예측력이 얼마나</strong><br>개선되는가?</p></div>
+    </div>
+    <div class="finding" style="margin-top:26px;">
+      <p style="margin:0;font-size:20px;color:#fff;"><b>Model A</b> 심리사회 변인만 &nbsp;&nbsp;vs&nbsp;&nbsp; <b>Model B</b> + 2015년 스트레스 &nbsp;→ 두 모델의 <b>차이 자체가 결과</b>다.</p>
+    </div>
+  </div>
+  <div class="slide-no">05</div>
+</div>
+
+<!-- 6 오늘 목표 -->
+<div class="slide-container" id="s6">
+  <h2 class="slide-title">오늘(1차시)의 목표</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:23px;">
+      <li><i class="fa-solid fa-1"></i> <strong>문화적응 스트레스</strong>가 무엇이고 왜 이걸 재는지 이해한다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>예측과 인과</strong>의 차이를 말로 설명할 수 있다</li>
+      <li><i class="fa-solid fa-3"></i> 우리 문제를 <strong>feature / target / classification</strong> 으로 번역한다</li>
+      <li><i class="fa-solid fa-4"></i> <strong>데이터가 실제로 있는지 확인</strong>하고, 없으면 없다고 정확히 보고한다</li>
+    </ul>
+    <p style="font-size:19px;margin-top:10px;color:#8892a4;">※ 오늘은 모델을 만들지 않는다. <b style="color:#adff2f">무엇을 예측할지 정하는 것</b>이 오늘의 전부다.</p>
+  </div>
+  <div class="slide-no">06</div>
+</div>
+
+<!-- 7 Step0 코드 -->
+<div class="slide-container" id="s7">
+  <h2 class="slide-title">Step 0 — 환경 설정: 폴더 자동 탐색</h2>
+  <div class="content-area">
+    <div class="code-block"><span class="kw">def</span> <span class="fn">find_project</span>():
+    cands = [<span class="str">"."</span>, <span class="str">"program5"</span>, <span class="str">".."</span>, <span class="str">"/content/program5"</span>]
+    <span class="kw">for</span> c <span class="kw">in</span> cands:
+        <span class="kw">if</span> os.path.<span class="fn">exists</span>(os.path.<span class="fn">join</span>(c, <span class="str">"AGENTS.md"</span>)) <span class="kw">and</span> \
+           os.path.<span class="fn">exists</span>(os.path.<span class="fn">join</span>(c, <span class="str">"configs/variables.yaml"</span>)):
+            <span class="kw">return</span> os.path.<span class="fn">abspath</span>(c)
+
+PROJECT = <span class="fn">find_project</span>()   <span class="cm"># → ✅ 프로젝트 경로: ...</span></div>
+    <p style="font-size:19px;margin-top:16px;"><span class="src-tag">이 줄이 하는 일</span> 후보 경로를 돌며 <strong>AGENTS.md 와 configs 가 함께 있는 폴더</strong>를 찾아 작업 경로로 잡는다. Colab이든 로컬이든 같은 코드가 돈다.</p>
+  </div>
+  <div class="slide-no">07</div>
+</div>
+
+<!-- 8 문화적응 스트레스란 -->
+<div class="slide-container" id="s8">
+  <h2 class="slide-title">Step 1 — 문화적응 스트레스란 무엇인가 🧠</h2>
+  <div class="content-area">
+    <p style="font-size:22px;margin:0;"><strong>문화적응(acculturation)</strong> — 다른 문화와 지속 접촉하며 일어나는 변화.<br>그 과정에서 겪는 심리적 부담이 <strong>문화적응 스트레스</strong>다.</p>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:19px;color:#fff;">추상적인 개념이 아니다. 구체적으로는 —</p>
+      <ul style="margin:10px 0 0 0;font-size:19px;">
+        <li>한국어가 서툴러 수업을 따라가기 어렵다</li>
+        <li>부모의 출신 국가 때문에 놀림을 받는다</li>
+        <li>집의 문화와 학교가 요구하는 문화가 다르다</li>
+        <li>"나는 한국인인가, 아닌가"라는 정체성 혼란</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-no">08</div>
+</div>
+
+<!-- 9 MAPS 측정 방식 -->
+<div class="slide-container" id="s9">
+  <h2 class="slide-title">Step 1 — MAPS는 이걸 어떻게 재나</h2>
+  <div class="content-area">
+    <div class="tiled-content">
+      <div class="tile"><div class="icon"><i class="fa-solid fa-list-ol"></i></div><h3>10문항</h3><p>SAFE 척도<br>(Hong, 2003 수정판)</p></div>
+      <div class="tile" style="border-bottom-color:#adff2f;"><div class="icon" style="color:#00f2ff;"><i class="fa-solid fa-sliders"></i></div><h3>4점 리커트</h3><p>점수가 높을수록<br>스트레스가 크다</p></div>
+      <div class="tile"><div class="icon"><i class="fa-solid fa-check-double"></i></div><h3>α ≈ .74~.76</h3><p>5차 .76 · 6차 .74<br>내적일관성 양호</p></div>
+    </div>
+    <div class="finding" style="margin-top:24px;">
+      <p style="margin:0;font-size:20px;color:#fff;">📌 <b>왜 이 변수인가</b> — 문화적응 스트레스는 우울·사회적 위축·학교부적응의 <b>선행 요인</b>으로 반복 보고돼 왔다. 1년 뒤를 미리 구분할 수 있다면, 그 구분에 기여한 변수가 곧 <b>개입의 후보</b>가 된다. <span style="color:#ff8080;">— 다만 그건 가설이지 증명이 아니다.</span></p>
+    </div>
+  </div>
+  <div class="slide-no">09</div>
+</div>
+
+<!-- 10 위험 vs 보호 -->
+<div class="slide-container" id="s10">
+  <h2 class="slide-title">Step 2 — 위험요인과 보호요인</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">같은 환경에서도 어떤 청소년은 스트레스가 높고 어떤 청소년은 낮다. 그 차이를 만드는 것.</p>
+    <div class="two-column" style="margin-top:20px;">
+      <div style="background:#1a1013;padding:26px;border-radius:12px;border-left:4px solid #ff6b6b;">
+        <h3 style="color:#ff6b6b;font-size:24px;margin-bottom:12px;">위험요인 (risk)</h3>
+        <p style="font-size:18px;margin:0 0 10px 0;">있을수록 나쁜 결과 가능성을 높이는 것</p>
+        <p style="font-size:19px;color:#fff;margin:0;">우울 · 사회적 위축 · 집단괴롭힘 피해</p>
+      </div>
+      <div style="background:#101a13;padding:26px;border-radius:12px;border-left:4px solid #adff2f;">
+        <h3 style="color:#adff2f;font-size:24px;margin-bottom:12px;">보호요인 (protective)</h3>
+        <p style="font-size:18px;margin:0 0 10px 0;">있을수록 나쁜 결과를 완충하는 것</p>
+        <p style="font-size:19px;color:#fff;margin:0;">가족지지 · 친구지지 · 교사지지<br>자아탄력성 · 이중문화 수용태도</p>
+      </div>
+    </div>
+    <p style="font-size:20px;margin-top:20px;text-align:center;color:#fff;">모델은 "위험/보호"를 <strong>모른다.</strong> 그건 <strong>우리가 붙이는 해석</strong>이다.</p>
+  </div>
+  <div class="slide-no">10</div>
+</div>
+
+<!-- 11 코드 -->
+<div class="slide-container" id="s11">
+  <h2 class="slide-title">Step 2 — 가설을 코드로 적어 둔다</h2>
+  <div class="content-area">
+    <div class="code-block">risk = [<span class="str">"depression"</span>, <span class="str">"social_withdrawal"</span>, <span class="str">"bullying"</span>]
+protective = [<span class="str">"family_support"</span>, <span class="str">"peer_support"</span>, <span class="str">"teacher_support"</span>,
+              <span class="str">"ego_resilience"</span>, <span class="str">"bicultural_attitude"</span>]
+
+<span class="cm"># 위험요인 후보 : 3 개</span>
+<span class="cm"># 보호요인 후보 : 5 개</span></div>
+    <p style="font-size:20px;margin-top:18px;"><span class="src-tag">7차시 예고</span> 로지스틱 회귀 계수의 <strong>부호(+/−)</strong>를 보고 이 분류가 데이터와 맞는지 확인한다. <strong style="color:#adff2f;">반대로 나와도 그것이 결과다.</strong></p>
+  </div>
+  <div class="slide-no">11</div>
+</div>
+
+<!-- 12 예측 vs 인과 (봉우리) -->
+<div class="slide-container" id="s12">
+  <h2 class="slide-title">Step 3 — 예측 vs 인과 ⚠️ 오늘의 첫 봉우리</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:21px;margin:0;">모델이 <b style="color:#00f2ff;">"우울이 가장 중요한 변수"</b>라고 말했다. 이때 할 수 있는 말과 없는 말.</p>
+    <table style="font-size:18px;margin-top:14px;">
+      <tr><th style="width:60px;"></th><th>문장</th><th style="width:290px;">왜</th></tr>
+      <tr><td style="color:#ff6b6b;font-size:26px;">✗</td><td>우울이 문화적응 스트레스를 <strong style="color:#ff6b6b;">일으켰다</strong></td><td>인과 주장. 실험도 통제도 없었다</td></tr>
+      <tr><td style="color:#ff6b6b;font-size:26px;">✗</td><td>우울을 낮추면 스트레스가 <strong style="color:#ff6b6b;">낮아질 것이다</strong></td><td>개입 효과 주장. 알 수 없다</td></tr>
+      <tr><td style="color:#adff2f;font-size:26px;">✓</td><td>본 데이터와 모델에서 우울 변수가 차년도 고스트레스 집단 분류에 <strong style="color:#adff2f;">상대적으로 높은 예측 기여</strong>를 보였다</td><td>관찰된 연관성만 진술</td></tr>
+    </table>
+  </div>
+  <div class="slide-no">12</div>
+</div>
+
+<!-- 13 왜 인과 불가 -->
+<div class="slide-container" id="s13">
+  <h2 class="slide-title">Step 3 — 왜 인과를 말할 수 없나</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:21px;">
+      <li><i class="fa-solid fa-diagram-project"></i> <strong>교란변수(confounder)</strong> — 가정 경제 수준이 우울도 높이고 스트레스도 높였을 수 있다</li>
+      <li><i class="fa-solid fa-rotate-left"></i> <strong>역방향 가능성</strong> — 이미 스트레스가 높아서 우울해진 것일 수도 있다</li>
+      <li><i class="fa-solid fa-dice"></i> <strong>무작위 배정 없음</strong> — 누가 어떤 환경에 놓일지 우리가 정하지 않았다</li>
+    </ul>
+    <div class="finding" style="margin-top:22px;">
+      <p style="margin:0;font-size:21px;color:#fff;">시간 순서(<b>2015 → 2016</b>)를 지킨 것은 <b>역방향을 줄이는 장치</b>이지 <b style="color:#ff8080;">인과의 증명이 아니다.</b></p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">→ Model B에서 2015년 스트레스를 통제 변수처럼 넣어 보는 이유가 여기에 있다.</p>
+  </div>
+  <div class="slide-no">13</div>
+</div>
+
+<!-- 14 실습 문장 판별 -->
+<div class="slide-container" id="s14">
+  <h2 class="slide-title">Step 3 실습 — 이 문장, 쓸 수 있나?</h2>
+  <div class="content-area">
+    <div class="code-block">statements = {
+    <span class="str">"우울이 문화적응 스트레스를 유발한다"</span>:                <span class="num">_____</span>,
+    <span class="str">"우울 점수가 높은 집단에서 고스트레스 분류 비율이 높았다"</span>: <span class="num">_____</span>,
+    <span class="str">"가족지지를 늘리면 스트레스가 줄어든다"</span>:              <span class="num">_____</span>,
+    <span class="str">"가족지지는 고스트레스 분류에 음(-)의 기여를 보였다"</span>:    <span class="num">_____</span>,
+}</div>
+    <p style="font-size:20px;margin-top:18px;"><span class="src-tag">판별 기준</span> <strong style="color:#ff6b6b;">"유발한다" · "늘리면 줄어든다"</strong> → 인과·개입 주장 → 못 쓴다.<br>
+    <strong style="color:#adff2f;">"비율이 높았다" · "기여를 보였다"</strong> → 관찰된 연관성 → 쓸 수 있다.</p>
+    <p style="font-size:19px;margin-top:10px;color:#8892a4;">정답: <code>False, True, False, True</code></p>
+  </div>
+  <div class="slide-no">14</div>
+</div>
+
+<!-- 15 심리학→ML 번역 -->
+<div class="slide-container" id="s15">
+  <h2 class="slide-title">Step 4 — 심리학을 머신러닝 언어로 번역</h2>
+  <div class="content-area table-layout">
+    <table>
+      <tr><th>심리학 언어</th><th>ML 언어</th><th>우리 경우</th></tr>
+      <tr><td>연구 대상 1명</td><td><strong>row (행)</strong></td><td>응답자 1명 = 1행</td></tr>
+      <tr><td>측정한 특성 하나</td><td><strong>column (열)</strong></td><td>우울 점수, 가족지지 점수…</td></tr>
+      <tr><td>예측에 쓰는 특성</td><td><strong>feature (X)</strong></td><td>5차년도(2015) 심리사회 변인</td></tr>
+      <tr><td>맞히려는 것</td><td><strong>target (y)</strong></td><td>6차년도(2016) 고스트레스 여부</td></tr>
+      <tr><td>집단을 둘로 나누기</td><td><strong>binary classification</strong></td><td>high_stress = 1 / 0</td></tr>
+    </table>
+  </div>
+  <div class="slide-no">15</div>
+</div>
+
+<!-- 16 target 만들기 -->
+<div class="slide-container" id="s16">
+  <h2 class="slide-title">Step 4 — target 은 이렇게 만든다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:19px;">6차 문화적응 스트레스 <span class="num">10</span>문항
+  <span class="kw">→</span> 역채점 확인
+  <span class="kw">→</span> 문항 평균  <span class="cm"># 연속 점수 (1.0 ~ 4.0)</span>
+  <span class="kw">→</span> <span class="var">학습 데이터</span>의 상위 <span class="num">25</span>% 이상  <span class="cm"># ★ train 에서만 cutoff 계산</span>
+  <span class="kw">→</span> high_stress = <span class="num">1</span>
+  <span class="kw">→</span> 나머지          = <span class="num">0</span></div>
+    <p style="font-size:20px;margin-top:18px;"><span class="src-tag">4차시에 구현</span> 왜 전체가 아니라 <strong>train</strong> 에서만 cutoff 를 계산하나? → 전체 분포를 보고 정하면 그 자체가 <strong style="color:#ff6b6b;">test 정보 누출</strong>이다.</p>
+  </div>
+  <div class="slide-no">16</div>
+</div>
+
+<!-- 17 조작적 정의 경고 -->
+<div class="slide-container" id="s17">
+  <h2 class="slide-title">Step 4 — 이 "1" 은 진단이 아니다 🔴</h2>
+  <div class="content-area">
+    <div class="finding" style="border-left-color:#ff6b6b;">
+      <p style="margin:0;font-size:22px;color:#fff;">검증된 임상 cut-off 가 없어서 <b style="color:#ff8080;">우리가 연구 편의상 정한 조작적 정의</b>다.<br>분위수를 0.80으로 바꾸면 집단도 바뀐다.</p>
+    </div>
+    <div class="two-column" style="margin-top:26px;">
+      <div style="background:#1a1013;padding:24px;border-radius:12px;">
+        <p style="font-size:22px;color:#ff6b6b;margin:0 0 8px 0;">✗ 이렇게 쓰지 않는다</p>
+        <p style="font-size:20px;color:#fff;margin:0;">"고위험 청소년을 판별하였다"</p>
+      </div>
+      <div style="background:#101a13;padding:24px;border-radius:12px;">
+        <p style="font-size:22px;color:#adff2f;margin:0 0 8px 0;">✓ 이렇게 쓴다</p>
+        <p style="font-size:20px;color:#fff;margin:0;">"본 연구에서 <b>조작적으로 정의한</b><br>고스트레스 집단을 분류하였다"</p>
+      </div>
+    </div>
+    <p style="font-size:19px;margin-top:20px;text-align:center;color:#8892a4;">낙인(labeling)은 그 자체로 위험요인이 될 수 있다.</p>
+  </div>
+  <div class="slide-no">17</div>
+</div>
+
+<!-- 18 X/y 함정 실습 -->
+<div class="slide-container" id="s18">
+  <h2 class="slide-title">Step 4 실습 — X 인가 y 인가 (함정 있음)</h2>
+  <div class="content-area">
+    <div class="code-block">items = {
+    <span class="str">"2015년 가족지지 점수"</span>:        <span class="str">"___"</span>,
+    <span class="str">"2016년 문화적응 스트레스 점수"</span>: <span class="str">"___"</span>,
+    <span class="str">"2015년 우울 점수"</span>:            <span class="str">"___"</span>,
+    <span class="str">"2015년 문화적응 스트레스 점수"</span>: <span class="str">"___"</span>,   <span class="cm"># ← 함정!</span>
+}</div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:21px;color:#fff;">같은 이름의 척도라도 <b>연도가 다르면 역할이 다르다.</b><br>
+      2016 스트레스 = <b>target</b> &nbsp;|&nbsp; 2015 스트레스 = <b style="color:#adff2f;">feature</b> (Model B 전용)</p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">정답: <code>X, y, X, X</code></p>
+  </div>
+  <div class="slide-no">18</div>
+</div>
+
+<!-- 19 시간 설계 -->
+<div class="slide-container" id="s19">
+  <h2 class="slide-title">Step 5 — 왜 굳이 1년을 건너뛰나 ⏱</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:19px;"><span class="cm">❌ 쉬운 설계 (성능은 훨씬 잘 나온다)</span>
+   <span class="num">2016</span> 우울 · <span class="num">2016</span> 지지  <span class="kw">→</span>  <span class="num">2016</span> 스트레스
+   <span class="cm"># 같은 시점 → "예측"이 아니라 "동시 측정된 것들의 상관"</span>
+
+<span class="cm">✅ 우리 설계</span>
+   <span class="num">2015</span> 우울 · <span class="num">2015</span> 지지  <span class="kw">→</span>  <span class="num">2016</span> 스트레스
+   <span class="cm"># 1년 뒤를 미리 구분 → 진짜 '예측'</span></div>
+    <p style="font-size:21px;margin-top:18px;text-align:center;color:#fff;">같은 시점으로 맞히면 성능은 오르지만 <strong>아무것도 예측한 게 아니다.</strong><br>
+    <span style="font-size:19px;color:#8892a4;">"오늘 우산 든 사람을 보고 오늘 비가 왔는지 맞히기"</span></p>
+    <p style="font-size:19px;margin-top:12px;color:#adff2f;text-align:center;">이 원칙이 깨지는 사고 = <strong>데이터 누출(data leakage)</strong> → 4차시에 직접 만들어 본다.</p>
+  </div>
+  <div class="slide-no">19</div>
+</div>
+
+<!-- 20 데이터 존재 확인 -->
+<div class="slide-container" id="s20">
+  <h2 class="slide-title">Step 6 — 데이터가 진짜 있는지 확인한다 🔍</h2>
+  <div class="content-area">
+    <p style="font-size:22px;">분석가가 가장 많이 하는 실수: <strong>"데이터가 있겠지"</strong> 하고 설계부터 짠다.</p>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:21px;color:#fff;"><b>존재 → 형식 → 내용</b>, 이 3단 확인을 첫날에 습관으로 박는다.</p>
+    </div>
+    <div class="code-block" style="margin-top:18px;font-size:18px;">$ python scripts/inspect_raw_data.py
+
+<span class="cm">✅ 생성: reports/data_inventory.md  (0개 파일 검사)</span>
+<span class="cm">⚠️  원자료 없음 — DATA_ACQUISITION.md 의 신청 절차를 따르세요.</span></div>
+    <p style="font-size:21px;margin-top:16px;text-align:center;color:#adff2f;"><strong>🔴 출력이 나오면 정상이다.</strong> 없다는 사실을 정확히 아는 것도 결과다.</p>
+  </div>
+  <div class="slide-no">20</div>
+</div>
+
+<!-- 21 MAPS 신청 절차 -->
+<div class="slide-container" id="s21">
+  <h2 class="slide-title">Step 6 — MAPS는 신청제 자료다</h2>
+  <div class="content-area">
+    <div class="step-grid">
+      <div class="step-card"><h4>① 아카이브 접속</h4><p><code>nypi.re.kr/archive</code> → 데이터 다운로드 → 조사표/데이터/코드북</p></div>
+      <div class="step-card"><h4>② 이용조건 동의</h4><p>양도금지 · 저작권 · 출처명기 — <strong>본인이 직접</strong> 클릭</p></div>
+      <div class="step-card"><h4>③ 신청서 작성</h4><p>패널 유형 칸에 <code>1기 패널 5차년도, 6차년도</code> 명시. 체크+서명 필수</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>④ 제출 → 약 1주일</h4><p><code>maps@nypi.re.kr</code><br>함께 요청: <strong>유저가이드 · 코드북 · 조사표</strong></p></div>
+    </div>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">⚠️ <b>코드북이 없으면 2차시를 시작할 수 없다.</b> 데이터만 받고 코드북을 빼먹는 실수가 잦다.</p>
+    </div>
+  </div>
+  <div class="slide-no">21</div>
+</div>
+
+<!-- 22 데모: attrition -->
+<div class="slide-container" id="s22">
+  <h2 class="slide-title">Step 6 실습 — 5명 + 5명 = 몇 명?</h2>
+  <div class="content-area">
+    <div class="code-block">w5 = pd.<span class="fn">read_csv</span>(<span class="str">"data/demo_format/DEMO_wave5_NOT_MAPS.csv"</span>)  <span class="cm"># 5명</span>
+w6 = pd.<span class="fn">read_csv</span>(<span class="str">"data/demo_format/DEMO_wave6_NOT_MAPS.csv"</span>)  <span class="cm"># 5명</span>
+
+matched = <span class="fn">set</span>(w5[<span class="str">"DEMO_ID"</span>]) <span class="num">_____</span> <span class="fn">set</span>(w6[<span class="str">"DEMO_ID"</span>])   <span class="cm"># ← 채워라</span>
+<span class="cm"># → 두 해 모두: 3 명</span></div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:21px;color:#fff;">사라진 응답자 = <b>패널 마모(attrition)</b>. 실제 MAPS에서도 똑같이 일어난다.<br>
+      <span style="font-size:19px;">남은 사람이 떠난 사람과 <b style="color:#ff8080;">체계적으로 다르면</b> 결과를 일반화할 수 없다 → 8차시 한계 절에 반드시 적는다.</span></p>
+    </div>
+    <p style="font-size:19px;margin-top:12px;color:#8892a4;">⚠️ 이 파일은 <b>MAPS가 아니다.</b> 5행짜리 형식 확인용 가짜 데이터다.</p>
+  </div>
+  <div class="slide-no">22</div>
+</div>
+
+<!-- 23 윤리 -->
+<div class="slide-container" id="s23">
+  <h2 class="slide-title">Step 7 — 하지 않을 것을 먼저 정한다</h2>
+  <div class="content-area">
+    <div class="two-column">
+      <div style="background:#1a1013;padding:24px;border-radius:12px;border-left:4px solid #ff6b6b;">
+        <h3 style="color:#ff6b6b;font-size:22px;margin-bottom:12px;">하지 않는 것</h3>
+        <p style="font-size:18px;color:#fff;margin:0;line-height:2;">정신질환 진단 · 임상 고위험군 판정<br>학생에 대한 자동 개입 결정<br>인과관계 규명<br>학교 배포용 위험예측 시스템</p>
+      </div>
+      <div style="background:#101a13;padding:24px;border-radius:12px;border-left:4px solid #adff2f;">
+        <h3 style="color:#adff2f;font-size:22px;margin-bottom:12px;">지키는 것</h3>
+        <p style="font-size:18px;color:#fff;margin:0;line-height:2;">원자료를 Git에 올리지 않는다<br>개인 식별을 시도하지 않는다<br>"조작적으로 정의한 고스트레스 집단"<br>성능이 나빠도 그대로 보고한다</p>
+      </div>
+    </div>
+    <p style="font-size:21px;margin-top:24px;text-align:center;color:#fff;">🤔 모델이 정말 잘 맞았다고 하자. 그 결과를 학교에 주면 무슨 일이 생길까?</p>
+  </div>
+  <div class="slide-no">23</div>
+</div>
+
+<!-- 24 회고 -->
+<div class="slide-container" id="s24">
+  <h2 class="slide-title">회고 — 3개 질문</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:23px;">
+      <li><i class="fa-solid fa-1"></i> "예측한다"와 "원인을 밝힌다"의 차이를 <strong>친구에게 설명한다면</strong> 어떻게 말하겠는가?</li>
+      <li><i class="fa-solid fa-2"></i> 2015년 스트레스를 넣는 <strong>Model B</strong>는 왜 별도로 돌려 보는가?</li>
+      <li><i class="fa-solid fa-3"></i> 데이터가 아직 없는데 오늘 수업이 의미가 있었다고 생각하는가? 왜?</li>
+    </ul>
+    <p style="font-size:19px;margin-top:18px;color:#8892a4;">📝 과제: 연구 질문 3문장을 <b style="color:#adff2f">내 문장으로</b> 채워 온다. 2차시 시작 때 발표.</p>
+  </div>
+  <div class="slide-no">24</div>
+</div>
+
+<!-- 25 다음 -->
+<div class="slide-container" id="s25">
+  <h2 class="slide-title">다음 — 2차시 예고</h2>
+  <div class="content-area">
+    <p style="font-size:26px;color:#fff;">오늘은 <strong>무엇을 예측할지</strong>를 정했다.<br>다음엔 <strong>그 변수가 데이터 어디에 있는지</strong>를 찾는다.</p>
+    <div class="finding" style="margin-top:26px;">
+      <p style="margin:0;font-size:22px;color:#fff;">코드북을 펴고 <code>configs/variables.yaml</code> 의 빈칸을 채운다.<br>
+      이때 규칙은 하나 — <b style="color:#adff2f;font-size:26px;">컬럼명을 절대 추측하지 않는다.</b></p>
+    </div>
+    <p style="font-size:20px;margin-top:24px;color:#8892a4;">이름이 비슷하다고 같은 변수가 아니다. 코드북이 유일한 근거다.</p>
+  </div>
+  <div class="slide-no">25</div>
+</div>
+</body>
+</html>

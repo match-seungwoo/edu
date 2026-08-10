@@ -1,0 +1,25 @@
+[project]
+name = "maps-acculturative-stress"
+version = "0.1.0"
+description = "MAPS 1기 5차(2015) → 6차(2016) 문화적응 스트레스 고스트레스 집단 분류 — 교육용 프로젝트"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "matplotlib",
+    "pyyaml",
+    "pyarrow",
+    "jupyter",
+]
+
+[project.optional-dependencies]
+# MAPS 파일 형식에 따라 필요
+formats = ["pyreadstat", "openpyxl"]
+dev = ["pytest"]
+# 7차시 선택 실습
+extras = ["shap"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
