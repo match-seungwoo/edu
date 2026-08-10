@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS 문화적응 스트레스 ML — 8차시 강의 슬라이드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP */
+        * { box-sizing: border-box; }
+        body {
+            background-color: #1a1c22;
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            padding: 40px 0;
+            place-items: center;
+            font-family: 'Lato', 'Nanum Gothic', sans-serif;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #0a0e14;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Abstract Background Decoration */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 50px;
+            left: 60px;
+            width: 100px;
+            height: 4px;
+            background-color: #00f2ff;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; margin: 0; }
+        .slide-title {
+            font-size: 44px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            border-left: 6px solid #00f2ff;
+            padding-left: 20px;
+            z-index: 1;
+            max-width: 1100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+        }
+
+        p, li, td, th { font-size: 20px; color: #b0b0b0; line-height: 1.6; }
+        strong { color: #00f2ff; }
+
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            z-index: 1;
+            gap: 20px;
+        }
+
+        /* Layouts */
+        .title-layout { text-align: center; align-items: center; justify-content: center; height: 100%; }
+        .title-layout h1 { font-size: 80px; margin-bottom: 20px; color: #00f2ff; }
+        .title-layout .subtitle { font-size: 28px; color: #ffffff; margin-top: 20px; }
+
+        .section-title-layout { text-align: center; justify-content: center; height: 100%; }
+        .section-title-layout h2 { font-size: 64px; color: #ffffff; }
+        .section-title-layout hr { width: 120px; border: 2px solid #00f2ff; margin: 30px auto; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
+        .tiled-content { display: flex; gap: 30px; width: 100%; }
+        .tile { 
+            flex: 1; background: #151a21; padding: 40px; border-radius: 15px; 
+            border-bottom: 4px solid #00f2ff; text-align: center;
+        }
+        .tile .icon { font-size: 50px; color: #adff2f; margin-bottom: 20px; }
+        .tile h3 { font-size: 24px; color: #ffffff; margin-bottom: 15px; }
+
+        .image-wrapper { 
+            width: 100%; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #333; 
+            background: #151a21;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .bullet-list i { position: absolute; left: 0; top: 5px; color: #00f2ff; font-size: 22px; }
+
+        .table-layout table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table-layout th { background: #151a21; color: #00f2ff; text-align: left; padding: 20px; border-bottom: 2px solid #333; }
+        .table-layout td { padding: 20px; border-bottom: 1px solid #222; color: #ffffff; }
+
+        /* Formula Container */
+        #formula-container { background: #000; padding: 25px; border-radius: 10px; border-left: 4px solid #adff2f; display: inline-block; }
+
+        /* Bleed Image Right Custom */
+        .bleed-image-layout { padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+        .bleed-image-layout .content-container { padding: 60px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .bleed-image-layout .image-container { width: 100%; height: 720px; background: #151a21; }
+        .bleed-image-layout img { width: 100%; height: 720px; object-fit: cover; }
+
+        /* Code Block (초심자 슬라이드용) */
+        .code-block {
+            background: #000;
+            padding: 30px 35px;
+            border-radius: 10px;
+            border-left: 4px solid #adff2f;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+        }
+        .code-block .kw { color: #ff79c6; }       /* 키워드 */
+        .code-block .fn { color: #50fa7b; }       /* 함수 */
+        .code-block .str { color: #f1fa8c; }      /* 문자열 */
+        .code-block .num { color: #bd93f9; }      /* 숫자 */
+        .code-block .cm  { color: #6272a4; font-style: italic; } /* 주석 */
+        .code-block .var { color: #8be9fd; }      /* 변수 */
+
+        /* 2열 스텝 카드 (Colab 조작용) */
+        .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        .step-card {
+            background: #151a21;
+            padding: 22px 26px;
+            border-radius: 12px;
+            border-left: 4px solid #00f2ff;
+        }
+        .step-card h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #00f2ff;
+            margin: 0 0 8px 0;
+        }
+        .step-card p { font-size: 16px; margin: 0; color: #cfcfcf; }
+        .step-card code {
+            background: #000;
+            color: #adff2f;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        /* 슬라이드 번호 + 푸터 (program4 추가) */
+        .slide-no { position:absolute; bottom:24px; right:32px; font-size:14px; color:#3a4250; letter-spacing:1px; z-index:2; }
+        .kicker { color:#00f2ff; letter-spacing:3px; font-size:15px; font-weight:700; margin-bottom:12px; }
+        .src-tag { display:inline-block; background:#151a21; color:#adff2f; padding:3px 10px; border-radius:6px; font-size:14px; margin-right:6px; }
+        .finding { background:#101820; border-left:4px solid #adff2f; padding:18px 24px; border-radius:8px; }
+        .finding b { color:#adff2f; }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+  <div class="content-area title-layout">
+    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:70px;">봉투를 연다</h1>
+    <p class="subtitle">4차시부터 봉인한 265명 — 오늘 딱 한 번, 되돌릴 수 없다</p>
+    <p style="margin-top:36px;font-weight:700;letter-spacing:2px;color:#adff2f;">8차시 (마지막) · test 최종 1회 · 민감도 분석 · 결론 · 한계 · 윤리</p>
+  </div>
+  <div class="slide-no">01</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">오늘 두 번의 반전이 있다 — 미리 알려 준다</h2>
+  <div class="content-area">
+    <div class="two-column">
+      <div class="finding"><p style="margin:0;font-size:20px;color:#fff;"><b style="color:#ffd479;">반전 ①</b><br><br>
+      <b>CV 에서 이겼던 모델이 test 에서 진다.</b><br>6차시에 기록해 둔 경고가 <b style="color:#adff2f;">실제로 실현된다.</b></p></div>
+      <div class="finding"><p style="margin:0;font-size:20px;color:#fff;"><b style="color:#ffd479;">반전 ②</b><br><br>
+      <b>그런데 그 뒤집힘조차 믿을 수 없다.</b><br>신뢰구간이 답을 준다.</p></div>
+    </div>
+    <p style="font-size:21px;margin-top:24px;color:#fff;">오늘은 새로 배우는 기법이 거의 없다.<br>대신 <strong>지금까지 한 모든 것을 검증대에 올린다.</strong></p>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">🔴 오늘의 규칙: <b>"결과를 보고 나서 방법을 바꾸지 않는다."</b> 이 규칙을 지켰기 때문에 오늘의 숫자를 믿을 수 있다.</p>
+  </div>
+  <div class="slide-no">02</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <div class="content-area">
+    <div class="step-grid">
+      <div class="step-card"><h4>Step 0 · 봉인 감사</h4><p>정말 안 봤는지 <strong>코드로 확인</strong>한다</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 1~2 · 봉투를 연다 ⚠️</h4><p><strong>첫 봉우리</strong> — 순위가 뒤집힌다</p></div>
+      <div class="step-card"><h4>Step 3 · 신뢰구간</h4><p>그 뒤집힘조차 믿을 수 없다</p></div>
+      <div class="step-card"><h4>Step 4 · 민감도 분석</h4><p>정의를 바꾸면 결론이 흔들리나</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 5 · 재현 확인 🔍</h4><p><strong>둘째 봉우리</strong> — 7차시 발견은 재현되나</p></div>
+      <div class="step-card"><h4>Step 6~7 · 보고서 · 재현성</h4><p>final_report.md · 파이프라인 대조</p></div>
+    </div>
+    <p style="font-size:19px;margin-top:16px;color:#8892a4;">완료 기준: <b style="color:#adff2f;">"남이 이 repo 를 받아 같은 결과를 재현할 수 있다."</b></p>
+  </div>
+  <div class="slide-no">03</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 0 — 봉인 확인: 정말 안 봤는가</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;"><span class="cm"># 4~7차시 노트북에서 test 인덱스로 성능을 잰 흔적을 검색한다</span>
+<span class="kw">for</span> path <span class="kw">in</span> <span class="fn">glob</span>(<span class="str">"session[4-7]/session?.ipynb"</span>):
+    ... <span class="kw">if</span> <span class="str">"idx_te"</span> <span class="kw">in</span> line <span class="kw">and</span> <span class="fn">search</span>(<span class="str">"score|predict|fit|auc"</span>, line): ...
+
+<span class="cm"># → 4~7차시에서 test 로 성능을 잰 흔적: 0 건</span></div>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:21px;color:#fff;"><b style="color:#adff2f;">0 건이면 — 우리는 규칙을 지켰다. 이제 열 자격이 있다.</b></p>
+    </div>
+    <p style="font-size:19px;margin-top:18px;color:#8892a4;">※ 이 감사는 형식적인 절차가 아니다.<br>
+    <b style="color:#adff2f;">"안 봤다고 믿는 것"과 "안 봤음을 확인하는 것"은 다르다.</b></p>
+  </div>
+  <div class="slide-no">04</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 1 — 봉투를 연다 ⚠️</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">이제 <strong>딱 한 번</strong> 연다. 규칙을 다시 확인한다:</p>
+    <ul class="bullet-list" style="font-size:20px;margin-top:14px;">
+      <li><i class="fa-solid fa-lock"></i> 모델도, 변수도, 하이퍼파라미터도 <strong>이미 다 정해져 있다</strong> (6차시 CV 로 확정)</li>
+      <li><i class="fa-solid fa-lock"></i> cutoff 도 <strong>train 에서 계산한 1.500</strong> 을 그대로 쓴다</li>
+      <li><i class="fa-solid fa-lock"></i> <strong>결과를 보고 아무것도 바꾸지 않는다</strong></li>
+    </ul>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">만약 결과가 마음에 안 들어서 무언가를 바꾸고 다시 잰다면,<br>
+      그 순간 test 는 <b style="color:#ff8080;">더 이상 test 가 아니다.</b> 두 번째 측정은 train 과 같아진다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">test 265명 · 양성 <b>34.3%</b>(91명) · train 양성 33.7%</p>
+  </div>
+  <div class="slide-no">05</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 1 — test 최종 결과</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th>세트</th><th>모델</th><th>ROC-AUC</th><th>AP</th><th>Recall</th><th>Precision</th><th>Bal.Acc</th></tr>
+      <tr><td>A</td><td>Dummy</td><td>.5000</td><td>.3434</td><td>.0000</td><td>.0000</td><td>.5000</td></tr>
+      <tr><td>A</td><td><b>로지스틱</b></td><td><b style="color:#adff2f;">.6718</b></td><td>.5126</td><td>.6484</td><td>.4683</td><td>.6316</td></tr>
+      <tr><td>A</td><td>결정 트리</td><td>.6375</td><td>.4359</td><td>.6593</td><td>.4380</td><td>.6084</td></tr>
+      <tr><td>A</td><td>랜덤 포레스트</td><td>.6566</td><td>.4846</td><td>.6154</td><td>.4786</td><td>.6324</td></tr>
+      <tr><td>B</td><td><b>로지스틱</b></td><td><b style="color:#adff2f;">.7165</b></td><td>.6153</td><td>.5934</td><td>.4779</td><td>.6272</td></tr>
+      <tr><td>B</td><td>랜덤 포레스트</td><td>.7032</td><td>.5541</td><td>.5714</td><td>.4906</td><td>.6305</td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b>RQ3 재현</b>: Model A .6718 → Model B <b style="color:#adff2f;">.7165</b> (<b>+.045</b>) — CV 에서는 +.029 였다. 방향 일치.</p>
+    </div>
+    <p style="font-size:18px;margin-top:10px;color:#8892a4;">6차시 CV 순위와 비교해 보라. <b style="color:#ffd479;">무언가 이상하지 않은가?</b></p>
+  </div>
+  <div class="slide-no">06</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 2 — 반전 ①: 순위가 뒤집혔다</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th>Model A</th><th>CV (6차시)</th><th>test (오늘)</th><th>차이</th></tr>
+      <tr><td>로지스틱</td><td>.6535</td><td><b style="color:#adff2f;">.6718</b></td><td>+.0183</td></tr>
+      <tr><td>결정 트리</td><td>.6355</td><td>.6375</td><td>+.0020</td></tr>
+      <tr><td>랜덤 포레스트</td><td><b>.6651</b></td><td>.6566</td><td><b style="color:#ff8080;">−.0085</b></td></tr>
+    </table>
+    <p style="font-size:21px;margin-top:16px;color:#fff;">CV 1위는 <b>포레스트</b>였는데 test 1위는 <b style="color:#adff2f;">로지스틱</b>이다.</p>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">당황스러운가? 그런데 <b>6차시 마지막에 우리는 이미 이렇게 적어 뒀다</b>:<br>
+      <span style="color:#8892a4;">"후보가 많은 모델이 약간 유리하게 채점된다. nested CV 를 안 썼으므로 <b style="color:#adff2f;">+0.012 라는 작은 격차는 이 편향으로 뒤집힐 수 있다.</b>"</span></p>
+    </div>
+  </div>
+  <div class="slide-no">07</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 2 — 여기서 얻을 교훈</h2>
+  <div class="content-area">
+    <div class="finding" style="font-size:23px;">
+      <p style="margin:0;color:#fff;">🔴 교훈은 <b style="color:#ff8080;">"우리가 옳았다"가 아니다.</b><br><br>
+      <b style="color:#adff2f;">"불확실성을 미리 기록해 뒀기 때문에 이 결과에 놀라지 않는다"</b> 는 것이다.</p>
+    </div>
+    <p style="font-size:21px;margin-top:26px;color:#fff;">만약 6차시에 <b>"포레스트가 더 좋은 모델이다"</b> 라고 단정했다면,<br>오늘 <b style="color:#ff8080;">말을 바꿔야 했을 것이다.</b></p>
+    <p style="font-size:19px;margin-top:20px;color:#8892a4;">연구에서 신뢰를 잃는 가장 빠른 길은 <b>틀리는 것</b>이 아니라 <b style="color:#adff2f;">단정했다가 말을 바꾸는 것</b>이다.</p>
+  </div>
+  <div class="slide-no">08</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 3 — 반전 ②: 그 뒤집힘조차 믿을 수 없다</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">"로지스틱이 이겼다"고 결론 내리고 싶어진다. <b style="color:#ffd479;">잠깐 멈추자.</b><br>
+    test 는 <strong>265명</strong>뿐이다. 5차시의 <b>부트스트랩</b>을 여기에도 쓴다.</p>
+    <div class="code-block" style="margin-top:14px;font-size:17px;">A 로지스틱   .6718   95% [<span class="num">.6041</span>, <span class="num">.7398</span>]   폭 <span style="color:#ffd479;">.136</span>
+A 포레스트   .6566   95% [<span class="num">.5865</span>, <span class="num">.7261</span>]   폭 <span style="color:#ffd479;">.140</span>
+                              ↑ 두 구간이 <span style="color:#ff8080;">크게 겹친다</span>
+
+로지스틱 − 포레스트 차이:  +<span class="num">.0147</span>   95% [<span style="color:#ff8080;">−.0157</span>, +.0443]   ← <span style="color:#ff8080;">0 을 포함</span></div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 <b style="color:#adff2f;">결론: 두 모델의 성능 차이는 이 표본 크기로는 판별할 수 없다.</b><br>
+      → 성능이 사실상 같다면, <b>해석 가능한 쪽을 고르는 것이 명백히 옳다.</b> 6차시의 선택이 사후적으로도 정당화된다.</p>
+    </div>
+  </div>
+  <div class="slide-no">09</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 4 — 민감도 분석: 정의를 바꾸면?</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:19px;margin:0;">4차시의 "상위 25%" 에는 두 가지 자의성이 있었다 — <b>분위수</b>(0.75)와 <b>부등호</b>(<code>&gt;=</code>).</p>
+    <table style="font-size:18px;">
+      <tr><th>분위수</th><th>부등호</th><th>cutoff</th><th>test 양성률</th><th>test AUC</th></tr>
+      <tr><td>0.70</td><td>&gt;=</td><td>1.5</td><td>34.3%</td><td>.6718</td></tr>
+      <tr><td><b>0.75</b></td><td><b>&gt;=</b></td><td><b>1.5</b></td><td><b>34.3%</b></td><td><b>.6718</b> ← 우리 선택</td></tr>
+      <tr><td>0.75</td><td>&gt;</td><td>1.5</td><td>24.9%</td><td>.6605</td></tr>
+      <tr><td>0.80</td><td>&gt;=</td><td>1.6</td><td>24.9%</td><td>.6605</td></tr>
+      <tr><td>0.80</td><td>&gt;</td><td>1.6</td><td>18.9%</td><td>.6449</td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">① 성능 결론은 견고하다</b> — AUC .6449~.6718 (폭 .027). 어떤 정의여도 "중간 정도로 구분"이다.<br>
+      <b style="color:#ffd479;">② 그런데 '누가 고스트레스인가'는 크게 달라진다</b> — 양성률 18.9%~34.3%, <b>1.8배</b>.</p>
+    </div>
+  </div>
+  <div class="slide-no">10</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 4 — 이산성이 만든 기묘한 일치</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:19px;">q=<span class="num">0.70</span> 과 q=<span class="num">0.75</span>  →  <span style="color:#ffd479;">완전히 같은 결과</span>   <span class="cm"># 둘 다 cutoff 1.5 (동점 덩어리)</span>
+
+<span class="str">"&gt; 1.5"</span> 와 <span class="str">"&gt;= 1.6"</span>  →  <span style="color:#ffd479;">완전히 같은 결과</span>   <span class="cm"># 점수가 0.1 단위라 같은 집합</span></div>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 <b>부등호 하나를 바꾸는 것</b>과 <b>분위수를 한 단계 올리는 것</b>이 <b style="color:#adff2f;">같은 효과</b>를 낸다.</p>
+    </div>
+    <p style="font-size:20px;margin-top:20px;color:#fff;">3·4차시의 <strong>이산성 문제</strong>가 마지막까지 따라왔다.<br>
+    <span style="font-size:18px;color:#8892a4;">"분위수 0.75" 라는 표기가 실제로 무엇을 뜻하는지는 <b style="color:#adff2f;">데이터를 봐야만</b> 알 수 있다.</span></p>
+  </div>
+  <div class="slide-no">11</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — 7차시의 발견은 재현되는가 🔍</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">7차시에 train 에서 <b>가장 중요한 발견</b>을 했다. 그리고 그것을 <b>완화하는 설명</b>도 함께 적었다.</p>
+    <div class="two-column" style="margin-top:16px;">
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>발견</b><br>놓친 학생(FN)은 TP 가 아니라 <b style="color:#adff2f;">TN 을 닮았다</b> — 자아존중감 높고 친구지지 두텁고 우울 낮은데 고스트레스가 됐다</p></div>
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>완화 설명</b><br>FN 의 <b>75.7%</b> 가 cutoff 바로 위 <b>경계선</b>이다 (TP 는 44.5%) — "간신히 고스트레스"</p></div>
+    </div>
+    <p style="font-size:21px;margin-top:22px;color:#adff2f;">둘 다 test 에서 재현되는가? — <b>이것이 오늘 가장 중요한 확인이다.</b></p>
+  </div>
+  <div class="slide-no">12</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — 하나는 재현됐고, 하나는 아니다 💥</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:18px;">
+      <tr><th>test (n=265)</th><th>FN 놓침 (32)</th><th>TP 찾음 (59)</th><th>TN 맞게 제외 (107)</th></tr>
+      <tr><td>자아존중감</td><td><b style="color:#ffd479;">3.602</b></td><td>2.839</td><td>3.460</td></tr>
+      <tr><td>친구지지</td><td><b style="color:#ffd479;">4.455</b></td><td>3.552</td><td>4.545</td></tr>
+      <tr><td>부모 감독</td><td><b style="color:#ffd479;">3.677</b></td><td>2.949</td><td>3.542</td></tr>
+      <tr><td>우울</td><td><b style="color:#ffd479;">1.547</b></td><td>2.071</td><td>1.409</td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">① 핵심 발견은 재현됐다</b> — test 에서도 FN 은 TN 을 닮았다 (오히려 더 뚜렷하다).<br>
+      <b style="color:#ff8080;">② 완화 설명은 재현되지 않았다</b> — 경계선 비율 FN <b>50.0%</b> vs TP <b>59.3%</b>. train(75.7 vs 44.5)과 <b>방향이 반대</b>다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:12px;color:#8892a4;">🔴 그래서 결론이 <b style="color:#ff8080;">더 무거워진다</b> — "단지 경계선이라 놓친 것"이라는 변명을 test 가 지지하지 않는다.</p>
+  </div>
+  <div class="slide-no">13</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — 그래서 윤리 절에 이렇게 쓴다</h2>
+  <div class="content-area">
+    <div class="finding" style="font-size:23px;">
+      <p style="margin:0;color:#fff;"><b style="color:#adff2f;">"이 모델의 오류는 무작위가 아니다.<br>특정한 종류의 학생에게 체계적으로 쏠려 있다."</b></p>
+    </div>
+    <p style="font-size:20px;margin-top:24px;color:#fff;">그리고 이 문장은 이제 <b>train 에서 발견되고 test 에서 재현된</b> 사실이다 —<br>
+    <span style="font-size:19px;color:#8892a4;">우연이라고 말하기 어렵다.</span></p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:19px;color:#fff;">💡 <b>재현되지 않은 것도 반드시 보고서에 쓴다.</b><br>
+      "경계선 설명이 test 에서 재현되지 않았다"를 빼면, 우리 결론은 <b style="color:#ff8080;">실제보다 안전해 보인다.</b></p>
+    </div>
+  </div>
+  <div class="slide-no">14</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 6~7 — 보고서와 재현성</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">`final_report.md` 를 만든다. 원칙은 8주 내내 같았다 —<br>
+    <b style="color:#adff2f;">숫자는 코드가 채우고, 판단은 사람이 쓴다.</b> (<code>TODO(사람)</code> 6칸이 여러분의 과제다)</p>
+    <div class="code-block" style="margin-top:14px;font-size:17px;">$ python scripts/run_models.py     <span class="cm"># 공식 파이프라인을 처음부터 다시</span>
+
+model_set  model               roc_auc_파이프라인  roc_auc_노트북   일치
+A          LogisticRegression         0.6718       0.6718   <span class="num">True</span>
+A          RandomForest               0.6566       0.6566   <span class="num">True</span>
+...                                                          <span class="num">전부 일치: True</span></div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">노트북에서 손으로 짠 코드와 파이프라인이 <b style="color:#adff2f;">같은 답</b>을 낸다.<br>
+      seed {42} · test_size {0.20} 고정 — <b>이것이 재현성이다.</b></p>
+    </div>
+  </div>
+  <div class="slide-no">15</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">회고 — 8주 전체</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:20px;">
+      <li><i class="fa-solid fa-1"></i> test 를 열기 전에 <strong>감사(audit)</strong> 부터 한 이유는? "안 봤다고 믿는 것"과 "안 봤음을 확인하는 것"의 차이는?</li>
+      <li><i class="fa-solid fa-2"></i> CV 에서는 포레스트가, test 에서는 로지스틱이 이겼고 <strong>둘 다 신뢰구간이 0을 포함</strong>한다. 이 상황에서 <strong>"어떤 모델이 더 좋다"고 말할 수 있는가?</strong></li>
+      <li><i class="fa-solid fa-3"></i> 7차시 발견은 재현됐지만 완화 설명은 재현되지 않았다. <strong>재현되지 않은 것을 보고서에 쓰는 이유</strong>는?</li>
+    </ul>
+    <p style="font-size:18px;margin-top:14px;color:#8892a4;">📝 최종 과제: <code>final_report.md</code> 의 TODO 6칸 채우기 · 5~10분 발표자료(<b style="color:#adff2f;">한계 절에 시간을 더 쓴다</b>) · 동료 repo 직접 재현해 보기</p>
+  </div>
+  <div class="slide-no">16</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">8주에 배운 것 — 한 차시에 한 문장</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th style="width:60px;">차시</th><th>한 문장</th></tr>
+      <tr><td>1</td><td>무엇을 예측할지 정하는 것이 절반이다</td></tr>
+      <tr><td>2</td><td>컬럼명을 절대 추측하지 않는다 — 검증은 사람이 연다</td></tr>
+      <tr><td>3</td><td>검증은 한 번의 행사가 아니라 계속되는 상태다</td></tr>
+      <tr><td>4</td><td>AUC 1.0 은 축하가 아니라 경보다 · 규칙은 결과가 아니라 절차로 정당화된다</td></tr>
+      <tr><td>5</td><td>모른다고 말하는 것도 결과다</td></tr>
+      <tr><td>6</td><td>성능 표의 1등이 곧 답이 아니다 — 목적이 답을 정한다</td></tr>
+      <tr><td>7</td><td>"모델이 무엇을 썼는가"와 "무엇이 원인인가"는 다른 질문이다</td></tr>
+      <tr><td><b>8</b></td><td><b style="color:#adff2f;">불확실성을 미리 기록해 두면, 결과가 뒤집혀도 말을 바꾸지 않아도 된다</b></td></tr>
+    </table>
+  </div>
+  <div class="slide-no">17</div>
+</div>
+
+<div class="slide-container">
+  <div class="content-area title-layout">
+    <h1 style="font-size:44px;color:#ffffff;text-shadow:0 0 20px rgba(0,242,255,0.3);">우리가 만든 것은 모델이 아니라<br><span style="color:#00f2ff;">믿을 수 있는 결론과 그 한계의 목록</span>이다</h1>
+    <p style="font-size:21px;color:#b0b0b0;margin-top:36px;">이 프로그램에서 <b style="color:#adff2f;">모델 성능에는 점수를 주지 않았다.</b><br>
+    성능이 낮아도 "현재 변수만으로는 충분히 구분하기 어려웠다"는 결론을<br><b>정확히</b> 도출했다면 그것이 성공이다.</p>
+    <p style="margin-top:34px;font-weight:700;letter-spacing:2px;color:#00f2ff;font-size:22px;">8주, 수고했습니다 🎓</p>
+  </div>
+  <div class="slide-no">18</div>
+</div>
+</body>
+</html>
