@@ -513,16 +513,17 @@ protective = [<span class="str">"family_support"</span>, <span class="str">"peer
     </div>
     <div class="code-block" style="margin-top:18px;font-size:18px;">$ python scripts/inspect_raw_data.py
 
-<span class="cm">✅ 생성: reports/data_inventory.md  (0개 파일 검사)</span>
-<span class="cm">⚠️  원자료 없음 — DATA_ACQUISITION.md 의 신청 절차를 따르세요.</span></div>
-    <p style="font-size:21px;margin-top:16px;text-align:center;color:#adff2f;"><strong>🔴 출력이 나오면 정상이다.</strong> 없다는 사실을 정확히 아는 것도 결과다.</p>
+<span class="cm">✅ 생성: reports/data_inventory.md  (데이터 68개 · 기타 6개 파일 검사)</span>
+<span class="cm">📦 직접 읽지 않은 파일 6개 (zip/pdf 등) — 인벤토리 1b절 참고</span></div>
+    <p style="font-size:21px;margin-top:16px;text-align:center;color:#adff2f;"><strong>✅ 원자료 수령 완료 (2026-08-10)</strong> — CSV·SPSS·STATA + 코드북·조사표·유저가이드</p>
+    <p style="font-size:18px;margin-top:8px;text-align:center;color:#8892a4;">데이터가 없는 환경에서 돌리면 🔴 원자료 없음이 뜬다 — 그것도 결과다. 없는 데이터로 설계부터 짜지 않는다.</p>
   </div>
   <div class="slide-no">20</div>
 </div>
 
 <!-- 21 MAPS 신청 절차 -->
 <div class="slide-container" id="s21">
-  <h2 class="slide-title">Step 6 — MAPS는 신청제 자료다</h2>
+  <h2 class="slide-title">Step 6 — MAPS는 신청제 자료다 (이 절차로 받았다 ✅)</h2>
   <div class="content-area">
     <div class="step-grid">
       <div class="step-card"><h4>① 아카이브 접속</h4><p><code>nypi.re.kr/archive</code> → 데이터 다운로드 → 조사표/데이터/코드북</p></div>
@@ -531,7 +532,8 @@ protective = [<span class="str">"family_support"</span>, <span class="str">"peer
       <div class="step-card" style="border-left-color:#adff2f;"><h4>④ 제출 → 약 1주일</h4><p><code>maps@nypi.re.kr</code><br>함께 요청: <strong>유저가이드 · 코드북 · 조사표</strong></p></div>
     </div>
     <div class="finding" style="margin-top:20px;">
-      <p style="margin:0;font-size:20px;color:#fff;">⚠️ <b>코드북이 없으면 2차시를 시작할 수 없다.</b> 데이터만 받고 코드북을 빼먹는 실수가 잦다.</p>
+      <p style="margin:0;font-size:20px;color:#fff;">⚠️ <b>코드북이 없으면 2차시를 시작할 수 없다.</b> 데이터만 받고 코드북을 빼먹는 실수가 잦다.<br>
+      <span style="font-size:18px;color:#adff2f;">✅ 우리는 함께 요청한 덕분에 2026-08-10, 코드북·조사표·유저가이드까지 한 번에 수령했다.</span></p>
     </div>
   </div>
   <div class="slide-no">21</div>
@@ -548,7 +550,8 @@ matched = <span class="fn">set</span>(w5[<span class="str">"DEMO_ID"</span>]) <s
 <span class="cm"># → 두 해 모두: 3 명</span></div>
     <div class="finding" style="margin-top:18px;">
       <p style="margin:0;font-size:21px;color:#fff;">사라진 응답자 = <b>패널 마모(attrition)</b>. 실제 MAPS에서도 똑같이 일어난다.<br>
-      <span style="font-size:19px;">남은 사람이 떠난 사람과 <b style="color:#ff8080;">체계적으로 다르면</b> 결과를 일반화할 수 없다 → 8차시 한계 절에 반드시 적는다.</span></p>
+      <span style="font-size:19px;">남은 사람이 떠난 사람과 <b style="color:#ff8080;">체계적으로 다르면</b> 결과를 일반화할 수 없다 → 8차시 한계 절에 반드시 적는다.</span><br>
+      <span style="font-size:19px;color:#adff2f;">실측(MAPS 1기): 매 차수 파일에 전체 패널 1,635명 · 참여는 5차 1,347 · 6차 1,329 · <b>둘 다 1,321명</b></span></p>
     </div>
     <p style="font-size:19px;margin-top:12px;color:#8892a4;">⚠️ 이 파일은 <b>MAPS가 아니다.</b> 5행짜리 형식 확인용 가짜 데이터다.</p>
   </div>
@@ -581,7 +584,7 @@ matched = <span class="fn">set</span>(w5[<span class="str">"DEMO_ID"</span>]) <s
     <ul class="bullet-list" style="font-size:23px;">
       <li><i class="fa-solid fa-1"></i> "예측한다"와 "원인을 밝힌다"의 차이를 <strong>친구에게 설명한다면</strong> 어떻게 말하겠는가?</li>
       <li><i class="fa-solid fa-2"></i> 2015년 스트레스를 넣는 <strong>Model B</strong>는 왜 별도로 돌려 보는가?</li>
-      <li><i class="fa-solid fa-3"></i> 데이터가 아직 없는데 오늘 수업이 의미가 있었다고 생각하는가? 왜?</li>
+      <li><i class="fa-solid fa-3"></i> 이 수업의 설계는 데이터가 오기 <b>전에</b> 확정됐다. 데이터 없이 설계부터 확정하는 것이 왜 중요할까?</li>
     </ul>
     <p style="font-size:19px;margin-top:18px;color:#8892a4;">📝 과제: 연구 질문 3문장을 <b style="color:#adff2f">내 문장으로</b> 채워 온다. 2차시 시작 때 발표.</p>
   </div>
