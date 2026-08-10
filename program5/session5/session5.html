@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS 문화적응 스트레스 ML — 5차시 강의 슬라이드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP */
+        * { box-sizing: border-box; }
+        body {
+            background-color: #1a1c22;
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            padding: 40px 0;
+            place-items: center;
+            font-family: 'Lato', 'Nanum Gothic', sans-serif;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #0a0e14;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Abstract Background Decoration */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 50px;
+            left: 60px;
+            width: 100px;
+            height: 4px;
+            background-color: #00f2ff;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; margin: 0; }
+        .slide-title {
+            font-size: 44px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            border-left: 6px solid #00f2ff;
+            padding-left: 20px;
+            z-index: 1;
+            max-width: 1100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+        }
+
+        p, li, td, th { font-size: 20px; color: #b0b0b0; line-height: 1.6; }
+        strong { color: #00f2ff; }
+
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            z-index: 1;
+            gap: 20px;
+        }
+
+        /* Layouts */
+        .title-layout { text-align: center; align-items: center; justify-content: center; height: 100%; }
+        .title-layout h1 { font-size: 80px; margin-bottom: 20px; color: #00f2ff; }
+        .title-layout .subtitle { font-size: 28px; color: #ffffff; margin-top: 20px; }
+
+        .section-title-layout { text-align: center; justify-content: center; height: 100%; }
+        .section-title-layout h2 { font-size: 64px; color: #ffffff; }
+        .section-title-layout hr { width: 120px; border: 2px solid #00f2ff; margin: 30px auto; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
+        .tiled-content { display: flex; gap: 30px; width: 100%; }
+        .tile { 
+            flex: 1; background: #151a21; padding: 40px; border-radius: 15px; 
+            border-bottom: 4px solid #00f2ff; text-align: center;
+        }
+        .tile .icon { font-size: 50px; color: #adff2f; margin-bottom: 20px; }
+        .tile h3 { font-size: 24px; color: #ffffff; margin-bottom: 15px; }
+
+        .image-wrapper { 
+            width: 100%; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #333; 
+            background: #151a21;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .bullet-list i { position: absolute; left: 0; top: 5px; color: #00f2ff; font-size: 22px; }
+
+        .table-layout table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table-layout th { background: #151a21; color: #00f2ff; text-align: left; padding: 20px; border-bottom: 2px solid #333; }
+        .table-layout td { padding: 20px; border-bottom: 1px solid #222; color: #ffffff; }
+
+        /* Formula Container */
+        #formula-container { background: #000; padding: 25px; border-radius: 10px; border-left: 4px solid #adff2f; display: inline-block; }
+
+        /* Bleed Image Right Custom */
+        .bleed-image-layout { padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+        .bleed-image-layout .content-container { padding: 60px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .bleed-image-layout .image-container { width: 100%; height: 720px; background: #151a21; }
+        .bleed-image-layout img { width: 100%; height: 720px; object-fit: cover; }
+
+        /* Code Block (초심자 슬라이드용) */
+        .code-block {
+            background: #000;
+            padding: 30px 35px;
+            border-radius: 10px;
+            border-left: 4px solid #adff2f;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+        }
+        .code-block .kw { color: #ff79c6; }       /* 키워드 */
+        .code-block .fn { color: #50fa7b; }       /* 함수 */
+        .code-block .str { color: #f1fa8c; }      /* 문자열 */
+        .code-block .num { color: #bd93f9; }      /* 숫자 */
+        .code-block .cm  { color: #6272a4; font-style: italic; } /* 주석 */
+        .code-block .var { color: #8be9fd; }      /* 변수 */
+
+        /* 2열 스텝 카드 (Colab 조작용) */
+        .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        .step-card {
+            background: #151a21;
+            padding: 22px 26px;
+            border-radius: 12px;
+            border-left: 4px solid #00f2ff;
+        }
+        .step-card h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #00f2ff;
+            margin: 0 0 8px 0;
+        }
+        .step-card p { font-size: 16px; margin: 0; color: #cfcfcf; }
+        .step-card code {
+            background: #000;
+            color: #adff2f;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        /* 슬라이드 번호 + 푸터 (program4 추가) */
+        .slide-no { position:absolute; bottom:24px; right:32px; font-size:14px; color:#3a4250; letter-spacing:1px; z-index:2; }
+        .kicker { color:#00f2ff; letter-spacing:3px; font-size:15px; font-weight:700; margin-bottom:12px; }
+        .src-tag { display:inline-block; background:#151a21; color:#adff2f; padding:3px 10px; border-radius:6px; font-size:14px; margin-right:6px; }
+        .finding { background:#101820; border-left:4px solid #adff2f; padding:18px 24px; border-radius:8px; }
+        .finding b { color:#adff2f; }
+    </style>
+</head>
+<body>
+<!-- 1 Title -->
+<div class="slide-container" id="s1">
+  <div class="content-area title-layout">
+    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:52px;">계수를 읽는다,<br>그리고 대부분을 읽지 않기로 한다</h1>
+    <p class="subtitle">18줄짜리 순위표에서 해석 가능한 것은 3줄뿐이었다</p>
+    <p style="margin-top:36px;font-weight:700;letter-spacing:2px;color:#adff2f;">5차시 · 로지스틱 회귀 · 확률 · 계수 · 표준화</p>
+  </div>
+  <div class="slide-no">01</div>
+</div>
+
+<!-- 2 훅 -->
+<div class="slide-container" id="s2">
+  <h2 class="slide-title">오늘 만들 것: 변수 18개의 계수 순위표</h2>
+  <div class="content-area">
+    <p style="font-size:22px;margin:0;">드디어 모델이 무슨 말을 하는지 듣는다 —<br><strong>"어떤 변수가 고스트레스 분류와 가장 강하게 관련되는가?"</strong></p>
+    <div class="finding" style="margin-top:24px;">
+      <p style="margin:0;font-size:22px;color:#fff;">그런데 듣고 보니 <b style="color:#ff8080;">대부분은 믿을 수 없는 말</b>이었다.<br>
+      오늘 수업의 결론은 이것이다 — <b style="color:#adff2f;">"이 표에서 우리가 해석해도 되는 것은 3개뿐이다."</b></p>
+    </div>
+    <p style="font-size:19px;margin-top:22px;color:#8892a4;">🔒 오늘도 test 는 열지 않는다. 계수 해석은 train 1,056명에 적합한 모델로 한다.</p>
+  </div>
+  <div class="slide-no">02</div>
+</div>
+
+<!-- 3 아젠다 -->
+<div class="slide-container" id="s3">
+  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <div class="content-area">
+    <div class="step-grid">
+      <div class="step-card"><h4>Step 0~1 · 로지스틱이란</h4><p>왜 선형회귀가 아닌가 · 시그모이드</p></div>
+      <div class="step-card"><h4>Step 2 · 계수 읽는 법</h4><p>로그오즈 → 오즈비 → 확률</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 3 · 표준화 ⚠️</h4><p><strong>첫 봉우리</strong> — 3차시의 숙제가 돌아온다</p></div>
+      <div class="step-card"><h4>Step 4 · 순위표</h4><p>오늘 만들려던 답</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 5~6 · 부호 뒤집힘 🔴</h4><p><strong>둘째 봉우리</strong> — 그리고 불확실성 재기</p></div>
+      <div class="step-card"><h4>Step 7 · Model A vs B</h4><p>RQ3 에 답한다</p></div>
+    </div>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">🔴 오늘의 규칙: <strong>계수 하나만 보고 해석하지 않는다. 불확실성을 옆에 같이 둔다.</strong></p>
+  </div>
+  <div class="slide-no">03</div>
+</div>
+
+<!-- 4 지도 -->
+<div class="slide-container" id="s4">
+  <h2 class="slide-title">지난 시간 ↔ 오늘 — 8차시 지도</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th style="width:80px;">차시</th><th>심리학</th><th>IT / 머신러닝</th><th>산출물</th></tr>
+      <tr><td>1~3 ✅</td><td>척도 · 역채점 · 분포 · 상관 · α</td><td>pandas · join · 시각화</td><td>variables.yaml · figures</td></tr>
+      <tr><td>4 ✅</td><td>조작적 정의 · 임상 cut-off 와의 차이</td><td>split · 불균형 · <b>데이터 누출</b></td><td>high_stress 라벨</td></tr>
+      <tr><td><strong>5 (오늘)</strong></td><td><strong>예측변수와 결과의 관계·방향성</strong></td><td><strong>로지스틱 회귀 · 확률 · 계수 · 표준화</strong></td><td><strong>표준화 계수 + 신뢰구간</strong></td></tr>
+      <tr><td>6</td><td>심리 특성은 선형적으로 작동하는가</td><td>Decision Tree · Random Forest · 과적합</td><td>model_metrics</td></tr>
+      <tr><td>7~8</td><td>위험/보호요인 · 인과 vs 예측 → 보고</td><td>Permutation Importance · 재현성</td><td>final_report</td></tr>
+    </table>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b>"어떤 변수가 고스트레스 분류와 가장 강하게 관련되나"에 답한다.</b><br>
+      오늘 배울 것은 그 답과 함께 <b style="color:#adff2f;">"어디까지 답할 수 있는가"</b>이다.</p>
+    </div>
+  </div>
+  <div class="slide-no">04</div>
+</div>
+
+<!-- 5 목표 -->
+<div class="slide-container" id="s5">
+  <h2 class="slide-title">오늘(5차시)의 목표</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:22px;">
+      <li><i class="fa-solid fa-1"></i> <strong>로지스틱 회귀</strong>가 확률을 어떻게 다루는지, 계수가 무슨 뜻인지 설명한다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>표준화</strong>가 왜 필요한지 보인다 — 3차시의 그 숙제가 오늘 돌아온다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>단순 상관과 다변량 계수가 왜 다른지</strong>(부호까지 뒤집힌다) 설명한다</li>
+      <li><i class="fa-solid fa-4"></i> <strong>부트스트랩</strong>으로 계수의 불확실성을 재고, 해석 가능한 것만 골라낸다</li>
+    </ul>
+    <p style="font-size:19px;margin-top:10px;color:#8892a4;">※ 오늘의 문장: <b style="color:#adff2f">모른다고 말하는 것도 결과다.</b></p>
+  </div>
+  <div class="slide-no">05</div>
+</div>
+
+<!-- 6 왜 로지스틱 -->
+<!-- Step0 재료 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 0 — 4차시 상태를 그대로 재현한다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">idx_tr, idx_te = <span class="fn">train_test_split</span>(frame.index, test_size=cfg[<span class="str">"test_size"</span>],
+                                    random_state=cfg[<span class="str">"random_seed"</span>], stratify=…)
+frame[<span class="str">"high_stress"</span>], cutoff = <span class="fn">make_high_stress_label</span>(scores.loc[idx_tr], scores, <span class="num">0.75</span>)
+
+<span class="cm"># → train 1,056 · test 265(봉인) · cutoff 1.500 · 양성 33.7%   ← 4차시와 완전히 동일</span></div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;"><b style="color:#adff2f;">seed 를 고정했기 때문에 지난주와 한 명도 다르지 않다.</b><br>
+      이것이 4차시에 배운 <b>재현성</b>의 실제 효용이다 — 매주 같은 자리에서 이어서 작업할 수 있다.</p>
+    </div>
+    <p style="font-size:18px;margin-top:14px;color:#8892a4;">결측은 <code>economic_status</code> 8개뿐 (학부모 응답 변수) → Pipeline 안에서 <b>train 중앙값</b>으로 대치된다.</p>
+  </div>
+  <div class="slide-no">06</div>
+</div>
+
+<div class="slide-container" id="s6">
+  <h2 class="slide-title">Step 1 — 왜 선형회귀가 아니라 로지스틱인가</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">우리가 맞히려는 건 <strong>0 또는 1</strong>. 모델이 내놓는 건 <strong>확률</strong>. 그런데 확률은 <b style="color:#adff2f;">0~1 사이</b>여야 한다.</p>
+    <div class="code-block" style="margin-top:16px;font-size:18px;"><span class="cm"># 보통의 선형회귀 — 어떤 값이든 뱉는다</span>
+y = b0 + b1·자아존중감 + b2·친구지지 + …        <span class="cm"># 1.4 도, −0.3 도 가능 ← 확률로는 말이 안 된다</span>
+
+<span class="cm"># 로지스틱 회귀 — 한 겹을 더 씌운다</span>
+로그오즈 = b0 + b1·x1 + b2·x2 + …             <span class="cm"># 여기는 직선</span>
+확률 = <span class="num">1</span> / (<span class="num">1</span> + e^(−로그오즈))                   <span class="cm"># S자 곡선으로 0~1 에 눌러 담는다</span></div>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">이 S자 곡선이 <strong>시그모이드(sigmoid)</strong> 다. 아무리 큰 값이 들어와도 1을 안 넘고, 아무리 작아도 0 아래로 안 내려간다.</p>
+  </div>
+  <div class="slide-no">07</div>
+</div>
+
+<!-- 7 계수 읽는 법 -->
+<div class="slide-container" id="s7">
+  <h2 class="slide-title">Step 2 — 계수 읽는 법: 세 단계 번역</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:18px;">
+      <tr><th style="width:200px;">단계</th><th style="width:140px;">무엇</th><th>읽는 법</th></tr>
+      <tr><td><strong>① 로그오즈 계수</strong></td><td><code>−0.26</code></td><td>x가 1단위 늘면 로그오즈가 0.26 <b>줄어든다</b> — 부호만 직관적</td></tr>
+      <tr><td><strong>② 오즈비 (odds ratio)</strong></td><td><code>e^−0.26 = 0.77</code></td><td>오즈가 <b style="color:#adff2f;">0.77배</b>가 된다 (23% 감소)</td></tr>
+      <tr><td><strong>③ 확률</strong></td><td>상황에 따라</td><td><b style="color:#ffd479;">출발점에 따라 변화폭이 다르다</b></td></tr>
+    </table>
+    <p style="font-size:19px;margin-top:14px;"><span class="src-tag">오즈란</span> 확률 0.75 라면 오즈는 0.75/0.25 = <b>3</b> — "일어날 가능성이 안 일어날 가능성의 3배". 경마 배당률의 그 개념이다.</p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:19px;color:#fff;">⚠️ ③이 까다롭다. 시그모이드는 <b>곡선</b>이라 확률 0.5 근처에서는 변화가 크고 0.05·0.95 근처에서는 작다.<br>
+      그래서 <b style="color:#ff8080;">"계수 −0.26 = 확률 몇 % 감소"라고 한 문장으로 말할 수 없다.</b></p>
+    </div>
+  </div>
+  <div class="slide-no">08</div>
+</div>
+
+<!-- 8 표준화 왜 -->
+<div class="slide-container" id="s8">
+  <h2 class="slide-title">Step 3 — 표준화: 3차시의 숙제가 돌아왔다 ⚠️</h2>
+  <div class="content-area">
+    <div class="finding" style="font-size:20px;">
+      <p style="margin:0;color:#fff;">3차시의 그 문장 — "친구지지 4.13 &gt; 우울 1.69 를 보고 <b>'친구지지가 더 높다'고 말하면 안 된다.</b><br>
+      자를 다르게 쓰고 잰 길이다. → <b style="color:#adff2f;">5차시 표준화의 복선</b>"</p>
+    </div>
+    <p style="font-size:21px;margin-top:20px;color:#fff;"><strong>계수는 "x가 1 늘어날 때"의 효과다.</strong> 그런데 우리 변수들은 <b style="color:#ffd479;">1의 의미가 제각각</b>이다:</p>
+    <div class="two-column" style="margin-top:14px;">
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><code>bullying</code> SD = <b>0.217</b><br>1이 늘어난다는 건 <b style="color:#ff8080;">거의 불가능한 변화</b></p></div>
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><code>teacher_support</code> SD = <b>0.868</b><br>1의 변화가 <b style="color:#adff2f;">훨씬 흔하다</b></p></div>
+    </div>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">원단위 계수 비교 = <b style="color:#ff8080;">"1cm 늘었을 때"와 "1km 늘었을 때"를 나란히 놓는 것.</b><br>
+    <span style="font-size:18px;color:#8892a4;">→ 해결책: <b style="color:#adff2f;">표준화</b> — 모든 변수를 평균 0, SD 1 로. 계수의 뜻이 <b>"1 표준편차만큼 늘 때"</b> 로 통일된다.</span></p>
+  </div>
+  <div class="slide-no">09</div>
+</div>
+
+<!-- 9 표준화 실측 -->
+<div class="slide-container" id="s9">
+  <h2 class="slide-title">Step 3 — 순위가 18개 중 14개 바뀐다 (TODO)</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th>변수</th><th>SD</th><th>원단위 계수</th><th>표준화 계수</th><th>원단위 순위</th><th>표준화 순위</th></tr>
+      <tr><td>self_esteem</td><td>0.536</td><td>−0.462</td><td>−0.254</td><td><b>1</b></td><td>2</td></tr>
+      <tr><td>peer_support</td><td>0.727</td><td>−0.355</td><td>−0.257</td><td>4</td><td><b>1</b></td></tr>
+      <tr><td><b style="color:#ffd479;">bullying</b></td><td><b style="color:#ff8080;">0.217</b></td><td>+0.264</td><td>+0.064</td><td><b>7</b></td><td><b style="color:#ff8080;">12</b></td></tr>
+      <tr><td>teacher_support</td><td>0.868</td><td>+0.133</td><td>+0.114</td><td>11</td><td><b>7</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b>집단괴롭힘</b>이 가장 극적이다 — 원단위 7위 → 표준화 <b style="color:#ff8080;">12위</b>.<br>
+      SD 가 0.217 이라(3차시의 왜도 +7.9, "거의 전원이 1점") <b>실제로 1점 늘어나는 학생이 거의 없다.</b></p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">※ <b style="color:#adff2f;">표준화는 성능이 아니라 해석을 위한 것</b>이다. AUC 는 거의 그대로다.</p>
+  </div>
+  <div class="slide-no">10</div>
+</div>
+
+<!-- 10 순위표 -->
+<div class="slide-container" id="s10">
+  <h2 class="slide-title">Step 4 — 계수 순위표: 오늘 만들려던 답</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th>순위</th><th>변수</th><th>표준화 계수</th><th>오즈비</th><th>방향</th></tr>
+      <tr><td>1</td><td>peer_support (친구지지)</td><td>−0.257</td><td>0.77</td><td>보호</td></tr>
+      <tr><td>2</td><td>self_esteem (자아존중감)</td><td>−0.254</td><td>0.78</td><td>보호</td></tr>
+      <tr><td>3</td><td>parenting_monitoring (부모 감독)</td><td>−0.251</td><td>0.78</td><td>보호</td></tr>
+      <tr><td>4</td><td>depression (우울)</td><td>+0.189</td><td>1.21</td><td>위험</td></tr>
+      <tr><td>5</td><td>peer_relationship (교우관계)</td><td>−0.163</td><td>0.85</td><td>보호</td></tr>
+      <tr><td>6</td><td><b style="color:#ffd479;">ego_resilience (자아탄력성)</b></td><td><b style="color:#ffd479;">+0.161</b></td><td>1.17</td><td><b style="color:#ff8080;">위험?!</b></td></tr>
+    </table>
+    <p style="font-size:19px;margin-top:14px;color:#fff;">깔끔해 보인다. 그런데 <b style="color:#ff8080;">6위가 이상하다</b> — 자아탄력성이 <b>위험요인</b>이라고?</p>
+  </div>
+  <div class="slide-no">11</div>
+</div>
+
+<!-- 11 부호 뒤집힘 -->
+<!-- 확률 환산 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 4 — "1 SD 차이"는 확률로 얼마인가</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">기준 확률(모든 변수가 평균인 학생) = <span class="num">0.483</span>
+
+peer_support   −1SD → <span class="num">0.547</span>   ·   +1SD → <span class="num">0.419</span>    <span class="cm"># 차이 −0.128</span>
+depression     −1SD → 0.436   ·   +1SD → 0.530    <span class="cm"># 차이 +0.094</span>
+self_esteem    −1SD → 0.546   ·   +1SD → 0.420    <span class="cm"># 차이 −0.126</span></div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">⚠️ 기준 확률 0.483 은 실제 양성률 <b>0.337</b> 과 다르다 — <code>class_weight='balanced'</code> 가 절편을 보정했기 때문이다.<br>
+      그래서 이 확률은 <b style="color:#ff8080;">유병률 추정이 아니라</b> <b style="color:#adff2f;">상대 비교용</b>으로만 읽는다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">계수를 확률로 옮기면 크기가 실감 난다 — 친구지지 2 SD 차이(하위권 ↔ 상위권)가 확률 <b>약 13%p</b> 다.</p>
+  </div>
+  <div class="slide-no">12</div>
+</div>
+
+<div class="slide-container" id="s11">
+  <h2 class="slide-title">Step 5 — 부호가 뒤집힌다 🔴 (7개 변수)</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:19px;margin:0;">3차시의 <b>단순 상관</b>과 나란히 놓으면 — 같은 데이터, 같은 변수, 같은 target 인데:</p>
+    <table style="font-size:18px;">
+      <tr><th>변수</th><th>단순상관 r (3차시)</th><th>표준화 계수 (오늘)</th><th>부호</th></tr>
+      <tr><td>peer_support</td><td>−0.235</td><td>−0.257</td><td>같음</td></tr>
+      <tr><td><b>ego_resilience</b></td><td><b>−0.170</b></td><td><b>+0.161</b></td><td><b style="color:#ff8080;">🔴 뒤집힘</b></td></tr>
+      <tr><td><b>teacher_support</b></td><td><b>−0.151</b></td><td><b>+0.114</b></td><td><b style="color:#ff8080;">🔴 뒤집힘</b></td></tr>
+      <tr><td><b>family_support</b></td><td><b>−0.149</b></td><td><b>+0.093</b></td><td><b style="color:#ff8080;">🔴 뒤집힘</b></td></tr>
+      <tr><td>…</td><td colspan="3">national_identity · korean_proficiency · parenting_neglect · economic_status</td></tr>
+    </table>
+    <p style="font-size:20px;margin-top:14px;color:#adff2f;">총 <strong>7개 / 18개</strong>가 부호를 바꿨다. 무슨 일이 벌어진 걸까?</p>
+  </div>
+  <div class="slide-no">13</div>
+</div>
+
+<!-- 12 추적 -->
+<div class="slide-container" id="s12">
+  <h2 class="slide-title">Step 5 — 자아탄력성 계수를 추적해 보면</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">함께 넣은 변수                                        ego_resilience 계수
+ 1개: ego_resilience                                  <span class="num">−0.327</span>   <span class="cm"># 보호요인</span>
+ 2개: + self_esteem                                   −0.069   <span class="cm"># 확 줄었다</span>
+ 3개: + peer_support                                  <span style="color:#ff8080;">+0.060</span>   <span class="cm"># ← 여기서 뒤집힌다</span>
+ 5개: + peer_relationship, life_satisfaction          +0.174
+18개: 전체                                            +0.161</div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">3차시에서 봤듯 자아탄력성은 자아존중감(r=.58)·친구지지(r=.57)와 <b>강하게 얽혀</b> 있다.<br>
+      <b style="color:#adff2f;">공통 부분을 다른 변수들이 먼저 가져가고, 남은 것</b>이 자아탄력성의 계수가 된다.</p>
+    </div>
+  </div>
+  <div class="slide-no">14</div>
+</div>
+
+<!-- 13 계수의 진짜 뜻 -->
+<div class="slide-container" id="s13">
+  <h2 class="slide-title">Step 5 — 계수는 단순 상관이 아니다</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th style="width:200px;"></th><th>답하는 질문</th><th>답</th></tr>
+      <tr><td><strong>단순 상관</strong></td><td>"자아탄력성이 높은 학생은 스트레스가 낮은가?"</td><td>그렇다 (r = −.17)</td></tr>
+      <tr><td><strong>회귀 계수</strong></td><td>"<b style="color:#adff2f;">자아존중감·친구지지·교우관계가 똑같은 두 학생</b> 중, 자아탄력성이 더 높은 쪽은?"</td><td>오히려 조금 높다 (+.16)</td></tr>
+    </table>
+    <p style="font-size:20px;margin-top:18px;color:#fff;">회귀 계수는 항상 <strong>"다른 변수를 통제했을 때"</strong> 의 관계다. <b style="color:#ffd479;">둘 다 맞는 말이고, 서로 다른 말이다.</b></p>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">흥미로운 사실: 이 데이터의 <b>VIF(분산팽창지수)는 최대 2.45</b> — 흔히 쓰는 경고 기준(5 또는 10)에 한참 못 미친다.<br>
+      <b style="color:#ff8080;">"다중공선성 검사를 통과했으니 안심"이 아니다.</b> 기준을 넘지 않아도 부호는 뒤집힌다.</p>
+    </div>
+  </div>
+  <div class="slide-no">15</div>
+</div>
+
+<!-- 14 부트스트랩 -->
+<div class="slide-container" id="s14">
+  <h2 class="slide-title">Step 6 — 그래서 믿어도 되나: 불확실성을 잰다 🔍</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">순위표에는 숫자가 <b>하나씩</b>만 적혀 있다. 그 숫자가 <b style="color:#ffd479;">얼마나 흔들리는지</b>를 우리는 아직 모른다.</p>
+    <div class="code-block" style="margin-top:16px;font-size:18px;"><span class="cm"># 부트스트랩 (bootstrap)</span>
+train 1,056명 중에서 1,056명을 <span class="var">중복 허용</span>으로 다시 뽑는다 → 학습 → 계수 기록
+이것을 <span class="num">500</span>번 반복한다 → 계수 500개의 분포를 본다</div>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">"같은 모집단에서 표본을 <strong>다시 뽑았다면</strong> 어떤 값이 나왔을까"를 흉내 내는 것이다.</p>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:20px;color:#fff;">특히 <b style="color:#adff2f;">95% 구간이 0을 포함하는지</b>를 본다.<br>
+      포함한다면 — <b style="color:#ff8080;">"이 데이터로는 방향조차 단정할 수 없다"</b>는 뜻이다.</p>
+    </div>
+  </div>
+  <div class="slide-no">16</div>
+</div>
+
+<!-- 15 결과 -->
+<div class="slide-container" id="s15">
+  <h2 class="slide-title">Step 6 — 해석 가능한 것은 3개뿐이다 💥</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:18px;">
+      <tr><th>변수</th><th>계수</th><th>95% 부트스트랩 구간</th><th>부호 일관성</th><th>판정</th></tr>
+      <tr><td>peer_support (친구지지)</td><td>−0.257</td><td>[−0.475, −0.071]</td><td>99.6%</td><td><b style="color:#adff2f;">✅ 해석 가능</b></td></tr>
+      <tr><td>self_esteem (자아존중감)</td><td>−0.254</td><td>[−0.475, −0.066]</td><td>99.2%</td><td><b style="color:#adff2f;">✅ 해석 가능</b></td></tr>
+      <tr><td>parenting_monitoring (부모 감독)</td><td>−0.251</td><td>[−0.420, −0.087]</td><td>100%</td><td><b style="color:#adff2f;">✅ 해석 가능</b></td></tr>
+      <tr><td>depression (우울)</td><td>+0.189</td><td><b style="color:#ff8080;">[−0.033, +0.420]</b></td><td>95.2%</td><td><b style="color:#ff8080;">🔴 0 포함</b></td></tr>
+      <tr><td>ego_resilience (자아탄력성)</td><td>+0.161</td><td><b style="color:#ff8080;">[−0.052, +0.416]</b></td><td>93.6%</td><td><b style="color:#ff8080;">🔴 0 포함</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">부호가 뒤집혔던 <b>7개는 7개 전부</b> 신뢰구간이 0 을 포함한다 →
+      <b style="color:#adff2f;">부호 뒤집힘은 '발견'이 아니라 '불안정하다는 경고'였다.</b></p>
+    </div>
+  </div>
+  <div class="slide-no">17</div>
+</div>
+
+<!-- 16 3개의 의미 -->
+<div class="slide-container" id="s16">
+  <h2 class="slide-title">Step 6 — 남은 3개가 하는 말</h2>
+  <div class="content-area">
+    <div class="finding" style="font-size:22px;">
+      <p style="margin:0;color:#fff;">살아남은 <b style="color:#adff2f;">셋 다 음수 — 전부 보호요인</b>이다.<br>
+      <b>친구지지 · 자아존중감 · 부모의 감독</b>이 높을수록 1년 뒤 고스트레스 집단에 속할 확률이 낮다.</p>
+    </div>
+    <p style="font-size:20px;margin-top:22px;color:#fff;">그리고 <b style="color:#ffd479;">우울(depression)</b> 을 보라. 3차시 단순 상관에서는 <b>2위</b>(r=.246), 계수 순위로도 4위인데 —<br>
+    구간이 [−0.033, +0.420] 으로 <b style="color:#ff8080;">0을 포함한다.</b> 다변량에서는 <b>단정할 수 없다.</b></p>
+    <p style="font-size:20px;margin-top:18px;color:#adff2f;">🔴 순위표 4위까지 해석하고 싶은 유혹이 <strong>정확히 여기서 꺾인다.</strong></p>
+    <p style="font-size:19px;margin-top:16px;color:#8892a4;">오늘의 결론: <b style="color:#adff2f;">18개 중 3개만 말한다. 나머지 15개에 대해서는 "모른다"고 말한다.</b></p>
+  </div>
+  <div class="slide-no">18</div>
+</div>
+
+<!-- 17 RQ3 -->
+<div class="slide-container" id="s17">
+  <h2 class="slide-title">Step 7 — Model A vs B: RQ3 에 답한다</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;"><strong>RQ3.</strong> 이전 시점(중2)의 문화적응 스트레스를 추가하면 예측력이 얼마나 개선되는가?</p>
+    <div class="code-block" style="margin-top:14px;font-size:19px;">Model A (5차 심리사회 18개)        CV AUC = <span class="num">0.6535</span>
+Model B (A + 이전 스트레스 19개)    CV AUC = <span class="num">0.6825</span>   <span class="cm"># +0.029</span>
+
+Model B 계수 1위: previous_acculturative_stress = <span class="num">+0.448</span>   <span class="cm"># 2위(친구지지 −0.255)의 1.8배</span></div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">4차시에서 확인했듯 5차 스트레스는 <b style="color:#adff2f;">누출이 아니다</b> — 예측 시점(중2)에 알 수 있는 정보다.<br>
+      누출의 기준은 "강력한가"가 아니라 <b>"그때 알 수 있는가"</b>였다.</p>
+    </div>
+  </div>
+  <div class="slide-no">19</div>
+</div>
+
+<!-- 18 서술 -->
+<div class="slide-container" id="s18">
+  <h2 class="slide-title">Step 7 — 이 숫자를 어떻게 서술할 것인가</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th style="width:70px;"></th><th>표현</th><th>판정</th></tr>
+      <tr><td>❌</td><td>"이전 스트레스가 이후 스트레스를 <b>일으킨다</b>"</td><td>인과 주장 — 관찰 자료로는 불가능</td></tr>
+      <tr><td>❌</td><td>"이전 스트레스가 <b>가장 중요한 위험요인</b>이다"</td><td>'중요도'가 인과처럼 읽힌다</td></tr>
+      <tr><td>✅</td><td>"이전 스트레스는 <b style="color:#adff2f;">예측에 가장 크게 기여</b>했다"</td><td>우리가 할 수 있는 말</td></tr>
+    </table>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:19px;color:#fff;">개선폭 <b>+0.029</b> 도 정직하게 말한다. "가장 강한 예측변수"인데도 AUC 는 .65 → .68 뿐이다.<br>
+      ① 1년 전 스트레스를 알아도 <b>1년 뒤를 잘 맞히지는 못한다</b><br>
+      ② 뒤집어 말하면 — <b style="color:#adff2f;">중2 때 힘들었던 학생이 중3 때도 힘들 것이 정해져 있지 않다.</b> 개입의 관점에선 희망적이다</p>
+    </div>
+  </div>
+  <div class="slide-no">20</div>
+</div>
+
+<!-- 19 회고 -->
+<div class="slide-container" id="s19">
+  <h2 class="slide-title">회고 — 3개 질문</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:21px;">
+      <li><i class="fa-solid fa-1"></i> 표준화를 안 하고 계수를 비교하면 무슨 일이 생기는가 — <code>bullying</code> 을 예로 설명한다면?</li>
+      <li><i class="fa-solid fa-2"></i> 자아탄력성은 단순 상관 −.17, 다변량 계수 +.16 이다. <strong>둘 다 맞는 말인가?</strong> 이 +.16 을 "자아탄력성은 위험요인"이라고 쓸 수 있나?</li>
+      <li><i class="fa-solid fa-3"></i> 순위표 18줄 중 <strong>3줄만 해석</strong>하기로 했다. 나머지 15줄은 왜 못 쓰나?</li>
+    </ul>
+    <p style="font-size:18px;margin-top:16px;color:#8892a4;">📝 과제: ① 내 변수 하나의 계수·오즈비·95% 구간 + 해석 가능/불가 판정 ② "자아탄력성이 위험요인" 문장이 왜 틀렸는지 한 문단 ③ Model A/B 비교를 인과 주장 없이 3문장으로</p>
+  </div>
+  <div class="slide-no">21</div>
+</div>
+
+<!-- 20 다음 -->
+<div class="slide-container" id="s20">
+  <h2 class="slide-title">다음 — 6차시 예고</h2>
+  <div class="content-area">
+    <p style="font-size:24px;color:#fff;">오늘 우리는 <strong>직선</strong>을 그었다 — 로지스틱 회귀는<br>"자아존중감이 늘수록 로그오즈가 <b style="color:#adff2f;">일정하게</b> 준다"고 가정한다.</p>
+    <div class="finding" style="margin-top:24px;">
+      <p style="margin:0;font-size:21px;color:#fff;">그런데 마음이 정말 그렇게 작동할까?<br>
+      자아존중감이 <b>아주 낮은 구간에서만</b> 위험이 급격히 커지는 것이라면?<br><br>
+      다음 주엔 <b style="color:#adff2f;">결정 트리와 랜덤 포레스트</b>로 그 가정을 깨 본다.<br>
+      그리고 확인하게 될 것이다 — <b>복잡한 모델이 늘 더 좋은 건 아니다.</b></p>
+    </div>
+    <p style="font-size:20px;margin-top:22px;color:#8892a4;">오늘 배운 문장: <b style="color:#adff2f;">모른다고 말하는 것도 결과다.</b></p>
+  </div>
+  <div class="slide-no">22</div>
+</div>
+</body>
+</html>

@@ -18,12 +18,13 @@ Adolescents Using MAPS: An Explainable Machine Learning Approach*
 | 코드북 / 조사표 | ✅ 확보 — 청소년·학부모 코드북 xlsx, 조사표 PDF, 유저가이드 |
 | 변수 후보 체크리스트 | ✅ 생성 — `python scripts/codebook_candidates.py` → `reports/codebook_candidates.md` |
 | `configs/variables.yaml` | 전부 `status: unverified` — **체크리스트를 보고 사람이 검증 후 채운다** (2차시) |
-| 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 40개 통과 — 실데이터 구조 · 누출 방지 테스트 포함) |
+| 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 43개 통과 — 실데이터 구조 · 누출 방지 · 계수 안정성 테스트 포함) |
 | 1차시 | ✅ 완성 (데이터 없이 진행 가능하도록 설계 · 원자료 수령 반영 갱신) |
 | 2차시 | ✅ 완성 — 코드북 검증·게이트 열기 실습. **variables.yaml 은 수업에서 사람이 채운다** |
 | 3차시 | ✅ 완성 — 신뢰도(α)·분포·상관 EDA. **2차시 판단을 데이터가 채점한다** (역채점 4문항 교정) |
 | 4차시 | ✅ 완성 — 조작적 정의·split·불균형·**데이터 누출**. AUC 1.0 을 직접 만들어 본다 |
-| 5~8차시 | 4차시 이후 제작 |
+| 5차시 | ✅ 완성 — 로지스틱 계수·표준화·부트스트랩. **18개 중 3개만 해석 가능**하다는 결론 |
+| 6~8차시 | 5차시 이후 제작 |
 
 > **데이터가 없으면 `build_dataset.py` 는 일부러 멈춘다.** 추측으로 진행하지 않는 것이
 > 이 프로젝트의 첫 번째 규칙이다.
@@ -85,7 +86,7 @@ MAPS 1기 5차년도 (2015, 중2)          MAPS 1기 6차년도 (2016, 중3)
 | **2** | 심리척도·문항·역채점·척도점수 | pandas, 결측치, ID join | `variables.yaml` `data_quality.md` | 모든 변수의 컬럼명·의미·조사년도·문항범위가 확인됐다 |
 | **3** | 평균·SD·분포·상관·**Cronbach α**, 문항-전체 상관 | 집계, 시각화, 데이터 클리닝 | `session3/`, `reports/figures/`, **갱신된 `variables.yaml`** | 척도 점수를 믿어도 되는지 판정하고, 무엇이 같이 움직이는지 설명할 수 있다 |
 | **4** | 고스트레스 집단의 조작적 정의, 임상 cut-off와의 차이 | train/test split, 클래스 불균형, **데이터 누출**, baseline | `session4/`, `high_stress` 라벨, `test_no_leakage.py` | 누출 사례를 스스로 설명할 수 있다 |
-| **5** | 예측변수와 결과의 관계·방향성 | 로지스틱 회귀, 확률, 계수, 표준화 | `04_logistic_regression` 노트북 | "어떤 변수가 고스트레스 분류와 가장 강하게 관련되나"에 답한다 |
+| **5** | 예측변수와 결과의 관계·방향성, 상관 vs 편회귀계수 | 로지스틱 회귀, 확률, 계수, **표준화**, 부트스트랩 | `session5/`, `logistic_coefficients.png` | "어떤 변수가 가장 강하게 관련되나"에 답하고, **어디까지 답할 수 있는지**를 판정한다 |
 | **6** | 심리 특성은 선형적으로 작동하는가 | Decision Tree, Random Forest, 과적합, CV | `05_tree_models` 노트북 `model_metrics.csv` | "복잡한 모델이 늘 더 좋은 건 아니다"를 데이터로 보인다 |
 | **7** | 위험요인·보호요인, 인과 vs 예측 | Permutation Importance, 표준화 계수, 오류 분석 | `feature_importance.csv/.png` | "그 결과를 심리학적으로 어디까지 해석할 수 있나"에 답한다 |
 | **8** | 결론·한계·윤리 서술 | 재현성, 최종 리포트 | `final_report.md` + 5~10분 발표자료 | 남이 repo를 받아 같은 결과를 재현할 수 있다 |
@@ -118,8 +119,8 @@ python scripts/build_dataset.py \
 python scripts/run_models.py
 ```
 
-> 4차시(조작적 정의·split·누출)는 `session4/session4.ipynb` 안에서 진행하며,
-> **test 세트를 열지 않는다** — 모든 평가는 train 안 5-fold CV 로 한다.
+> 4·5차시는 `session4/`·`session5/` 노트북 안에서 진행하며 **test 세트를 열지 않는다**
+> — 모든 평가와 계수 해석은 train 안 5-fold CV 로 한다.
 >
 > 3차시(EDA·신뢰도)는 `session3/session3.ipynb` 안에서 진행한다. α 는 척도 점수가 아니라
 > **문항 단위**로 계산하므로 원자료를 다시 읽는다. 3차시에서 `reverse_items` 를 교정한 뒤
@@ -156,14 +157,14 @@ program5/
 │   ├── dataset.py            5차 X + 6차 y 조립, cutoff, Model A/B 분기
 │   ├── preprocessing.py      Pipeline(결측대치→표준화)
 │   ├── models.py             Dummy/Logistic/Tree/Forest
-│   ├── evaluation.py         지표·혼동행렬·표준화계수·permutation importance
+│   ├── evaluation.py         지표·혼동행렬·표준화계수·부트스트랩 계수 안정성·permutation importance
 │   └── plots.py              그림 저장
 ├── scripts/
 │   ├── inspect_raw_data.py   → reports/data_inventory.md
 │   ├── codebook_candidates.py → reports/codebook_candidates.md (사람 검증용 후보)
 │   ├── build_dataset.py      → data/processed/ + reports/data_quality.md
 │   └── run_models.py         → reports/model_metrics.csv + figures
-├── tests/                    scoring / dataset / validation / io / no_leakage / outputs / real_data (40개)
+├── tests/                    scoring / dataset / validation / io / no_leakage / outputs / real_data (43개)
 ├── reports/                  자동 생성물 (Git 제외)
 └── session1/ … session8/     sessionN.html · sessionN.ipynb · lecture_notes.md
 ```
@@ -240,6 +241,11 @@ AI는 답안 생성기가 아니라 **pair programmer** 다. `AGENTS.md` 가 그
   유지**했으며(선행 α .74 ↔ 우리 .757 로 재현됨), 9문항 척도 민감도 분석을 권장한다.
 - **낮은 신뢰도 척도.** 역채점 교정 후에도 `peer_relationship` 은 α = .626 으로 .70 미만이다
   (친사회적 행동 문항이 섞여 단일 구성개념이 아닐 가능성) → 해당 변수의 해석은 제한적이다.
+- **계수 해석의 범위.** 표준화 로지스틱 계수 18개 중 부트스트랩(500회) 95% 구간이 0을
+  제외하는 것은 **3개뿐**이다 — `peer_support`(−.257) · `self_esteem`(−.254) ·
+  `parenting_monitoring`(−.251), 모두 보호요인 방향. 나머지 15개(우울 포함)는
+  **방향을 단정하지 않는다**. 특히 단순상관 대비 부호가 뒤집힌 7개는 7개 전부 구간이
+  0을 포함하므로, 부호 반전을 실질적 발견으로 해석해서는 안 된다.
 - **예측 ≠ 인과.** 관찰 패널자료이므로 교란변수를 통제하지 못한다.
 - **가짜 결과 금지.** 분석 전에는 성능 숫자를 README·노트북에 적지 않는다.
   이 문서의 성능표가 비어 있는 것은 실수가 아니라 규칙이다.

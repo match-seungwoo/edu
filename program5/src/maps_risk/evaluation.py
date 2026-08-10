@@ -58,6 +58,55 @@ def standardized_coefficients(fitted_pipeline, feature_names):
     return df.sort_values("abs_coef", ascending=False).reset_index(drop=True)
 
 
+def bootstrap_coefficients(estimator, X, y, n_boot=500, seed=42):
+    """부트스트랩으로 표준화 계수의 **불확실성**을 잰다.
+
+    받는 것:
+      estimator  표준화를 포함한 Pipeline (아직 fit 하지 않은 것)
+      X, y       train 데이터 (test 는 절대 넣지 않는다)
+      n_boot     재추출 횟수
+    돌려주는 것: 요약 DataFrame
+      feature / coef(전체 train 계수) / boot_sd / ci_low / ci_high /
+      includes_zero(신뢰구간이 0 을 포함하는가) / sign_consistency(부호 일관성)
+    왜: 계수 순위표만 보면 "4위 변수"까지 해석하고 싶어진다. 그런데 표본이 조금만
+        달라져도 부호가 바뀌는 계수가 섞여 있다. **점추정 옆에 불확실성을 같이 두면**
+        해석해도 되는 것과 안 되는 것이 구분된다.
+    불변성: ① 반환 순서 = X.columns 순서 = coef_ 순서 ② 각 재추출 표본에 두 클래스가
+        모두 있어야 한다(없으면 다시 뽑고, 계속 실패하면 에러) ③ 매 반복 clone 으로
+        새 estimator 를 쓴다(이전 fit 상태가 누적되지 않게).
+    주의: 이것은 정식 추론 통계가 아니라 **안정성 진단**이다. p-value 로 읽지 않는다.
+    """
+    from sklearn.base import clone
+
+    rng = np.random.default_rng(seed)
+    cols = list(X.columns)
+    fitted_full = clone(estimator).fit(X, y)
+    coef_full = fitted_full.named_steps["clf"].coef_[0]
+
+    draws = []
+    for _ in range(n_boot):
+        for _attempt in range(10):
+            idx = rng.choice(len(X), size=len(X), replace=True)
+            ys = y.iloc[idx]
+            if ys.nunique() > 1:      # 한 클래스만 뽑히면 로지스틱이 학습되지 않는다
+                break
+        else:
+            raise ValueError("부트스트랩 표본에서 두 클래스를 못 얻었다 — 양성이 너무 적다")
+        draws.append(clone(estimator).fit(X.iloc[idx], ys).named_steps["clf"].coef_[0])
+
+    B = pd.DataFrame(draws, columns=cols)
+    lo, hi = B.quantile(0.025), B.quantile(0.975)
+    return pd.DataFrame({
+        "feature": cols,
+        "coef": coef_full,
+        "boot_sd": B.std().values,
+        "ci_low": lo.values,
+        "ci_high": hi.values,
+        "includes_zero": ((lo.values < 0) & (hi.values > 0)),
+        "sign_consistency": (np.sign(B) == np.sign(coef_full)).mean().values,
+    }).sort_values("coef", key=lambda c: c.abs(), ascending=False).reset_index(drop=True)
+
+
 def permutation_scores(fitted_pipeline, X, y, feature_names,
                        scoring="roc_auc", n_repeats=20, seed=42):
     """Permutation Importance — 변수를 섞었을 때 성능이 얼마나 떨어지나.

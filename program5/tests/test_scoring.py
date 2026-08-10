@@ -112,3 +112,56 @@ def test_alpha_if_deleted_needs_three_items():
     """2문항짜리 척도는 하나를 빼면 alpha 가 정의되지 않는다 → 빈 결과."""
     df = pd.DataFrame({"a": [1, 2, 3], "b": [1, 2, 3]})
     assert scoring.alpha_if_deleted(df, ["a", "b"]).empty
+
+
+def _tiny_logit_data(rng, n=200):
+    """신호 변수 1개 + 잡음 변수 1개로 만든 이진 분류 데이터."""
+    signal = rng.normal(size=n)
+    noise = rng.normal(size=n)
+    y = pd.Series((signal + rng.normal(scale=0.5, size=n) > 0).astype(int))
+    return pd.DataFrame({"signal": signal, "noise": noise}), y
+
+
+def _logit_pipeline():
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.pipeline import Pipeline
+
+    from maps_risk.preprocessing import make_preprocessor
+    return Pipeline([("prep", make_preprocessor()),
+                     ("clf", LogisticRegression(max_iter=1000, random_state=0))])
+
+
+def test_bootstrap_separates_signal_from_noise():
+    """신호 변수는 신뢰구간이 0 을 제외하고, 잡음 변수는 0 을 포함해야 한다."""
+    from maps_risk import evaluation
+
+    X, y = _tiny_logit_data(np.random.default_rng(0))
+    out = evaluation.bootstrap_coefficients(_logit_pipeline(), X, y, n_boot=100, seed=0)
+    row = out.set_index("feature")
+    assert not row.loc["signal", "includes_zero"]
+    assert row.loc["noise", "includes_zero"]
+    assert row.loc["signal", "sign_consistency"] > row.loc["noise", "sign_consistency"]
+
+
+def test_bootstrap_keeps_feature_order_aligned():
+    """반환된 feature 이름이 실제 그 변수의 계수와 짝지어져 있어야 한다.
+
+    순서가 어긋나면 계수가 엉뚱한 변수명에 붙고, 에러 없이 해석 전체가 틀린다.
+    """
+    from maps_risk import evaluation
+
+    X, y = _tiny_logit_data(np.random.default_rng(1))
+    X["signal"] = X["signal"] * 5          # 신호를 더 세게 → 계수 크기 1위가 되어야 한다
+    out = evaluation.bootstrap_coefficients(_logit_pipeline(), X, y, n_boot=50, seed=1)
+    assert out.iloc[0]["feature"] == "signal"
+    assert set(out["feature"]) == set(X.columns)
+
+
+def test_bootstrap_is_reproducible():
+    """같은 seed 면 같은 결과 — clone 을 쓰지 않으면 상태가 누적돼 깨진다."""
+    from maps_risk import evaluation
+
+    X, y = _tiny_logit_data(np.random.default_rng(2))
+    a = evaluation.bootstrap_coefficients(_logit_pipeline(), X, y, n_boot=30, seed=7)
+    b = evaluation.bootstrap_coefficients(_logit_pipeline(), X, y, n_boot=30, seed=7)
+    pd.testing.assert_frame_equal(a, b)
