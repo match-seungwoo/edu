@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAPS 문화적응 스트레스 ML — 6차시 강의 슬라이드</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP */
+        * { box-sizing: border-box; }
+        body {
+            background-color: #1a1c22;
+            display: grid;
+            gap: 40px;
+            grid-template-columns: 1fr;
+            margin: 0;
+            padding: 40px 0;
+            place-items: center;
+            font-family: 'Lato', 'Nanum Gothic', sans-serif;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            background-color: #0a0e14;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        /* Abstract Background Decoration */
+        .slide-container::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 50px;
+            left: 60px;
+            width: 100px;
+            height: 4px;
+            background-color: #00f2ff;
+        }
+
+        /* Typography */
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; margin: 0; }
+        .slide-title {
+            font-size: 44px;
+            color: #ffffff;
+            margin-bottom: 30px;
+            border-left: 6px solid #00f2ff;
+            padding-left: 20px;
+            z-index: 1;
+            max-width: 1100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-shrink: 0;
+        }
+
+        p, li, td, th { font-size: 20px; color: #b0b0b0; line-height: 1.6; }
+        strong { color: #00f2ff; }
+
+        .content-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            z-index: 1;
+            gap: 20px;
+        }
+
+        /* Layouts */
+        .title-layout { text-align: center; align-items: center; justify-content: center; height: 100%; }
+        .title-layout h1 { font-size: 80px; margin-bottom: 20px; color: #00f2ff; }
+        .title-layout .subtitle { font-size: 28px; color: #ffffff; margin-top: 20px; }
+
+        .section-title-layout { text-align: center; justify-content: center; height: 100%; }
+        .section-title-layout h2 { font-size: 64px; color: #ffffff; }
+        .section-title-layout hr { width: 120px; border: 2px solid #00f2ff; margin: 30px auto; }
+
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; width: 100%; }
+        .tiled-content { display: flex; gap: 30px; width: 100%; }
+        .tile { 
+            flex: 1; background: #151a21; padding: 40px; border-radius: 15px; 
+            border-bottom: 4px solid #00f2ff; text-align: center;
+        }
+        .tile .icon { font-size: 50px; color: #adff2f; margin-bottom: 20px; }
+        .tile h3 { font-size: 24px; color: #ffffff; margin-bottom: 15px; }
+
+        .image-wrapper { 
+            width: 100%; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            border: 1px solid #333; 
+            background: #151a21;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .image-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+
+        .bullet-list { list-style: none; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 40px; margin-bottom: 20px; }
+        .bullet-list i { position: absolute; left: 0; top: 5px; color: #00f2ff; font-size: 22px; }
+
+        .table-layout table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table-layout th { background: #151a21; color: #00f2ff; text-align: left; padding: 20px; border-bottom: 2px solid #333; }
+        .table-layout td { padding: 20px; border-bottom: 1px solid #222; color: #ffffff; }
+
+        /* Formula Container */
+        #formula-container { background: #000; padding: 25px; border-radius: 10px; border-left: 4px solid #adff2f; display: inline-block; }
+
+        /* Bleed Image Right Custom */
+        .bleed-image-layout { padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+        .bleed-image-layout .content-container { padding: 60px; display: flex; flex-direction: column; justify-content: center; height: 100%; }
+        .bleed-image-layout .image-container { width: 100%; height: 720px; background: #151a21; }
+        .bleed-image-layout img { width: 100%; height: 720px; object-fit: cover; }
+
+        /* Code Block (초심자 슬라이드용) */
+        .code-block {
+            background: #000;
+            padding: 30px 35px;
+            border-radius: 10px;
+            border-left: 4px solid #adff2f;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            white-space: pre-wrap;
+        }
+        .code-block .kw { color: #ff79c6; }       /* 키워드 */
+        .code-block .fn { color: #50fa7b; }       /* 함수 */
+        .code-block .str { color: #f1fa8c; }      /* 문자열 */
+        .code-block .num { color: #bd93f9; }      /* 숫자 */
+        .code-block .cm  { color: #6272a4; font-style: italic; } /* 주석 */
+        .code-block .var { color: #8be9fd; }      /* 변수 */
+
+        /* 2열 스텝 카드 (Colab 조작용) */
+        .step-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        .step-card {
+            background: #151a21;
+            padding: 22px 26px;
+            border-radius: 12px;
+            border-left: 4px solid #00f2ff;
+        }
+        .step-card h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 18px;
+            color: #00f2ff;
+            margin: 0 0 8px 0;
+        }
+        .step-card p { font-size: 16px; margin: 0; color: #cfcfcf; }
+        .step-card code {
+            background: #000;
+            color: #adff2f;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        /* 슬라이드 번호 + 푸터 (program4 추가) */
+        .slide-no { position:absolute; bottom:24px; right:32px; font-size:14px; color:#3a4250; letter-spacing:1px; z-index:2; }
+        .kicker { color:#00f2ff; letter-spacing:3px; font-size:15px; font-weight:700; margin-bottom:12px; }
+        .src-tag { display:inline-block; background:#151a21; color:#adff2f; padding:3px 10px; border-radius:6px; font-size:14px; margin-right:6px; }
+        .finding { background:#101820; border-left:4px solid #adff2f; padding:18px 24px; border-radius:8px; }
+        .finding b { color:#adff2f; }
+    </style>
+</head>
+<body>
+<!-- 1 -->
+<div class="slide-container">
+  <div class="content-area title-layout">
+    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:56px;">복잡한 모델이<br>늘 더 좋은 건 아니다</h1>
+    <p class="subtitle">직선의 가정을 깨 보고, 그게 얼마나 도움이 되는지 정직하게 잰다</p>
+    <p style="margin-top:36px;font-weight:700;letter-spacing:2px;color:#adff2f;">6차시 · 결정 트리 · 랜덤 포레스트 · 과적합 · 교차검증</p>
+  </div>
+  <div class="slide-no">01</div>
+</div>
+
+<!-- 2 훅 -->
+<div class="slide-container">
+  <h2 class="slide-title">5차시가 남긴 질문</h2>
+  <div class="content-area">
+    <div class="finding" style="font-size:22px;">
+      <p style="margin:0;color:#fff;">"자아존중감이 <b style="color:#adff2f;">아주 낮은 구간에서만</b> 위험이 급격히 커지는 것이라면?"</p>
+    </div>
+    <p style="font-size:22px;margin-top:24px;color:#fff;">오늘 확인한다 — <strong>그런 구간이 실제로 데이터에 있다.</strong></p>
+    <p style="font-size:22px;margin-top:12px;color:#fff;">그런데 그걸 잡아내는 모델이 <b style="color:#ff8080;">반드시 이기는 것도 아니다.</b></p>
+    <p style="font-size:19px;margin-top:24px;color:#8892a4;">오늘은 그 미묘한 사실을 <b style="color:#adff2f;">세 가지 증거</b>로 배운다.<br>
+    🔒 오늘도 test 는 열지 않는다 — 오늘이 모델 <b>선택</b>이 끝나는 날이고, 바로 그래서 안 연다.</p>
+  </div>
+  <div class="slide-no">02</div>
+</div>
+
+<!-- 3 아젠다 -->
+<div class="slide-container">
+  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <div class="content-area">
+    <div class="step-grid">
+      <div class="step-card"><h4>Step 0~1 · 선형 가정 점검</h4><p>구간별 위험률 — 마음은 직선인가</p></div>
+      <div class="step-card"><h4>Step 2 · 결정 트리</h4><p>스무고개 · 트리가 찾은 <strong>상호작용</strong></p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 3 · 과적합 ⚠️</h4><p><strong>첫 봉우리</strong> — train 1.0 / CV 0.52</p></div>
+      <div class="step-card"><h4>Step 4 · 랜덤 포레스트</h4><p>300그루의 평균 · 왜 덜 무너지나</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 5 · 4모델 정면 비교 🔍</h4><p><strong>둘째 봉우리</strong> — 증거 3개</p></div>
+      <div class="step-card"><h4>Step 6~7 · A vs B · 산출물</h4><p>왜 지금 test 를 안 여는가</p></div>
+    </div>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">🔴 오늘의 규칙: <strong>성능 표에서 1등을 찾지 말고, 1등과 2등의 차이가 무엇을 사게 하는지 물어라.</strong></p>
+  </div>
+  <div class="slide-no">03</div>
+</div>
+
+<!-- 4 지도 -->
+<div class="slide-container">
+  <h2 class="slide-title">지난 시간 ↔ 오늘 — 8차시 지도</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:17px;">
+      <tr><th style="width:80px;">차시</th><th>심리학</th><th>IT / 머신러닝</th><th>산출물</th></tr>
+      <tr><td>1~3 ✅</td><td>척도 · 역채점 · 분포 · 상관 · α</td><td>pandas · join · 시각화</td><td>variables.yaml · figures</td></tr>
+      <tr><td>4 ✅</td><td>조작적 정의 · 임상 cut-off</td><td>split · 불균형 · <b>데이터 누출</b></td><td>high_stress 라벨</td></tr>
+      <tr><td>5 ✅</td><td>예측변수와 결과의 관계·방향성</td><td>로지스틱 · 계수 · 표준화 · 부트스트랩</td><td>계수 + 신뢰구간</td></tr>
+      <tr><td><strong>6 (오늘)</strong></td><td><strong>심리 특성은 선형적으로 작동하는가</strong></td><td><strong>Tree · Forest · 과적합 · CV</strong></td><td><strong>model_metrics_cv.csv</strong></td></tr>
+      <tr><td>7~8</td><td>위험/보호요인 · 인과 vs 예측 → 보고</td><td>Permutation Importance · <b>test 최종 1회</b></td><td>final_report</td></tr>
+    </table>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b>"복잡한 모델이 늘 더 좋은 건 아니다"를 데이터로 보인다.</b></p>
+    </div>
+  </div>
+  <div class="slide-no">04</div>
+</div>
+
+<!-- 5 목표 -->
+<div class="slide-container">
+  <h2 class="slide-title">오늘(6차시)의 목표</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:22px;">
+      <li><i class="fa-solid fa-1"></i> 로지스틱의 <strong>숨은 가정(선형성)</strong> 을 드러내고, 데이터가 그걸 따르는지 확인한다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>결정 트리</strong>를 읽고, 트리가 발견한 <strong>상호작용</strong>을 해석한다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>과적합</strong>을 직접 만든다 — train AUC 1.0, CV AUC 0.52</li>
+      <li><i class="fa-solid fa-4"></i> 4개 모델을 정면 비교하고 <strong>"복잡 ≠ 더 좋음"</strong> 을 판정한다</li>
+    </ul>
+    <p style="font-size:19px;margin-top:10px;color:#8892a4;">※ 오늘의 문장: <b style="color:#adff2f">성능 표의 1등이 곧 답이 아니다. 목적이 답을 정한다.</b></p>
+  </div>
+  <div class="slide-no">05</div>
+</div>
+
+<!-- 6 선형 가정 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 1 — 로지스틱의 숨은 가정: 마음은 직선인가</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:19px;">로그오즈 = b0 + b1·자아존중감 + b2·친구지지 + …</div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">이 식에는 <b>말하지 않은 가정</b>이 있다 —<br>
+      <b style="color:#adff2f;">"자아존중감 1→2점의 효과 = 3→4점의 효과"</b>. 어느 구간에서든 똑같은 만큼 변한다는 가정(<b>선형성</b>).</p>
+    </div>
+    <p style="font-size:21px;margin-top:20px;color:#fff;">심리학적으로 그럴듯한가? <b style="color:#ffd479;">아마 아닐 것이다.</b><br>
+    <span style="font-size:19px;color:#8892a4;">바닥인 학생에게 1점 차이는 크고, 이미 높은 학생들 사이의 1점은 별 의미가 없을 수 있다.</span></p>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">확인법: 변수를 <strong>5분위</strong>로 나눠 각 구간의 <strong>실제 고스트레스 비율</strong>을 센다.</p>
+  </div>
+  <div class="slide-no">06</div>
+</div>
+
+<!-- 7 구간별 위험률 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 1 — 구간별 위험률: 변수마다 모양이 다르다</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:18px;">
+      <tr><th>변수</th><th>1분위 → 5분위 (고스트레스 비율)</th><th>모양</th></tr>
+      <tr><td><b>self_esteem</b></td><td><b style="color:#ff8080;">.503</b> → .316 → .248 → .260 → .220</td><td><b style="color:#adff2f;">역치형</b> — 1분위에서만 급락, 뒤는 평평</td></tr>
+      <tr><td>depression</td><td>.226 → .241 → .369 → .430 → <b>.464</b></td><td><b>단조 증가</b> — 직선에 가깝다</td></tr>
+      <tr><td>previous_stress</td><td>.218 → .206 → .305 → .462 → <b>.558</b></td><td>단조, 뒤로 갈수록 가팔라짐</td></tr>
+      <tr><td>peer_support</td><td>.509 → .396 → <b>.189</b> → .234</td><td><b style="color:#ffd479;">비단조</b> — 3분위 최저 후 되오름</td></tr>
+    </table>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">자아존중감은 1→2분위에서 <b>.188</b> 떨어지고, 2→5분위 전체에서 <b>.096</b> 밖에 안 떨어진다.<br>
+      <b style="color:#adff2f;">역치 효과(threshold effect)</b> — 5차시의 예고가 맞았다. 직선 하나로는 이 모양을 표현할 수 없다.</p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">⚠️ 그런데 — <b style="color:#ffd479;">"비선형이 존재한다"와 "비선형 모델이 이긴다"는 다른 말이다.</b></p>
+  </div>
+  <div class="slide-no">07</div>
+</div>
+
+<!-- 8 트리란 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 2 — 결정 트리: 스무고개로 분류하기</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">친구지지가 <span class="num">4.07</span> 이하인가?
+ ├─ 예     → 자아존중감이 <span class="num">2.88</span> 이하인가? → …
+ └─ 아니오 → 우울이 <span class="num">1.25</span> 이하인가? → …</div>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">스무고개와 같다. 질문마다 데이터가 둘로 갈리고, 마지막 칸(<strong>잎, leaf</strong>)의 고스트레스 비율이 곧 확률이다.</p>
+    <div class="two-column" style="margin-top:16px;">
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>① 비선형을 자동으로 잡는다</b><br>"자아존중감 2.88 이하"라는 <b style="color:#adff2f;">역치</b>를 스스로 찾는다</p></div>
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>② 상호작용을 잡는다</b><br>"A인 학생들 사이에선 B가, 아닌 학생들 사이에선 C가 중요"</p></div>
+    </div>
+    <p style="font-size:18px;margin-top:14px;color:#8892a4;">로지스틱은 ②를 <b>직접 적어 주지 않으면</b> 못 잡는다.</p>
+  </div>
+  <div class="slide-no">08</div>
+</div>
+
+<!-- 9 트리 구조 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 2 — 트리가 찾아낸 상호작용 (Model B, 깊이 2)</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">이전 스트레스 ≤ <span class="num">1.45</span> ?
+ ├─ 예 <span class="cm">(이전에 스트레스가 낮았던 학생들)</span>
+ │    └─ <span class="var">자아존중감</span> ≤ 2.62 ?  → 예: 고스트레스 / 아니오: 일반
+ └─ 아니오 <span class="cm">(이전에 스트레스가 높았던 학생들)</span>
+      └─ <span class="var">우울</span> ≤ 1.25 ?        → 예: 일반 / 아니오: 고스트레스</div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">첫 질문이 <code>previous_acculturative_stress</code> — <b style="color:#adff2f;">5차시 계수 1위와 같다.</b> 서로 다른 방법이 같은 결론에 도달했다.<br>
+      두 번째 층이 진짜다: <b>두 집단에게 서로 다른 질문</b>을 던진다 = <b style="color:#adff2f;">상호작용</b>.</p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">⚠️ 단, 이 구조는 train 데이터 하나에서 나온 것이다. 트리는 데이터가 조금만 바뀌어도 분기가 통째로 달라진다 → <b style="color:#ffd479;">가설로 읽고 확정된 발견으로 읽지 않는다.</b></p>
+  </div>
+  <div class="slide-no">09</div>
+</div>
+
+<!-- 10 과적합 개념 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 3 — 과적합: 트리를 자라게 두면 ⚠️</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">깊이 제한을 풀면 트리는 <b>모든 학생을 하나씩 다른 칸에</b> 넣을 때까지 자란다.<br>그러면 train 을 <strong>100% 맞힌다.</strong></p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:21px;color:#fff;">4차시에서 이 숫자를 본 적이 있다 — <b style="color:#ff8080;">AUC 1.0</b>.<br>
+      그때는 <b>누출</b> 때문이었다. 오늘은 다른 병으로 같은 숫자가 나온다: <b style="color:#adff2f;">과적합(overfitting)</b>.</p>
+    </div>
+    <p style="font-size:20px;margin-top:20px;color:#fff;"><strong>과적합</strong> = 훈련 데이터의 <b style="color:#ffd479;">우연한 무늬까지 외워 버려서</b> 새 데이터에서는 오히려 못 맞히는 것.</p>
+    <p style="font-size:19px;margin-top:12px;color:#8892a4;">4차시의 기출문제 비유 그대로 — <b>기출 100개를 통째로 암기한 학생</b>이다.</p>
+  </div>
+  <div class="slide-no">10</div>
+</div>
+
+<!-- 11 과적합 실측 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 3 — 깊이별 train vs CV (TODO)</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:18px;">
+      <tr><th>깊이</th><th>train AUC</th><th>CV AUC</th><th>차이</th><th>리프 수</th></tr>
+      <tr><td>1</td><td>.6199</td><td>.6067</td><td>.013</td><td>2</td></tr>
+      <tr><td><b>2</b></td><td>.6637</td><td><b style="color:#adff2f;">.6355</b></td><td>.028</td><td>4</td></tr>
+      <tr><td>3</td><td>.6937</td><td>.6151</td><td>.079</td><td>8</td></tr>
+      <tr><td>5</td><td>.7816</td><td>.5892</td><td>.192</td><td>30</td></tr>
+      <tr><td>8</td><td>.9127</td><td>.5312</td><td>.382</td><td>96</td></tr>
+      <tr><td><b>없음</b></td><td><b style="color:#ff8080;">1.0000</b></td><td><b style="color:#ff8080;">.5185</b></td><td><b>.482</b></td><td><b>299</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">train 은 <b>끝까지 오르고</b>, CV 는 <b style="color:#adff2f;">깊이 2에서 꺾인다.</b> 리프 299개 = train 1,056명을 299칸에 나눠 담았다.<br>
+      train AUC <b>1.0000</b> 인데 CV <b style="color:#ff8080;">.5185</b> — 거의 <b>동전 던지기</b>다.</p>
+    </div>
+    <p style="font-size:18px;margin-top:10px;color:#8892a4;">🔴 4차시의 문장이 다시 쓰인다 — <b style="color:#adff2f;">"성능이 좋아 보이면 의심하라."</b> train 점수만 보면 누출도 과적합도 못 알아챈다.</p>
+  </div>
+  <div class="slide-no">11</div>
+</div>
+
+<!-- 12 포레스트 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 4 — 랜덤 포레스트: 나무 한 그루 대신 숲</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">① 데이터를 조금씩 다르게 뽑아  <span class="cm">(부트스트랩 — 5차시에 배운 그것!)</span>
+② 변수도 일부만 무작위로 골라 주고
+③ 트리를 <span class="num">300</span>그루 키운 뒤
+④ 300개의 답을 <span class="var">평균</span> 낸다</div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b>왜 평균이 나은가</b> — 3차시 심리척도 논리와 똑같다.<br>
+      "한 번의 측정은 흔들리지만 <b style="color:#adff2f;">여러 문항의 평균은 오차가 상쇄돼 안정된다</b>." 트리 한 그루의 우연한 실수도 300그루를 평균 내면 상쇄된다.</p>
+    </div>
+    <div class="table-layout">
+      <table style="font-size:17px;margin-top:12px;">
+        <tr><th>깊이 제한 없음</th><th>train AUC</th><th>CV AUC</th></tr>
+        <tr><td>단일 트리</td><td>1.0000</td><td><b style="color:#ff8080;">.5185</b></td></tr>
+        <tr><td>랜덤 포레스트</td><td>1.0000</td><td><b style="color:#adff2f;">.6421</b></td></tr>
+      </table>
+    </div>
+    <p style="font-size:18px;margin-top:10px;color:#8892a4;">포레스트도 train 은 1.0 까지 외운다. 하지만 <b>CV 가 훨씬 덜 무너진다</b> — 평균이 과적합을 완충한다.</p>
+  </div>
+  <div class="slide-no">12</div>
+</div>
+
+<!-- 13 4모델 비교 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — 4개 모델 정면 비교 🔍 (Model A)</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:18px;margin:0;">같은 train, <b style="color:#adff2f;">같은 5개 폴드</b>, <code>modeling.yaml</code> 그리드로 CV 튜닝. Dummy 를 반드시 옆에 둔다.</p>
+    <table style="font-size:18px;">
+      <tr><th>모델</th><th>선택된 설정</th><th>CV AUC</th><th>AP</th><th>recall</th><th>train AUC</th></tr>
+      <tr><td>Dummy</td><td>—</td><td>.5000</td><td>.3371</td><td>.0000</td><td>.5000</td></tr>
+      <tr><td><b>LogisticRegression</b></td><td>C=0.1</td><td><b>.6535</b></td><td>.4921</td><td>.6183</td><td>.6898</td></tr>
+      <tr><td>DecisionTree</td><td>depth=2</td><td><b style="color:#ff8080;">.6355</b></td><td>.4372</td><td>.6490</td><td>.6637</td></tr>
+      <tr><td><b>RandomForest</b></td><td>depth=3</td><td><b style="color:#adff2f;">.6651</b></td><td>.5113</td><td>.5985</td><td>.7368</td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">① 단일 트리는 로지스틱보다 <b style="color:#ff8080;">나쁘다</b> — 더 유연한 모델인데 더 못한다.<br>
+      ② 포레스트는 낫다 — 그런데 차이가 <b style="color:#ffd479;">+0.0116</b> 이다. 진짜일까, 폴드 운일까?</p>
+    </div>
+  </div>
+  <div class="slide-no">13</div>
+</div>
+
+<!-- 14 차이 검증 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — +0.012 는 진짜인가? (정직하게 확인)</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">폴드별 AUC
+  로지스틱 : 0.591 0.679 0.639 0.663 0.695   평균 0.6535
+  포레스트 : 0.603 0.683 0.648 0.676 0.715   평균 0.6651
+  차이     : <span class="num">+0.012 +0.004 +0.009 +0.013 +0.020</span>   → 포레스트 승 <span class="num">5/5</span> 폴드
+
+CV 분할 seed 7가지 → 포레스트 <span class="num">6</span>승 / 로지스틱 <span class="num">1</span>승</div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:21px;color:#fff;"><b style="color:#adff2f;">이 차이는 폴드 운이 아니다.</b> 포레스트가 일관되게 이긴다.<br>
+      정직하게 인정하고 시작한다 — <b>그렇다면 포레스트를 써야 하나?</b></p>
+    </div>
+    <p style="font-size:19px;margin-top:18px;color:#8892a4;">답하려면 <b style="color:#adff2f;">얻는 것</b>만이 아니라 <b style="color:#ff8080;">잃는 것</b>도 세어야 한다. 다음 슬라이드.</p>
+  </div>
+  <div class="slide-no">14</div>
+</div>
+
+<!-- 15 비용편익 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — AUC 0.012 를 위해 무엇을 포기하나</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:18px;">
+      <tr><th></th><th>로지스틱 회귀</th><th>랜덤 포레스트</th></tr>
+      <tr><td>CV AUC (Model A)</td><td>.6535</td><td><b style="color:#adff2f;">.6651</b> (+.012)</td></tr>
+      <tr><td>변수별 <b>방향</b>(+/−)</td><td>✅ 계수 부호</td><td>❌ 없다</td></tr>
+      <tr><td>변수별 <b>크기</b></td><td>✅ 표준화 계수</td><td>△ 7차시 permutation 으로 일부</td></tr>
+      <tr><td><b>불확실성</b></td><td>✅ 부트스트랩 신뢰구간</td><td>❌ 사실상 불가</td></tr>
+      <tr><td>사람이 읽을 수 있나</td><td>✅ 18줄짜리 표</td><td>❌ 나무 <b>300그루</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 우리 연구 질문은 <b>RQ2 — "어떤 심리사회적 변수가 상대적으로 중요한가"</b> 다.<br>
+      목적이 <b style="color:#adff2f;">해석</b>이므로 <b>로지스틱을 주 모델</b>로 삼고, 포레스트는 "비선형을 넣어도 크게 좋아지지 않았다"는 <b>근거</b>로 함께 보고한다.</p>
+    </div>
+    <p style="font-size:18px;margin-top:10px;color:#8892a4;">이것은 <b>정답이 아니라 선택</b>이다. 목적이 "최대한 잘 맞히기"였다면 반대로 골랐을 것이다. 중요한 건 <b style="color:#adff2f;">고르고, 이유를 적는 것</b>이다.</p>
+  </div>
+  <div class="slide-no">15</div>
+</div>
+
+<!-- 16 세 증거 정리 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — "복잡 ≠ 더 좋음"의 세 가지 증거</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:20px;">
+      <li><i class="fa-solid fa-1"></i> <strong>단일 트리는 로지스틱보다 나쁘다</strong> (.6355 vs .6535) — 비선형도 상호작용도 잡을 수 있는 더 유연한 모델인데 <b style="color:#ff8080;">더 못한다.</b> 유연한 만큼 <b>흔들리기</b> 때문이다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>복잡도를 늘리면 오히려 나빠진다</strong> — 깊이 2 → 없음: CV AUC <b>.6355 → .5185</b>. "더 강력하게"가 성능을 보장하지 않는다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>포레스트는 이긴다 — 그런데 +0.012 다</strong> — 300그루를 학습해서 얻은 것이 AUC 0.012. 그 대가로 <b style="color:#ff8080;">방향·크기·불확실성을 전부 잃는다</b></li>
+    </ul>
+    <p style="font-size:19px;margin-top:14px;color:#adff2f;">→ <b>성능 표의 1등이 곧 답이 아니다. 목적이 답을 정한다.</b></p>
+  </div>
+  <div class="slide-no">16</div>
+</div>
+
+<!-- 17 A vs B -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 6 — 변수 구성이 바뀌면 순위도 바뀐다</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th>모델</th><th>Model A</th><th>Model B</th><th>B − A</th></tr>
+      <tr><td>Dummy</td><td>.5000</td><td>.5000</td><td>.0000</td></tr>
+      <tr><td>LogisticRegression</td><td>.6535</td><td>.6825</td><td>+.0290</td></tr>
+      <tr><td><b>DecisionTree</b></td><td><b style="color:#ff8080;">.6355</b></td><td><b style="color:#adff2f;">.6833</b></td><td><b>+.0478</b></td></tr>
+      <tr><td>RandomForest</td><td>.6651</td><td><b>.6987</b></td><td>+.0336</td></tr>
+    </table>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:19px;color:#fff;">Model A 에서 로지스틱보다 <b>나빴던</b> 단일 트리가, Model B 에서는 <b style="color:#adff2f;">거의 같아진다</b>(.6833 vs .6825).<br>
+      이전 스트레스라는 <b>강한 단일 변수</b>가 생기자 트리가 그것을 첫 분기로 잡아 잘 작동한다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:12px;color:#8892a4;">→ 모델의 우열은 고정된 것이 아니라 <b style="color:#adff2f;">어떤 변수를 주느냐에 따라 달라진다.</b></p>
+  </div>
+  <div class="slide-no">17</div>
+</div>
+
+<!-- 18 test 왜 안 여나 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 7 — 왜 지금 test 를 열지 않는가 🔒</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">오늘로 <strong>모델 선택이 끝났다.</strong> 교과서적으로는 <b style="color:#ffd479;">바로 지금이 test 를 열 시점</b>이다.</p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">그런데 열지 않는다. 4차시에 배운 이유 그대로 —<br>
+      test 를 한 번 보면 <b style="color:#ff8080;">그다음 결정이 그 숫자에 영향받는다.</b><br><br>
+      7차시에 변수 중요도를 보다가 "이 변수를 빼면 어떨까" 하는 생각이 들 수 있다.<br>
+      그때 test 점수를 이미 알고 있으면, 그 판단은 <b>더 이상 깨끗하지 않다.</b></p>
+    </div>
+    <p style="font-size:21px;margin-top:20px;color:#adff2f;">순서: <strong>6차시 선택 → 7차시 해석 → 8차시에 test 를 딱 한 번.</strong></p>
+    <p style="font-size:19px;margin-top:12px;color:#8892a4;">🔴 <b>훔쳐보고 싶은 유혹이 가장 큰 날이 바로 오늘이다.</b> 그래서 오늘 안 여는 것이 규칙이다.</p>
+  </div>
+  <div class="slide-no">18</div>
+</div>
+
+<!-- 19 정직한 단서 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 7 — 오늘 결과의 정직한 단서 하나</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;"><code>GridSearchCV</code> 의 <code>best_score_</code> 는 <b>여러 후보 중 가장 좋았던 값</b>이다.<br>
+    후보가 많을수록 <b style="color:#ffd479;">"운 좋게 잘 나온 값"</b>이 뽑힐 가능성도 커진다.</p>
+    <div class="code-block" style="margin-top:14px;font-size:18px;">포레스트 후보 <span class="num">4</span>개 · 트리 <span class="num">4</span>개 · 로지스틱 <span class="num">3</span>개 · Dummy <span class="num">0</span>개
+                              ↓
+        복잡한 모델 쪽이 아주 약간 <span style="color:#ff8080;">유리하게 채점</span>됐다</div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">엄밀하게 하려면 <b>중첩 교차검증(nested CV)</b> — 튜닝용 CV 안에 평가용 CV 를 한 겹 더 — 이 필요하다.<br>
+      이 수업에선 거기까지 가지 않는다. 대신 <b style="color:#adff2f;">그런 편향이 있다는 사실을 기록</b>한다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">포레스트의 우위가 <b>+0.012</b> 로 작다는 점을 감안하면, 이 편향은 <b style="color:#ff8080;">결론을 뒤집을 수 있는 크기</b>다 → 8차시 한계 절.</p>
+  </div>
+  <div class="slide-no">19</div>
+</div>
+
+<!-- 20 회고 -->
+<div class="slide-container">
+  <h2 class="slide-title">회고 — 3개 질문</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:20px;">
+      <li><i class="fa-solid fa-1"></i> 깊이 제한 없는 트리는 train AUC 가 <strong>1.0</strong> 이었다. 4차시에도 1.0 을 봤다. <strong>두 경우는 어떻게 다르고, 공통점은 무엇인가?</strong></li>
+      <li><i class="fa-solid fa-2"></i> 단일 트리는 로지스틱보다 <strong>유연한데 더 나빴다.</strong> 왜 그런가?</li>
+      <li><i class="fa-solid fa-3"></i> 포레스트가 <strong>일관되게</strong> 0.012 만큼 낫다. 그런데도 로지스틱을 주 모델로 골랐다. <strong>정당한가?</strong> 어떤 목적이었다면 반대로 골라야 했나?</li>
+    </ul>
+    <p style="font-size:18px;margin-top:14px;color:#8892a4;">📝 과제: ① 과적합이 시작되는 지점과 근거 2문장 ② Model B 트리의 상호작용을 심리학적으로 해석(단, "가설"이라는 단서) ③ 로지스틱을 고른 이유를 비용-편익 표로</p>
+  </div>
+  <div class="slide-no">20</div>
+</div>
+
+<!-- 21 다음 -->
+<div class="slide-container">
+  <h2 class="slide-title">다음 — 7차시 예고</h2>
+  <div class="content-area">
+    <p style="font-size:24px;color:#fff;">오늘 모델을 골랐다. 다음엔 그 모델에게 물어본다 —<br><strong>"무엇을 보고 판단했니?"</strong></p>
+    <div class="finding" style="margin-top:24px;">
+      <p style="margin:0;font-size:21px;color:#fff;"><b style="color:#adff2f;">Permutation Importance</b> 로 중요도를 재고, <b>5차시의 계수 순위와 비교</b>한다.<br>
+      두 방법이 같은 답을 주면 든든하고, <b>다르면 그 이유를 설명해야 한다.</b><br><br>
+      그리고 마지막으로 가장 어려운 질문이 온다 —<br>
+      <b style="color:#ff8080;">이 중요도를 '위험요인'이라고 불러도 되는가?</b></p>
+    </div>
+    <p style="font-size:20px;margin-top:22px;color:#8892a4;">오늘 배운 문장: <b style="color:#adff2f;">성능 표의 1등이 곧 답이 아니다. 목적이 답을 정한다.</b></p>
+  </div>
+  <div class="slide-no">21</div>
+</div>
+</body>
+</html>

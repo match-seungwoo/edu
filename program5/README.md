@@ -24,7 +24,8 @@ Adolescents Using MAPS: An Explainable Machine Learning Approach*
 | 3차시 | ✅ 완성 — 신뢰도(α)·분포·상관 EDA. **2차시 판단을 데이터가 채점한다** (역채점 4문항 교정) |
 | 4차시 | ✅ 완성 — 조작적 정의·split·불균형·**데이터 누출**. AUC 1.0 을 직접 만들어 본다 |
 | 5차시 | ✅ 완성 — 로지스틱 계수·표준화·부트스트랩. **18개 중 3개만 해석 가능**하다는 결론 |
-| 6~8차시 | 5차시 이후 제작 |
+| 6차시 | ✅ 완성 — 트리·포레스트·과적합. 포레스트가 이기지만 **+0.012** 라는 비용-편익 판단 |
+| 7~8차시 | 6차시 이후 제작 |
 
 > **데이터가 없으면 `build_dataset.py` 는 일부러 멈춘다.** 추측으로 진행하지 않는 것이
 > 이 프로젝트의 첫 번째 규칙이다.
@@ -87,7 +88,7 @@ MAPS 1기 5차년도 (2015, 중2)          MAPS 1기 6차년도 (2016, 중3)
 | **3** | 평균·SD·분포·상관·**Cronbach α**, 문항-전체 상관 | 집계, 시각화, 데이터 클리닝 | `session3/`, `reports/figures/`, **갱신된 `variables.yaml`** | 척도 점수를 믿어도 되는지 판정하고, 무엇이 같이 움직이는지 설명할 수 있다 |
 | **4** | 고스트레스 집단의 조작적 정의, 임상 cut-off와의 차이 | train/test split, 클래스 불균형, **데이터 누출**, baseline | `session4/`, `high_stress` 라벨, `test_no_leakage.py` | 누출 사례를 스스로 설명할 수 있다 |
 | **5** | 예측변수와 결과의 관계·방향성, 상관 vs 편회귀계수 | 로지스틱 회귀, 확률, 계수, **표준화**, 부트스트랩 | `session5/`, `logistic_coefficients.png` | "어떤 변수가 가장 강하게 관련되나"에 답하고, **어디까지 답할 수 있는지**를 판정한다 |
-| **6** | 심리 특성은 선형적으로 작동하는가 | Decision Tree, Random Forest, 과적합, CV | `05_tree_models` 노트북 `model_metrics.csv` | "복잡한 모델이 늘 더 좋은 건 아니다"를 데이터로 보인다 |
+| **6** | 심리 특성은 선형적으로 작동하는가 (역치·상호작용) | Decision Tree, Random Forest, **과적합**, CV | `session6/`, `model_metrics_cv.csv` | "복잡한 모델이 늘 더 좋은 건 아니다"를 데이터로 보인다 |
 | **7** | 위험요인·보호요인, 인과 vs 예측 | Permutation Importance, 표준화 계수, 오류 분석 | `feature_importance.csv/.png` | "그 결과를 심리학적으로 어디까지 해석할 수 있나"에 답한다 |
 | **8** | 결론·한계·윤리 서술 | 재현성, 최종 리포트 | `final_report.md` + 5~10분 발표자료 | 남이 repo를 받아 같은 결과를 재현할 수 있다 |
 
@@ -119,8 +120,9 @@ python scripts/build_dataset.py \
 python scripts/run_models.py
 ```
 
-> 4·5차시는 `session4/`·`session5/` 노트북 안에서 진행하며 **test 세트를 열지 않는다**
-> — 모든 평가와 계수 해석은 train 안 5-fold CV 로 한다.
+> 4~6차시는 `session4/`~`session6/` 노트북 안에서 진행하며 **test 세트를 열지 않는다**
+> — 모든 평가·계수 해석·모델 선택은 train 안 5-fold CV 로 한다.
+> `run_models.py`(test 1회 평가)는 **8차시 전용**이다.
 >
 > 3차시(EDA·신뢰도)는 `session3/session3.ipynb` 안에서 진행한다. α 는 척도 점수가 아니라
 > **문항 단위**로 계산하므로 원자료를 다시 읽는다. 3차시에서 `reverse_items` 를 교정한 뒤
@@ -165,7 +167,7 @@ program5/
 │   ├── build_dataset.py      → data/processed/ + reports/data_quality.md
 │   └── run_models.py         → reports/model_metrics.csv + figures
 ├── tests/                    scoring / dataset / validation / io / no_leakage / outputs / real_data (43개)
-├── reports/                  자동 생성물 (Git 제외)
+├── reports/                  자동 생성물 (Git 제외) — model_metrics_cv.csv(6차시 CV) · model_metrics.csv(8차시 test)
 └── session1/ … session8/     sessionN.html · sessionN.ipynb · lecture_notes.md
 ```
 
@@ -246,6 +248,14 @@ AI는 답안 생성기가 아니라 **pair programmer** 다. `AGENTS.md` 가 그
   `parenting_monitoring`(−.251), 모두 보호요인 방향. 나머지 15개(우울 포함)는
   **방향을 단정하지 않는다**. 특히 단순상관 대비 부호가 뒤집힌 7개는 7개 전부 구간이
   0을 포함하므로, 부호 반전을 실질적 발견으로 해석해서는 안 된다.
+- **모델 선택의 근거와 그 한계.** train 5-fold CV 기준 Model A 는 RandomForest(.6651) >
+  LogisticRegression(.6535) > DecisionTree(.6355) > Dummy(.500) 순이다. 포레스트의 우위는
+  5개 폴드 전부·CV seed 7개 중 6개에서 재현되어 폴드 운으로 보기 어렵다. 그럼에도 본 연구는
+  **RQ2(변수의 상대적 중요도)라는 목적에 따라 로지스틱을 주 모델로 선택**했다 — 포레스트는
+  계수의 방향·불확실성을 제공하지 못하기 때문이며, 이는 정답이 아니라 기록된 선택이다.
+  또한 `GridSearchCV.best_score_` 는 후보 중 최댓값이라 **후보가 많은 모델(트리·포레스트 4개)
+  이 로지스틱(3개)보다 약간 유리하게 채점**된다. nested CV 를 쓰지 않았으므로, +0.012 라는
+  작은 격차는 이 편향으로 뒤집힐 수 있다.
 - **예측 ≠ 인과.** 관찰 패널자료이므로 교란변수를 통제하지 못한다.
 - **가짜 결과 금지.** 분석 전에는 성능 숫자를 README·노트북에 적지 않는다.
   이 문서의 성능표가 비어 있는 것은 실수가 아니라 규칙이다.
