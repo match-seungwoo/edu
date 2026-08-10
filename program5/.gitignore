@@ -12,6 +12,10 @@ reports/data_inventory.md
 reports/data_quality.md
 reports/model_metrics.csv
 reports/feature_importance*.csv
+# 코드북 문항 텍스트가 들어 있다 — 원자료와 같은 이유로 커밋 금지
+reports/codebook_candidates.md
+# 자동 생성 제안본 — 사람이 검증해 variables.yaml 에 반영한 뒤에는 재생성물일 뿐
+configs/variables_proposed.yaml
 
 __pycache__/
 *.pyc

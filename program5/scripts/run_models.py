@@ -35,9 +35,17 @@ def main():
     scores = frame["acculturative_stress_w6"]
 
     # ── split 먼저, cutoff 는 그 다음 (순서가 핵심) ──────────────
+    # 진짜 라벨(high_stress)은 train-only cutoff 이후에야 생기므로 AGENTS.md 의
+    # stratify=target 을 문자 그대로는 적용할 수 없다(순환). → 6차 점수의
+    # median-split 을 임시 층화 기준으로 쓴다. median 이 전체 분포의 통계라는
+    # 한계는 있지만, 분할 균형에만 쓰고 라벨 정의에는 쓰지 않는다.
     idx_tr, idx_te = train_test_split(
         frame.index, test_size=cfg["test_size"], random_state=seed,
         stratify=(scores >= scores.median()).astype(int))
+    # 주의(미세 누출): cutoff 는 train 전체로 1회 계산한다. 엄밀하게는 CV 폴드마다
+    # 재계산해야 validation 폴드의 라벨 정의에 그 폴드 정보가 안 들어간다.
+    # 여기서는 관행대로 두되 4차시 토론 소재로 삼는다 — test 라벨은 train cutoff
+    # 만으로 정의되므로 test 평가는 깨끗하다.
     y_all, cutoff = make_high_stress_label(
         scores.loc[idx_tr], scores, cfg["target"]["high_stress_quantile"])
     frame["high_stress"] = y_all
@@ -51,7 +59,8 @@ def main():
 
     for mset in ("A", "B"):
         feats = split_features(frame, mset)
-        feats, dropped = drop_high_missing(frame, feats,
+        # 결측률 기준도 train 에서만 계산한다 — test 정보로 feature 를 고르지 않는다.
+        feats, dropped = drop_high_missing(frame.loc[idx_tr], feats,
                                            cfg["missing"]["max_feature_missing_rate"])
         if dropped:
             print(f"[Model {mset}] 결측 과다로 제외: {dropped}")

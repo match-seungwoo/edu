@@ -10,16 +10,17 @@ Adolescents Using MAPS: An Explainable Machine Learning Approach*
 
 ---
 
-## 0. 지금 상태 🔴
+## 0. 지금 상태 🟡
 
 | 항목 | 상태 |
 |---|---|
-| MAPS 원자료 (1기 5·6차) | **미확보** — 신청제. `DATA_ACQUISITION.md` 절차대로 신청 필요 (약 1주) |
-| 코드북 / 조사표 | 미확보 — 데이터와 함께 요청 |
-| `configs/variables.yaml` | 전부 `status: unverified` — 코드북 수령 전까지 채우지 않는다 |
-| 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 20개 통과) |
+| MAPS 원자료 (1기 5·6차) | ✅ **확보** (2026-08-10 수령) — `data/raw/`에 CSV·SPSS·STATA 해제됨 |
+| 코드북 / 조사표 | ✅ 확보 — 청소년·학부모 코드북 xlsx, 조사표 PDF, 유저가이드 |
+| 변수 후보 체크리스트 | ✅ 생성 — `python scripts/codebook_candidates.py` → `reports/codebook_candidates.md` |
+| `configs/variables.yaml` | 전부 `status: unverified` — **체크리스트를 보고 사람이 검증 후 채운다** (2차시) |
+| 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 34개 통과 — 실데이터 구조 테스트 포함) |
 | 1차시 | ✅ 완성 (데이터 없이 진행 가능하도록 설계) |
-| 2~8차시 | 데이터·코드북 도착 후 제작 |
+| 2~8차시 | 코드북 검증(2차시) 후 제작 |
 
 > **데이터가 없으면 `build_dataset.py` 는 일부러 멈춘다.** 추측으로 진행하지 않는 것이
 > 이 프로젝트의 첫 번째 규칙이다.
@@ -103,8 +104,14 @@ python scripts/inspect_raw_data.py --raw data/demo_format
 # 3. 테스트 (데이터 없이도 전부 통과해야 한다)
 pytest -q
 
-# ── 아래는 원자료 + 코드북 확보 후 ──
-python scripts/build_dataset.py --wave5 data/raw/<5차파일> --wave6 data/raw/<6차파일>
+# ── 원자료 + 코드북 확보 후 (지금 단계) ──
+# 4. 코드북 → 변수 후보 체크리스트 생성 (사람이 이걸 보고 variables.yaml 을 채운다)
+python scripts/codebook_candidates.py
+
+# ── variables.yaml 검증 완료 후 ──
+python scripts/build_dataset.py \
+  --wave5 "data/raw/csv/청소년(1-10차_12차_14차)/다문화청소년패널 1기패널 청소년 5차년도.csv" \
+  --wave6 "data/raw/csv/청소년(1-10차_12차_14차)/다문화청소년패널 1기패널 청소년 6차년도.csv"
 python scripts/run_models.py
 ```
 
@@ -143,9 +150,10 @@ program5/
 │   └── plots.py              그림 저장
 ├── scripts/
 │   ├── inspect_raw_data.py   → reports/data_inventory.md
+│   ├── codebook_candidates.py → reports/codebook_candidates.md (사람 검증용 후보)
 │   ├── build_dataset.py      → data/processed/ + reports/data_quality.md
 │   └── run_models.py         → reports/model_metrics.csv + figures
-├── tests/                    scoring / dataset / no_leakage (20개)
+├── tests/                    scoring / dataset / validation / io / no_leakage / outputs / real_data (34개)
 ├── reports/                  자동 생성물 (Git 제외)
 └── session1/ … session8/     sessionN.html · sessionN.ipynb · lecture_notes.md
 ```
@@ -203,6 +211,8 @@ AI는 답안 생성기가 아니라 **pair programmer** 다. `AGENTS.md` 가 그
 - **조작적 정의.** 상위 25%는 통계적 편의이지 임상 기준이 아니다. 분위수를 바꾸면
   결론도 바뀐다 → 민감도 분석(0.70/0.75/0.80)을 8차시에 권장.
 - **척도 범위 불일치.** 4점·5점 척도가 섞여 있다 → 표준화 없이 계수를 비교하면 안 된다.
+- **동점(ties).** 문항 평균 점수는 이산적이어서 cutoff 동점자가 몰리면 train 의
+  고스트레스 비율이 정확히 25%가 아닐 수 있다 → 실제 비율을 항상 함께 보고한다.
 - **예측 ≠ 인과.** 관찰 패널자료이므로 교란변수를 통제하지 못한다.
 - **가짜 결과 금지.** 분석 전에는 성능 숫자를 README·노트북에 적지 않는다.
   이 문서의 성능표가 비어 있는 것은 실수가 아니라 규칙이다.

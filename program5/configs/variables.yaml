@@ -12,6 +12,10 @@
 #   unavailable = 코드북 확인 결과 해당 차수에 없는 변수
 #
 # 채우는 시점: 2차시 (코드북 수령 후)
+#
+# 📋 코드북·실데이터 대조가 끝난 변수 후보 목록이 준비되어 있다:
+#    python scripts/codebook_candidates.py → reports/codebook_candidates.md
+#    (join 키는 PID다. ID 는 가구 ID — 절대 쓰지 말 것)
 # ─────────────────────────────────────────────────────────────────────
 
 meta:

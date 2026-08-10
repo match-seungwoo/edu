@@ -85,7 +85,8 @@ md("""## Step 1 — 문화적응 스트레스란 무엇인가 🧠
 - 집에서 쓰는 문화와 학교에서 요구하는 문화가 다르다
 - "나는 한국인인가, 아닌가"라는 정체성 혼란
 
-MAPS는 이걸 **SAFE 척도(Hong, 2003 수정판) 10문항 · 4점 리커트**로 잰다.
+MAPS는 이걸 **SAFE 척도 10문항 · 4점 리커트**로 잰다
+(원척도: Mena, Padilla, & Maldonado, 1987 — Hong, 2003 수정·보완판).
 점수가 높을수록 스트레스가 크다.
 
 > 📌 **왜 이 변수를 예측하려 하나?** 문화적응 스트레스는 우울·사회적 위축·학교부적응의
@@ -276,14 +277,16 @@ w6 = pd.read_csv("data/demo_format/DEMO_wave6_NOT_MAPS.csv")
 
 matched = set(w5["DEMO_ID"]) _____ set(w6["DEMO_ID"])   # ← 교집합 연산자를 채워라
 print("5차:", len(w5), "명 / 6차:", len(w6), "명 / 두 해 모두:", len(matched), "명")'''),
-code(r'''# CHECK Step6
+code(r'''# CHECK Step6 — 위 셀에서 '네가 만든' matched 를 검사한다
 try:
-    matched = set(w5["DEMO_ID"]) & set(w6["DEMO_ID"])
-    assert len(matched) == 3, "교집합이 3명이어야 한다"
+    assert len(matched) == 3, f"두 해 모두 응답한 사람은 3명이어야 하는데 {len(matched)}명이 나왔다"
+    assert matched == {1001, 1002, 1003}, f"ID 가 다르다: {sorted(matched)}"
     print("✅ PASS — 5명 + 5명이지만 분석 가능한 건 3명뿐이다.")
     print("   사라진 응답자 = 패널 마모(attrition). 실제 MAPS에서도 똑같은 일이 일어난다.")
+except NameError:
+    print("❌ FAIL — 위 TODO 셀의 빈칸(_____)을 먼저 채우고 실행하라.")
 except Exception as e:
-    print("❌ FAIL —", e, "\n힌트: 파이썬 집합의 교집합은 & 연산자다.")'''),
+    print("❌ FAIL —", e, "\n힌트: 파이썬 집합의 교집합은 & 연산자다. |(합집합)·-(차집합)와 헷갈리지 말 것.")'''),
 md("""<details><summary>💡 힌트 / 정답</summary>
 
 ```python

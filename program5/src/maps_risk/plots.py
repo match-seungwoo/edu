@@ -7,7 +7,16 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")  # 화면 없는 환경에서도 저장되게
 import matplotlib.pyplot as plt
+from matplotlib import font_manager
 from sklearn.metrics import (PrecisionRecallDisplay, RocCurveDisplay)
+
+# 한글 제목·라벨이 □ 로 깨지지 않게 OS 별 한글 폰트를 찾아 지정한다.
+# Colab 은 기본 한글 폰트가 없다 → !apt-get install -y fonts-nanum 후 런타임 재시작.
+for _name in ("AppleGothic", "Malgun Gothic", "NanumBarunGothic", "NanumGothic"):
+    if any(f.name == _name for f in font_manager.fontManager.ttflist):
+        matplotlib.rcParams["font.family"] = _name
+        break
+matplotlib.rcParams["axes.unicode_minus"] = False  # 마이너스 부호도 같이 깨진다
 
 FIG_DIR = Path("reports/figures")
 

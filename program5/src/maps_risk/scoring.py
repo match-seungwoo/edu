@@ -43,7 +43,7 @@ def scale_score(df, items, reverse_items=(), scale_range=None,
       items            문항 컬럼 리스트
       reverse_items    그중 역채점할 문항
       scale_range      [min, max] — 역채점에 필요
-      method           "mean" 또는 "sum"
+      method           "mean" 또는 "sum" (sum 은 부분응답을 평균×문항수로 보정)
       min_valid_items  이보다 적게 응답했으면 점수를 NaN 으로 (부분응답 처리)
     돌려주는 것: 응답자별 척도 점수 Series
     왜: 역채점·부분응답 규칙을 한 곳에 모아 모든 척도가 같은 방식으로 계산되게 한다.
@@ -63,7 +63,13 @@ def scale_score(df, items, reverse_items=(), scale_range=None,
                 work[c] = reverse_code(work[c], lo, hi)
 
     n_valid = work.notna().sum(axis=1)
-    score = work.mean(axis=1) if method == "mean" else work.sum(axis=1)
+    if method == "mean":
+        score = work.mean(axis=1)
+    else:
+        # sum 을 응답한 문항만 더하면 부분응답자 점수가 체계적으로 낮아진다
+        # → 평균 × 전체 문항 수로 보정한다(prorated sum).
+        #   전제: 한 척도의 문항들은 같은 응답 범위를 공유한다.
+        score = work.mean(axis=1) * len(items)
 
     if min_valid_items:
         score = score.where(n_valid >= min_valid_items)
