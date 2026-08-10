@@ -18,14 +18,15 @@ Adolescents Using MAPS: An Explainable Machine Learning Approach*
 | 코드북 / 조사표 | ✅ 확보 — 청소년·학부모 코드북 xlsx, 조사표 PDF, 유저가이드 |
 | 변수 후보 체크리스트 | ✅ 생성 — `python scripts/codebook_candidates.py` → `reports/codebook_candidates.md` |
 | `configs/variables.yaml` | 전부 `status: unverified` — **체크리스트를 보고 사람이 검증 후 채운다** (2차시) |
-| 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 43개 통과 — 실데이터 구조 · 누출 방지 · 계수 안정성 테스트 포함) |
+| 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 46개 통과 — 실데이터 구조 · 누출 방지 · 계수 안정성 · OOF 중요도 테스트 포함) |
 | 1차시 | ✅ 완성 (데이터 없이 진행 가능하도록 설계 · 원자료 수령 반영 갱신) |
 | 2차시 | ✅ 완성 — 코드북 검증·게이트 열기 실습. **variables.yaml 은 수업에서 사람이 채운다** |
 | 3차시 | ✅ 완성 — 신뢰도(α)·분포·상관 EDA. **2차시 판단을 데이터가 채점한다** (역채점 4문항 교정) |
 | 4차시 | ✅ 완성 — 조작적 정의·split·불균형·**데이터 누출**. AUC 1.0 을 직접 만들어 본다 |
 | 5차시 | ✅ 완성 — 로지스틱 계수·표준화·부트스트랩. **18개 중 3개만 해석 가능**하다는 결론 |
 | 6차시 | ✅ 완성 — 트리·포레스트·과적합. 포레스트가 이기지만 **+0.012** 라는 비용-편익 판단 |
-| 7~8차시 | 6차시 이후 제작 |
+| 7차시 | ✅ 완성 — 중요도 삼각검증·오류 분석·인과 vs 예측. **놓친 학생은 보호요인이 갖춰진 학생** |
+| 8차시 | 7차시 이후 제작 (test 최종 1회 + final_report) |
 
 > **데이터가 없으면 `build_dataset.py` 는 일부러 멈춘다.** 추측으로 진행하지 않는 것이
 > 이 프로젝트의 첫 번째 규칙이다.
@@ -89,7 +90,7 @@ MAPS 1기 5차년도 (2015, 중2)          MAPS 1기 6차년도 (2016, 중3)
 | **4** | 고스트레스 집단의 조작적 정의, 임상 cut-off와의 차이 | train/test split, 클래스 불균형, **데이터 누출**, baseline | `session4/`, `high_stress` 라벨, `test_no_leakage.py` | 누출 사례를 스스로 설명할 수 있다 |
 | **5** | 예측변수와 결과의 관계·방향성, 상관 vs 편회귀계수 | 로지스틱 회귀, 확률, 계수, **표준화**, 부트스트랩 | `session5/`, `logistic_coefficients.png` | "어떤 변수가 가장 강하게 관련되나"에 답하고, **어디까지 답할 수 있는지**를 판정한다 |
 | **6** | 심리 특성은 선형적으로 작동하는가 (역치·상호작용) | Decision Tree, Random Forest, **과적합**, CV | `session6/`, `model_metrics_cv.csv` | "복잡한 모델이 늘 더 좋은 건 아니다"를 데이터로 보인다 |
-| **7** | 위험요인·보호요인, 인과 vs 예측 | Permutation Importance, 표준화 계수, 오류 분석 | `feature_importance.csv/.png` | "그 결과를 심리학적으로 어디까지 해석할 수 있나"에 답한다 |
+| **7** | 위험요인·보호요인, 인과 vs 예측, **오류의 편향** | **OOF** Permutation Importance, 표준화 계수, 오류 분석 | `session7/`, `feature_importance.csv/.png`, `error_analysis.png` | "그 결과를 심리학적으로 어디까지 해석할 수 있나"에 답한다 |
 | **8** | 결론·한계·윤리 서술 | 재현성, 최종 리포트 | `final_report.md` + 5~10분 발표자료 | 남이 repo를 받아 같은 결과를 재현할 수 있다 |
 
 **4차시의 백미 — 일부러 누출시키기.** 6차 스트레스 문항으로 6차 고스트레스를 예측하는
@@ -120,8 +121,8 @@ python scripts/build_dataset.py \
 python scripts/run_models.py
 ```
 
-> 4~6차시는 `session4/`~`session6/` 노트북 안에서 진행하며 **test 세트를 열지 않는다**
-> — 모든 평가·계수 해석·모델 선택은 train 안 5-fold CV 로 한다.
+> 4~7차시는 `session4/`~`session7/` 노트북 안에서 진행하며 **test 세트를 열지 않는다**
+> — 모든 평가·계수 해석·모델 선택·변수 중요도는 train 안 5-fold CV(폴드별 validation)로 한다.
 > `run_models.py`(test 1회 평가)는 **8차시 전용**이다.
 >
 > 3차시(EDA·신뢰도)는 `session3/session3.ipynb` 안에서 진행한다. α 는 척도 점수가 아니라
@@ -159,14 +160,14 @@ program5/
 │   ├── dataset.py            5차 X + 6차 y 조립, cutoff, Model A/B 분기
 │   ├── preprocessing.py      Pipeline(결측대치→표준화)
 │   ├── models.py             Dummy/Logistic/Tree/Forest
-│   ├── evaluation.py         지표·혼동행렬·표준화계수·부트스트랩 계수 안정성·permutation importance
+│   ├── evaluation.py         지표·혼동행렬·표준화계수·부트스트랩 계수 안정성·OOF permutation importance
 │   └── plots.py              그림 저장
 ├── scripts/
 │   ├── inspect_raw_data.py   → reports/data_inventory.md
 │   ├── codebook_candidates.py → reports/codebook_candidates.md (사람 검증용 후보)
 │   ├── build_dataset.py      → data/processed/ + reports/data_quality.md
 │   └── run_models.py         → reports/model_metrics.csv + figures
-├── tests/                    scoring / dataset / validation / io / no_leakage / outputs / real_data (43개)
+├── tests/                    scoring / dataset / validation / io / no_leakage / outputs / real_data (46개)
 ├── reports/                  자동 생성물 (Git 제외) — model_metrics_cv.csv(6차시 CV) · model_metrics.csv(8차시 test)
 └── session1/ … session8/     sessionN.html · sessionN.ipynb · lecture_notes.md
 ```
@@ -256,6 +257,17 @@ AI는 답안 생성기가 아니라 **pair programmer** 다. `AGENTS.md` 가 그
   또한 `GridSearchCV.best_score_` 는 후보 중 최댓값이라 **후보가 많은 모델(트리·포레스트 4개)
   이 로지스틱(3개)보다 약간 유리하게 채점**된다. nested CV 를 쓰지 않았으므로, +0.012 라는
   작은 격차는 이 편향으로 뒤집힐 수 있다.
-- **예측 ≠ 인과.** 관찰 패널자료이므로 교란변수를 통제하지 못한다.
+- **중요도 해석의 범위와 오류의 편향.** OOF permutation importance 는 계수 순위와
+  스피어만 .866 으로 일치했고(상위 5개는 순위까지 동일), 부트스트랩까지 포함한 세 방법이
+  모두 `peer_support`·`self_esteem`·`parenting_monitoring` 3개를 지목했다. 그러나
+  ① 랜덤 포레스트로 재면 순위 상관이 **.467** 로 떨어져 **상위 2~3개만 모델 간 합의**가 있고,
+  ② permutation 은 **상관된 변수끼리 서로의 중요도를 가린다**(`peer_relationship` 은 짝을
+  제거하면 .0122 → .0268). 따라서 개별 순위가 아니라 **묶음 단위**로 해석해야 한다.
+  ③ 더 중요하게, **오류가 무작위가 아니다**: 놓친 학생(FN 136명)은 자아존중감·친구지지·
+  부모감독이 높고 우울이 낮아 **정상 판정군(TN)과 흡사한 프로파일**이다(FN 의 75.7%가
+  cutoff 바로 위 경계선이라는 완화 요인은 있으나). 선별 도구로 전용될 경우
+  **가장 눈에 띄지 않는 학생을 체계적으로 놓칠 위험**이 있다.
+- **예측 ≠ 인과.** 관찰 패널자료이므로 교란변수를 통제하지 못한다. 다만 예측변인(5차)과
+  결과(6차) 사이에 **시간 순서**가 확보되어 역방향 설명은 부분적으로 배제된다.
 - **가짜 결과 금지.** 분석 전에는 성능 숫자를 README·노트북에 적지 않는다.
   이 문서의 성능표가 비어 있는 것은 실수가 아니라 규칙이다.

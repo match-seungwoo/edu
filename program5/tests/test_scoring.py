@@ -165,3 +165,53 @@ def test_bootstrap_is_reproducible():
     a = evaluation.bootstrap_coefficients(_logit_pipeline(), X, y, n_boot=30, seed=7)
     b = evaluation.bootstrap_coefficients(_logit_pipeline(), X, y, n_boot=30, seed=7)
     pd.testing.assert_frame_equal(a, b)
+
+
+def test_permutation_cv_ranks_signal_above_noise():
+    """신호 변수가 잡음 변수보다 중요도가 높아야 한다 (out-of-fold 기준)."""
+    from sklearn.model_selection import StratifiedKFold
+
+    from maps_risk import evaluation
+
+    X, y = _tiny_logit_data(np.random.default_rng(0), n=300)
+    cv = StratifiedKFold(3, shuffle=True, random_state=0)
+    out = evaluation.permutation_scores_cv(_logit_pipeline(), X, y, cv, n_repeats=5, seed=0)
+    assert out.iloc[0]["feature"] == "signal"
+    row = out.set_index("feature")
+    assert row.loc["signal", "imp_mean"] > row.loc["noise", "imp_mean"]
+    assert row.loc["signal", "n_folds_positive"] == 3
+
+
+def test_permutation_cv_is_measured_out_of_fold():
+    """train 에서 잰 중요도보다 out-of-fold 값이 크지 않아야 한다.
+
+    학습에 쓴 데이터에서 섞으면 '외운 것'까지 중요도로 잡혀 부풀려진다.
+    """
+    from sklearn.base import clone
+    from sklearn.inspection import permutation_importance
+    from sklearn.model_selection import StratifiedKFold
+
+    from maps_risk import evaluation
+
+    rng = np.random.default_rng(3)
+    X, y = _tiny_logit_data(rng, n=200)
+    X["noise2"] = rng.normal(size=len(X))          # 외우기 좋은 잡음을 하나 더
+    cv = StratifiedKFold(3, shuffle=True, random_state=0)
+
+    oof = evaluation.permutation_scores_cv(_logit_pipeline(), X, y, cv, n_repeats=5, seed=0)
+    fitted = clone(_logit_pipeline()).fit(X, y)
+    in_sample = permutation_importance(fitted, X, y, scoring="roc_auc",
+                                       n_repeats=5, random_state=0).importances_mean
+    assert oof["imp_mean"].sum() <= in_sample.sum() + 1e-9
+
+
+def test_permutation_cv_is_reproducible():
+    from sklearn.model_selection import StratifiedKFold
+
+    from maps_risk import evaluation
+
+    X, y = _tiny_logit_data(np.random.default_rng(5), n=200)
+    cv = StratifiedKFold(3, shuffle=True, random_state=0)
+    a = evaluation.permutation_scores_cv(_logit_pipeline(), X, y, cv, n_repeats=4, seed=1)
+    b = evaluation.permutation_scores_cv(_logit_pipeline(), X, y, cv, n_repeats=4, seed=1)
+    pd.testing.assert_frame_equal(a, b)

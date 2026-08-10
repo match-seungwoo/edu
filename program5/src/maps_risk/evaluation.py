@@ -107,6 +107,42 @@ def bootstrap_coefficients(estimator, X, y, n_boot=500, seed=42):
     }).sort_values("coef", key=lambda c: c.abs(), ascending=False).reset_index(drop=True)
 
 
+def permutation_scores_cv(estimator, X, y, cv, scoring="roc_auc",
+                          n_repeats=10, seed=42):
+    """교차검증으로 Permutation Importance 를 낸다 — 섞기는 **validation 폴드**에서만.
+
+    받는 것:
+      estimator  아직 fit 하지 않은 Pipeline
+      X, y       train 데이터 (test 는 절대 넣지 않는다)
+      cv         분할기 (모든 모델이 같은 것을 써야 비교가 성립한다)
+    돌려주는 것: feature / imp_mean / imp_sd / n_folds_positive DataFrame (내림차순)
+    왜: 학습에 쓴 데이터에서 섞으면, 과적합된 모델이 **외운 것**을 중요도로 보고한다.
+        폴드마다 train 으로 fit 하고 **본 적 없는 validation 에서 섞어야** 일반화되는
+        기여만 남는다. (실측: 같은 포레스트를 train 에서 재면 합계가 약 1.8배 부풀려진다.)
+    불변성: ① 섞기는 validation 폴드에서만 ② 반환 순서 = X.columns 순서
+        ③ 폴드마다 clone 으로 새 estimator (이전 fit 상태가 누적되지 않게).
+    주의: 값이 음수면 "섞었더니 오히려 좋아졌다" = 그 변수는 도움이 안 됐다는 뜻이다.
+    주의: 상관된 변수끼리는 **서로의 중요도를 가린다** — 낮게 나왔다고 중요하지 않은 것이 아니다.
+    """
+    from sklearn.base import clone
+    from sklearn.inspection import permutation_importance
+
+    cols = list(X.columns)
+    per_fold = []
+    for k, (tr, va) in enumerate(cv.split(X, y)):
+        fitted = clone(estimator).fit(X.iloc[tr], y.iloc[tr])
+        r = permutation_importance(fitted, X.iloc[va], y.iloc[va], scoring=scoring,
+                                   n_repeats=n_repeats, random_state=seed + k, n_jobs=-1)
+        per_fold.append(r.importances_mean)
+
+    folds = pd.DataFrame(per_fold, columns=cols)
+    return (pd.DataFrame({"feature": cols,
+                          "imp_mean": folds.mean().values,
+                          "imp_sd": folds.std().values,
+                          "n_folds_positive": (folds > 0).sum().values})
+            .sort_values("imp_mean", ascending=False).reset_index(drop=True))
+
+
 def permutation_scores(fitted_pipeline, X, y, feature_names,
                        scoring="roc_auc", n_repeats=20, seed=42):
     """Permutation Importance — 변수를 섞었을 때 성능이 얼마나 떨어지나.
