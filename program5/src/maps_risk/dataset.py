@@ -48,6 +48,18 @@ def build_modeling_frame(df5, df6, variables):
     id6 = variables["id"]["wave6"]
     mc = variables.get("missing_codes") or []
 
+    # 불변성: 각 차수 안에서 ID 는 유일·비결측이다. pandas merge 는 NaN 키끼리도
+    # 매칭하므로, 깨진 채 진행하면 행이 조용히 불어난다(1명=1행 위반) → 즉시 중단.
+    for df, idc, wave in ((df5, id5, "5차"), (df6, id6, "6차")):
+        if idc not in df.columns:
+            raise ValueError(f"{wave} ID 컬럼 '{idc}' 이 데이터에 없다")
+        n_dup = int(df[idc].duplicated().sum())
+        n_na = int(df[idc].isna().sum())
+        if n_dup or n_na:
+            raise ValueError(
+                f"{wave} ID '{idc}' 가 유일하지 않다 (중복 {n_dup} · 결측 {n_na}) — "
+                "이대로 병합하면 행이 불어난다. 원자료를 확인하라.")
+
     preds = verified_constructs(variables, "predictors")
     opts = verified_constructs(variables, "optional_predictors")
     tgt = variables["target"]
@@ -59,11 +71,27 @@ def build_modeling_frame(df5, df6, variables):
         prior = build_scores(df5, opts, mc)
         x5 = pd.concat([x5, prior], axis=1)
 
-    # 배경변수(단일 문항)는 점수 계산 없이 그대로 붙인다.
-    for name, spec in (variables.get("background") or {}).items():
-        col = spec.get("column")
-        if spec.get("status") == "verified" and col and col in df5.columns:
-            x5[name] = df5[col].values
+    # 배경변수(단일 문항) — 점수 계산은 없지만 결측 코드 처리는 척도 문항과 똑같이 필요하다.
+    # (9=무응답 같은 코드가 숫자로 남으면 뒤의 중앙값 대치·표준화가 오염된다.)
+    bg = {n: s for n, s in (variables.get("background") or {}).items()
+          if s.get("status") == "verified" and s.get("column")
+          and s.get("column") in df5.columns}
+    if bg:
+        clean_bg = scoring.apply_missing_codes(
+            df5, [s["column"] for s in bg.values()], mc)
+        for name, spec in bg.items():
+            col = clean_bg[spec["column"]]
+            if spec.get("type") == "categorical" and col.nunique(dropna=True) > 2:
+                # 다범주 변수를 숫자 하나로 두면 없는 서열을 만들어낸다 → one-hot.
+                # (결측 행은 모든 dummy 가 0 이 된다.)
+                try:
+                    col = col.astype("Int64")   # 5.0 → 5 (dummy 컬럼명 정리)
+                except (TypeError, ValueError):
+                    pass
+                x5 = pd.concat([x5, pd.get_dummies(col, prefix=name, dtype=float)],
+                               axis=1)
+            else:
+                x5[name] = col.values
 
     clean6 = scoring.apply_missing_codes(df6, tgt.get("items") or [], mc)
     y6 = pd.DataFrame({
@@ -78,7 +106,17 @@ def build_modeling_frame(df5, df6, variables):
     })
 
     merged = x5.merge(y6, on="id", how="inner")
-    return merged.dropna(subset=["acculturative_stress_w6"]).reset_index(drop=True)
+    merged = merged.dropna(subset=["acculturative_stress_w6"])
+
+    # 구성개념 점수가 '전부' 결측인 행은 제외한다. MAPS 파일에는 그 차수
+    # 미참여자도 행으로 들어 있어(응답은 전부 공백), 남겨 두면 뒤의 중앙값
+    # 대치가 정보 없는 가짜 행을 만들어낸다. 배경변수(성별 등 관리 정보)만
+    # 있는 행도 예측 정보가 없기는 마찬가지라 점수 컬럼 기준으로 판단한다.
+    score_cols = [c for c in list(preds) + list(opts or {}) if c in merged.columns]
+    if score_cols:
+        merged = merged.dropna(subset=score_cols, how="all")
+
+    return merged.reset_index(drop=True)
 
 
 def make_high_stress_label(train_scores, all_scores, quantile=0.75):
@@ -90,6 +128,9 @@ def make_high_stress_label(train_scores, all_scores, quantile=0.75):
         반드시 train 에서만 계산한다.
     주의: 여기서 만든 1은 **조작적으로 정의한 고스트레스 집단**이지
           임상적 고위험군이 아니다.
+    주의: 문항 평균 점수는 이산적이라 cutoff 동점자가 몰리면 train 의
+          양성 비율이 quantile 과 정확히 일치하지 않을 수 있다 → 실제 비율을
+          항상 함께 보고한다.
     """
     cutoff = float(train_scores.quantile(quantile))
     return (all_scores >= cutoff).astype(int), cutoff

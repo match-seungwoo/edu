@@ -40,6 +40,14 @@ def main():
     args = ap.parse_args()
 
     files = find_raw_files(args.raw)
+    # 데이터로 직접 못 읽는 파일(zip·pdf·hwp 등)도 받은 것은 받은 것이다 —
+    # 조용히 빼놓으면 "무엇을 받았는지" 보고가 반쪽이 된다.
+    raw_dir = Path(args.raw)
+    others = []
+    if raw_dir.exists():
+        others = sorted(p for p in raw_dir.iterdir()
+                        if p.is_file() and not p.name.startswith(".")
+                        and p not in set(files))
     lines = [
         "# 데이터 인벤토리 (data_inventory.md)",
         "",
@@ -48,8 +56,14 @@ def main():
         "",
     ]
 
-    if not files:
+    if not files and not others:
         lines.append(NOT_FOUND_MSG.format(raw=args.raw))
+    elif not files:
+        lines += ["## 🟡 바로 읽을 수 있는 데이터 파일이 없다", "",
+                  "아래 파일은 도착했지만 데이터로 직접 읽지 못했다.",
+                  "**압축(zip)은 풀어야** 데이터가 보인다. PDF·hwp·xlsx 문서는 코드북/조사표/가이드다.", ""]
+        lines += [f"- `{p.name}`" for p in others]
+        lines += [""]
     else:
         demo = "demo" in args.raw
         if demo:
@@ -62,6 +76,10 @@ def main():
             lines.append(f"| `{i['name']}` | {i['format']} | "
                          f"{i['n_rows'] if i['n_rows'] is not None else '-'} | "
                          f"{i['n_cols'] if i['n_cols'] is not None else '-'} | {state} |")
+        if others:
+            lines += ["", f"## 1b. 데이터로 직접 읽지 않은 파일 {len(others)}개", "",
+                      "압축(zip)은 풀어야 데이터가 보인다. PDF·hwp 문서는 코드북/조사표/가이드다.", ""]
+            lines += [f"- `{p.name}`" for p in others]
         lines += ["", "## 2. 컬럼 미리보기 (앞 20개)", ""]
         for i in infos:
             if i["columns_head"]:
@@ -90,9 +108,11 @@ def main():
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text("\n".join(lines), encoding="utf-8")
-    print(f"✅ 생성: {out}  ({len(files)}개 파일 검사)")
-    if not files:
+    print(f"✅ 생성: {out}  (데이터 {len(files)}개 · 기타 {len(others)}개 파일 검사)")
+    if not files and not others:
         print("⚠️  원자료 없음 — DATA_ACQUISITION.md 의 신청 절차를 따르세요.")
+    elif others:
+        print(f"📦 직접 읽지 않은 파일 {len(others)}개 (zip/pdf 등) — 인벤토리 1b절 참고")
 
 
 if __name__ == "__main__":

@@ -29,6 +29,21 @@ def test_scale_score_applies_reverse():
     assert out.iloc[0] == 2.5
 
 
+def test_sum_score_prorates_partial_response():
+    """sum 방식에서 부분응답자의 점수가 체계적으로 낮아지면 안 된다."""
+    df = pd.DataFrame({"a": [2, 2], "b": [4, np.nan]})
+    out = scoring.scale_score(df, ["a", "b"], method="sum")
+    assert out.iloc[0] == 6.0            # 완전응답: 2 + 4
+    assert out.iloc[1] == 4.0            # 부분응답: 평균 2 × 2문항 (2가 아니라)
+
+
+def test_sum_score_complete_response_unchanged():
+    """완전응답자의 sum 은 문항 합과 정확히 같다 (보정의 회귀 불변성)."""
+    df = pd.DataFrame({"a": [1, 4], "b": [3, 2], "c": [2, 1]})
+    out = scoring.scale_score(df, ["a", "b", "c"], method="sum")
+    assert list(out) == [6.0, 7.0]
+
+
 def test_min_valid_items_blocks_partial_response():
     """응답 문항이 기준보다 적으면 점수를 만들지 않는다."""
     df = pd.DataFrame({"a": [1, 1], "b": [np.nan, 2]})

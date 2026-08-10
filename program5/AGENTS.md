@@ -137,7 +137,14 @@ Use:
 
 random_state = 42
 test_size = 0.20
-stratify = target
+
+Stratification: the true high-stress label exists only after the
+train-only cutoff (circular dependency), so stratify the split on a
+provisional median split of the Wave 6 stress score and document
+this choice in code comments.
+
+Feature screening (for example, dropping high-missingness features)
+must be computed on the training split only.
 
 Within the training data use stratified 5-fold cross-validation.
 
