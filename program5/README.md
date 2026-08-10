@@ -19,8 +19,9 @@ Adolescents Using MAPS: An Explainable Machine Learning Approach*
 | 변수 후보 체크리스트 | ✅ 생성 — `python scripts/codebook_candidates.py` → `reports/codebook_candidates.md` |
 | `configs/variables.yaml` | 전부 `status: unverified` — **체크리스트를 보고 사람이 검증 후 채운다** (2차시) |
 | 파이프라인 뼈대 | ✅ 완성 (`pytest -q` 34개 통과 — 실데이터 구조 테스트 포함) |
-| 1차시 | ✅ 완성 (데이터 없이 진행 가능하도록 설계) |
-| 2~8차시 | 코드북 검증(2차시) 후 제작 |
+| 1차시 | ✅ 완성 (데이터 없이 진행 가능하도록 설계 · 원자료 수령 반영 갱신) |
+| 2차시 | ✅ 완성 — 코드북 검증·게이트 열기 실습. **variables.yaml 은 수업에서 사람이 채운다** |
+| 3~8차시 | 2차시 게이트 오픈 후 제작 |
 
 > **데이터가 없으면 `build_dataset.py` 는 일부러 멈춘다.** 추측으로 진행하지 않는 것이
 > 이 프로젝트의 첫 번째 규칙이다.
