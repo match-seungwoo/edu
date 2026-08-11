@@ -22,32 +22,7 @@
 """
 import os
 
-from nb import md, code, save
-
-SETUP = r'''# ── 프로젝트 환경 자동 설정 (Colab / 로컬 공용) ───────────────────────
-# 이 셀은 모든 차시 노트북 맨 위에 동일하게 들어간다. 그냥 실행만 하면 된다.
-import os, sys
-
-def find_project():
-    """AGENTS.md 와 configs/ 가 함께 있는 program5 폴더를 찾는다."""
-    cands = [".", "program5", "..", "../program5", "/content/program5",
-             "/content/edu/program5", os.path.expanduser("~/program5")]
-    for c in cands:
-        if os.path.exists(os.path.join(c, "AGENTS.md")) and \
-           os.path.exists(os.path.join(c, "configs", "variables.yaml")):
-            return os.path.abspath(c)
-    return None
-
-PROJECT = find_project()
-if PROJECT is None:
-    print("⚠️  프로젝트 폴더를 찾지 못했습니다. 아래 둘 중 하나로 해결하세요:")
-    print("  (A) Colab: 좌측 파일창에 program5 폴더를 통째로 업로드")
-    print("  (B) Colab: !git clone <이 강의 repo 주소>  후 다시 실행")
-else:
-    os.chdir(PROJECT)
-    sys.path.insert(0, os.path.join(PROJECT, "src"))
-    print("✅ 프로젝트 경로:", PROJECT)
-'''
+from nb import md, code, save, SETUP
 
 cells = [
 md("""# 8차시 — 봉투를 연다
