@@ -167,6 +167,11 @@
             margin: 0 0 8px 0;
         }
         .step-card p { font-size: 16px; margin: 0; color: #cfcfcf; }
+        /* 카드가 많은 슬라이드 — 여백을 줄여 720px 안에 들어오게 한다 */
+        .step-grid.dense { gap: 14px; }
+        .step-grid.dense .step-card { padding: 14px 18px; }
+        .step-grid.dense .step-card h4 { font-size: 16px; margin-bottom: 5px; }
+        .step-grid.dense .step-card p { font-size: 15px; line-height: 1.45; }
         .step-card code {
             background: #000;
             color: #adff2f;
@@ -181,118 +186,322 @@
         .src-tag { display:inline-block; background:#151a21; color:#adff2f; padding:3px 10px; border-radius:6px; font-size:14px; margin-right:6px; }
         .finding { background:#101820; border-left:4px solid #adff2f; padding:18px 24px; border-radius:8px; }
         .finding b { color:#adff2f; }
+        /* 행이 많은 표: 셀 여백을 줄여 720px 안에 들어오게 한다 */
+        .table-layout table.compact th { padding: 11px 16px; }
+        .table-layout table.compact td { padding: 11px 16px; }
+        .table-layout table.tight th { padding: 7px 14px; }
+        .table-layout table.tight td { padding: 7px 14px; }
+        /* 제목이 긴 슬라이드 — 줄바꿈을 허용한다 (기본은 한 줄 말줄임) */
+        .slide-title.wrap { white-space: normal; font-size: 36px; line-height: 1.25; margin-bottom: 22px; }
+        /* 슬라이드별 용어 주석 (한글 용어 + 영어 원어) — 3차시와 같은 규칙 */
+        .term-note {
+            position: absolute; bottom: 18px; left: 60px; right: 130px; z-index: 2;
+            font-family: 'Lato', 'Nanum Gothic', sans-serif; font-size: 13px;
+            color: #55606f; letter-spacing: 0.2px; line-height: 1.3;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .term-note b { color: #7a8798; font-weight: 700; margin-right: 8px; }
+        /* 5겹 교차검증 도식 */
+        .fold-row { display:flex; align-items:center; gap:6px; margin-bottom:7px; }
+        .fold-row .lbl { width:62px; font-size:15px; color:#8892a4; }
+        .fold-row i { flex:1; height:30px; background:#1d3a44; border:1px solid #00f2ff; border-radius:4px; }
+        .fold-row i.te { background:#5a3a12; border-color:#ffd479; }
+        .fold-row .v { width:52px; text-align:right; font-size:16px; color:#ffd479; font-weight:700; }
+        /* 네 칸 혼동행렬 카드 */
+        .cm-grid { display: grid; grid-template-columns: 150px 1fr 1fr; gap: 12px; width: 100%; align-items: stretch; }
+        .cm-grid .hd { display:flex; align-items:center; justify-content:center; text-align:center;
+                       color:#00f2ff; font-family:'Poppins',sans-serif; font-size:17px; }
+        .cm-cell { background:#151a21; border-radius:10px; padding:16px 18px; border-left:4px solid #333; }
+        .cm-cell.ok  { border-left-color:#adff2f; }
+        .cm-cell.bad { border-left-color:#ff6b6b; }
+        .cm-cell h4 { font-family:'Poppins',sans-serif; font-size:20px; margin:0 0 6px 0; color:#fff; }
+        .cm-cell p  { font-size:16px; margin:0; color:#b8c0cc; line-height:1.45; }
+        .cm-cell .n { font-size:26px; font-weight:700; color:#adff2f; }
+        .cm-cell.bad .n { color:#ff8080; }
     </style>
 </head>
 <body>
-<!-- 1 Title -->
 <div class="slide-container" id="s1">
   <div class="content-area title-layout">
-    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:60px;">성능이 좋아 보이면 의심하라</h1>
-    <p class="subtitle">선을 긋고, 데이터를 나누고, 일부러 부정행위를 저질러 본다</p>
-    <p style="margin-top:40px;font-weight:700;letter-spacing:2px;color:#adff2f;">4차시 · 조작적 정의 · train/test split · 클래스 불균형 · 데이터 누출</p>
+    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:56px;">무엇으로 배우고,<br>무엇으로 재는가</h1>
+    <p class="subtitle">데이터 사이언스의 뼈대 — 그리고 좋아 보이는 숫자를 의심하는 법</p>
+    <p style="margin-top:36px;font-weight:700;letter-spacing:2px;color:#adff2f;">4차시 · feature · parameter · training · 평가 지표 · 과적합과 데이터 누출</p>
   </div>
+  <div class="term-note"><b>용어</b>데이터 사이언스 (data science) · 특성 (feature) · 모수 (parameter) · 학습 (training)</div>
   <div class="slide-no">01</div>
 </div>
 
-<!-- 2 훅 -->
 <div class="slide-container" id="s2">
-  <h2 class="slide-title">오늘 만들 두 개의 "좋아 보이는" 숫자</h2>
+  <h2 class="slide-title">오늘 만들 세 개의 "좋아 보이는" 숫자</h2>
   <div class="content-area table-layout">
-    <table style="font-size:19px;">
+    <table class="compact" style="font-size:18px;">
       <tr><th style="width:190px;">숫자</th><th>어떻게 나오나</th><th>왜 쓸모없나</th></tr>
-      <tr><td><b style="color:#adff2f;font-size:26px;">정확도 66%</b></td><td>전원을 "고스트레스 아님"으로 찍는다</td><td>고스트레스를 <b style="color:#ff8080;">한 명도</b> 못 찾는다</td></tr>
-      <tr><td><b style="color:#adff2f;font-size:26px;">AUC 1.0</b></td><td>6차 스트레스 점수로 6차 고스트레스를 맞힌다</td><td><b style="color:#ff8080;">답을 보고 답을 맞혔다</b></td></tr>
+      <tr><td><b style="color:#adff2f;font-size:24px;">정확도 .663</b></td><td>전원을 "고스트레스 아님"으로 찍는다</td><td>고스트레스를 <b style="color:#ff8080;">한 명도</b> 못 찾는다</td></tr>
+      <tr><td><b style="color:#adff2f;font-size:24px;">train AUC 1.000</b></td><td>결정트리의 깊이 제한을 푼다</td><td><b style="color:#ff8080;">외운 것</b>이다 — 새 사람 앞에선 .519</td></tr>
+      <tr><td><b style="color:#adff2f;font-size:24px;">CV AUC 1.000</b></td><td>6차 스트레스 점수를 feature 에 넣는다</td><td><b style="color:#ff8080;">답을 보고 답을 맞혔다</b></td></tr>
     </table>
-    <div class="finding" style="margin-top:22px;">
-      <p style="margin:0;font-size:21px;color:#fff;">오늘은 이 둘을 <b>직접 만들어 보고</b>, 왜 쓰레기인지 <b style="color:#adff2f;">스스로 설명</b>하게 된다.</p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">셋 다 <b>직접 만들어 보고</b>, 왜 쓰레기인지 <b style="color:#adff2f;">스스로 설명</b>하게 된다.<br>
+      <span style="font-size:17px;color:#8892a4;">그러려면 먼저 알아야 한다 — 모델은 <b>무엇을 보고</b>(feature), <b>무엇을 정하고</b>(parameter), <b>어떻게 채점받는가</b>(지표).<br>
+      ※ 지금은 <b>AUC = 성능 점수(0.5 동전 던지기 ~ 1.0 완벽)</b> · <b>CV = train 안에서 다시 나눠 채점하는 방법</b> 정도만 알면 된다.
+      정식 정의는 <b>슬라이드 20</b>(CV)과 <b>평가 ⑨ · 슬라이드 35</b>(AUC).</span></p>
     </div>
   </div>
+  <div class="term-note"><b>용어</b>정확도 (accuracy) · AUC (area under the ROC curve) · 과적합 (overfitting) · 데이터 누출 (data leakage)</div>
   <div class="slide-no">02</div>
 </div>
 
-<!-- 3 아젠다 -->
 <div class="slide-container" id="s3">
-  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <h2 class="slide-title">오늘의 흐름 — 8 Step</h2>
   <div class="content-area">
-    <div class="step-grid">
+    <div class="step-grid dense">
       <div class="step-card"><h4>Step 0 · 재료 확인</h4><p>표가 성립하는가 — id 유일 · target 결측 · 6차 컬럼</p></div>
-      <div class="step-card"><h4>Step 1 · 조작적 정의</h4><p>선을 긋는다는 것 · <strong>임상 진단이 아니다</strong></p></div>
-      <div class="step-card"><h4>Step 2 · train/test split</h4><p>시험 문제를 미리 보지 않는다</p></div>
-      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 3 · 순서가 전부다 ⚠️</h4><p><strong>첫 봉우리</strong> — cutoff 는 train 에서만</p></div>
-      <div class="step-card"><h4>Step 4 · 클래스 불균형</h4><p>accuracy 가 거짓말하는 법 · Dummy baseline</p></div>
-      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 5~7 · 누출 🔥</h4><p><strong>백미</strong> — AUC 1.0 만들기 → 세 얼굴 → 테스트로 못 박기</p></div>
+      <div class="step-card"><h4>Step 1 · feature 와 parameter</h4><p>재료 <strong>18개</strong> · 손잡이 <strong>19개</strong></p></div>
+      <div class="step-card"><h4>Step 2 · training 과 목표</h4><p>학습이란 무엇인가 · <strong>우리가 하려는 일 한 문장</strong></p></div>
+      <div class="step-card"><h4>Step 3 · 조작적 정의</h4><p>선을 긋는다는 것 · <strong>임상 진단이 아니다</strong></p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 4~5 · split · cutoff · 과적합 ⚠️</h4><p><strong>첫 봉우리</strong> — 순서가 전부다 · 외운 모델 만들기</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 6 · 평가 지표 🎯</h4><p><strong>오늘의 본론</strong> — 혼동행렬 · precision/recall · F score · F-beta · AUC</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 7 · 데이터 누출 🔥</h4><p><strong>두 번째 봉우리</strong> — AUC 1.0 만들기 → 세 얼굴</p></div>
+      <div class="step-card"><h4>Step 8 · 구조와 테스트</h4><p>Pipeline 으로 막고 <code>pytest</code> 로 못 박기</p></div>
     </div>
-    <p style="font-size:19px;margin-top:16px;color:#adff2f;">🔒 <strong>오늘 test 는 열지 않는다.</strong> 만들어 놓고 봉인한다 — 모든 평가는 train 안 5-fold CV.</p>
+    <p style="font-size:18px;margin-top:12px;color:#adff2f;">🔒 <strong>오늘 test 는 열지 않는다.</strong> 만들어 놓고 봉인한다 — 모든 평가는 train 안 5-fold CV.</p>
   </div>
+  <div class="term-note"><b>용어</b>교차검증 (cross-validation) · 임계값 (threshold) · 기준선 (baseline)</div>
   <div class="slide-no">03</div>
 </div>
 
-<!-- 4 지도 -->
 <div class="slide-container" id="s4">
   <h2 class="slide-title">지난 시간 ↔ 오늘 — 8차시 지도</h2>
   <div class="content-area table-layout">
-    <table style="font-size:17px;">
+    <table class="tight" style="font-size:15px;">
       <tr><th style="width:80px;">차시</th><th>심리학</th><th>IT / 머신러닝</th><th>산출물</th></tr>
       <tr><td>1~2 ✅</td><td>문화적응 스트레스 · 심리척도 · 역채점</td><td>feature/target · pandas · ID join</td><td>variables.yaml</td></tr>
       <tr><td>3 ✅</td><td>분포 · 상관 · Cronbach α</td><td>집계 · 시각화 · 클리닝</td><td>figures · 역채점 교정</td></tr>
-      <tr><td><strong>4 (오늘)</strong></td><td><strong>조작적 정의 · 임상 cut-off 와의 차이</strong></td><td><strong>split · 불균형 · 데이터 누출 · baseline</strong></td><td><strong>high_stress 라벨 · test_no_leakage</strong></td></tr>
+      <tr><td><strong>4 (오늘)</strong></td><td><strong>조작적 정의 · 임상 cut-off 와의 차이<br>놓침(FN)과 낙인(FP)의 비용</strong></td><td><strong>feature/parameter/training<br>split · 과적합 · 평가 지표 · 데이터 누출</strong></td><td><strong>high_stress 라벨<br>test_no_leakage</strong></td></tr>
       <tr><td>5</td><td>예측변수와 결과의 관계 · 방향</td><td>로지스틱 회귀 · 계수 · 표준화</td><td>표준화 계수</td></tr>
       <tr><td>6~8</td><td>선형성 → 해석 → 보고</td><td>트리/포레스트 → 중요도 → 재현성</td><td>metrics · final_report</td></tr>
     </table>
-    <div class="finding" style="margin-top:18px;">
-      <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b>"누출 사례를 스스로 설명할 수 있다."</b> — 오늘은 배우는 게 아니라 <b style="color:#adff2f;">직접 저질러 본다.</b></p>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:18px;color:#fff;">완료 기준: <b>"지표 하나만 보면 왜 속는지, 누출 사례가 왜 쓰레기인지 스스로 설명할 수 있다."</b><br>오늘은 배우는 게 아니라 <b style="color:#adff2f;">직접 저질러 본다.</b></p>
     </div>
   </div>
+  <div class="term-note"><b>용어</b>분류 (classification) · 예측변수 (predictor) · 표적변수 (target) · 재현성 (reproducibility)</div>
   <div class="slide-no">04</div>
 </div>
 
-<!-- 5 목표 -->
 <div class="slide-container" id="s5">
   <h2 class="slide-title">오늘(4차시)의 목표</h2>
   <div class="content-area">
-    <ul class="bullet-list" style="font-size:22px;">
-      <li><i class="fa-solid fa-1"></i> <strong>조작적 정의</strong>가 무엇이고 무엇이 <strong>아닌지</strong>(임상 진단 아님) 설명한다</li>
-      <li><i class="fa-solid fa-2"></i> <strong>train/test split</strong> 을 하고 <strong>cutoff 를 train 에서만</strong> 계산한다</li>
-      <li><i class="fa-solid fa-3"></i> <strong>클래스 불균형</strong>에서 accuracy 가 왜 거짓말하는지 보인다</li>
-      <li><i class="fa-solid fa-4"></i> <strong>데이터 누출</strong>을 일부러 일으켜 AUC 1.0 을 만들고, 왜 쓰레기인지 설명한다</li>
+    <ul class="bullet-list" style="font-size:19px;">
+      <li><i class="fa-solid fa-1"></i> <strong>feature</strong> 가 무엇인지 설명하고, 우리 프로젝트의 feature <strong>18개</strong>를 센다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>parameter</strong> 와 <strong>하이퍼파라미터</strong>를 구분하고, 우리 모델의 파라미터 <strong>19개</strong>를 찾는다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>training</strong> 이 무엇을 하는 일인지 설명하고, <strong>우리 목표</strong>를 한 문장으로 쓴다</li>
+      <li><i class="fa-solid fa-4"></i> <strong>split · cutoff 순서</strong>를 지키고 <strong>과적합</strong>을 직접 만든다</li>
+      <li><i class="fa-solid fa-5"></i> <strong>혼동행렬 · precision · recall · F score · F-beta · AUC</strong> 를 우리 숫자로 읽는다</li>
+      <li><i class="fa-solid fa-6"></i> <strong>데이터 누출</strong>을 일으켜 AUC 1.0 을 만들고, 왜 쓰레기인지 설명한다</li>
     </ul>
-    <p style="font-size:19px;margin-top:10px;color:#8892a4;">※ 오늘의 문장: <b style="color:#adff2f">AUC 1.0 은 축하가 아니라 경보다.</b></p>
+    <p style="font-size:18px;margin-top:8px;color:#8892a4;">※ 오늘의 문장: <b style="color:#adff2f">지표 하나로는 반드시 속는다. 그리고 AUC 1.0 은 축하가 아니라 경보다.</b></p>
   </div>
+  <div class="term-note"><b>용어</b>혼동행렬 (confusion matrix) · 정밀도 (precision) · 재현율 (recall) · F 점수 (F score)</div>
   <div class="slide-no">05</div>
 </div>
 
-<!-- 6 Step0 -->
 <div class="slide-container" id="s6">
   <h2 class="slide-title">Step 0 — 재료 확인: 표가 성립하는가</h2>
   <div class="content-area">
     <p style="font-size:20px;margin:0;">3차시가 교정한 <code>modeling_frame.parquet</code> — <strong>1,321행 × 21열</strong>. 분석 전에 세 가지를 확인한다.</p>
     <div class="code-block" style="margin-top:14px;font-size:18px;">① id 중복 <span class="num">0</span>개        ✅   <span class="cm"># 아니면 → 같은 사람이 train·test 양쪽에 (성능 과대추정)</span>
 ② target 결측 <span class="num">0</span>개    ✅   <span class="cm"># 아니면 → NaN >= cutoff 가 False 라 조용히 '음성' 라벨</span>
-③ 6차 컬럼 없음        ✅   <span class="cm"># 아니면 → 시간 누출 (오늘 Step 5 의 그것)</span></div>
+③ 6차 컬럼 없음        ✅   <span class="cm"># 아니면 → 시간 누출 (오늘 Step 7 의 그것)</span></div>
     <div class="finding" style="margin-top:16px;">
       <p style="margin:0;font-size:19px;color:#fff;">세 가지 모두 <b style="color:#ff8080;">깨져도 에러가 안 난다.</b> 그래서 매번 명시적으로 센다 — 2차시부터 반복된 습관이다.</p>
     </div>
   </div>
+  <div class="term-note"><b>용어</b>결측 (missing) · 병합 (merge/join) · 시간 누출 (temporal leakage)</div>
   <div class="slide-no">06</div>
 </div>
 
-<!-- 7 조작적 정의 -->
 <div class="slide-container" id="s7">
-  <h2 class="slide-title">Step 1 — 조작적 정의: 선을 긋는다는 것</h2>
+  <h2 class="slide-title">Step 1 — 데이터 사이언스는 무슨 일을 하는가</h2>
   <div class="content-area">
-    <p style="font-size:21px;margin:0;">스트레스 점수는 1.00~4.00 의 <strong>연속된 숫자</strong>다. 그런데 우리가 하려는 건 <strong>분류</strong> — 예/아니오 문제다.<br>연속을 둘로 나누려면 <b style="color:#adff2f;">선(cutoff)</b> 을 그어야 한다.</p>
-    <div class="finding" style="margin-top:20px;">
-      <p style="margin:0;font-size:22px;color:#fff;">우리가 긋는 선:<br><b style="color:#adff2f;">학습 데이터 점수의 상위 25%(75 백분위수) 이상 → high_stress = 1</b></p>
+    <div class="code-block" style="font-size:19px;">질문  →  데이터  →  <span style="color:#00f2ff;">feature</span>(재료)  →  모델 + <span style="color:#00f2ff;">parameter</span>(손잡이)  →  <span style="color:#00f2ff;">training</span>(학습)
+                                                                          ↓
+                                                     <span style="color:#adff2f;">평가(지표)</span>  →  해석  →  보고</div>
+    <p style="font-size:20px;margin-top:18px;">심리학 연구의 순서와 사실 같다 — <strong>구성개념 → 측정 → 분석 → 해석.</strong><br>
+    다만 데이터 사이언스는 가운데 "분석"을 <b style="color:#adff2f;">모델이 스스로 값을 정하는 과정</b>으로 바꿔 놓았다.</p>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">오늘 단어 세 개를 정확히 해 둔다 — <b>feature · parameter · training.</b><br>
+      <span style="font-size:17px;color:#8892a4;">이 셋을 구분하지 못하면 5~8차시의 모든 문장이 흐려진다.</span></p>
     </div>
-    <p style="font-size:20px;margin-top:20px;color:#fff;">이것을 <strong>조작적 정의(operational definition)</strong> 라고 한다 —<br>
-    <span style="color:#8892a4;">"연구자가 분석을 위해 <b>정한</b> 기준". 발견한 것이 아니라 <b style="color:#ffd479;">정한</b> 것이다.</span></p>
   </div>
+  <div class="term-note"><b>용어</b>구성개념 (construct) · 특성공학 (feature engineering) · 모델링 (modeling) · 지도학습 (supervised learning)</div>
   <div class="slide-no">07</div>
 </div>
 
-<!-- 8 이것이 아닌 것 -->
 <div class="slide-container" id="s8">
-  <h2 class="slide-title">Step 1 — 🔴 이것이 아닌 것 (연구윤리)</h2>
+  <h2 class="slide-title">Step 1 — feature: 모델에게 보여 주기로 정한 것</h2>
+  <div class="content-area table-layout">
+    <div class="finding">
+      <p style="margin:0;font-size:21px;color:#fff;"><b style="color:#adff2f;">feature(특성·예측변수) = 모델에게 보여 주기로 결정한 입력값 한 칸.</b><br>
+      <span style="font-size:18px;color:#8892a4;">표의 한 <b>열</b>이고, 응답자 한 명당 숫자 하나다.</span></p>
+    </div>
+    <table class="compact" style="font-size:18px;">
+      <tr><th style="width:56px;"></th><th style="width:330px;">원칙</th><th>우리 프로젝트에서</th></tr>
+      <tr><td>①</td><td><strong>모델은 feature 밖의 세상을 모른다</strong></td><td>담임의 인상, 가정 분위기 — <b style="color:#ff8080;">열에 없으면 존재하지 않는 정보</b>다</td></tr>
+      <tr><td>②</td><td><strong>주어지는 게 아니라 만드는 것</strong></td><td>문항 100개를 척도 점수 16개로 만든 것이 2·3차시의 일이다</td></tr>
+      <tr><td>③</td><td><strong>예측 시점에 알 수 있어야 한다</strong></td><td>6차(중3) 정보는 feature 가 될 수 없다 — <b style="color:#ff8080;">Step 7 의 그 사고</b></td></tr>
+    </table>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">target(y)은 feature 가 아니다 — <b style="color:#adff2f;">맞혀야 할 답</b>이다. 우리 y 는 6차 고스트레스 여부(0/1)다.</p>
+  </div>
+  <div class="term-note"><b>용어</b>특성 (feature) · 표적 (target) · 특성공학 (feature engineering) · 입력변수 (input variable)</div>
+  <div class="slide-no">08</div>
+</div>
+
+<div class="slide-container" id="s9">
+  <h2 class="slide-title">Step 1 — 우리 프로젝트의 feature 18개</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;"><span class="cm"># 5차 심리사회 척도 16개 (문항 100개가 점수 16개로 접혔다)</span>
+자아존중감(4문항) · 자아탄력성(14) · 우울(10) · 사회적위축(5) · 삶의만족도(3) · 가족지지(7)
+부모감독(3) · 부모방임(7) · 친구지지(7, <span style="color:#ffd479;">5점</span>) · 교우관계(5) · 집단괴롭힘(6) · 학교적응(5)
+교사지지(6, <span style="color:#ffd479;">5점</span>) · 이중문화수용(10) · 국가정체성(4) · 한국어실력(4)
+<span class="cm"># + 배경 2개</span>  성별 · 가정형편 지각        <span class="cm">→ 합계 feature 18개</span>
+
+<span class="cm"># Model B 는 여기에 '5차 문화적응 스트레스' 하나를 더한다 → 19개 (RQ3)</span></div>
+    <div class="two-column" style="margin-top:16px;">
+      <div class="finding"><p style="margin:0;font-size:18px;color:#fff;"><b>feature 는 발견되는 게 아니라 만들어진다</b><br><span style="color:#8892a4;">2차시의 컬럼 검증, 3차시의 역채점 교정 — 전부 "이 18개를 믿을 수 있게 만드는 일"이었다.</span></p></div>
+      <div class="finding" style="border-left-color:#ffd479;"><p style="margin:0;font-size:18px;color:#fff;"><b style="color:#ffd479;">응답 범위가 섞여 있다</b><br><span style="color:#8892a4;">대부분 [1,4] 인데 친구지지·교사지지는 [1,5] — 계수를 그냥 비교하면 안 된다 (5차시 표준화).</span></p></div>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>척도 점수 (scale score) · 문항 (item) · 응답 범위 (response range) · 배경변수 (background variable)</div>
+  <div class="slide-no">09</div>
+</div>
+
+<div class="slide-container" id="s10">
+  <h2 class="slide-title">Step 1 — parameter: 학습으로 값이 정해지는 손잡이</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">feature 가 <strong>재료</strong>라면, parameter 는 모델의 <strong>손잡이</strong>다. 로지스틱 회귀는 이렇게 생겼다:</p>
+    <div class="code-block" style="margin-top:12px;font-size:18px;">점수 = <span class="num">b0</span> + <span class="num">b1</span>×자아존중감 + <span class="num">b2</span>×자아탄력성 + <span class="num">b3</span>×우울 + … + <span class="num">b18</span>×가정형편
+확률 = 1 / (1 + exp(−점수))        <span class="cm"># 0~1 사이로 눌러 준다</span></div>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;"><b>b1 … b18 = 계수(coefficient) · b0 = 절편(intercept)</b><br>
+      전부 합쳐 <b style="color:#adff2f;">19개</b> — 이것이 우리 모델의 parameter 다. <b style="color:#ff8080;">학습 전에는 값이 없다.</b></p>
+    </div>
+    <p style="font-size:19px;margin-top:16px;color:#8892a4;">feature 를 하나 늘리면 파라미터도 하나 늘어난다 → Model B 는 <b style="color:#fff;">20개</b>.<br>
+    그리고 5차시에 우리가 <b style="color:#adff2f;">읽게 될 것</b>이 바로 이 19개 숫자다.</p>
+  </div>
+  <div class="term-note"><b>용어</b>모수 (parameter) · 계수 (coefficient) · 절편 (intercept) · 로지스틱 회귀 (logistic regression)</div>
+  <div class="slide-no">10</div>
+</div>
+
+<div class="slide-container" id="s11">
+  <h2 class="slide-title">Step 1 — parameter 와 하이퍼파라미터는 다르다 🔴</h2>
+  <div class="content-area table-layout">
+    <table class="compact" style="font-size:18px;">
+      <tr><th style="width:150px;"></th><th><strong>parameter</strong></th><th><strong>hyperparameter</strong></th></tr>
+      <tr><td><strong>누가 정하나</strong></td><td><b style="color:#adff2f;">데이터</b>가 정한다 (학습으로)</td><td><b style="color:#ffd479;">사람</b>이 정한다 (학습 전에)</td></tr>
+      <tr><td><strong>우리 예</strong></td><td>계수 18개 + 절편 1개 = <b>19개</b></td><td><code>C</code> · <code>max_depth</code> · <code>class_weight</code><br><code>test_size=0.20</code> · <code>random_seed=42</code> · <code>cutoff 분위수=0.75</code> · CV 5겹<span style="font-size:15px;color:#8892a4;">(슬라이드 20)</span></td></tr>
+      <tr><td><strong>어디 적히나</strong></td><td>학습된 모델 안 (<code>clf.coef_</code>)</td><td><code>configs/modeling.yaml</code> — <b>사람이 읽는 파일</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:19px;color:#fff;">🎯 왜 이 구분이 중요한가 — <b style="color:#adff2f;">하이퍼파라미터는 연구자의 선택이고, 선택은 기록해야 한다.</b><br>
+      "상위 25%를 고스트레스로 본다", "test 를 20% 뗀다" — <b>데이터가 시킨 게 아니라 우리가 정한 것</b>이다.<br>
+      <span style="font-size:17px;color:#8892a4;">그래서 이 프로젝트는 그것들을 코드에 흩어 두지 않고 설정 파일 한 곳에 모아 둔다.</span></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>하이퍼파라미터 (hyperparameter) · 규제 (regularization) · 설정 파일 (config) · 난수 시드 (random seed)</div>
+  <div class="slide-no">11</div>
+</div>
+
+<div class="slide-container" id="s12">
+  <h2 class="slide-title">Step 2 — training: 손잡이를 어디로 돌릴지 정하는 일</h2>
+  <div class="content-area">
+    <div class="finding">
+      <p style="margin:0;font-size:21px;color:#fff;"><b style="color:#adff2f;">training(학습) = 손잡이 19개를, "틀린 정도"가 가장 작아지는 자리로 돌리는 과정.</b></p>
+    </div>
+    <ul class="bullet-list" style="font-size:19px;margin-top:16px;">
+      <li><i class="fa-solid fa-1"></i> 파라미터를 아무 값에서 시작한다 (전부 0 이어도 된다)</li>
+      <li><i class="fa-solid fa-2"></i> train 1,056명의 확률을 계산한다 → 정답과 얼마나 어긋나는지 잰다 (<strong>손실, loss</strong>)</li>
+      <li><i class="fa-solid fa-3"></i> 손실이 줄어드는 방향으로 파라미터를 조금 움직인다</li>
+      <li><i class="fa-solid fa-4"></i> 더 줄지 않을 때까지 반복 (<code>max_iter=2000</code> = "최대 2000번까지")</li>
+    </ul>
+    <div class="code-block" style="margin-top:12px;font-size:19px;">model.<span class="fn">fit</span>(X_train, y_train)      <span class="cm"># ← 여기서 19개 숫자가 정해진다</span></div>
+  </div>
+  <div class="term-note"><b>용어</b>학습 (training/fitting) · 손실함수 (loss function) · 최적화 (optimization) · 수렴 (convergence)</div>
+  <div class="slide-no">12</div>
+</div>
+
+<div class="slide-container" id="s13">
+  <h2 class="slide-title">Step 2 — 학습에 대해 반드시 붙잡아야 할 세 가지</h2>
+  <div class="content-area table-layout">
+    <table class="compact" style="font-size:18px;">
+      <tr><th style="width:56px;"></th><th style="width:390px;">사실</th><th>그래서 생기는 일</th></tr>
+      <tr><td>①</td><td><strong>모델은 train 데이터의 정답을 본다</strong></td><td>train 성적은 항상 후하다 → <b style="color:#ff8080;">그걸로 성능을 재면 안 된다</b> (Step 4)</td></tr>
+      <tr><td>②</td><td><strong>목표는 손실을 줄이는 것이지<br>진실을 찾는 것이 아니다</strong></td><td>답을 베낄 방법이 있으면 <b style="color:#ff8080;">반드시 베낀다</b> (Step 7 누출)</td></tr>
+      <tr><td>③</td><td><strong>외우는 것도 손실을 줄인다</strong></td><td>1,056명을 통째로 외워도 손실은 0 이 된다 (<b style="color:#ff8080;">Step 5 과적합</b>)</td></tr>
+    </table>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:21px;color:#fff;">②③이 오늘 오후의 두 사고다.<br>
+      <b style="color:#adff2f;">모델은 부정직한 게 아니라, 시킨 일을 너무 잘하는 것뿐이다.</b></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>일반화 (generalization) · 암기 (memorization) · 누출 (leakage) · 손실 (loss)</div>
+  <div class="slide-no">13</div>
+</div>
+
+<div class="slide-container" id="s14">
+  <h2 class="slide-title">Step 2 — 그래서 우리 프로젝트의 목표는 무엇인가</h2>
+  <div class="content-area table-layout">
+    <div class="finding" style="font-size:20px;">
+      <p style="margin:0;color:#fff;">MAPS 1기 패널에서, <b style="color:#adff2f;">중학교 2학년(5차, 2015)</b> 시점의 심리사회 지표 <b style="color:#adff2f;">18개</b>로,
+      1년 뒤 <b style="color:#adff2f;">중학교 3학년(6차, 2016)</b> 시점에 우리가 <b style="color:#adff2f;">조작적으로 정의한</b> 고스트레스 집단에 속하는지를 <b>분류</b>한다.</p>
+    </div>
+    <table class="tight" style="font-size:17px;margin-top:14px;">
+      <tr><td style="width:150px;"><strong>입력 (X)</strong></td><td>5차 심리사회 척도 16개 + 배경 2개 = <b>feature 18개</b></td></tr>
+      <tr><td><strong>출력 (y)</strong></td><td>6차 고스트레스 여부 <b>0/1</b> (조작적 정의 — 임상 진단 아님)</td></tr>
+      <tr><td><strong>학습 대상</strong></td><td>train <b>1,056명</b> (test 265명은 🔒 봉인)</td></tr>
+      <tr><td><strong>채점 방법</strong></td><td>train 안 <b>5-fold CV</b>(교차검증 — 슬라이드 20 에서 정의) · 여러 지표를 <b>동시에</b> (Step 6) · 항상 <b>Dummy</b> 를 옆에</td></tr>
+      <tr><td><strong>연구질문</strong></td><td>RQ1 예측 가능한가 · RQ2 어떤 변인이 관련되나 · RQ3 5차 스트레스를 넣으면 나아지나(A vs B)</td></tr>
+    </table>
+  </div>
+  <div class="term-note"><b>용어</b>연구질문 (research question) · 이진분류 (binary classification) · 종단자료 (longitudinal data)</div>
+  <div class="slide-no">14</div>
+</div>
+
+<div class="slide-container" id="s15">
+  <h2 class="slide-title">Step 2 — 🔴 목표가 아닌 것</h2>
+  <div class="content-area">
+    <ul class="bullet-list" style="font-size:20px;">
+      <li><i class="fa-solid fa-xmark" style="color:#ff6b6b;"></i> <strong>성능 경쟁이 아니다.</strong> AUC 를 최대로 만드는 것이 이 수업의 평가 기준이 아니다 —
+      <b style="color:#adff2f;">"현재 변수만으로는 충분히 구분되지 않았다"도 옳은 결론</b>이다</li>
+      <li><i class="fa-solid fa-xmark" style="color:#ff6b6b;"></i> <strong>개입 대상 선정이 아니다.</strong> 우리 출력은 어떤 학생을 지원할지 정하는 도구가 아니다</li>
+      <li><i class="fa-solid fa-xmark" style="color:#ff6b6b;"></i> <strong>원인 규명이 아니다.</strong> 예측에 기여하는 변수와 원인은 다르다 (1차시 예측 vs 인과)</li>
+    </ul>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🎯 그래서 오늘 배울 <b style="color:#adff2f;">평가 지표</b>가 중요하다.<br>
+      "얼마나 잘했나"를 재는 자가 <b>하나뿐이면 우리는 그 자에 맞춰 스스로를 속이게 된다.</b></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>예측 (prediction) vs 인과 (causation) · 연구윤리 (research ethics) · 조작적 정의 (operational definition)</div>
+  <div class="slide-no">15</div>
+</div>
+
+<div class="slide-container" id="s16">
+  <h2 class="slide-title">Step 3 — 조작적 정의: 선을 긋는다는 것</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">스트레스 점수는 1.00~4.00 의 <strong>연속된 숫자</strong>다. 그런데 우리가 하려는 건 <strong>분류</strong> — 예/아니오 문제다.<br>연속을 둘로 나누려면 <b style="color:#adff2f;">선(cutoff)</b> 을 그어야 한다.</p>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:21px;color:#fff;">우리가 긋는 선:<br><b style="color:#adff2f;">학습 데이터 점수의 상위 25%(75 백분위수) 이상 → high_stress = 1</b></p>
+    </div>
+    <p style="font-size:19px;margin-top:18px;color:#fff;">이것을 <strong>조작적 정의(operational definition)</strong> 라고 한다 —
+    <span style="color:#8892a4;">"연구자가 분석을 위해 <b>정한</b> 기준". 발견한 것이 아니라 <b style="color:#ffd479;">정한</b> 것이다.</span></p>
+    <p style="font-size:19px;margin-top:12px;color:#8892a4;">👉 눈치챘겠지만 이 <b style="color:#ffd479;">0.75 도 하이퍼파라미터</b>다 — 데이터가 정해 준 게 아니라 우리가 정했고, 그래서 설정 파일에 적혀 있다.</p>
+  </div>
+  <div class="term-note"><b>용어</b>조작적 정의 (operational definition) · 절단점 (cutoff) · 백분위수 (percentile) · 이분화 (dichotomization)</div>
+  <div class="slide-no">16</div>
+</div>
+
+<div class="slide-container" id="s17">
+  <h2 class="slide-title">Step 3 — 🔴 이것이 아닌 것 (연구윤리)</h2>
   <div class="content-area table-layout">
     <table style="font-size:19px;">
       <tr><th style="width:230px;">이것이 아니다</th><th>왜</th></tr>
@@ -300,18 +509,18 @@
       <tr><td><strong>임상 cut-off</strong></td><td>검증된 절단점(예: CES-D 16점)이 아니다 — <b style="color:#ff8080;">우리가 그 자리에서 만든 선</b>이다</td></tr>
       <tr><td><strong>실제 고위험군</strong></td><td>상위 25%는 <b>이 표본 안에서의 상대적 위치</b>일 뿐이다</td></tr>
     </table>
-    <div class="finding" style="margin-top:20px;">
+    <div class="finding" style="margin-top:18px;">
       <p style="margin:0;font-size:20px;color:#fff;">표현 규칙 — 8차시 보고서까지 끝까지 지킨다:<br>
       ❌ "고위험 청소년을 <b>판별</b>하였다"<br>
       ✅ "본 연구에서 <b style="color:#adff2f;">조작적으로 정의한</b> 고스트레스 집단을 <b>분류</b>하였다"</p>
     </div>
   </div>
-  <div class="slide-no">08</div>
+  <div class="term-note"><b>용어</b>임상 절단점 (clinical cut-off) · 선별 (screening) · 낙인 (stigma) · 표본 상대적 위치 (relative rank)</div>
+  <div class="slide-no">17</div>
 </div>
 
-<!-- 9 부등호 -->
-<div class="slide-container" id="s9">
-  <h2 class="slide-title">Step 1 — 부등호 하나가 142명을 옮긴다 (TODO)</h2>
+<div class="slide-container" id="s18">
+  <h2 class="slide-title">Step 3 — 부등호 하나가 142명을 옮긴다 (TODO)</h2>
   <div class="content-area">
     <div class="code-block" style="font-size:19px;">cutoff = <span class="num">1.500</span>
 
@@ -323,28 +532,65 @@
     </div>
     <p style="font-size:19px;margin-top:14px;color:#8892a4;">어느 쪽이 옳은가? <b>정답이 없다.</b> 우리는 <code>>=</code> 를 쓰고, <b style="color:#adff2f;">그 선택과 실제 비율을 함께 보고한다.</b> 숨기지 않는 것이 정답이다.</p>
   </div>
-  <div class="slide-no">09</div>
+  <div class="term-note"><b>용어</b>동점 (ties) · 양성 비율 (positive rate) · 민감도 분석 (sensitivity analysis)</div>
+  <div class="slide-no">18</div>
 </div>
 
-<!-- 10 split 비유 -->
-<div class="slide-container" id="s10">
-  <h2 class="slide-title">Step 2 — train/test split: 기출문제를 외운 학생</h2>
+<div class="slide-container" id="s19">
+  <h2 class="slide-title">Step 4 — train/test split: 기출문제를 외운 학생</h2>
   <div class="content-area">
-    <p style="font-size:21px;margin:0;">시험 공부를 하며 <strong>기출문제 100개를 외웠다.</strong> 그 100개로 시험을 보면 100점이다.<br>
+    <p style="font-size:20px;margin:0;">Step 2 의 ①번 — <b>모델은 train 의 정답을 보면서 배운다.</b> 그래서 문제가 생긴다.<br>
+    시험 공부를 하며 <strong>기출문제 100개를 외웠다.</strong> 그 100개로 시험을 보면 100점이다.
     그 점수는 <b style="color:#ff8080;">"새 문제를 풀 수 있는가"</b> 에 대해 아무것도 말해 주지 않는다.</p>
-    <div class="two-column" style="margin-top:20px;">
+    <div class="two-column" style="margin-top:18px;">
       <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>train (학습) · 80%</b><br>모델을 학습시키고, 튜닝하고, <b style="color:#adff2f;">cutoff 를 정한다</b></p></div>
-      <div class="finding" style="border-left-color:#ff6b6b;"><p style="margin:0;font-size:19px;color:#fff;"><b>test (시험) · 20%</b><br><b style="color:#ff8080;">마지막에 딱 한 번.</b><br>그전에는 쳐다보지도 않는다</p></div>
+      <div class="finding" style="border-left-color:#ff6b6b;"><p style="margin:0;font-size:19px;color:#fff;"><b>test (시험) · 20%</b><br><b style="color:#ff8080;">마지막에 딱 한 번.</b> 그전에는 쳐다보지도 않는다</p></div>
     </div>
-    <p style="font-size:19px;margin-top:18px;color:#adff2f;">🔒 오늘 우리는 test 를 <strong>열지 않는다.</strong> 모든 평가는 train 안 <strong>5겹 교차검증(5-fold CV)</strong> 으로 —<br>
-    <span style="color:#8892a4;font-size:18px;">train 을 다시 5조각으로 나눠, 4조각으로 배우고 1조각으로 채점하기를 5번 돌려 평균 낸다.</span></p>
+    <p style="font-size:18px;margin-top:16px;color:#adff2f;">🔒 오늘 우리는 test 를 <strong>열지 않는다.</strong> 그럼 무엇으로 채점하나? —<br>
+    <span style="color:#8892a4;">train 을 <b style="color:#fff;">한 번 더</b> 나눈다. 그 방법이 <b style="color:#fff;">교차검증(CV)</b> 이고, <b>다음 장에서 정의</b>한다.</span></p>
   </div>
-  <div class="slide-no">10</div>
+  <div class="term-note"><b>용어</b>학습/시험 분할 (train/test split) · 교차검증 (cross-validation) · 층화 (stratification) · 일반화 (generalization)</div>
+  <div class="slide-no">19</div>
 </div>
 
-<!-- 11 split 실행 -->
-<div class="slide-container" id="s11">
-  <h2 class="slide-title">Step 2 — 1,056 / 265, 그리고 stratify 의 순환</h2>
+<div class="slide-container" id="s20">
+  <h2 class="slide-title">Step 4 — 5겹 교차검증(CV): 오늘 모든 숫자가 나오는 곳</h2>
+  <div class="content-area">
+    <div class="finding">
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">교차검증(cross-validation, CV) = test 를 열지 않고 "안 배운 사람"으로 채점하는 방법.</b><br>
+      <span style="font-size:17px;color:#8892a4;">train 1,056명을 <b>5조각</b>으로 나눠, <b>4조각으로 배우고 남은 1조각으로 채점</b>하기를 <b>5번</b> 돌려 <b>평균</b> 낸다.</span></p>
+    </div>
+    <div style="display:grid;grid-template-columns:430px 1fr;gap:28px;margin-top:14px;align-items:center;">
+      <div>
+        <div class="fold-row"><span class="lbl">폴드 1</span><i class="te"></i><i></i><i></i><i></i><i></i><span class="v">.590</span></div>
+        <div class="fold-row"><span class="lbl">폴드 2</span><i></i><i class="te"></i><i></i><i></i><i></i><span class="v">.678</span></div>
+        <div class="fold-row"><span class="lbl">폴드 3</span><i></i><i></i><i class="te"></i><i></i><i></i><span class="v">.639</span></div>
+        <div class="fold-row"><span class="lbl">폴드 4</span><i></i><i></i><i></i><i class="te"></i><i></i><span class="v">.663</span></div>
+        <div class="fold-row"><span class="lbl">폴드 5</span><i></i><i></i><i></i><i></i><i class="te"></i><span class="v">.694</span></div>
+        <p style="font-size:15px;margin:10px 0 0;color:#8892a4;"><i style="display:inline-block;width:14px;height:14px;background:#1d3a44;border:1px solid #00f2ff;vertical-align:-2px;"></i> 학습 845명 &nbsp;
+        <i style="display:inline-block;width:14px;height:14px;background:#5a3a12;border:1px solid #ffd479;vertical-align:-2px;"></i> 채점 211명 &nbsp;→ 오른쪽은 그 폴드의 AUC</p>
+      </div>
+      <div>
+        <div class="finding" style="border-left-color:#ffd479;">
+          <p style="margin:0;font-size:18px;color:#fff;">폴드별 AUC 가 <b style="color:#ffd479;">.590 ~ .694</b> 로 흔들린다.<br>
+          <b style="color:#adff2f;">평균 .653</b> (표준편차 .036) ← <b>우리가 쓰는 값</b><br>
+          <span style="font-size:16px;color:#8892a4;">한 번만 나눴다면 <b>.59 가 나올 수도, .69 가 나올 수도</b> 있었다. 그래서 5번 돌려 평균 낸다.</span></p>
+        </div>
+        <ul class="bullet-list" style="font-size:17px;margin-top:14px;">
+          <li><i class="fa-solid fa-lock"></i> <b>test 를 안 열어도 된다</b> — 채점은 늘 "그 폴드에서 안 배운 사람"으로</li>
+          <li><i class="fa-solid fa-rotate"></i> <b>모든 사람이 한 번씩 채점에 쓰인다</b> — 적은 표본에서 더 안정적</li>
+          <li><i class="fa-solid fa-magnifying-glass"></i> <b>과적합 탐지기</b> — train 점수와 CV 점수의 <b>간극</b>이 곧 과적합의 크기 (Step 5)</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:16px;margin-top:10px;color:#8892a4;">🔒 <b style="color:#fff;">오늘 보는 모든 숫자(.612 · .653 · TP 219 …)는 전부 이 CV 평균값</b>이다 — 최종 성능이 아니다. <code>n_splits=5</code> 도 하이퍼파라미터다.</p>
+  </div>
+  <div class="term-note"><b>용어</b>교차검증 (cross-validation) · 폴드 (fold) · 층화 K겹 (stratified K-fold) · 표준편차 (SD)</div>
+  <div class="slide-no">20</div>
+</div>
+
+<div class="slide-container" id="s21">
+  <h2 class="slide-title">Step 4 — 1,056 / 265, 그리고 stratify 의 순환</h2>
   <div class="content-area">
     <div class="code-block" style="font-size:17px;">idx_tr, idx_te = <span class="fn">train_test_split</span>(frame.index,
     test_size=cfg[<span class="str">"test_size"</span>], random_state=cfg[<span class="str">"random_seed"</span>],
@@ -356,12 +602,12 @@
       → 6차 점수의 <b>median 기준 임시 구분</b>으로 층화한다. 분할 균형에만 쓰고 <b style="color:#adff2f;">라벨 정의에는 쓰지 않는다</b> — 이 타협을 코드 주석과 문서에 적는다.</p>
     </div>
   </div>
-  <div class="slide-no">11</div>
+  <div class="term-note"><b>용어</b>난수 시드 (random seed) · 재현성 (reproducibility) · 순환 의존 (circular dependency) · 중앙값 (median)</div>
+  <div class="slide-no">21</div>
 </div>
 
-<!-- 12 순서 -->
-<div class="slide-container" id="s12">
-  <h2 class="slide-title">Step 3 — 순서가 전부다 ⚠️</h2>
+<div class="slide-container" id="s22">
+  <h2 class="slide-title">Step 4 — 순서가 전부다 ⚠️</h2>
   <div class="content-area">
     <div class="code-block" style="font-size:19px;"><span style="color:#ff8080;">❌ 틀린 순서</span>   전체 1,321명 점수를 보고 선을 긋는다  →  나눈다
 
@@ -373,12 +619,12 @@
     <p style="font-size:20px;margin-top:20px;color:#fff;">🎯 비유: 시험 문제의 <strong>합격선</strong>을, 채점할 학생들의 <strong>답안을 미리 보고</strong> 정하는 것.<br>
     <span style="font-size:18px;color:#8892a4;">문제를 안 보여줬어도 <b>합격선이 그들의 점수에 맞춰져 있다.</b></span></p>
   </div>
-  <div class="slide-no">12</div>
+  <div class="term-note"><b>용어</b>라벨 누출 (label leakage) · 절단점 (cutoff) · 분위수 (quantile)</div>
+  <div class="slide-no">22</div>
 </div>
 
-<!-- 13 실측: 차이 0명 -->
-<div class="slide-container" id="s13">
-  <h2 class="slide-title">Step 3 — 그런데 실측해 보면… 차이가 0명이다</h2>
+<div class="slide-container" id="s23">
+  <h2 class="slide-title">Step 4 — 그런데 실측해 보면… 차이가 0명이다</h2>
   <div class="content-area">
     <div class="code-block" style="font-size:19px;">전체로 계산한 cutoff  = <span class="num">1.5000</span>
 train 으로 계산한 cutoff = <span class="num">1.5000</span>
@@ -388,123 +634,596 @@ train 으로 계산한 cutoff = <span class="num">1.5000</span>
       <p style="margin:0;font-size:22px;color:#fff;">그럼 규칙을 안 지켜도 되나?<br><b style="color:#ff8080;">— 다음 슬라이드.</b></p>
     </div>
   </div>
-  <div class="slide-no">13</div>
+  <div class="term-note"><b>용어</b>동점 (ties) · 절차적 타당성 (procedural validity)</div>
+  <div class="slide-no">23</div>
 </div>
 
-<!-- 14 안전벨트 -->
-<div class="slide-container" id="s14">
-  <h2 class="slide-title">Step 3 — 규칙은 결과가 아니라 절차다 🔴</h2>
+<div class="slide-container" id="s24">
+  <h2 class="slide-title">Step 4 — 규칙은 결과가 아니라 절차다 🔴</h2>
   <div class="content-area">
-    <div class="finding" style="font-size:24px;">
+    <div class="finding" style="font-size:23px;">
       <p style="margin:0;color:#fff;">🚗 <b style="color:#adff2f;">안전벨트를 맸는데 사고가 안 났다고 해서, 안전벨트가 쓸모없는 것이 아니다.</b></p>
     </div>
-    <ul class="bullet-list" style="font-size:20px;margin-top:20px;">
+    <ul class="bullet-list" style="font-size:19px;margin-top:20px;">
       <li><i class="fa-solid fa-circle-exclamation"></i> 이번엔 <strong>우연히</strong> 같았다. 다른 데이터 · 다른 seed · 다른 분위수에서는 달라진다</li>
       <li><i class="fa-solid fa-circle-exclamation"></i> 결정적으로 — <strong>미리 확인할 방법이 없다.</strong> "차이가 없을 테니 대충 하자"는 차이가 있는지 <b>확인한 뒤에야</b> 할 수 있는 말인데, 확인하려면 이미 전체를 봐야 한다</li>
       <li><i class="fa-solid fa-circle-check"></i> 우리가 한 일: <strong>규칙대로 하고, 차이가 없었다는 사실까지 기록했다.</strong> 그게 전부다</li>
     </ul>
   </div>
-  <div class="slide-no">14</div>
+  <div class="term-note"><b>용어</b>절차 (procedure) · 사전등록 (pre-registration) · 연구 무결성 (research integrity)</div>
+  <div class="slide-no">24</div>
 </div>
 
-<!-- 15 불균형 -->
-<div class="slide-container" id="s15">
-  <h2 class="slide-title">Step 4 — 클래스 불균형: 가장 게으른 모델</h2>
-  <div class="content-area">
-    <p style="font-size:21px;margin:0;">train 의 고스트레스는 <strong>33.7%</strong>(356명 / 1,056명) — 약 <strong>2:1 불균형</strong>이다.</p>
-    <div class="finding" style="margin-top:20px;">
-      <p style="margin:0;font-size:21px;color:#fff;">가장 게으른 모델을 만들어 보자 —<br><b style="color:#adff2f;">"전원 고스트레스 아님"</b> 이라고만 답하는 모델. 학습을 <b>전혀 하지 않는다.</b></p>
+<div class="slide-container" id="s25">
+  <h2 class="slide-title">Step 5 — 과적합: 외우는 것도 손실을 줄인다</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:20px;margin:0;">Step 2 의 ③번을 기억하는가 — <b>"외우는 것도 손실을 줄인다."</b> 기출문제 비유를 한 칸 더 민다.</p>
+    <table class="compact" style="font-size:18px;">
+      <tr><th style="width:150px;"></th><th>학생</th><th>모델</th></tr>
+      <tr><td><strong>이해한 학생</strong></td><td>원리를 익혔다 → 기출 85점, <b>새 시험 80점</b></td><td>파라미터가 적다 → train 성적과 새 데이터 성적이 <b style="color:#adff2f;">비슷하다</b></td></tr>
+      <tr><td><strong>외운 학생</strong></td><td>답만 외웠다 → 기출 <b>100점</b>, 새 시험 50점</td><td>파라미터가 많다 → train <b>완벽</b>, 새 데이터에서 <b style="color:#ff8080;">무너진다</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">과적합 = 모델이 데이터의 '규칙'이 아니라 '이 표본의 우연'까지 외워 버린 상태.</b><br>
+      <span style="font-size:17px;color:#8892a4;">어떻게 알아채나 — <b>train 점수</b>와 <b>새 데이터 점수(CV)</b> 를 나란히 놓고 그 <b style="color:#fff;">간극(gap)</b>을 본다. 우리가 5-fold CV 를 쓰는 이유가 이것이다.</span></p>
     </div>
-    <p style="font-size:21px;margin-top:22px;color:#fff;">이런 걸 <strong>더미 분류기(DummyClassifier)</strong> 라고 한다.<br>그런데도 정답률이 꽤 나온다. <b style="color:#ffd479;">얼마나 나올까?</b></p>
-    <p style="font-size:18px;margin-top:12px;color:#8892a4;">(먼저 예측해 보게 한다 — 손을 들게 한다.)</p>
   </div>
-  <div class="slide-no">15</div>
+  <div class="term-note"><b>용어</b>과적합 (overfitting) · 과소적합 (underfitting) · 일반화 오차 (generalization error) · 모델 복잡도 (model complexity)</div>
+  <div class="slide-no">25</div>
 </div>
 
-<!-- 16 accuracy 함정 -->
-<div class="slide-container" id="s16">
-  <h2 class="slide-title">Step 4 — 정확도가 더 낮은 모델이 더 좋은 모델</h2>
+<div class="slide-container" id="s26">
+  <h2 class="slide-title">Step 5 — 실측: 손잡이를 늘릴수록 벌어지는 간극</h2>
+  <div class="content-area table-layout">
+    <table class="tight" style="font-size:18px;">
+      <tr><th>결정트리 max_depth</th><th>잎(leaf) 수</th><th>train AUC</th><th>CV AUC</th><th>간극</th></tr>
+      <tr><td>2</td><td>4</td><td>.663</td><td><b style="color:#adff2f;">.636</b></td><td>+.027</td></tr>
+      <tr><td>3</td><td>8</td><td>.691</td><td>.615</td><td>+.076</td></tr>
+      <tr><td>5</td><td>30</td><td>.765</td><td>.589</td><td>+.176</td></tr>
+      <tr><td>10</td><td>153</td><td>.951</td><td>.529</td><td>+.422</td></tr>
+      <tr><td><strong>None (제한 없음)</strong></td><td><b style="color:#ff8080;">299</b></td><td><b style="color:#ff8080;">1.000</b></td><td><b style="color:#ff8080;">.519</b></td><td><b style="color:#ff8080;">+.481</b></td></tr>
+      <tr><td>로지스틱 (파라미터 19개)</td><td>—</td><td>.687</td><td><b style="color:#adff2f;">.653</b></td><td>+.035</td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">잎이 <b>299개</b> — train 1,056명을 사실상 <b style="color:#ff8080;">한 명 한 명 외운</b> 것이다.<br>
+      train 은 완벽하고, 처음 보는 사람 앞에서는 <b>동전 던지기(.519)</b> 가 된다. <b style="color:#adff2f;">train 점수만 보면 이게 최고의 모델처럼 보인다.</b></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>결정트리 (decision tree) · 깊이 (max_depth) · 잎 노드 (leaf node) · 규제 (regularization)</div>
+  <div class="slide-no">26</div>
+</div>
+
+<div class="slide-container" id="s27">
+  <h2 class="slide-title">Step 6 — 평가 ①: 가장 게으른 모델</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">학습이 끝났다. 이제 <strong>잘했는지 재야 한다.</strong> 무엇으로? 가장 먼저 떠오르는 건 <strong>정답률(accuracy)</strong> 이다.<br>
+    그런데 우리 데이터에는 함정이 있다 — train 의 고스트레스는 <strong>33.7%</strong>(356명 / 1,056명), 약 <strong>2:1 불균형</strong>이다.</p>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">가장 게으른 모델을 만들어 보자 — <b style="color:#adff2f;">"전원 고스트레스 아님"</b> 이라고만 답하는 모델.<br>
+      <span style="font-size:18px;color:#8892a4;">학습을 <b>전혀</b> 하지 않는다. 파라미터도 없다. 이런 걸 <b style="color:#fff;">더미 분류기(DummyClassifier)</b> 라고 한다.</span></p>
+    </div>
+    <p style="font-size:21px;margin-top:18px;color:#fff;">그런데도 정답률이 꽤 나온다. <b style="color:#ffd479;">얼마나 나올까?</b> <span style="font-size:17px;color:#8892a4;">🖐 먼저 예측해 보라 (30%? 50%? 70%?)</span></p>
+    <div class="finding" style="margin-top:14px;border-left-color:#ffd479;">
+      <p style="margin:0;font-size:18px;color:#fff;">답은 <b style="color:#ffd479;">슬라이드 33</b> 에서 공개한다. 그 전에 <b style="color:#adff2f;">네 칸짜리 표(혼동행렬)와 지표의 정의</b>부터 세운다 —
+      <b>그래야 그 숫자를 제대로 읽을 수 있기 때문이다.</b></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>클래스 불균형 (class imbalance) · 더미 분류기 (dummy classifier) · 기준선 (baseline) · 다수 클래스 (majority class)</div>
+  <div class="slide-no">27</div>
+</div>
+
+<div class="slide-container" id="s28">
+  <h2 class="slide-title wrap">Step 6 — 평가 ②: 혼동행렬 — 암을 찾는 의사 이야기 🩺</h2>
+  <div class="content-area">
+    <p style="font-size:18px;margin:0;">어떤 의사가 검진 결과를 보고 "암입니다 / 아닙니다"를 말한다. <b>결과는 네 가지뿐이다.</b></p>
+    <div class="cm-grid" style="margin-top:12px;">
+      <div class="hd"></div><div class="hd">실제로 <b>암이 있다</b></div><div class="hd">실제로 <b>암이 없다</b></div>
+      <div class="hd">의사: <b>"암입니다"</b></div>
+      <div class="cm-cell ok"><h4>✅ TP <span style="font-size:15px;color:#8892a4;">True Positive</span></h4><p><b>맞게 찾았다</b></p></div>
+      <div class="cm-cell bad"><h4>❌ FP <span style="font-size:15px;color:#8892a4;">False Positive</span></h4><p><b>헛경보</b> — 없는데 있다고 했다</p></div>
+      <div class="hd">의사: <b>"아닙니다"</b></div>
+      <div class="cm-cell bad"><h4>❌ FN <span style="font-size:15px;color:#8892a4;">False Negative</span></h4><p><b>놓쳤다</b> — 있는데 없다고 했다</p></div>
+      <div class="cm-cell ok"><h4>✅ TN <span style="font-size:15px;color:#8892a4;">True Negative</span></h4><p><b>맞게 통과시켰다</b></p></div>
+    </div>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:18px;color:#fff;">읽는 규칙: <b style="color:#adff2f;">뒷글자 = 모델이 뭐라고 했나(P/N) · 앞글자 = 그 말이 맞았나(T/F).</b><br>
+      <code>FN</code> = "Negative 라고 했는데(N) 틀렸다(F)" = <b style="color:#ff8080;">있는데 놓쳤다.</b></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>참양성 (true positive) · 위양성 (false positive) · 위음성 (false negative) · 참음성 (true negative)</div>
+  <div class="slide-no">28</div>
+</div>
+
+<div class="slide-container" id="s29">
+  <h2 class="slide-title">Step 6 — 평가 ③: 우리 프로젝트의 네 칸 (사람 수)</h2>
+  <div class="content-area">
+    <div class="cm-grid">
+      <div class="hd"></div><div class="hd">실제 <b>고스트레스</b> 356명</div><div class="hd">실제 <b>아님</b> 700명</div>
+      <div class="hd">모델: <b>고스트레스</b></div>
+      <div class="cm-cell ok"><h4>TP <span class="n">219</span></h4><p>맞게 찾았다</p></div>
+      <div class="cm-cell bad"><h4>FP <span class="n">273</span></h4><p>아닌데 지목했다 (헛경보)</p></div>
+      <div class="hd">모델: <b>아님</b></div>
+      <div class="cm-cell bad"><h4>FN <span class="n">137</span></h4><p>고스트레스인데 놓쳤다 🔴</p></div>
+      <div class="cm-cell ok"><h4>TN <span class="n">427</span></h4><p>맞게 통과</p></div>
+    </div>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:18px;color:#fff;">로지스틱: 356명 중 <b style="color:#adff2f;">219명을 찾고 137명을 놓쳤다.</b> 지목한 사람은 492명.<br>
+      Dummy(전부 0): TP 0 · <b style="color:#ff8080;">FN 356 (전원 놓침)</b> · FP 0 · TN 700 — "정확도 66%" 의 실체다.<br>
+      <span style="font-size:16px;color:#8892a4;">🔴 <b style="color:#fff;">비율보다 사람 수로 먼저 읽는다.</b> "recall .615" 보다 "356명 중 219명"이 정직하다.</span></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>혼동행렬 (confusion matrix) · 교차검증 예측 (cross-validated prediction) · 임계값 .5 (default threshold)</div>
+  <div class="slide-no">29</div>
+</div>
+
+<div class="slide-container" id="s30">
+  <h2 class="slide-title">Step 6 — 평가 ④: 그 네 칸은 "임계값 .50" 의 산물이다</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:17px;margin:0;">방금 센 네 칸은 <b>모델이 준 것</b>이 아니다 — 로지스틱이 내놓는 것은 라벨이 아니라 <b style="color:#adff2f;">확률</b>이다.</p>
+    <div class="code-block" style="margin-top:10px;font-size:17px;padding:18px 26px;">prob = model.<span class="fn">predict_proba</span>(X)[:, <span class="num">1</span>]   <span class="cm"># 0.62, 0.31, 0.77 … ← 모델이 주는 것</span>
+pred = (prob >= <span class="num">0.50</span>)              <span class="cm"># ← 이 0.50 이 임계값. 자르는 순간 네 칸이 생긴다</span></div>
+    <table class="tight" style="font-size:15px;margin-top:8px;">
+      <tr><th style="width:150px;">임계값</th><th>TP</th><th>FN</th><th>FP</th><th>TN</th><th>지목 인원</th></tr>
+      <tr><td>.70 (신중하게)</td><td>56</td><td><b style="color:#ff8080;">300</b></td><td>38</td><td>662</td><td>94명</td></tr>
+      <tr><td><strong>.50 (기본값)</strong></td><td><strong>219</strong></td><td><strong>137</strong></td><td><strong>273</strong></td><td><strong>427</strong></td><td><strong>492명</strong></td></tr>
+      <tr><td>.30 (적극적으로)</td><td>326</td><td>30</td><td><b style="color:#ff8080;">559</b></td><td>141</td><td>885명</td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:17px;color:#fff;">🔴 <b style="color:#adff2f;">임계값은 모델이 아니라 우리가 정한 하이퍼파라미터다</b> — 어느 값이 좋은지는 평가 ⑱(F-beta)에서, 임계값 없이 재는 법은 평가 ⑨(AUC)에서.<br>
+      그래서 <b>"이 모델의 recall 은 .615 다"</b> 는 반쪽짜리 문장이다 — 정확히는 <b style="color:#ffd479;">"임계값 .50 에서 recall .615"</b>.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>예측 확률 (predicted probability) · 임계값 (threshold) · 결정 규칙 (decision rule) · 지목 인원 (flagged)</div>
+  <div class="slide-no">30</div>
+</div>
+
+<div class="slide-container" id="s31">
+  <h2 class="slide-title">Step 6 — 평가 ⑤: 네 칸에서 나오는 네 개의 지표</h2>
+  <div class="content-area table-layout">
+    <table class="tight" style="font-size:17px;">
+      <tr><th style="width:210px;">지표</th><th style="width:180px;">공식</th><th>답하는 질문</th><th style="width:150px;">우리 실측</th></tr>
+      <tr><td><strong>정확도</strong> accuracy</td><td>(TP+TN) / 전체</td><td>전부 중 몇 개나 맞혔나</td><td>646/1056 = <b>.612</b></td></tr>
+      <tr><td><strong>정밀도</strong> precision</td><td>TP / (TP+<b style="color:#ff8080;">FP</b>)</td><td><b>모델이 지목한 사람 중</b> 진짜는 몇 %인가</td><td>219/492 = <b>.445</b></td></tr>
+      <tr><td><strong>재현율</strong> recall<br><span style="font-size:15px;color:#8892a4;">(민감도 sensitivity)</span></td><td>TP / (TP+<b style="color:#ff8080;">FN</b>)</td><td><b>실제 양성 중</b> 몇 %를 찾아냈나</td><td>219/356 = <b>.615</b></td></tr>
+      <tr><td><strong>특이도</strong> specificity</td><td>TN / (TN+FP)</td><td><b>실제 음성 중</b> 몇 %를 맞게 통과시켰나</td><td>427/700 = <b>.610</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:17px;color:#fff;"><b style="color:#adff2f;">precision 은 "내 말이 얼마나 믿을 만한가"</b> — 분모가 <b>모델이 한 말</b>(TP+FP).
+      <b style="color:#adff2f;">recall 은 "얼마나 안 놓쳤나"</b> — 분모가 <b>실제 정답</b>(TP+FN).<br>
+      <span style="font-size:16px;color:#8892a4;">곁들여: NPV(음성 예측도) 427/564 = .757 · 균형정확도 (recall+특이도)/2 = .613 (Dummy 는 정확히 .500)</span></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>정밀도 (precision) · 재현율/민감도 (recall/sensitivity) · 특이도 (specificity) · 음성예측도 (NPV)</div>
+  <div class="slide-no">31</div>
+</div>
+
+<div class="slide-container" id="s32">
+  <h2 class="slide-title wrap">Step 6 — 평가 ⑥: 우리 맥락에서 FN 과 FP 는 무엇인가 🔴</h2>
+  <div class="content-area table-layout">
+    <table class="tight" style="font-size:17px;">
+      <tr><th style="width:110px;"></th><th style="width:250px;">의사 (암 검진)</th><th>우리 프로젝트</th></tr>
+      <tr><td><b>TP</b> 219</td><td>암을 맞게 찾았다</td><td>1년 뒤 고스트레스 집단에 속한 학생을 중2 정보만으로 맞게 분류했다</td></tr>
+      <tr><td><b style="color:#ff8080;">FN</b> 137</td><td>암 환자를 놓쳤다</td><td>실제로 고스트레스였는데 <b>모델이 못 알아봤다</b> — "우리 변수로는 안 보이는 사람들"</td></tr>
+      <tr><td><b style="color:#ff8080;">FP</b> 273</td><td>없는 암을 있다고 했다</td><td>아닌데 지목했다 — <b style="color:#ff8080;">라벨이 사람에게 붙으면 낙인이 된다</b></td></tr>
+      <tr><td><b>TN</b> 427</td><td>맞게 통과</td><td>아닌 학생을 아니라고 했다</td></tr>
+    </table>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:17px;color:#fff;">우리는 <b style="color:#adff2f;">FN 쪽으로 기운다</b> — 목적이 <b>선별</b>이라 놓치는 것이 더 아프다 (그래서 <code>class_weight="balanced"</code>).<br>
+      <b>그렇다고 FP 를 버릴 수 없다</b> — 우리 FP 는 "며칠 불안"이 아니라 <b>한 학생에게 붙는 이름표</b>다. 273명은 train 의 <b>26%</b>, 넷 중 하나다.<br>
+      🔴 그래서 결론은 절대 "이 학생들을 관리 대상으로 지정한다"가 될 수 없다. <b style="color:#adff2f;">"이 변수들이 1년 뒤 고스트레스와 관련이 있다"까지</b>가 우리 말이다.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>선별 (screening) · 오류 비용 (cost of errors) · 낙인 (stigma) · 비용 비대칭 (asymmetric cost)</div>
+  <div class="slide-no">32</div>
+</div>
+
+<div class="slide-container" id="s33">
+  <h2 class="slide-title">Step 6 — 평가 ⑦: 정확도가 더 낮은 모델이 더 좋은 모델</h2>
   <div class="content-area table-layout">
     <table style="font-size:19px;">
-      <tr><th>모델 (train 5-fold CV)</th><th>accuracy</th><th>AUC</th><th>balanced acc</th><th>recall</th></tr>
-      <tr><td>Dummy (전부 0)</td><td><b style="color:#adff2f;">.663</b></td><td>.500</td><td>.500</td><td><b style="color:#ff8080;">.000</b></td></tr>
-      <tr><td><strong>로지스틱 회귀</strong></td><td><b style="color:#ff8080;">.612</b></td><td><b style="color:#adff2f;">.653</b></td><td><b style="color:#adff2f;">.613</b></td><td><b style="color:#adff2f;">.615</b></td></tr>
+      <tr><th>모델 (train 5-fold CV)</th><th>accuracy</th><th>recall</th><th>특이도</th><th>균형정확도</th></tr>
+      <tr><td>Dummy (전부 0)</td><td><b style="color:#adff2f;">.663</b></td><td><b style="color:#ff8080;">.000</b></td><td>1.000</td><td>.500</td></tr>
+      <tr><td><strong>로지스틱 회귀</strong></td><td><b style="color:#ff8080;">.612</b></td><td><b style="color:#adff2f;">.615</b></td><td>.610</td><td><b style="color:#adff2f;">.613</b></td></tr>
     </table>
     <div class="finding" style="margin-top:18px;">
       <p style="margin:0;font-size:20px;color:#fff;">66.3% 가 음성이므로 <b>전부 음성이라고 찍으면 자동으로 66.3%</b> 를 맞힌다.<br>
       <b style="color:#ff8080;">accuracy 는 다수 클래스의 비율을 그냥 되돌려 주는 지표</b>가 된다.</p>
     </div>
-    <p style="font-size:18px;margin-top:12px;color:#8892a4;">그래서 우리 규칙(AGENTS.md): <b style="color:#adff2f;">accuracy 단독 보고 금지 · Dummy 를 항상 같이 보고.</b> Dummy 없이 "정확도 66%" 만 보면 대단해 보인다.</p>
+    <p style="font-size:17px;margin-top:10px;color:#8892a4;">규칙(AGENTS.md): <b style="color:#adff2f;">accuracy 단독 보고 금지 · Dummy 를 항상 같이 보고.</b>
+    Dummy 의 특이도는 <b>1.000</b> — 음성은 전부 맞혔다. <b style="color:#fff;">지표 하나만 보면 어떤 모델이든 최고가 될 수 있다.</b>
+    <span style="font-size:15px;">(노트북 표의 AUC 열은 지금 건너뛴다 — 슬라이드 35 에서 배운다.)</span></p>
   </div>
-  <div class="slide-no">16</div>
+  <div class="term-note"><b>용어</b>균형정확도 (balanced accuracy) · 재현율 (recall) · 다수결 예측 (majority-class prediction)</div>
+  <div class="slide-no">33</div>
 </div>
 
-<!-- 17 혼동행렬 -->
-<div class="slide-container" id="s17">
-  <h2 class="slide-title">Step 4 — 숫자가 아니라 사람 수로 보면</h2>
+<div class="slide-container" id="s34">
+  <h2 class="slide-title wrap">Step 6 — 평가 ⑧: 지표 하나만 믿으면 안 되는 이유 (의사 4명)</h2>
+  <div class="content-area table-layout">
+    <table class="tight" style="font-size:16px;">
+      <tr><th style="width:230px;">의사</th><th style="width:200px;">잘 나오는 지표</th><th style="width:170px;">무너지는 지표</th><th>우리 데이터 실측</th></tr>
+      <tr><td>🙅 <strong>"다 괜찮습니다"</strong><br><span style="color:#8892a4;">Dummy 전부 0</span></td><td><b style="color:#adff2f;">accuracy .663</b><br><b style="color:#adff2f;">특이도 1.000</b></td><td>recall <b style="color:#ff8080;">.000</b></td><td>고스트레스 356명 <b style="color:#ff8080;">전원 놓침</b></td></tr>
+      <tr><td>🙋 <strong>"다 암입니다"</strong><br><span style="color:#8892a4;">Dummy 전부 1</span></td><td><b style="color:#adff2f;">recall 1.000</b></td><td>precision .337<br>특이도 <b style="color:#ff8080;">.000</b></td><td>700명에게 <b style="color:#ff8080;">헛경보</b></td></tr>
+      <tr><td>🔬 <strong>"확실할 때만"</strong><br><span style="color:#8892a4;">임계값 .70</span></td><td><b style="color:#adff2f;">precision .596</b></td><td>recall <b style="color:#ff8080;">.157</b></td><td>56명만 지목, <b style="color:#ff8080;">300명 놓침</b></td></tr>
+      <tr><td>🧑‍⚕️ <strong>정직한 의사</strong><br><span style="color:#8892a4;">로지스틱 · 임계값 .50</span></td><td colspan="2">전부 <b>중간</b> — precision .445 · recall .615 · 특이도 .610</td><td>AUC .653</td></tr>
+    </table>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:17px;color:#fff;">🔴 <b style="color:#adff2f;">precision 과 recall 은 서로를 붙잡아 주는 짝이다.</b> 하나를 올리면 보통 다른 하나가 내려간다
+      (임계값↓ → recall↑ precision↓, 임계값↑ → 반대).<br>
+      → 여기서 길이 <b>둘로 갈린다</b>: ⓐ 임계값을 아예 빼고 <b style="color:#adff2f;">곡선 전체</b>로 재기(<b>AUC</b> · 평가 ⑨~⑭) ·
+      ⓑ 한 임계값에서 두 지표를 <b style="color:#adff2f;">한 숫자로 묶기</b>(<b>F score</b> · 평가 ⑮~⑳). <b>순서대로 본다.</b></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>임계값 (threshold) · 상충관계 (trade-off) · 정밀도-재현율 곡선 (precision-recall curve)</div>
+  <div class="slide-no">34</div>
+</div>
+
+<div class="slide-container" id="s35">
+  <h2 class="slide-title">Step 6 — 평가 ⑨: AUC — 임계값을 정하기 전에 재는 법</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:19px;margin:0;">지금까지의 지표는 전부 <b>임계값을 정한 뒤에야</b> 계산할 수 있었다. 그런데 임계값은 우리가 정하는 값이다.<br>
+    임계값을 1.00 → 0.00 으로 내리며 매 지점의 (거짓양성률, 재현율)을 찍으면 <b>ROC 곡선</b>이 그려진다. 그 <b>아래 면적</b>이 <b style="color:#adff2f;">AUC</b> 다.</p>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">AUC = 고스트레스인 학생 한 명과 아닌 학생 한 명을 무작위로 뽑았을 때,<br>모델이 고스트레스인 쪽에 더 높은 점수를 줄 확률.</b></p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">🩺 의사 비유 — <b style="color:#fff;">환자 한 명과 건강한 사람 한 명을 나란히 세웠을 때 누가 더 위험한지 순서를 맞히는 능력.</b>
+    진단을 내리는 게 아니라 <b style="color:#fff;">줄을 세우는 능력</b>을 재는 것이다.</p>
+    <table class="tight" style="font-size:17px;margin-top:8px;">
+      <tr><td style="width:120px;"><b>.50</b></td><td>동전 던지기 (순서를 전혀 못 맞힌다) — Dummy 는 정확히 여기다</td></tr>
+      <tr><td><b>.60~.70</b></td><td>약하지만 정보가 있다 ← <b style="color:#adff2f;">우리 모델 .653</b></td></tr>
+      <tr><td><b>.80+</b></td><td>좋다</td></tr>
+      <tr><td><b style="color:#ff8080;">1.00</b></td><td><b style="color:#ff8080;">완벽 — 축하가 아니라 경보다</b> (Step 7)</td></tr>
+    </table>
+  </div>
+  <div class="term-note"><b>용어</b>ROC 곡선 (ROC curve) · 곡선하 면적 (AUC) · 거짓양성률 (false positive rate) · 순위 (ranking)</div>
+  <div class="slide-no">35</div>
+</div>
+
+<div class="slide-container" id="s36">
+  <h2 class="slide-title">Step 6 — 평가 ⑩: ROC 곡선은 어떻게 그려지는가</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:17px;margin:0;">임계값을 <b>높은 데서 낮은 데로</b> 내리면서 매 지점마다 <b>점 하나</b>를 찍는다. 축은 이미 배운 두 지표다.</p>
+    <div class="two-column" style="margin-top:8px;gap:24px;">
+      <div class="finding" style="padding:12px 20px;"><p style="margin:0;font-size:16px;color:#fff;"><b>세로축 = 재현율 (TPR)</b> = TP/(TP+FN)<br><span style="color:#8892a4;">실제 양성 중 찾아낸 비율 — 높을수록 좋다 ↑</span></p></div>
+      <div class="finding" style="padding:12px 20px;border-left-color:#ff6b6b;"><p style="margin:0;font-size:16px;color:#fff;"><b>가로축 = 거짓양성률 (FPR)</b> = FP/(FP+TN) = <b style="color:#ff8080;">1 − 특이도</b><br><span style="color:#8892a4;">헛경보 비율 — 낮을수록 좋다 ←</span></p></div>
+    </div>
+    <table class="tight" style="font-size:15px;margin-top:8px;">
+      <tr><th>임계값</th><th>TP</th><th>FP</th><th>세로 TPR = TP/356</th><th>가로 FPR = FP/700</th><th>찍히는 점</th></tr>
+      <tr><td>.70</td><td>56</td><td>38</td><td>.157</td><td>.054</td><td>(.05, .16) 왼쪽 아래</td></tr>
+      <tr><td>.60</td><td>131</td><td>126</td><td>.368</td><td>.180</td><td>(.18, .37)</td></tr>
+      <tr><td><strong>.50</strong></td><td><strong>219</strong></td><td><strong>273</strong></td><td><strong>.615</strong></td><td><strong>.390</strong></td><td><b style="color:#ffd479;">(.39, .62)</b> ← 우리 기본값</td></tr>
+      <tr><td>.40</td><td>277</td><td>430</td><td>.778</td><td>.614</td><td>(.61, .78)</td></tr>
+      <tr><td>.30</td><td>326</td><td>559</td><td>.916</td><td>.799</td><td>(.80, .92) 오른쪽 위</td></tr>
+    </table>
+    <p style="font-size:16px;margin-top:8px;color:#8892a4;">임계값 1.00 → 아무도 지목 안 함 <b>(0, 0)</b> · 임계값 0.00 → 전원 지목 <b>(1, 1)</b>.
+    그 사이 <b style="color:#adff2f;">모든 임계값의 점을 이으면 곡선</b>이다 (실제로는 점 433개).</p>
+  </div>
+  <div class="term-note"><b>용어</b>참양성률 TPR (true positive rate) · 거짓양성률 FPR (false positive rate) · 운영점 (operating point)</div>
+  <div class="slide-no">36</div>
+</div>
+
+<div class="slide-container" id="s37">
+  <h2 class="slide-title">Step 6 — 평가 ⑪: 그려 보면 이렇게 생겼다 (우리 실제 곡선)</h2>
   <div class="content-area">
-    <div class="code-block" style="font-size:18px;"><span class="cm">로지스틱 회귀</span>                        <span class="cm">Dummy (전부 0)</span>
-              예측0  예측1                     예측0  예측1
-실제 0 (일반)    427   273              실제 0    700     0
-실제 1 (고스트레스) <span style="color:#ff8080;">137</span>   <span class="num">219</span>              실제 1    <span style="color:#ff8080;">356</span>     <span style="color:#ff8080;">0</span></div>
+    <div style="display:grid;grid-template-columns:480px 1fr;gap:28px;align-items:center;width:100%;">
+      <div style="background:#0d1117;border:1px solid #2a3340;border-radius:12px;padding:14px 14px 6px 14px;">
+        <svg viewBox="-150 -70 1270 1250" style="width:100%;height:auto;display:block;">
+          <!-- 격자 -->
+          <g stroke="#222c38" stroke-width="2">
+            <line x1="0" y1="250" x2="1000" y2="250"/><line x1="0" y1="500" x2="1000" y2="500"/><line x1="0" y1="750" x2="1000" y2="750"/>
+            <line x1="250" y1="0" x2="250" y2="1000"/><line x1="500" y1="0" x2="500" y2="1000"/><line x1="750" y1="0" x2="750" y2="1000"/>
+          </g>
+          <rect x="0" y="0" width="1000" height="1000" fill="none" stroke="#3a4250" stroke-width="4"/>
+          <!-- 곡선 아래 면적 = AUC -->
+          <path fill="#00f2ff" fill-opacity="0.16" stroke="none"
+                d="M0,1000 L0.0,1000.0 L1.4,1000.0 L7.1,997.2 L8.6,977.5 L14.3,974.7 L15.7,966.3 L18.6,963.5 L22.9,935.4 L25.7,929.8 L27.1,907.3 L31.4,893.3 L32.9,887.6 L40.0,884.8 L41.4,879.2 L47.1,873.6 L50.0,848.3 L54.3,842.7 L55.7,831.5 L61.4,828.7 L62.9,820.2 L65.7,817.4 L71.4,797.8 L85.7,792.1 L87.1,778.1 L94.3,772.5 L98.6,764.0 L101.4,761.2 L102.9,752.8 L107.1,750.0 L112.9,741.6 L128.6,736.0 L130.0,721.9 L134.3,716.3 L135.7,707.9 L142.9,705.1 L145.7,693.8 L148.6,691.0 L150.0,671.3 L154.3,668.5 L155.7,660.1 L160.0,657.3 L162.9,648.9 L170.0,646.1 L171.4,640.4 L178.6,637.6 L180.0,629.2 L184.3,623.6 L185.7,606.7 L197.1,601.1 L200.0,592.7 L204.3,581.5 L207.1,564.6 L228.6,561.8 L234.3,550.6 L238.6,544.9 L247.1,536.5 L257.1,533.7 L258.6,522.5 L265.7,516.9 L270.0,505.6 L277.1,491.6 L278.6,477.5 L285.7,474.7 L291.4,469.1 L294.3,466.3 L298.6,460.7 L310.0,457.9 L317.1,449.4 L332.9,446.6 L338.6,438.2 L352.9,435.4 L354.3,421.3 L358.6,415.7 L362.9,410.1 L378.6,407.3 L387.1,398.9 L392.9,384.8 L398.6,379.2 L407.1,373.6 L414.3,362.4 L417.1,359.6 L418.6,353.9 L438.6,348.3 L441.4,328.7 L448.6,323.0 L458.6,317.4 L464.3,314.6 L474.3,309.0 L484.3,306.2 L501.4,294.9 L508.6,292.1 L520.0,280.9 L530.0,278.1 L534.3,272.5 L544.3,264.0 L550.0,258.4 L554.3,252.8 L571.4,247.2 L578.6,244.4 L595.7,236.0 L602.9,233.1 L608.6,224.7 L620.0,219.1 L621.4,213.5 L630.0,207.9 L631.4,199.4 L634.3,193.8 L635.7,188.2 L640.0,185.4 L641.4,177.0 L652.9,174.2 L664.3,168.5 L675.7,165.7 L677.1,154.5 L685.7,151.7 L691.4,143.3 L695.7,140.4 L707.1,134.8 L720.0,132.0 L725.7,126.4 L740.0,123.6 L744.3,115.2 L751.4,112.4 L778.6,103.9 L785.7,101.1 L787.1,95.5 L805.7,84.3 L811.4,78.7 L825.7,75.8 L832.9,70.2 L837.1,67.4 L838.6,61.8 L868.6,59.0 L870.0,53.4 L891.4,50.6 L897.1,44.9 L911.4,42.1 L921.4,33.7 L945.7,30.9 L952.9,25.3 L968.6,22.5 L972.9,14.0 L988.6,11.2 L990.0,5.6 L995.7,2.8 L1000.0,0.0 L1000,1000 Z"/>
+          <!-- 완벽한 모델 (AUC 1.0) -->
+          <polyline points="0,1000 0,0 1000,0" fill="none" stroke="#adff2f" stroke-width="5" stroke-dasharray="14 12" opacity="0.75"/>
+          <!-- 동전 던지기 (AUC .5) -->
+          <line x1="0" y1="1000" x2="1000" y2="0" stroke="#8892a4" stroke-width="5" stroke-dasharray="10 12"/>
+          <!-- 우리 곡선 -->
+          <polyline points="0.0,1000.0 1.4,1000.0 7.1,997.2 8.6,977.5 14.3,974.7 15.7,966.3 18.6,963.5 22.9,935.4 25.7,929.8 27.1,907.3 31.4,893.3 32.9,887.6 40.0,884.8 41.4,879.2 47.1,873.6 50.0,848.3 54.3,842.7 55.7,831.5 61.4,828.7 62.9,820.2 65.7,817.4 71.4,797.8 85.7,792.1 87.1,778.1 94.3,772.5 98.6,764.0 101.4,761.2 102.9,752.8 107.1,750.0 112.9,741.6 128.6,736.0 130.0,721.9 134.3,716.3 135.7,707.9 142.9,705.1 145.7,693.8 148.6,691.0 150.0,671.3 154.3,668.5 155.7,660.1 160.0,657.3 162.9,648.9 170.0,646.1 171.4,640.4 178.6,637.6 180.0,629.2 184.3,623.6 185.7,606.7 197.1,601.1 200.0,592.7 204.3,581.5 207.1,564.6 228.6,561.8 234.3,550.6 238.6,544.9 247.1,536.5 257.1,533.7 258.6,522.5 265.7,516.9 270.0,505.6 277.1,491.6 278.6,477.5 285.7,474.7 291.4,469.1 294.3,466.3 298.6,460.7 310.0,457.9 317.1,449.4 332.9,446.6 338.6,438.2 352.9,435.4 354.3,421.3 358.6,415.7 362.9,410.1 378.6,407.3 387.1,398.9 392.9,384.8 398.6,379.2 407.1,373.6 414.3,362.4 417.1,359.6 418.6,353.9 438.6,348.3 441.4,328.7 448.6,323.0 458.6,317.4 464.3,314.6 474.3,309.0 484.3,306.2 501.4,294.9 508.6,292.1 520.0,280.9 530.0,278.1 534.3,272.5 544.3,264.0 550.0,258.4 554.3,252.8 571.4,247.2 578.6,244.4 595.7,236.0 602.9,233.1 608.6,224.7 620.0,219.1 621.4,213.5 630.0,207.9 631.4,199.4 634.3,193.8 635.7,188.2 640.0,185.4 641.4,177.0 652.9,174.2 664.3,168.5 675.7,165.7 677.1,154.5 685.7,151.7 691.4,143.3 695.7,140.4 707.1,134.8 720.0,132.0 725.7,126.4 740.0,123.6 744.3,115.2 751.4,112.4 778.6,103.9 785.7,101.1 787.1,95.5 805.7,84.3 811.4,78.7 825.7,75.8 832.9,70.2 837.1,67.4 838.6,61.8 868.6,59.0 870.0,53.4 891.4,50.6 897.1,44.9 911.4,42.1 921.4,33.7 945.7,30.9 952.9,25.3 968.6,22.5 972.9,14.0 988.6,11.2 990.0,5.6 995.7,2.8 1000.0,0.0" fill="none" stroke="#00f2ff" stroke-width="7" stroke-linejoin="round"/>
+          <!-- 임계값 .50 지점 -->
+          <circle cx="390" cy="385" r="16" fill="#ffd479" stroke="#0d1117" stroke-width="4"/>
+          <text x="425" y="455" fill="#ffd479" font-size="38" font-family="Lato, sans-serif">임계값 .50</text>
+          <!-- 축 -->
+          <text x="500" y="1105" fill="#b0b0b0" font-size="40" text-anchor="middle" font-family="Lato, sans-serif">FPR (거짓양성률) = 1 − 특이도</text>
+          <text x="-95" y="500" fill="#b0b0b0" font-size="40" text-anchor="middle" font-family="Lato, sans-serif" transform="rotate(-90 -95 500)">TPR (재현율)</text>
+          <text x="-20" y="1040" fill="#55606f" font-size="34" text-anchor="middle">0</text>
+          <text x="1000" y="1040" fill="#55606f" font-size="34" text-anchor="middle">1</text>
+          <text x="-40" y="20" fill="#55606f" font-size="34" text-anchor="end">1</text>
+          <text x="560" y="820" fill="#00f2ff" font-size="44" font-family="Poppins, sans-serif">AUC = .653</text>
+        </svg>
+      </div>
+      <div>
+        <ul class="bullet-list" style="font-size:16px;margin:0;">
+          <li><i class="fa-solid fa-circle-check"></i> <b style="color:#adff2f;">초록 점선</b> = 완벽한 모델. 왼쪽 위 모서리를 지난다 — <b>FPR 0 에서 이미 TPR 1</b>. 면적 = <b>1.000</b></li>
+          <li><i class="fa-solid fa-circle-minus"></i> <b style="color:#8892a4;">회색 대각선</b> = 동전 던지기. 면적 = <b>.500</b> ← Dummy 가 여기다</li>
+          <li><i class="fa-solid fa-wave-square"></i> <b style="color:#00f2ff;">파란 곡선</b> = 우리 로지스틱. 대각선보다 <b>위로 볼록</b>하다 → 정보가 있다. 칠해진 면적이 <b style="color:#00f2ff;">.653</b></li>
+          <li><i class="fa-solid fa-location-dot" style="color:#ffd479;"></i> <b style="color:#ffd479;">노란 점</b> = 임계값 .50 일 때 우리가 서 있는 자리. <b>임계값을 바꾸면 이 점이 곡선 위를 미끄러진다</b> — 곡선 자체는 안 변한다</li>
+        </ul>
+        <div class="finding" style="margin-top:14px;">
+          <p style="margin:0;font-size:17px;color:#fff;">🎯 <b style="color:#adff2f;">곡선 = 모델의 실력 · 점 = 우리의 선택.</b><br>
+          <span style="font-size:16px;color:#8892a4;">AUC 는 <b>점을 어디 찍든 변하지 않는</b> 곡선 전체의 요약이다. 그래서 임계값을 정하기 전에 모델끼리 비교할 수 있다.</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>ROC 곡선 (ROC curve) · 볼록성 (convexity) · 운영점 (operating point) · 곡선하 면적 (AUC)</div>
+  <div class="slide-no">37</div>
+</div>
+
+<div class="slide-container" id="s38">
+  <h2 class="slide-title wrap">Step 6 — 평가 ⑫: 왜 그 "면적"이 "순서를 맞힐 확률"과 같은가</h2>
+  <div class="content-area">
+    <p style="font-size:18px;margin:0;">면적과 확률 — 전혀 달라 보이는 두 말이 왜 같은 값인가. 한 문단으로 이어 붙이면 이렇다.</p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:17px;color:#fff;">임계값을 위에서 아래로 내리면, 점수가 높은 사람부터 한 명씩 "양성"으로 넘어온다.
+      <b style="color:#adff2f;">양성인 사람이 넘어오면 곡선이 위로</b>, <b style="color:#ff8080;">음성인 사람이 넘어오면 곡선이 오른쪽으로</b> 간다.<br>
+      → 곡선은 결국 <b>1,056명을 점수 순으로 세워 놓고 양성/음성이 어떤 순서로 나오는지</b>를 그린 계단이다.<br>
+      → 양성이 <b>먼저</b> 많이 나올수록 곡선은 <b>일찍 위로</b> 붙고, 아래 면적이 커진다.
+      그 면적은 곧 <b style="color:#adff2f;">"아무 양성 한 명이 아무 음성 한 명보다 앞에 설 확률"</b> 이다.</p>
+    </div>
+    <div class="two-column" style="margin-top:14px;">
+      <div class="finding"><p style="margin:0;font-size:17px;color:#fff;"><b>극단 ①</b> 양성 356명이 <b>전부 앞</b>에 서면<br>→ 곡선이 왼쪽 벽을 타고 올라간다 → 면적 <b style="color:#adff2f;">1.000</b><br><span style="color:#8892a4;">모든 쌍에서 양성이 이긴다 = 확률 1</span></p></div>
+      <div class="finding"><p style="margin:0;font-size:17px;color:#fff;"><b>극단 ②</b> 순서가 <b>뒤죽박죽</b>이면<br>→ 곡선이 대각선을 따라간다 → 면적 <b style="color:#8892a4;">.500</b><br><span style="color:#8892a4;">쌍의 절반만 이긴다 = 동전 던지기</span></p></div>
+    </div>
+    <p style="font-size:17px;margin-top:14px;color:#8892a4;">🔴 그래서 AUC 는 <b style="color:#fff;">"몇 명을 맞혔나"가 아니라 "줄을 잘 세웠나"를 재는 지표</b>다.
+    확률값이 전부 0.01 씩 작아져도 <b>순서가 그대로면 AUC 는 똑같다.</b> — 이 성질이 장점이자 함정이다(평가 ⑭).</p>
+  </div>
+  <div class="term-note"><b>용어</b>순위 통계량 (rank statistic) · Mann-Whitney U · 계단 함수 (step function) · 동순위 (ties)</div>
+  <div class="slide-no">38</div>
+</div>
+
+<div class="slide-container" id="s39">
+  <h2 class="slide-title">Step 6 — 평가 ⑬: 정의를 실험으로 확인한다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;"><span class="cm"># 양성 1명 · 음성 1명을 20만 번 뽑아 "양성이 더 높은 점수를 받았나"를 센다</span>
+양성이 더 높은 점수를 받은 비율 = <span class="num">0.6525</span>
+roc_auc_score 가 준 값          = <span class="num">0.6519</span>   <span class="cm"># 같은 값이다</span></div>
+    <p style="font-size:19px;margin-top:16px;">AUC 가 "순서를 맞힐 확률"이라는 말의 뜻이 <b style="color:#adff2f;">정확히 이것</b>이다 — 외우지 말고 이 실험을 기억한다.</p>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b>불균형에서는 PR-AUC 를 같이 본다</b><br>
+      PR-AUC(average precision) = <b style="color:#adff2f;">.475</b> · 우연 수준의 기준선 = <b>양성 기저율 .337</b> → 향상 폭 <b>+.138</b><br>
+      <span style="font-size:17px;color:#8892a4;">ROC-AUC 의 기준선은 항상 .500 이지만, <b style="color:#fff;">PR-AUC 의 기준선은 데이터마다 다르다.</b></span></p>
+    </div>
+    <p style="font-size:18px;margin-top:14px;color:#8892a4;">우연보다는 낫다. 그러나 극적이지 않다 — 3차시에 상관이 전부 .3 이하였던 그 결과가 여기 그대로 나타난 것이다.</p>
+  </div>
+  <div class="term-note"><b>용어</b>PR-AUC / 평균정밀도 (average precision) · 기저율 (base rate) · 순위 확률 해석 (probabilistic interpretation)</div>
+  <div class="slide-no">39</div>
+</div>
+
+<div class="slide-container" id="s40">
+  <h2 class="slide-title">Step 6 — 평가 ⑭: AUC 도 혼자 두면 속인다</h2>
+  <div class="content-area table-layout">
+    <table class="tight" style="font-size:17px;">
+      <tr><th style="width:50px;"></th><th style="width:330px;">함정</th><th>우리 데이터에서</th></tr>
+      <tr><td>①</td><td><strong>불균형에서 낙관적으로 보인다</strong><br><span style="color:#8892a4;">음성이 많으면 FPR 분모가 커서 헛경보가 희석된다</span></td><td>AUC .653 은 그럴듯한데 PR-AUC 는 <b>.475</b>(기저율 .337) — 향상 폭이 훨씬 작아 보인다</td></tr>
+      <tr><td>②</td><td><strong>순위만 본다 — 확률값의 정확성(보정)은 말해 주지 않는다</strong></td><td>"위험 확률 0.8"이 진짜 80% 라는 보장이 없다. <b>순서만 맞으면 AUC 는 만점</b></td></tr>
+      <tr><td>③</td><td><strong>몇 명을 지목할지 정해 주지 않는다</strong></td><td>임계값 .3 이면 885명, .7 이면 94명 — <b>AUC 는 이 둘을 구분하지 않는다</b></td></tr>
+      <tr><td>④</td><td><strong>1.0 은 실력이 아니라 사고 신호다</strong></td><td><b style="color:#ff8080;">Step 7 에서 직접 만든다</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:17px;color:#fff;">🔴 그래서 우리 보고 규칙(AGENTS.md): <b style="color:#adff2f;">ROC-AUC · PR-AUC · recall · precision · F1 · balanced accuracy · 혼동행렬을 함께, 항상 Dummy 를 옆에.</b>
+      <b>지표 하나만 적힌 표는 그 자체로 의심 대상이다.</b></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>보정 (calibration) · 운영점 (operating point) · 불균형 (imbalance) · 보고 기준 (reporting standard)</div>
+  <div class="slide-no">40</div>
+</div>
+
+<div class="slide-container" id="s41">
+  <h2 class="slide-title">Step 6 — 평가 ⑮: F score — 왜 조화평균인가</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:19px;">산술평균  (P + R) / 2                    <span style="color:#ff8080;">❌</span>
+조화평균  2 × P × R / (P + R)  = <span style="color:#adff2f;">F1</span>     <span style="color:#adff2f;">✅</span></div>
+    <p style="font-size:19px;margin-top:16px;">정밀도 <b>1.00</b> / 재현율 <b>0.01</b> 인 모델 — "100% 확신하는 한 명만 지목하고 355명은 다 놓친 의사"다.</p>
+    <div class="two-column" style="margin-top:10px;">
+      <div class="finding" style="border-left-color:#ff6b6b;"><p style="margin:0;font-size:19px;color:#fff;">산술평균 = (1.00+0.01)/2 = <b style="color:#ff8080;">.505</b><br><span style="font-size:17px;color:#8892a4;">절반은 하는 것처럼 보인다</span></p></div>
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;">조화평균 = 2×1.00×0.01/1.01 = <b style="color:#adff2f;">.020</b><br><span style="font-size:17px;color:#8892a4;">실상에 가깝다</span></p></div>
+    </div>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">조화평균은 낮은 쪽에 끌려간다 — 둘 다 높아야만 높은 점수가 나온다.</b><br>
+      <span style="font-size:17px;color:#8892a4;">"한쪽을 희생해 다른 쪽을 올리는" 꼼수를 벌한다. 우리 실측: P .445 · R .615 → <b style="color:#fff;">F1 = .517</b></span></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>F1 점수 (F1 score) · 조화평균 (harmonic mean) · 산술평균 (arithmetic mean)</div>
+  <div class="slide-no">41</div>
+</div>
+
+<div class="slide-container" id="s42">
+  <h2 class="slide-title">Step 6 — 평가 ⑯: F score 를 이루는 네 개의 값</h2>
+  <div class="content-area table-layout">
+    <div class="code-block" style="font-size:18px;">F1 = 2 × <span class="num">TP</span> / ( 2 × <span class="num">TP</span> + <span style="color:#ff8080;">FP</span> + <span style="color:#ff8080;">FN</span> )     <span class="cm"># 정밀도·재현율을 풀어 쓰면 이 모양이다</span></div>
+    <table class="tight" style="font-size:18px;margin-top:12px;">
+      <tr><th style="width:150px;">값</th><th>F1 에서의 역할</th><th style="width:150px;">우리 실측</th></tr>
+      <tr><td><strong>TP</strong></td><td>분자 — 잘한 것</td><td>219</td></tr>
+      <tr><td><strong>FP</strong></td><td><b style="color:#ff8080;">precision 을 끌어내린다</b> (헛경보)</td><td>273</td></tr>
+      <tr><td><strong>FN</strong></td><td><b style="color:#ff8080;">recall 을 끌어내린다</b> (놓침)</td><td>137</td></tr>
+      <tr><td><strong>TN</strong></td><td>🔴 <b style="color:#ffd479;">F1 공식에 아예 없다</b></td><td>427 (한 글자도 기여 안 함)</td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:18px;color:#fff;">마지막 줄이 F1 의 <b>성격이자 맹점</b>이다. 불균형 데이터에서 "다수 클래스를 맞힌 공"을 인정하지 않아
+      <b style="color:#adff2f;">accuracy 보다 정직하지만</b>, 그 대신 <b style="color:#ff8080;">음성을 얼마나 잘 통과시켰는지는 말해 주지 않는다</b> → 특이도를 따로 본다.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>F1 (F1 score) · 위양성 (FP) · 위음성 (FN) · 참음성 (TN)</div>
+  <div class="slide-no">42</div>
+</div>
+
+<div class="slide-container" id="s43">
+  <h2 class="slide-title">Step 6 — 평가 ⑰: 그런데 F1 도 속는다 💥</h2>
+  <div class="content-area table-layout">
+    <table style="font-size:19px;">
+      <tr><th>모델</th><th>precision</th><th>recall</th><th>F1</th><th>AUC</th></tr>
+      <tr><td>🙋 전부 1 (<b>학습 없음</b>)</td><td>.337</td><td>1.000</td><td><b style="color:#ffd479;">.5042</b></td><td><b style="color:#ff8080;">.500</b></td></tr>
+      <tr><td>🧑‍⚕️ 로지스틱 (18개 변수로 학습)</td><td>.445</td><td>.615</td><td><b style="color:#ffd479;">.5165</b></td><td><b style="color:#adff2f;">.653</b></td></tr>
+    </table>
     <div class="finding" style="margin-top:18px;">
-      <p style="margin:0;font-size:20px;color:#fff;">로지스틱: 고스트레스 356명 중 <b style="color:#adff2f;">219명을 찾아내고</b> 137명을 놓쳤다.<br>
-      Dummy: <b style="color:#ff8080;">356명 전원을 놓쳤다.</b> "정확도 66%" 의 실체가 이것이다.</p>
+      <p style="margin:0;font-size:20px;color:#fff;"><b>F1 차이가 .012 다.</b> 18개 변수로 학습한 모델과, 아무 생각 없이 전원을 양성이라 찍는 모델이
+      <b style="color:#ff8080;">F1 으로는 거의 구별되지 않는다.</b> 그런데 AUC 로는 <b style="color:#adff2f;">.500 vs .653</b> 으로 갈린다.</p>
     </div>
-    <p style="font-size:19px;margin-top:14px;color:#8892a4;">고스트레스 집단을 <b>선별</b>하는 것이 목적이므로 <b style="color:#adff2f;">recall(놓치지 않는 비율)</b> 을 반드시 같이 읽는다.</p>
+    <p style="font-size:18px;margin-top:14px;color:#8892a4;">왜? 양성이 33.7% 나 되니 전원 양성이면 recall 은 공짜로 1.000, precision 도 기저율(.337)은 받는다 → 조화평균이 .5 를 넘긴다.<br>
+    🔴 <b style="color:#adff2f;">F1 도 단독으로는 못 믿는다.</b> 여러 지표를 동시에 · Dummy 를 옆에 · 사람 수를 함께.</p>
   </div>
-  <div class="slide-no">17</div>
+  <div class="term-note"><b>용어</b>기저율 (base rate) · 사소한 분류기 (trivial classifier) · 지표 게이밍 (metric gaming)</div>
+  <div class="slide-no">43</div>
 </div>
 
-<!-- 18 부정행위 -->
-<div class="slide-container" id="s18">
-  <h2 class="slide-title">Step 5 — 🔥 오늘의 백미: 일부러 부정행위 하기</h2>
+<div class="slide-container" id="s44">
+  <h2 class="slide-title">Step 6 — 평가 ⑱: F-beta — 무엇을 몇 배 더 중시할 것인가</h2>
+  <div class="content-area table-layout">
+    <div class="code-block" style="font-size:18px;padding:20px 30px;">                    P × R
+F<span class="num">β</span> = (1 + <span class="num">β²</span>) × ───────────────
+                 <span class="num">β²</span> × P  +  R      <span class="cm"># β = recall 을 precision 보다 몇 배 중시하는가</span></div>
+    <table class="tight" style="font-size:17px;margin-top:10px;">
+      <tr><th style="width:170px;">β</th><th style="width:250px;">뜻</th><th>언제 쓰나</th></tr>
+      <tr><td><strong>β = 0.5</strong> (F0.5)</td><td>precision 을 <b>2배</b> 중시</td><td>헛경보(FP)의 비용이 클 때 — 개입 자체가 위험할 때</td></tr>
+      <tr><td><strong>β = 1</strong> (F1)</td><td><b>1 : 1</b></td><td>특별한 이유가 없을 때의 기본값</td></tr>
+      <tr><td><strong>β = 2</strong> (F2)</td><td>recall 을 <b>2배</b> 중시</td><td>놓침(FN)의 비용이 클 때 — <b style="color:#adff2f;">검진·선별</b></td></tr>
+    </table>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:17px;color:#fff;">평가 ④ 에서 봤듯 <b>"0.5 이상이면 양성"은 우리가 정한 하이퍼파라미터</b>일 뿐이다.<br>
+      🎯 <b style="color:#adff2f;">β 를 정한다는 것은 곧 "어느 임계값을 좋다고 부를 것인가"를 정하는 일이다</b> —
+      <span style="color:#8892a4;">AUC 가 <b style="color:#fff;">곡선 전체</b>를 봤다면, F-beta 는 <b style="color:#fff;">그 곡선 위 어느 점에 설지</b>를 고르는 자다.</span></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>F-beta (F-beta score) · 임계값 (threshold) · 예측 확률 (predicted probability)</div>
+  <div class="slide-no">44</div>
+</div>
+
+<div class="slide-container" id="s45">
+  <h2 class="slide-title">Step 6 — 평가 ⑲: 임계값 하나로 TP 가 56 → 326명</h2>
+  <div class="content-area table-layout">
+    <table class="tight" style="font-size:17px;">
+      <tr><th>임계값</th><th>TP</th><th>FN</th><th>FP</th><th>TN</th><th>precision</th><th>recall</th><th>F0.5</th><th>F1</th><th>F2</th></tr>
+      <tr><td>.30</td><td>326</td><td>30</td><td>559</td><td>141</td><td>.368</td><td><b style="color:#adff2f;">.916</b></td><td>.418</td><td>.525</td><td><b style="color:#adff2f;">.706</b></td></tr>
+      <tr><td>.40</td><td>277</td><td>79</td><td>430</td><td>270</td><td>.392</td><td>.778</td><td>.435</td><td>.521</td><td>.650</td></tr>
+      <tr><td><strong>.50</strong> (기본값)</td><td><strong>219</strong></td><td><strong>137</strong></td><td><strong>273</strong></td><td><strong>427</strong></td><td><strong>.445</strong></td><td><strong>.615</strong></td><td>.471</td><td><strong>.517</strong></td><td>.572</td></tr>
+      <tr><td>.60</td><td>131</td><td>225</td><td>126</td><td>574</td><td>.510</td><td>.368</td><td><b style="color:#adff2f;">.473</b></td><td>.427</td><td>.390</td></tr>
+      <tr><td>.70</td><td>56</td><td>300</td><td>38</td><td>662</td><td><b style="color:#adff2f;">.596</b></td><td>.157</td><td>.383</td><td>.249</td><td>.184</td></tr>
+    </table>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:18px;color:#fff;"><b>같은 모델, 같은 확률</b>인데 임계값 하나로 지목 인원이 <b style="color:#adff2f;">94명 → 885명</b> 까지 움직인다.<br>
+      그리고 β 마다 "최선의 임계값"이 다르다 — <b>F0.5 는 .58 · F1 은 .36 · F2 는 .20</b> 에서 최대다.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>임계값 이동 (threshold shifting) · 운영점 (operating point) · 지표 최적화 (metric optimization)</div>
+  <div class="slide-no">45</div>
+</div>
+
+<div class="slide-container" id="s46">
+  <h2 class="slide-title wrap">Step 6 — 평가 ⑳: β 를 키우면? — "전원 양성"으로 수렴한다 🔴</h2>
   <div class="content-area">
-    <p style="font-size:22px;margin:0;">이제 <strong>규칙을 어기면</strong> 성능이 얼마나 좋아지는지 <b style="color:#adff2f;">직접 눈으로</b> 본다.</p>
-    <div class="finding" style="margin-top:22px;">
-      <p style="margin:0;font-size:22px;color:#fff;">우리 target 은 <b>6차 문화적응 스트레스 점수</b>로 만들었다.<br>그렇다면 — <b style="color:#ffd479;">그 6차 점수 자체를 예측 변수로 넣으면?</b></p>
+    <div class="finding" style="border-left-color:#ff6b6b;">
+      <p style="margin:0;font-size:19px;color:#fff;">β=2 를 최대로 만드는 임계값은 <b style="color:#ff8080;">.20</b> 이고, 그때 recall 은 <b>.983</b> — 사실상 <b>전원을 양성이라 찍는 것</b>(FP 678명)에 가깝다.<br>
+      실제로 <b>"전부 1" 더미 모델의 F2 는 .718</b> 로, 우리가 임계값을 최적화해 얻은 <b>.714 보다도 높다.</b></p>
     </div>
-    <div class="code-block" style="margin-top:20px;font-size:18px;">leak_feats = feats + [<span class="str">"________________"</span>]   <span class="cm"># ← target 을 만든 그 컬럼</span></div>
-    <p style="font-size:19px;margin-top:16px;color:#8892a4;">먼저 <b>예측</b>하게 한다 — AUC 가 얼마나 나올까? (0.7? 0.9?)</p>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">🎯 <b style="color:#adff2f;">β 는 성능을 올리는 손잡이가 아니라, 비용에 대한 판단을 적어 두는 자리다.</b><br>
+    <span style="font-size:18px;color:#8892a4;">그래서 β 는 결과를 보고 고르는 게 아니라 <b style="color:#fff;">미리 정하고 기록</b>해야 한다 — 분위수 0.75 와 똑같다.</span></p>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:18px;color:#fff;"><b>우리 프로젝트의 결정</b> — 선별 목적이라 recall 쪽으로 기울지만(β&gt;1), FP 는 <b>낙인 비용</b>이라 무한정 키울 수 없다. 그래서
+      ① 임계값은 <b>.5 로 고정</b> ② recall·precision·F1 을 <b>같이 보고</b> ③ 임계값 조정은 <b>8차시 민감도 분석</b>으로.<br>
+      <span style="font-size:16px;color:#8892a4;">튜닝을 안 하는 이유가 하나 더 있다 — 튜닝하려면 결국 채점을 봐야 하고, 그건 <b style="color:#fff;">test 봉인 원칙</b>과 부딪힌다.</span></p>
+    </div>
   </div>
-  <div class="slide-no">18</div>
+  <div class="term-note"><b>용어</b>비용민감 학습 (cost-sensitive learning) · 사전 지정 (pre-specification) · 민감도 분석 (sensitivity analysis)</div>
+  <div class="slide-no">46</div>
 </div>
 
-<!-- 19 AUC 1.0 -->
-<div class="slide-container" id="s19">
-  <h2 class="slide-title">Step 5 — AUC 1.0000 💥</h2>
+<div class="slide-container" id="s47">
+  <h2 class="slide-title">Step 6 — 정리: 지표 읽는 순서 (외워 둘 것)</h2>
+  <div class="content-area table-layout">
+    <table class="tight" style="font-size:16px;">
+      <tr><th>모델</th><th>TP</th><th>FN</th><th>FP</th><th>TN</th><th>acc</th><th>prec</th><th>recall</th><th>특이도</th><th>F1</th><th>F2</th><th>AUC</th><th>PR-AUC</th></tr>
+      <tr><td>Dummy (전부 0)</td><td>0</td><td>356</td><td>0</td><td>700</td><td>.663</td><td>—</td><td>.000</td><td>1.000</td><td>.000</td><td>.000</td><td>.500</td><td>.337</td></tr>
+      <tr><td>Dummy (전부 1)</td><td>356</td><td>0</td><td>700</td><td>0</td><td>.337</td><td>.337</td><td>1.000</td><td>.000</td><td>.504</td><td>.718</td><td>.500</td><td>.337</td></tr>
+      <tr><td><strong>로지스틱 (Model A)</strong></td><td><strong>219</strong></td><td><strong>137</strong></td><td><strong>273</strong></td><td><strong>427</strong></td><td>.612</td><td>.445</td><td><b style="color:#adff2f;">.615</b></td><td>.610</td><td>.517</td><td>.572</td><td><b style="color:#adff2f;">.653</b></td><td><b style="color:#adff2f;">.475</b></td></tr>
+    </table>
+    <ul class="bullet-list" style="font-size:17px;margin-top:12px;">
+      <li><i class="fa-solid fa-1"></i> <strong>혼동행렬 먼저</strong> — 비율보다 <b>사람 수</b>. "356명 중 219명"이 "recall .615"보다 정직하다</li>
+      <li><i class="fa-solid fa-2"></i> <strong>Dummy 와 나란히</strong> — 학습 없이도 나오는 숫자보다 나은지부터 본다</li>
+      <li><i class="fa-solid fa-3"></i> <strong>짝으로 읽기</strong> — precision ↔ recall, recall ↔ 특이도. 하나만 좋으면 의심한다</li>
+      <li><i class="fa-solid fa-4"></i> <strong>목적에 맞는 요약 하나</strong> — 우리는 선별이므로 recall 을 앞세우되 F1 을 같이 적는다</li>
+      <li><i class="fa-solid fa-5"></i> <strong>너무 좋으면 멈춘다</strong> — AUC .9 이상이 갑자기 나오면 성능이 아니라 <b style="color:#ff8080;">데이터 흐름</b>을 본다</li>
+    </ul>
+  </div>
+  <div class="term-note"><b>용어</b>모델 카드 (model card) · 보고 (reporting) · 기준선 비교 (baseline comparison)</div>
+  <div class="slide-no">47</div>
+</div>
+
+<div class="slide-container" id="s48">
+  <h2 class="slide-title">Step 7 — 🔥 오늘의 백미: 일부러 부정행위 하기</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">Step 5 에서 <b>train AUC 1.000</b> 을 만들었다. 그건 CV 가 잡아냈다(.519).<br>
+    이제 <b style="color:#ff8080;">CV 도 못 잡는</b> 사고를 만든다. Step 2 의 ②번 — <b>"답을 베낄 방법이 있으면 반드시 베낀다."</b></p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:21px;color:#fff;">우리 target 은 <b>6차 문화적응 스트레스 점수</b>로 만들었다.<br>그렇다면 — <b style="color:#ffd479;">그 6차 점수 자체를 feature 로 넣으면?</b></p>
+    </div>
+    <div class="code-block" style="margin-top:18px;font-size:18px;">leak_feats = feats + [<span class="str">"________________"</span>]   <span class="cm"># ← target 을 만든 그 컬럼</span></div>
+    <p style="font-size:18px;margin-top:14px;color:#8892a4;">🖐 먼저 <b>예측</b>하게 한다 — AUC 가 얼마나 나올까? (0.7? 0.9?)</p>
+  </div>
+  <div class="term-note"><b>용어</b>데이터 누출 (data leakage) · 표적 누출 (target leakage) · 예측 시점 (prediction time)</div>
+  <div class="slide-no">48</div>
+</div>
+
+<div class="slide-container" id="s49">
+  <h2 class="slide-title">Step 7 — AUC 1.0000 💥</h2>
   <div class="content-area">
     <div class="code-block" style="font-size:22px;">정직한 모델 (5차 변인만)     AUC = <span class="num">0.6525</span>
 누출 모델   (6차 점수 포함)   AUC = <span style="color:#ff8080;">1.0000</span>   ← ?!</div>
-    <div class="finding" style="margin-top:24px;">
-      <p style="margin:0;font-size:23px;color:#fff;"><b>완벽한 모델</b>이 만들어졌다. 축하할 일일까?<br>
+    <div class="finding" style="margin-top:22px;">
+      <p style="margin:0;font-size:22px;color:#fff;"><b>완벽한 모델</b>이 만들어졌다. 축하할 일일까?<br>
       <b style="color:#ff8080;">아니다. 이건 성공이 아니라 경보음이다.</b></p>
     </div>
-    <p style="font-size:20px;margin-top:22px;color:#8892a4;">무슨 일이 일어난 걸까? — 학생에게 먼저 말하게 한다.</p>
+    <p style="font-size:19px;margin-top:20px;color:#8892a4;">그리고 이번엔 <b style="color:#fff;">CV 도 1.000 이다</b> — 과적합처럼 무너지지 않는다. <b style="color:#ff8080;">그게 더 무섭다.</b><br>
+    무슨 일이 일어난 걸까? — 학생에게 먼저 말하게 한다.</p>
   </div>
-  <div class="slide-no">19</div>
+  <div class="term-note"><b>용어</b>완벽 분리 (perfect separation) · 순환 정의 (circular definition) · 경보 신호 (red flag)</div>
+  <div class="slide-no">49</div>
 </div>
 
-<!-- 20 왜 쓰레기인가 -->
-<div class="slide-container" id="s20">
-  <h2 class="slide-title">Step 5 — 왜 이것이 쓰레기인가</h2>
+<div class="slide-container" id="s50">
+  <h2 class="slide-title">Step 7 — 왜 이것이 쓰레기인가</h2>
   <div class="content-area">
-    <p style="font-size:20px;margin:0;"><code>high_stress</code> 는 <code>acculturative_stress_w6 >= 1.5</code> 로 <strong>만든</strong> 라벨이다. 그 원본을 feature 로 주면 모델이 할 일은 <b>"1.5 보다 큰가?"</b> 하나뿐 — <b style="color:#ff8080;">예측한 게 아니라 베낀 것이다.</b></p>
-    <ul class="bullet-list" style="font-size:19px;margin-top:14px;">
+    <p style="font-size:19px;margin:0;"><code>high_stress</code> 는 <code>acculturative_stress_w6 >= 1.5</code> 로 <strong>만든</strong> 라벨이다. 그 원본을 feature 로 주면 모델이 할 일은 <b>"1.5 보다 큰가?"</b> 하나뿐 — <b style="color:#ff8080;">예측한 게 아니라 베낀 것이다.</b></p>
+    <ul class="bullet-list" style="font-size:18px;margin-top:12px;">
       <li><i class="fa-solid fa-1"></i> <strong>실전에서는 그 변수가 없다.</strong> 우리 목표는 "중2 정보로 <b>1년 뒤</b>를 미리 구분"이다. 중3 점수를 이미 안다면 예측할 이유가 없다</li>
       <li><i class="fa-solid fa-2"></i> <strong>아무것도 배우지 못한다.</strong> 이 모델의 답은 "스트레스가 높으면 스트레스가 높다"뿐이다</li>
       <li><i class="fa-solid fa-3"></i> <strong>위험하다.</strong> 숫자가 좋으니 아무도 의심하지 않는다 — 조용히 틀린 결론이 배포된다</li>
     </ul>
-    <div class="finding" style="margin-top:14px;">
-      <p style="margin:0;font-size:20px;color:#fff;">🔴 실무에서 갑자기 성능이 튀면 가장 먼저 의심할 것은 모델이 아니라 <b style="color:#adff2f;">데이터 흐름</b>이다.</p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:18px;color:#fff;">🔴 실무에서 갑자기 성능이 튀면 가장 먼저 의심할 것은 모델이 아니라 <b style="color:#adff2f;">데이터 흐름</b>이다.<br>
+      <span style="font-size:16px;color:#8892a4;">❓ "그럼 5차 스트레스를 넣는 Model B 도 누출 아닌가?" — <b style="color:#fff;">아니다.</b> 5차는 예측 시점(중2) 당시의 정보라 실제 상황에서도 알 수 있다.
+      누출의 기준은 "변수가 강력한가"가 아니라 <b style="color:#adff2f;">"예측 시점에 알 수 있는 정보인가"</b> 이다.</span></p>
     </div>
   </div>
-  <div class="slide-no">20</div>
+  <div class="term-note"><b>용어</b>표적 누출 (target leakage) · 예측 시점 (prediction time) · 정보 가용성 (information availability)</div>
+  <div class="slide-no">50</div>
 </div>
 
-<!-- 21 누출의 세 얼굴 -->
-<div class="slide-container" id="s21">
-  <h2 class="slide-title">Step 6 — 누출의 세 얼굴</h2>
+<div class="slide-container" id="s51">
+  <h2 class="slide-title">Step 7 — 정리: 과적합과 데이터 누출은 어떻게 다른가</h2>
+  <div class="content-area table-layout">
+    <p style="font-size:19px;margin:0;">오늘 <b>train AUC 1.000</b>(Step 5 과적합)과 <b>CV AUC 1.000</b>(방금 그 누출)을 <b>둘 다 만들었다.</b> 겉모습은 같지만 <b style="color:#ffd479;">병이 다르다.</b></p>
+    <table class="compact" style="font-size:18px;">
+      <tr><th style="width:190px;"></th><th>과적합 (Step 5)</th><th>데이터 누출 (Step 7)</th></tr>
+      <tr><td><strong>train 점수</strong></td><td>1.000</td><td>1.000</td></tr>
+      <tr><td><strong>CV / 새 데이터</strong></td><td><b style="color:#adff2f;">무너진다 (.519)</b></td><td><b style="color:#ff8080;">그대로 1.000</b> ← 더 무섭다</td></tr>
+      <tr><td><strong>원인</strong></td><td>손잡이가 너무 많다</td><td>답을 feature 에 넣었다</td></tr>
+      <tr><td><strong>처방</strong></td><td>모델을 단순하게 · 규제 · CV 로 감시</td><td><b>데이터 흐름</b>을 고친다 (모델 문제가 아니다)</td></tr>
+    </table>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 <b style="color:#adff2f;">누출이 더 위험한 이유: 과적합은 CV 가 잡아 준다. 누출은 CV 도 속인다.</b><br>
+      <span style="font-size:17px;color:#8892a4;">그래서 누출은 <b>사람이 데이터 흐름을 봐야</b> 잡힌다 — 다음 장부터 그 방법이다.</span></p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>과적합 (overfitting) · 데이터 누출 (data leakage) · 검증 전략 (validation strategy)</div>
+  <div class="slide-no">51</div>
+</div>
+
+<div class="slide-container" id="s52">
+  <h2 class="slide-title">Step 7 — 누출의 세 얼굴</h2>
   <div class="content-area table-layout">
     <p style="font-size:19px;margin:0;">방금 본 것은 가장 <b>노골적인</b> 누출이다. 실제로는 훨씬 <b style="color:#ffd479;">알아채기 어려운</b> 형태로 온다.</p>
     <table style="font-size:18px;">
@@ -515,38 +1234,39 @@ train 으로 계산한 cutoff = <span class="num">1.5000</span>
     </table>
     <p style="font-size:19px;margin-top:16px;color:#adff2f;">②와 ③도 ①처럼 극적일까? — 직접 재 본다.</p>
   </div>
-  <div class="slide-no">21</div>
+  <div class="term-note"><b>용어</b>시간 누출 (temporal leakage) · 라벨 누출 (label leakage) · 전처리 누출 (preprocessing leakage)</div>
+  <div class="slide-no">52</div>
 </div>
 
-<!-- 22 실측 결과 -->
-<div class="slide-container" id="s22">
-  <h2 class="slide-title">Step 6 — 재 봤더니 결과가 제각각이다</h2>
+<div class="slide-container" id="s53">
+  <h2 class="slide-title">Step 7 — 재 봤더니 결과가 제각각이다</h2>
   <div class="content-area table-layout">
-    <table style="font-size:18px;">
-      <tr><th>누출</th><th style="width:250px;">실측 차이</th><th>해석</th></tr>
-      <tr><td>① 시간 (6차 점수)</td><td>AUC .653 → <b style="color:#ff8080;">1.000</b></td><td>파국적</td></tr>
-      <tr><td>② 라벨 (cutoff)</td><td>라벨 차이 <b style="color:#ffd479;">0명</b></td><td>이번엔 차이 없었다</td></tr>
-      <tr><td>③ 전처리 (표준화)</td><td><b style="color:#ffd479;">.0001</b></td><td>이번엔 차이 없었다</td></tr>
-      <tr><td>③ 전처리 (<strong>변수 선택</strong>)</td><td>.5025 → <b style="color:#ff8080;">.5877</b></td><td><b style="color:#ff8080;">순수한 잡음</b>으로 성능이 만들어졌다</td></tr>
+    <table class="compact" style="font-size:17px;">
+      <tr><th>종류</th><th style="width:250px;">실측 차이</th><th>해석</th></tr>
+      <tr><td>과적합 (트리 깊이 제한 없음)</td><td>train 1.000 → CV <b style="color:#ffd479;">.519</b></td><td>CV 가 잡아냈다</td></tr>
+      <tr><td>① 시간 누출 (6차 점수)</td><td>AUC .653 → <b style="color:#ff8080;">1.000</b> (CV 도 1.000)</td><td><b style="color:#ff8080;">파국적 · CV 도 못 잡는다</b></td></tr>
+      <tr><td>② 라벨 누출 (cutoff)</td><td>라벨 차이 <b style="color:#ffd479;">0명</b></td><td>이번엔 차이 없었다</td></tr>
+      <tr><td>③ 전처리 누출 (표준화)</td><td><b style="color:#ffd479;">.0001</b></td><td>이번엔 차이 없었다</td></tr>
+      <tr><td>③ 전처리 누출 (<strong>변수 선택</strong>)</td><td>.5025 → <b style="color:#ff8080;">.5877</b></td><td><b style="color:#ff8080;">순수한 잡음</b>으로 성능이 만들어졌다</td></tr>
     </table>
-    <div class="finding" style="margin-top:16px;">
-      <p style="margin:0;font-size:19px;color:#fff;">마지막 줄: 난수 200개 중 정답과 잘 맞는 5개를 <b>CV 밖에서 미리</b> 골랐다. 전부 잡음인데 AUC .59 —<br>
-      <b style="color:#adff2f;">고르는 순간 이미 정답을 다 봤기 때문이다.</b> 폴드 안에서 고르면 .50(동전 던지기)이 나온다.</p>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:17px;color:#fff;">마지막 줄: 난수 200개 중 정답과 잘 맞는 5개를 <b>CV 밖에서 미리</b> 골랐다. 전부 잡음인데 AUC .59 —
+      <b style="color:#adff2f;">고르는 순간 이미 정답을 다 봤기 때문이다.</b><br>
+      ②③이 얌전했다고 규칙을 버릴 수 있나? <b>없다</b> — <b style="color:#adff2f;">확인하려면 이미 규칙을 어겨야 한다</b> (Step 4 와 같은 이유).</p>
     </div>
   </div>
-  <div class="slide-no">22</div>
+  <div class="term-note"><b>용어</b>변수 선택 (feature selection) · 잡음 (noise) · 다중 비교 (multiple comparisons)</div>
+  <div class="slide-no">53</div>
 </div>
 
-<!-- 23 Pipeline + 테스트 -->
-<div class="slide-container" id="s23">
-  <h2 class="slide-title">Step 6~7 — 구조로 막고, 테스트로 못 박는다</h2>
+<div class="slide-container" id="s54">
+  <h2 class="slide-title">Step 8 — 구조로 막고, 테스트로 못 박는다</h2>
   <div class="content-area">
-    <div class="code-block" style="font-size:18px;">Pipeline([(<span class="str">"prep"</span>, <span class="fn">make_preprocessor</span>()),   <span class="cm"># 결측 대치 + 표준화</span>
+    <div class="code-block" style="font-size:17px;padding:20px 26px;">Pipeline([(<span class="str">"prep"</span>, <span class="fn">make_preprocessor</span>()),   <span class="cm"># 결측 대치 + 표준화</span>
           (<span class="str">"clf"</span>,  <span class="fn">LogisticRegression</span>())])  <span class="cm"># 모델</span>
-<span class="cm"># → fit() 이 불릴 때 전처리도 '그 폴드의 train' 으로만 학습된다</span></div>
-    <p style="font-size:19px;margin-top:12px;">사람이 매번 조심하는 게 아니라, <strong>틀릴 수 없는 모양</strong>으로 만들어 둔 것이다.</p>
+<span class="cm"># → fit() 이 불릴 때 전처리도 '그 폴드의 train' 으로만 학습된다 = 틀릴 수 없는 모양</span></div>
     <div class="table-layout">
-      <table style="font-size:16px;margin-top:6px;">
+      <table class="tight" style="font-size:16px;margin-top:4px;">
         <tr><th style="width:340px;">tests/test_no_leakage.py</th><th>무엇을 막나</th></tr>
         <tr><td><code>test_wave6_predictor_raises</code></td><td>6차 변수가 X 에 (① 시간 누출)</td></tr>
         <tr><td><code>test_cutoff_is_computed_from_train_only</code></td><td>cutoff 를 전체로 계산 (② 라벨 누출)</td></tr>
@@ -554,38 +1274,45 @@ train 으로 계산한 cutoff = <span class="num">1.5000</span>
         <tr><td><code>test_all_models_are_pipelines</code></td><td>전처리가 Pipeline 밖에</td></tr>
       </table>
     </div>
-    <p style="font-size:18px;margin-top:10px;color:#8892a4;">6개월 뒤 누가 실수로 규칙을 깨면 <b style="color:#adff2f;">테스트가 빨간불로 알려준다.</b> 착한 의도가 아니라 <b>자동 검사</b>다.</p>
+    <p style="font-size:17px;margin-top:10px;color:#8892a4;">6개월 뒤 누가 실수로 규칙을 깨면 <b style="color:#adff2f;">테스트가 빨간불로 알려준다.</b> 착한 의도가 아니라 <b>자동 검사</b>다.</p>
   </div>
-  <div class="slide-no">23</div>
+  <div class="term-note"><b>용어</b>파이프라인 (Pipeline) · 단위 테스트 (unit test) · 회귀 테스트 (regression test) · 재현성 (reproducibility)</div>
+  <div class="slide-no">54</div>
 </div>
 
-<!-- 24 회고 -->
-<div class="slide-container" id="s24">
-  <h2 class="slide-title">회고 — 3개 질문</h2>
+<div class="slide-container" id="s55">
+  <h2 class="slide-title">회고 — 6개 질문</h2>
   <div class="content-area">
-    <ul class="bullet-list" style="font-size:21px;">
-      <li><i class="fa-solid fa-1"></i> Dummy 의 정확도가 66% 인데도 <strong>쓸모없는</strong> 이유를 친구에게 설명한다면?</li>
-      <li><i class="fa-solid fa-2"></i> 6차 점수를 넣었더니 AUC 가 1.0 이 됐다. <strong>왜 그게 좋은 소식이 아닌가?</strong></li>
-      <li><i class="fa-solid fa-3"></i> cutoff 를 전체로 계산해도 라벨이 하나도 안 바뀌었다. <strong>그런데도 규칙을 지켜야 하는 이유는?</strong></li>
+    <ul class="bullet-list" style="font-size:18px;">
+      <li><i class="fa-solid fa-1"></i> <strong>feature 와 parameter</strong> 의 차이를 한 문장씩으로. 우리 프로젝트의 개수는 각각 몇 개인가?</li>
+      <li><i class="fa-solid fa-2"></i> Dummy 의 정확도가 66% 인데도 <strong>쓸모없는</strong> 이유를 친구에게 설명한다면?</li>
+      <li><i class="fa-solid fa-3"></i> <strong>precision 만 높은 모델</strong>과 <strong>recall 만 높은 모델</strong>은 각각 어떤 의사인가? F1 은 그 둘을 어떻게 벌하는가?</li>
+      <li><i class="fa-solid fa-4"></i> "전부 1" 모델의 F1 이 <strong>.504</strong> 였다. <strong>F1 도 속는다</strong>면 무엇을 같이 봤어야 하나?</li>
+      <li><i class="fa-solid fa-5"></i> 6차 점수를 넣었더니 AUC 가 1.0 이 됐다. 그것은 <strong>깊은 트리의 train AUC 1.0</strong> 과 어떻게 다른가?</li>
+      <li><i class="fa-solid fa-6"></i> cutoff 를 전체로 계산해도 라벨이 하나도 안 바뀌었다. <strong>그런데도 규칙을 지켜야 하는 이유는?</strong></li>
     </ul>
-    <p style="font-size:18px;margin-top:16px;color:#8892a4;">📝 과제: ① 또 다른 누출 시나리오 하나 상상해 3줄로 (예: "같은 학교 학생이 train·test 로 나뉘면?") ② <code>test_no_leakage.py</code> 테스트 하나 골라 무엇을 막는지 한 문단 ③ 조작적 정의 문장을 연구윤리에 맞게 다시 쓰기</p>
+    <p style="font-size:16px;margin-top:12px;color:#8892a4;">📝 과제: ① <b>FN 1명과 FP 1명 중 무엇이 더 나쁜지</b> 자기 입장을 5줄로 ("낙인"과 "놓침"을 둘 다 언급할 것)
+    ② 또 다른 누출 시나리오 3줄 ③ <code>test_no_leakage.py</code> 테스트 하나 골라 설명 ④ 조작적 정의 문장을 연구윤리에 맞게 다시 쓰기</p>
   </div>
-  <div class="slide-no">24</div>
+  <div class="term-note"><b>용어</b>비용 판단 (value judgement) · 지표 선택 (metric selection) · 연구윤리 (research ethics)</div>
+  <div class="slide-no">55</div>
 </div>
 
-<!-- 25 다음 -->
-<div class="slide-container" id="s25">
+<div class="slide-container" id="s56">
   <h2 class="slide-title">다음 — 5차시 예고</h2>
   <div class="content-area">
-    <p style="font-size:25px;color:#fff;">오늘 <strong>라벨과 데이터 분할</strong>을 완성했다.<br>다음엔 드디어 <strong>모델을 해석</strong>한다 — 로지스틱 회귀의 <strong>계수</strong>를 읽는다.</p>
-    <div class="finding" style="margin-top:24px;">
-      <p style="margin:0;font-size:21px;color:#fff;">"어떤 변수가 고스트레스 분류와 가장 강하게 관련되는가"에 답한다.<br>
+    <p style="font-size:23px;color:#fff;">오늘 <strong>재료(feature) · 손잡이(parameter) · 학습 · 채점(지표)</strong> 을 전부 세웠다.<br>
+    다음엔 그 손잡이 <strong>19개를 읽는다</strong> — 로지스틱 회귀의 <strong>계수</strong>.</p>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">"어떤 변수가 고스트레스 분류와 가장 강하게 관련되는가"에 답한다.<br>
       그리고 <b style="color:#adff2f;">3차시의 그 문제가 돌아온다</b> — 4점 척도와 5점 척도의 계수를 그대로 비교해도 되는가?<br>
       답은 <b>"안 된다"</b> 이고, 해결책이 <b style="color:#adff2f;">표준화</b>다.</p>
     </div>
-    <p style="font-size:20px;margin-top:22px;color:#8892a4;">오늘 배운 문장: <b style="color:#adff2f;">AUC 1.0 은 축하가 아니라 경보다. 규칙은 결과가 아니라 절차로 정당화된다.</b></p>
+    <p style="font-size:19px;margin-top:20px;color:#8892a4;">오늘 배운 문장: <b style="color:#adff2f;">지표 하나로는 반드시 속는다 · AUC 1.0 은 축하가 아니라 경보다 · 규칙은 결과가 아니라 절차로 정당화된다.</b></p>
   </div>
-  <div class="slide-no">25</div>
+  <div class="term-note"><b>용어</b>표준화 계수 (standardized coefficient) · 오즈비 (odds ratio) · 해석 (interpretation)</div>
+  <div class="slide-no">56</div>
 </div>
+
 </body>
 </html>

@@ -60,6 +60,70 @@ code('!pip install pandas pyyaml matplotlib pyarrow -q\n'
      '# Colab 에서 그림의 한글이 □ 로 깨지면 아래 한 줄을 실행하고 런타임을 재시작한다.\n'
      '# !apt-get install -y fonts-nanum > /dev/null && rm -rf ~/.cache/matplotlib'),
 code(SETUP),
+
+# ── 2차시 산출물 반입 셀 ─────────────────────────────────────────────
+# 왜 넣나: 2차시 검증은 '에디터에서 사람이' 한 일이다. 그 결과 파일이 이 런타임에
+# 없으면(드라이브 zip 이 검증 전 버전이거나, 런타임이 초기화됐거나) 3차시는 시작을
+# 못 한다. 이 셀은 검증을 대신해 주지 않는다 — 내가 채운 파일을 **옮겨올 뿐**이다.
+# 그래서 업로드본도 게이트 검사를 똑같이 통과해야 반영된다.
+code(r'''# 2차시에 채운 configs/variables.yaml 을 이 런타임으로 가져온다 (게이트가 닫혀 있을 때만)
+import glob, os, shutil
+from maps_risk import config
+
+TARGET = "configs/variables.yaml"
+
+def gate_state(path=TARGET):
+    """(열렸나, 닫힌 사유들) — is_ready_for_scoring 을 파일 하나에 대해 돌린다."""
+    try:
+        return config.is_ready_for_scoring(config.load_yaml(path))
+    except Exception as e:
+        return False, [f"읽지 못했다: {e}"]
+
+def adopt(src):
+    """검증을 통과한 파일만 configs/ 에 반영한다. 기존 파일은 백업해 둔다."""
+    ok, why = gate_state(src)
+    if not ok:
+        print(f"🛑 {src} 는 아직 게이트를 못 연다 — 반영하지 않았다:")
+        for r in why:
+            print("   -", r)
+        return False
+    if os.path.exists(TARGET):
+        shutil.copy(TARGET, "configs/variables_before_upload.yaml")
+    if os.path.abspath(src) != os.path.abspath(TARGET):
+        shutil.copy(src, TARGET)
+    n = len(config.verified_constructs(config.load_yaml(TARGET)))
+    print(f"✅ {src} → {TARGET} 반영 완료 (검증된 예측변인 {n}개)")
+    return True
+
+ok, why = gate_state()
+if ok:
+    print("✅ configs/variables.yaml 이 이미 검증본이다 — 업로드할 필요가 없다.")
+else:
+    print("🛑 지금 있는 variables.yaml 은 게이트가 닫혀 있다:")
+    for r in why:
+        print("   -", r)
+
+    # ① 드라이브에 올려 둔 파일을 먼저 찾는다 (매번 업로드하지 않아도 되게)
+    found = [f for pat in ["/content/drive/MyDrive/variables.yaml",
+                           "/content/drive/MyDrive/*/variables.yaml",
+                           "/content/drive/MyDrive/*/*/variables.yaml"]
+             for f in sorted(glob.glob(pat))]
+    if found:
+        print("\n드라이브에서 찾음:", found[0])
+        ok = adopt(found[0])
+
+    # ② 없으면 내 컴퓨터에서 직접 올린다 (Colab 전용)
+    if not ok:
+        try:
+            from google.colab import files
+            print("\n📤 2차시에 채운 variables.yaml 을 선택하라 (취소하려면 그냥 닫는다)")
+            up = files.upload()
+            for name in up:
+                if adopt(name):
+                    break
+        except ImportError:
+            print("\n로컬 환경이다 — 에디터에서 configs/variables.yaml 을 채우고 이 셀을 다시 실행하라.")
+'''),
 code(r'''# 2차시에서 사람이 검증한 것만 오늘 분석에 들어온다 (미검증은 조용히 섞이지 않는다)
 import pandas as pd
 from maps_risk.config import load_configs, verified_constructs, unverified_constructs

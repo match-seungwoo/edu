@@ -181,6 +181,41 @@
         .src-tag { display:inline-block; background:#151a21; color:#adff2f; padding:3px 10px; border-radius:6px; font-size:14px; margin-right:6px; }
         .finding { background:#101820; border-left:4px solid #adff2f; padding:18px 24px; border-radius:8px; }
         .finding b { color:#adff2f; }
+        /* ── 📐 보충 설명 슬라이드 (선택 사용) ─────────────────────
+           본 흐름 25장과 색으로 구분한다: 시안(#00f2ff) = 본 강의,
+           앰버(#ffd479) = 통계 배경 보충. 시간이 없으면 건너뛴다. */
+        .slide-container.supp { background-color: #0c0a10; }
+        .slide-container.supp::before { background: radial-gradient(circle, rgba(255,212,121,0.10) 0%, transparent 70%); }
+        .slide-container.supp::after { background-color: #ffd479; }
+        .supp .slide-title { border-left-color: #ffd479; font-size: 36px; white-space: normal; line-height: 1.25; margin-bottom: 22px; }
+        .supp strong { color: #ffd479; }
+        .supp .kicker { color: #ffd479; }
+        .supp .code-block { border-left-color: #ffd479; }
+        .supp .finding { border-left-color: #ffd479; background: #16120a; }
+        .supp .finding b { color: #ffd479; }
+        .supp .table-layout th { color: #ffd479; }
+        .supp .step-card { border-left-color: #ffd479; }
+        .supp .step-card h4 { color: #ffd479; }
+        .supp .slide-no { color: #4a3c17; }
+        .supp-badge {
+            position: absolute; top: 26px; right: 30px; z-index: 2;
+            background: #241d0d; color: #ffd479; border: 1px solid #4a3c17;
+            padding: 5px 14px; border-radius: 20px;
+            font-family: 'Poppins', sans-serif; font-size: 13px; letter-spacing: 1px;
+        }
+        /* 행이 많은 표: 셀 여백을 줄여 720px 안에 들어오게 한다 */
+        .table-layout table.compact th { padding: 11px 16px; }
+        .table-layout table.compact td { padding: 11px 16px; }
+        /* 슬라이드별 통계 용어 주석 (한글 용어 + 영어 원어) */
+        .term-note {
+            position: absolute; bottom: 18px; left: 60px; right: 130px; z-index: 2;
+            font-family: 'Lato', 'Nanum Gothic', sans-serif; font-size: 13px;
+            color: #55606f; letter-spacing: 0.2px; line-height: 1.3;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .term-note b { color: #7a8798; font-weight: 700; margin-right: 8px; }
+        .supp .term-note { color: #6b5c39; }
+        .supp .term-note b { color: #8d7a45; }
     </style>
 </head>
 <body>
@@ -196,18 +231,18 @@
 
 <!-- 2 훅 -->
 <div class="slide-container" id="s2">
-  <h2 class="slide-title">오늘, 지난주의 판단이 채점받는다</h2>
+  <h2 class="slide-title">오늘, 어제의 판단을 확인한다</h2>
   <div class="content-area">
     <div class="finding" style="font-size:23px;">
-      2차시에 우리는 약속했다 — <b>"역채점을 틀리면 α 가 떨어진다. 다음 주에 시험대에 오른다."</b><br>
-      오늘이 그 다음 주다.
+      2차시에 우리는 언급한 — <b>"역채점을 틀리면 α 가 떨어진다."</b><br>
     </div>
     <div class="two-column" style="margin-top:26px;">
       <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>관문 ①</b> 선행연구 α (5차 .76 / 6차 .74)<br>우리 데이터에서 <strong>재현되는가?</strong></p></div>
-      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>관문 ②</b> 지난주 전원이 "역채점 후보"라 판단한<br><code>s_accul_str_10</code> — <strong>정말 그런가?</strong></p></div>
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>관문 ②</b> 어제 "역채점 후보"라 판단한<br><code>s_accul_str_10</code> — <strong>정말 그런가?</strong></p></div>
     </div>
     <p style="font-size:19px;margin-top:20px;text-align:center;color:#8892a4;">결론부터 말하면 — 하나는 <b style="color:#adff2f;">통과</b>했고, 하나는 <b style="color:#ff8080;">기각</b>됐다.</p>
   </div>
+  <div class="term-note"><b>용어</b>재현 (replication) · 역채점 (reverse scoring) · Cronbach α (알파)</div>
   <div class="slide-no">02</div>
 </div>
 
@@ -225,6 +260,7 @@
     </div>
     <p style="font-size:19px;margin-top:16px;color:#adff2f;">오늘도 모델은 안 만든다. 대신 <strong>모델에 넣을 변수를 믿어도 되는지</strong> 판정한다.</p>
   </div>
+  <div class="term-note"><b>용어</b>신뢰도 (reliability) · 문항-전체 상관 (item-total correlation) · 동점 (ties)</div>
   <div class="slide-no">03</div>
 </div>
 
@@ -232,18 +268,19 @@
 <div class="slide-container" id="s4">
   <h2 class="slide-title">지난 시간 ↔ 오늘 — 8차시 지도</h2>
   <div class="content-area table-layout">
-    <table style="font-size:17px;">
+    <table class="compact" style="font-size:17px;">
       <tr><th style="width:80px;">차시</th><th>심리학</th><th>IT / 머신러닝</th><th>산출물</th></tr>
       <tr><td>1 ✅</td><td>문화적응 스트레스 · 예측 vs 인과</td><td>feature / target / classification</td><td>data_inventory.md</td></tr>
       <tr><td>2 ✅</td><td>심리척도 · 문항 · 역채점</td><td>pandas · 결측치 · ID join</td><td>variables.yaml · data_quality.md</td></tr>
       <tr><td><strong>3 (오늘)</strong></td><td><strong>평균 · SD · 분포 · 상관 · Cronbach α</strong></td><td><strong>집계 · 시각화 · 데이터 클리닝</strong></td><td><strong>reports/figures/ · variables.yaml 갱신</strong></td></tr>
-      <tr><td>4</td><td>고스트레스 집단의 조작적 정의</td><td>split · 클래스 불균형 · <b>데이터 누출</b></td><td>test_no_leakage.py</td></tr>
+      <tr><td>4</td><td>고스트레스 집단의 조작적 정의</td><td>split · 클래스 불균형 · <b>데이터 누출 (leakage)</b></td><td>test_no_leakage.py</td></tr>
       <tr><td>5~8</td><td>관계의 방향 → 해석 → 보고</td><td>로지스틱 → 트리 → 중요도 → 재현성</td><td>metrics · report</td></tr>
     </table>
     <div class="finding" style="margin-top:18px;">
       <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b>"어떤 변수가 높고 낮은지, 무엇이 같이 움직이는지 설명할 수 있다."</b> — 그 전에 <b style="color:#adff2f;">그 점수를 믿어도 되는지</b>부터 판정한다.</p>
     </div>
   </div>
+  <div class="term-note"><b>용어</b>EDA (exploratory data analysis) · 조작적 정의 (operational definition) · 데이터 누출 (leakage)</div>
   <div class="slide-no">04</div>
 </div>
 
@@ -259,7 +296,27 @@
     </ul>
     <p style="font-size:19px;margin-top:10px;color:#8892a4;">※ 오늘의 문장: <b style="color:#adff2f">"지표가 좋아졌다"와 "옳아졌다"는 다른 말이다.</b></p>
   </div>
+  <div class="term-note"><b>용어</b>Cronbach α · 문항-전체 상관 (item-total correlation) · 왜도 (skewness) · 동점 (ties)</div>
   <div class="slide-no">05</div>
+</div>
+
+<!-- 05-A 📐 보충 -->
+<div class="slide-container supp" id="s05a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">📐 보충 설명 슬라이드 사용법</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;"><b style="color:#ffd479;">앰버색 테두리</b> 슬라이드는 <strong>통계 배경 보충</strong>이다. 본 흐름 25장에는 포함되지 않는다 —
+    <b style="color:#ff8080;">학생 질문이 나올 때만</b> 꺼내고, 시간이 없으면 건너뛴다. (강의 노트의 90분 계획은 본 25장 기준이다.)</p>
+    <div class="step-grid" style="margin-top:10px;">
+      <div class="step-card"><h4>α 를 더 파고들 때</h4><p>07-A 공식과 검산 · 07-B α 의 범위(음수) · 07-C 문항 수 효과 · 08-A 신뢰구간과 재현</p></div>
+      <div class="step-card"><h4>문항 진단을 더 파고들 때</h4><p>09-A '수정된'의 효과 · 13-A .626 의 절반은 문항 수 · <b style="color:#ffd479;">13-B α 는 문항의 기준이 아니다</b> · 17-A/B target 의 숨은 구조 · <b style="color:#ffd479;">17-C 문항 제거의 조건</b></p></div>
+      <div class="step-card"><h4>분포·상관을 더 파고들 때</h4><p>18-A 왜도의 기준 · 20-A 감쇄 · 20-B 유의성 ≠ 크기 · 21-A VIF</p></div>
+      <div class="step-card"><h4>cutoff 를 더 파고들 때</h4><p>22-A 백분위수의 계단 · 22-B 측정오차 · 23-A 이분화의 비용</p></div>
+    </div>
+    <p style="font-size:17px;margin:6px 0 0;color:#8892a4;">모든 숫자는 우리 데이터 실측이다 (5차 1,347명 · 6차 1,329명 · 매칭 1,321명).</p>
+  </div>
+  <div class="term-note"><b>용어</b>신뢰구간 (confidence interval) · 측정오차 (measurement error) · 감쇄 (attenuation)</div>
+  <div class="slide-no">05-A</div>
 </div>
 
 <!-- 6 Step0 -->
@@ -278,6 +335,7 @@ pending = <span class="fn">unverified_constructs</span>(variables, <span class="
     </div>
     <p style="font-size:18px;margin-top:12px;color:#8892a4;">그리고 오늘은 <b>원자료</b>가 다시 필요하다 — α 는 척도 점수가 아니라 <b style="color:#adff2f;">문항 단위</b>로 계산하기 때문이다.</p>
   </div>
+  <div class="term-note"><b>용어</b>척도 (scale) · 문항 (item) · 구성개념 (construct) · 검증 (verification)</div>
   <div class="slide-no">06</div>
 </div>
 
@@ -293,7 +351,74 @@ pending = <span class="fn">unverified_constructs</span>(variables, <span class="
     <p style="font-size:20px;margin-top:20px;color:#fff;">⚠️ α 는 <strong>일관성</strong>이지 <strong>타당도</strong>가 아니다.<br>
     <span style="font-size:18px;color:#8892a4;">열 문항이 사이좋게 같은 걸 재고 있어도, 그게 "문화적응 스트레스"라는 보장은 α 가 해 주지 않는다.</span></p>
   </div>
+  <div class="term-note"><b>용어</b>신뢰도 (reliability) · 내적 일관성 (internal consistency) · 타당도 (validity)</div>
   <div class="slide-no">07</div>
+</div>
+
+<!-- 07-A 📐 보충 -->
+<div class="slide-container supp" id="s07a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">α 공식은 왜 저렇게 생겼나</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">        k        Σ(문항 각각의 분산)
+α = ───── × ( <span class="num">1 −</span> ─────────────────── )
+      k − 1          총점의 분산
+<span class="cm">  k = 문항 수 (사람 수 아님)</span>
+
+<span class="cm">총점 분산 = (문항 분산들의 합) + (문항끼리의 공분산 × 2)</span></div>
+    <p style="font-size:19px;margin:12px 0 0;">말로 읽으면 — <strong>"총점이 흩어진 이유 중 문항들이 같이 움직여서 생긴 몫이 얼마인가."</strong><br>
+    <span style="font-size:17px;color:#8892a4;">문항들이 전혀 같이 안 움직이면 두 항이 같아져 α=0. 완전히 같이 움직일 때 1 이 되도록 맞추는 눈금 보정이 k/(k−1) 이다.</span></p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:19px;color:#fff;">우리 target 검산 (문항 10개 · 1,329명): Σs² = <b>3.376</b> · s²_T = <b>10.602</b><br>
+      α = (10/9) × (1 − 3.376/10.602) = 1.111 × 0.6815 = <b>0.757</b> ✅ 슬라이드 08 의 그 숫자</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>분산 (variance) · 공분산 (covariance) · 총점 (total score) · 문항 수 k (items)</div>
+  <div class="slide-no">07-A</div>
+</div>
+
+<!-- 07-B 📐 보충 -->
+<div class="slide-container supp" id="s07b">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">α 의 범위는 0~1 이 아니다 — 음수까지 간다</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">상한은 1 이지만 아래로는 음수까지 간다 — 문항들의 <b>평균 공분산이 음수</b>면 괄호 안이 음수가 된다.<br>
+    <span style="font-size:17px;color:#8892a4;">우리 데이터에서 멀쩡한 척도의 문항 하나를 일부러 뒤집어 보면:</span></p>
+    <div class="table-layout">
+      <table style="font-size:19px;margin-top:10px;">
+        <tr><th>척도</th><th>원래 α</th><th>문항 하나를 뒤집으면</th></tr>
+        <tr><td>life_satisfaction (3문항)</td><td>.864</td><td><b style="color:#ff8080;">−1.085</b></td></tr>
+        <tr><td>self_esteem (4문항)</td><td>.813</td><td><b style="color:#ff8080;">−0.137</b></td></tr>
+      </table>
+    </div>
+    <p style="font-size:19px;margin-top:14px;">역채점을 놓치면 α 가 "조금 낮아지는" 게 아니라 <strong>부호까지 뒤집힌다.</strong>
+    Step 2 의 .489 / .543 / .568 은 문항 5~7개짜리라 아직 버텨 준 것이다.<br>
+    <span style="font-size:17px;color:#8892a4;">그리고 α 는 신뢰도의 <b style="color:#ffd479;">하한</b>이다 (tau 동등성이 깨지면 과소추정) → 요즘은 McDonald's ω 를 같이 본다.</span></p>
+  </div>
+  <div class="term-note"><b>용어</b>하한 (lower bound) · tau 동등성 (tau-equivalence) · McDonald's ω (omega)</div>
+  <div class="slide-no">07-B</div>
+</div>
+
+<!-- 07-C 📐 보충 -->
+<div class="slide-container supp" id="s07c">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">α 는 문항 수만 늘려도 올라간다 — 그래서 r̄ 를 본다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">          k · rbar
+α ≈ ─────────────      <span class="cm">k = 문항 수 · rbar = 문항끼리의 평균 상관</span>
+     1 + (k−1) · rbar</div>
+    <div class="table-layout">
+      <table style="font-size:18px;margin-top:8px;">
+        <tr><th>구성개념</th><th>k</th><th>r̄</th><th>α</th><th>읽는 법</th></tr>
+        <tr><td>korean_proficiency</td><td>4</td><td><b style="color:#ffd479;">.854</b></td><td>.958</td><td>문항간 상관 .81~.89 — 사실상 같은 질문 4번</td></tr>
+        <tr><td>peer_support</td><td>7</td><td>.808</td><td>.967</td><td>같은 얘기를 일곱 번</td></tr>
+        <tr><td>peer_relationship</td><td>5</td><td>.277</td><td>.626</td><td>r̄ 도 낮고 문항도 적다</td></tr>
+      </table>
+    </div>
+    <p style="font-size:18px;margin-top:10px;color:#adff2f;">✅ α .96 은 훌륭한 척도가 아니라 <b>문항 중복</b>의 신호일 수 있다 · 권장 r̄ 는 .15~.50.</p>
+  </div>
+  <div class="term-note"><b>용어</b>평균 문항간 상관 r̄ (mean inter-item correlation) · 문항 중복 (redundancy)</div>
+  <div class="slide-no">07-C</div>
 </div>
 
 <!-- 8 재현 관문 -->
@@ -312,7 +437,27 @@ alpha_w5 = scoring.<span class="fn">cronbach_alpha</span>(p5, OPT[<span class="s
     <p style="font-size:19px;margin-top:14px;color:#fff;">이 두 숫자가 뜻하는 것: 우리가 고른 컬럼 10개가 <strong>선행연구가 쓴 그 10개</strong>이고 채점 방식도 같다.<br>
     <b style="color:#ff8080;">컬럼명을 추측했다면 절대 이 숫자가 안 나온다.</b> — 2차시가 옳았다는 증거다.</p>
   </div>
+  <div class="term-note"><b>용어</b>재현 (replication) · 선행연구 (prior study) · 채점 (scoring)</div>
   <div class="slide-no">08</div>
+</div>
+
+<!-- 08-A 📐 보충 -->
+<div class="slide-container supp" id="s08a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">"재현됐다"는 오차 범위 안이라는 뜻이다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">α = <span class="num">.757</span>,  n = 1,329,  k = 10   →   95% 신뢰구간 = <span class="num">[.737, .776]</span>
+<span class="cm">선행연구 .74 가 이 구간 안에 있다 → "재현됐다"</span></div>
+    <p style="font-size:19px;margin:12px 0 0;">α 는 표본에서 계산한 <strong>추정치</strong>다. 다른 1,329명을 뽑으면 조금 다른 값이 나온다.<br>
+    재현은 <strong>"소수점이 똑같다"가 아니라 "오차 범위 안에서 구별되지 않는다"</strong>는 뜻이다. (5차도 .762 vs .76)<br>
+    <span style="font-size:17px;color:#8892a4;">노트북 CHECK 의 허용 범위 .05 는 이 구간 폭(±.02)보다 넉넉하게 잡은 실습용 기준이다.
+    n=200 이면 같은 α 의 구간이 ±.05 로 벌어진다 — 작은 표본에서 ".68 이라 미달"이라 단정하면 안 되는 이유.</span></p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:19px;color:#fff;">재현이 <b>안</b> 됐다면 순서대로 확인한다 — ① 참여자 필터(n) ② 문항 목록(k) ③ 역채점 부호 ④ 결측 처리(listwise 몇 명)</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>추정치 (estimate) · 신뢰구간 (confidence interval) · listwise 삭제 (deletion)</div>
+  <div class="slide-no">08-A</div>
 </div>
 
 <!-- 9 r_it 읽는 법 -->
@@ -322,7 +467,7 @@ alpha_w5 = scoring.<span class="fn">cronbach_alpha</span>(p5, OPT[<span class="s
     <p style="font-size:20px;margin:0;">α 는 척도 <b>전체</b>의 점수라 낮게 나와도 <b style="color:#ff8080;">어느 문항 탓인지</b> 알려주지 않는다.</p>
     <div class="code-block" style="margin-top:12px;font-size:19px;">각 문항  vs  <span class="var">그 문항을 뺀 나머지 문항들의 평균</span>  →  피어슨 상관</div>
     <div class="table-layout">
-      <table style="font-size:19px;margin-top:8px;">
+      <table class="compact" style="font-size:18px;margin-top:8px;">
         <tr><th style="width:180px;">값</th><th>뜻</th><th>처방</th></tr>
         <tr><td><strong>양수 (≈ .3↑)</strong></td><td>나머지와 같은 방향으로 움직인다</td><td>정상</td></tr>
         <tr><td><b style="color:#ff8080;">음수 (−)</b></td><td>방향이 <strong>반대</strong>다</td><td><strong>역채점 누락</strong> — 뒤집으면 해결</td></tr>
@@ -331,7 +476,31 @@ alpha_w5 = scoring.<span class="fn">cronbach_alpha</span>(p5, OPT[<span class="s
     </div>
     <p style="font-size:19px;margin-top:12px;color:#adff2f;">🔴 마지막 줄이 오늘 배울 가장 미묘한 구분이다 — <b>음수와 0은 완전히 다른 병이다.</b></p>
   </div>
+  <div class="term-note"><b>용어</b>문항-전체 상관 (corrected item-total correlation) · 피어슨 상관 (Pearson)</div>
   <div class="slide-no">09</div>
+</div>
+
+<!-- 09-A 📐 보충 -->
+<div class="slide-container supp" id="s09a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">'수정된(corrected)'이 실제로 하는 일</h2>
+  <div class="content-area">
+    <p style="font-size:19px;margin:0;">자기 자신이 총점에 들어가면 <b>자기와 자기의 상관</b>이 섞여 값이 부푼다. 얼마나 부푸는지 실측:</p>
+    <div class="table-layout">
+      <table style="font-size:19px;margin-top:8px;">
+        <tr><th>문항</th><th>수정 <b style="color:#ff8080;">안</b> 한 상관</th><th>수정된 상관</th><th>차이</th></tr>
+        <tr><td>s_accul_str_01</td><td>.514</td><td><strong>.256</strong></td><td>−.258</td></tr>
+        <tr><td>s_accul_str_07</td><td>.772</td><td>.720</td><td>−.052</td></tr>
+        <tr><td>s_accul_str_10</td><td>.359</td><td><b style="color:#ffd479;">.044</b></td><td>−.315</td></tr>
+      </table>
+    </div>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:19px;color:#fff;">수정 안 한 값(.359)으로 봤다면 10번은 "조금 낮지만 괜찮은 문항"이었고 — <b>Step 3 은 아예 생기지 않았다.</b></p>
+    </div>
+    <p style="font-size:17px;margin-top:10px;color:#8892a4;">문항이 k개면 총점의 1/k 가 자기 자신 → <b style="color:#ffd479;">문항 수가 적을수록 더 심하게 부푼다.</b> 관례 기준은 .30 이상(Nunnally). α 와 같은 listwise 집합으로 계산한다.</p>
+  </div>
+  <div class="term-note"><b>용어</b>수정된 (corrected) · 총점 (total score) · listwise 삭제 (listwise deletion)</div>
+  <div class="slide-no">09-A</div>
 </div>
 
 <!-- 10 target r_it 실측 -->
@@ -350,6 +519,7 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
     </div>
     <p style="font-size:18px;margin-top:12px;color:#8892a4;">먼저 할 일이 있다 — 2차시에 문항 텍스트를 눈으로 읽은 척도는 <b style="color:#ff8080;">target 하나뿐</b>이었다. 나머지 15개는?</p>
   </div>
+  <div class="term-note"><b>용어</b>문항-전체 상관 (item-total correlation) · 역채점 (reverse scoring)</div>
   <div class="slide-no">10</div>
 </div>
 
@@ -368,6 +538,7 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
     </div>
     <p style="font-size:19px;margin-top:14px;color:#8892a4;">힌트는 슬라이드 09 의 표 두 번째 줄에 있다.</p>
   </div>
+  <div class="term-note"><b>용어</b>척도 (scale) · 구성개념 (construct) · 진단 (diagnostic)</div>
   <div class="slide-no">11</div>
 </div>
 
@@ -375,7 +546,7 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
 <div class="slide-container" id="s12">
   <h2 class="slide-title">Step 2 — 우리가 놓친 4문항 💥</h2>
   <div class="content-area table-layout">
-    <table style="font-size:17px;">
+    <table class="compact" style="font-size:17px;">
       <tr><th style="width:190px;">문항</th><th>텍스트</th><th style="width:150px;">속한 척도</th><th style="width:90px;">r<sub>it</sub></th></tr>
       <tr><td><code>parenting_b06</code></td><td>부모님은 내가 학교에서 어떻게 생활하는지 <strong>관심을 갖고 물어보신다</strong></td><td>방임</td><td>−.228</td></tr>
       <tr><td><code>parenting_b07</code></td><td>부모님은 내 몸이나 옷, 이불 등이 깨끗하도록 <strong>항상 신경쓰신다</strong></td><td>방임</td><td>−.178</td></tr>
@@ -387,6 +558,7 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
       <b style="color:#ff8080;">우리는 지난주에 이걸 놓쳤다.</b> 눈으로 읽은 건 target 10문항뿐이었으니까.</p>
     </div>
   </div>
+  <div class="term-note"><b>용어</b>문항 텍스트 (item wording) · 역채점 누락 (missed reverse scoring)</div>
   <div class="slide-no">12</div>
 </div>
 
@@ -403,7 +575,57 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
     <p style="font-size:20px;margin-top:16px;color:#fff;">문항을 <b>뺀</b> 게 아니라 <strong>제자리로 돌린</strong> 것이다. 데이터는 하나도 안 버렸다.</p>
     <p style="font-size:18px;margin-top:8px;color:#8892a4;">※ <code>peer_relationship</code> 은 교정해도 <b style="color:#ffd479;">.626</b> — .70 미만이다. 고쳐지지 않는 것도 있다 → <b>정직하게 한계에 기록</b>한다.</p>
   </div>
+  <div class="term-note"><b>용어</b>역채점 교정 (reverse-score correction) · 신뢰도 (reliability) · 구성개념 (construct)</div>
   <div class="slide-no">13</div>
+</div>
+
+<!-- 13-A 📐 보충 -->
+<div class="slide-container supp" id="s13a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">.626 의 절반은 "문항이 5개뿐"이라는 뜻이다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">peer_relationship 실측 rbar = <span class="num">.277</span>  →  문항 수만 바꿔 보면</div>
+    <div class="table-layout">
+      <table style="font-size:19px;margin-top:8px;">
+        <tr><th>문항 수 k</th><th>5 (지금)</th><th>6</th><th>7</th><th>9</th></tr>
+        <tr><td>기대 α</td><td>.657</td><td>.697</td><td><b style="color:#ffd479;">.728</b></td><td>.775</td></tr>
+      </table>
+    </div>
+    <p style="font-size:19px;margin-top:14px;"><strong>문항 두 개만 더 있었으면 .70 을 넘겼다.</strong> .626 은 "구성개념이 엉망"이라는 뜻만이 아니라
+    <b style="color:#ffd479;">"문항이 5개뿐"</b>이라는 뜻도 절반쯤 섞여 있다 (게다가 α 는 하한이다).</p>
+    <div class="finding" style="margin-top:10px;">
+      <p style="margin:0;font-size:18px;color:#fff;">보고서에 쓸 문장 — "α = .626 으로 기준 미달. 문항 5개짜리 단축 척도이고 친사회적 행동 문항이 섞여 단일 차원이 아닐 가능성.
+      <b>이 변수를 쓴 결과는 신뢰도 한계와 함께 해석한다.</b>" 도망가지 않고, 부풀리지도 않는다.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>스피어만-브라운 (Spearman–Brown) · 단축 척도 (short form) · 하한 (lower bound)</div>
+  <div class="slide-no">13-A</div>
+</div>
+
+<!-- 13-B 📐 보충 -->
+<div class="slide-container supp" id="s13b">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">α ≥ .70 은 <u>문항</u>의 기준이 아니다</h2>
+  <div class="content-area">
+    <div class="table-layout">
+      <table style="font-size:19px;">
+        <tr><th>무엇을 판정하나</th><th>지표</th><th>관례 기준</th></tr>
+        <tr><td><b>문항</b> 하나</td><td>문항-전체 상관 r<sub>it</sub></td><td><b style="color:#ffd479;">.30 이상</b></td></tr>
+        <tr><td><b>척도 점수</b> (이 표본에서)</td><td>Cronbach α</td><td>.70 이상</td></tr>
+      </table>
+    </div>
+    <p style="font-size:19px;margin-top:10px;">α 는 문항의 성질이 아니라 <strong>척도 점수의</strong>, 그것도 <b style="color:#ffd479;">이 표본에서의</b> 성질이다 →
+    <span style="color:#ff8080;">"α .70 이상인 문항"이라는 말은 성립하지 않는다.</span> peer_relationship 은 문항이 나쁜 게 아니라 <b>5개를 묶어 만든 점수의 오차가 큰</b> 것이다.</p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:18px;color:#fff;"><b>.626 이라도 버리지 않는 이유 셋</b><br>
+      ① α 는 <b>문항 수</b>에 끌린다 — r̄ .277 은 권장 구간(.15~.50) 안이다 (13-A) · ② α 는 <b>하한</b>이다 — ω 로 보면 대개 더 높다 (07-B) ·
+      ③ 낮은 신뢰도의 대가는 <b style="color:#ffd479;">감쇄</b>다 (20-A) — 관측 상한 √.626 = <b>.79</b>, 즉 효과를 <b style="color:#adff2f;">과소</b>추정하게 만들지 과대추정하지 않는다</p>
+    </div>
+    <p style="font-size:18px;margin-top:10px;">그래서 <strong>넣되 한계에 적는 것</strong>이 방어 가능하다 — 유의하게 나왔다면 <b>감쇄를 뚫고</b> 나온 것이고, 안 나왔다면 "측정 탓일 수 있다"를 한계에 적으면 된다.<br>
+    <span style="font-size:17px;color:#8892a4;">Nunnally 본인도 하나의 선을 그은 게 아니다 — 초기 탐색 <b>.70</b> · 응용 연구 <b>.80</b> · <b style="color:#ffd479;">개인에 대한 의사결정 .90 이상</b>. 우리 용도는 개인 진단이 아니라 집단 수준 예측 기여도다.</span></p>
+  </div>
+  <div class="term-note"><b>용어</b>감쇄 (attenuation) · 하한 (lower bound) · McDonald's ω (omega) · 관례 기준 (rule of thumb)</div>
+  <div class="slide-no">13-B</div>
 </div>
 
 <!-- 14 에디터로 -->
@@ -436,6 +658,7 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
       <p style="margin:0;font-size:20px;color:#fff;">그래서 오늘 직접 확인한다 — <b>10번을 역채점하면 α 는 오를까, 내릴까?</b><br><span style="font-size:18px;color:#8892a4;">먼저 예측하고, 그다음 실행한다. 예측 없이 실행하면 배우는 게 없다.</span></p>
     </div>
   </div>
+  <div class="term-note"><b>용어</b>가설 (hypothesis) · 검증 (test) · 기각 (rejection) · 예측 (prediction)</div>
   <div class="slide-no">15</div>
 </div>
 
@@ -452,6 +675,7 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
     <p style="font-size:20px;margin-top:18px;color:#fff;"><b>심리학적으로 읽으면</b> — 10번은 스트레스가 아니라 <strong>미래 전망·기대</strong>를 재고 있을 수 있다.<br>
     <span style="font-size:18px;color:#8892a4;">"한국에서 더 잘 살 수 있을 것이다"에 동의하는 것과, 지금 차별로 스트레스를 받는 것은 <b style="color:#adff2f;">서로 배타적이지 않다.</b> 둘 다 참일 수 있어서 상관이 0 근처인 것이다.</span></p>
   </div>
+  <div class="term-note"><b>용어</b>문항-전체 상관 r_it (item-total correlation) · 타당도 (validity)</div>
   <div class="slide-no">16</div>
 </div>
 
@@ -463,11 +687,82 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
     <ul class="bullet-list" style="font-size:19px;margin-top:10px;">
       <li><i class="fa-solid fa-1"></i> <strong>척도가 달라진다.</strong> 선행연구는 10문항으로 α .74 — 우리도 10문항으로 .757, <b>이미 재현에 성공</b>했다. 9문항으로 바꾸면 그 비교가 무너진다 <span style="color:#8892a4;">(9문항 점수 ↔ 10문항 점수 r = .948 — 얻는 것도 적다)</span></li>
       <li><i class="fa-solid fa-2"></i> <strong>α 는 목표가 아니라 진단이다.</strong> α 를 올리려고 문항을 빼는 건 <b style="color:#ff8080;">체온계 눈금을 손으로 돌려 열을 내리는 것</b>과 같다</li>
-      <li><i class="fa-solid fa-3"></i> <strong>사후에 데이터를 보고 척도를 바꾸는 것</strong> 자체가 위험하다 — 이 표본에서만 잘 맞는 척도가 된다 (척도 수준의 <b>과적합</b>)</li>
+      <li><i class="fa-solid fa-3"></i> <strong>사후에 데이터를 보고 척도를 바꾸는 것</strong> 자체가 위험하다 — 이 표본에서만 잘 맞는 척도가 된다 (척도 수준의 <b>과적합, overfitting</b>)</li>
     </ul>
     <p style="font-size:19px;margin-top:10px;color:#adff2f;">✅ 대신 <b>기록한다</b> — note 와 8차시 한계 절에, 그리고 <b>9문항 민감도 분석</b>을 예약해 둔다.</p>
+    <p style="font-size:17px;margin-top:6px;color:#8892a4;">※ 셋 중 <b style="color:#ffd479;">①만 선행연구에 기댄다</b> — 선행연구가 없는 척도에서는 어떻게 판단하나? → 보충 <b>17-C</b></p>
   </div>
+  <div class="term-note"><b>용어</b>alpha-if-deleted · 과적합 (overfitting) · 민감도 분석 (sensitivity analysis)</div>
   <div class="slide-no">17</div>
+</div>
+
+<!-- 17-A 📐 보충 -->
+<div class="slide-container supp" id="s17a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">왜 10번과 1번을 뺄 때만 α 가 오르나</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;"><span class="cm">alpha-if-deleted (전체 α = .757)</span>
+01 을 빼면 → <span class="num">.787</span>      02~09 를 빼면 → .714 ~ .721      10 을 빼면 → <span class="num">.845</span>
+
+<span class="cm">문항별 분산</span>   01 <span class="num">.87</span>  02 .23  03 .31  04 .18  05 .17  06 .17  07 .13  08 .13  09 .12  10 <span class="num">1.07</span></div>
+    <p style="font-size:19px;margin:12px 0 0;"><strong>가장 흔들리는 두 문항(01·10)이, 하필 나머지와 가장 안 맞는 두 문항이다.</strong>
+    <span style="font-size:17px;color:#8892a4;">(01 평균 2.11 · 10 평균 2.57 — 나머지는 1.1~1.3)</span></p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:19px;color:#fff;">target 은 "10문항이 고르게 한 팀"이 아니라 <b>8문항 한 덩어리 + 겉도는 2문항</b>이다.
+      그래서 덩어리 밖의 문항을 뺄 때만 α 가 오른다.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>alpha-if-deleted · 분산 (variance) · 문항 덩어리 (item cluster)</div>
+  <div class="slide-no">17-A</div>
+</div>
+
+<!-- 17-B 📐 보충 -->
+<div class="slide-container supp" id="s17b">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">raw α .757 vs 표준화 α .876 — 상관행렬을 보면</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:15px;line-height:1.7;">        01    02    03    04    05    06    07    08    09    10
+ 01   1.00   .19   .26   .18   .16   .24   .17   .13   .14   .10
+ 02    .19  1.00   .49   .57   .60   .49   .54   .48   .49   <span class="cm">.01</span>
+ 04    .18   .57   .57  1.00  <span class="num">[.82]</span>  .56   .60   .56   .58  <span class="cm">−.01</span>
+ 07    .17   .54   .47   .60   .64  <span class="num">[.83]</span> 1.00  <span class="num">[.82]</span> <span class="num">[.83]</span>  <span class="cm">.03</span>
+ 09    .14   .49   .45   .58   .64   .73  <span class="num">[.83]</span> <span class="num">[.88]</span> 1.00  <span class="cm">.04</span>
+ 10    <span class="cm">.10   .01  −.04  −.01  −.01   .03   .03   .06   .04</span>  1.00</div>
+    <p style="font-size:18px;margin:10px 0 0;">평균 문항간 상관 r̄ = .414 → 공식상 표준화 α는 <b style="color:#ffd479;">.876</b>. 그런데 실제 α는 <strong>.757</strong> —
+    raw α 는 <b>공분산</b>으로 계산돼 <b>분산 큰 문항의 목소리가 크기</b> 때문이다.<br>
+    <span style="font-size:17px;color:#8892a4;">두 값이 크게 갈리면 "문항 분산이 고르지 않다"는 신호다. 몇 덩어리인지는 α 가 답하지 못한다 → 요인분석(대학 2~3학년).</span></p>
+  </div>
+  <div class="term-note"><b>용어</b>표준화 α (standardized alpha) · 공분산 (covariance) · 요인분석 (factor analysis)</div>
+  <div class="slide-no">17-B</div>
+</div>
+
+<!-- 17-C 📐 보충 -->
+<div class="slide-container supp" id="s17c">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">선행연구가 없으면 빼도 되나 — 문항 제거의 조건</h2>
+  <div class="content-area">
+    <p style="font-size:19px;margin:0;">슬라이드 17 의 세 이유 중 <b style="color:#ffd479;">①만 선행연구에 기댄다.</b> ②③ 은 그대로 남는다 →
+    <strong>문턱이 낮아질 뿐, "빼도 된다"가 되지는 않는다.</strong></p>
+    <div class="table-layout">
+      <table style="font-size:17px;margin-top:8px;">
+        <tr><th>척도의 출처</th><th>문항 구성</th><th>그래도 지켜야 할 것</th></tr>
+        <tr><td>원척도 + α 보고 있음</td><td><b>유지가 기본</b></td><td>바꾸면 "수정판"으로 명시 + 원판 민감도</td></tr>
+        <tr><td>원척도 있으나 α 미보고</td><td><b>유지</b> — 문항 구성은 원척도가 정했다</td><td>우리 표본 α 만 새로 보고</td></tr>
+        <tr><td>자체 제작 문항 묶음</td><td>탐색적 조정 <b style="color:#adff2f;">가능</b></td><td>"탐색적"이라 명시 · train 에서만 결정</td></tr>
+      </table>
+    </div>
+    <p style="font-size:17px;margin:6px 0 0;color:#8892a4;">우리 패널의 척도는 대부분 위 1~2 행이다 — "선행연구가 아예 없다"는 실제로 드물다.</p>
+    <div class="finding" style="margin-top:10px;">
+      <p style="margin:0;font-size:18px;color:#fff;"><b>빼도 되는 4조건 — 넷 다 맞을 때만</b><br>
+      ① <b>내용</b> 문항 텍스트가 다른 구성개념을 잰다 <span style="color:#8892a4;">(α 가 오른다는 건 근거가 아니다)</span> · ② <b>진단 일치</b> r<sub>it</sub> &lt; .30 이고 alpha-if-deleted 가 오른다 ·
+      ③ <b>비교 비용 없음</b> · ④ <b>누출 없음</b> — 결정을 <b style="color:#ff8080;">train 에서만</b> 내렸다<br>
+      <b style="color:#ffd479;">10번은 ①② 충족, ③ 에서 걸렸다. 선행연구가 없었다면 뺐을 것이다 — 근거는 .845 가 아니라 ①② 다.</b></p>
+    </div>
+    <p style="font-size:18px;margin-top:10px;color:#fff;">④ 를 잊지 마라 — 척도 점수는 <b>모델에 들어갈 feature</b> 다. 1,321명 <b>전체</b>를 보고 문항을 빼면
+    슬라이드 23 의 cutoff 와 <b style="color:#ff8080;">똑같은 누출 구조</b>다.</p>
+  </div>
+  <div class="term-note"><b>용어</b>수정판 (modified version) · 탐색적 (exploratory) · 민감도 분석 (sensitivity analysis) · 데이터 누출 (data leakage)</div>
+  <div class="slide-no">17-C</div>
 </div>
 
 <!-- 18 분포 읽는 법 -->
@@ -482,24 +777,48 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
 <span class="cm"># 숫자 요약은 거짓말을 할 수 있다 — 평균 · SD 가 같아도 모양이 전혀 다를 수 있다</span></div>
     <p style="font-size:19px;margin-top:14px;color:#8892a4;">분석 frame: <b style="color:#adff2f;">1,321행</b> — 2차시에 손으로 센 그 숫자와 일치하는지 먼저 확인한다.</p>
   </div>
+  <div class="term-note"><b>용어</b>평균 (mean) · 표준편차 (SD, standard deviation) · 왜도 (skewness) · 히스토그램 (histogram)</div>
   <div class="slide-no">18</div>
+</div>
+
+<!-- 18-A 📐 보충 -->
+<div class="slide-container supp" id="s18a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">"왜도가 크다"를 눈대중 아닌 기준으로 읽기</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;"><span class="cm">왜도 = 편차의 세제곱 평균 ÷ SD³   (네제곱으로 하면 첨도 = 꼬리의 두께)</span>
+왜도의 표준오차 SE ≈ √(6/n) = √(6/1321) = <span class="num">0.067</span>      z = 왜도 ÷ SE</div>
+    <div class="table-layout">
+      <table style="font-size:18px;margin-top:8px;">
+        <tr><th>변수</th><th>왜도</th><th>z</th><th>첨도</th><th>읽는 법</th></tr>
+        <tr><td>문화적응 스트레스(6차)</td><td>+1.39</td><td><b>20.7</b></td><td>+3.9</td><td>오른쪽 꼬리 · 고스트레스는 소수</td></tr>
+        <tr><td>집단괴롭힘</td><td><b style="color:#ff8080;">+7.90</b></td><td><b style="color:#ff8080;">117</b></td><td><b style="color:#ff8080;">+73.8</b></td><td>상수에 가깝다 + 극단값 몇 명</td></tr>
+        <tr><td>한국어 실력</td><td>−1.61</td><td>−24</td><td>+2.6</td><td>천장 효과</td></tr>
+      </table>
+    </div>
+    <p style="font-size:17px;margin-top:10px;color:#8892a4;">관례: 왜도 절댓값 2 · 첨도 절댓값 7 미만이면 심하지 않다 (우울은 +0.46 · z=7 — 유의하지만 실용적으론 대칭).<br>
+    <b style="color:#ffd479;">정규분포가 아닌 것 자체는 문제가 아니다</b> — 로지스틱·트리는 예측변인 정규성을 가정하지 않는다.</p>
+  </div>
+  <div class="term-note"><b>용어</b>왜도 (skewness) · 첨도 (kurtosis) · 표준오차 (standard error) · 정규성 (normality)</div>
+  <div class="slide-no">18-A</div>
 </div>
 
 <!-- 19 그림 4장 -->
 <div class="slide-container" id="s19">
   <h2 class="slide-title">Step 4 — 그림 4장이 각각 하는 말</h2>
   <div class="content-area table-layout">
-    <table style="font-size:17px;">
+    <table class="compact" style="font-size:17px;">
       <tr><th style="width:180px;">변수</th><th style="width:170px;">실측</th><th>읽는 법</th><th style="width:150px;">이어지는 차시</th></tr>
       <tr><td>문화적응 스트레스(6차)</td><td>평균 1.42 · 왜도 <b>+1.39</b></td><td>대부분 1점대. 스트레스 높은 학생은 <strong>소수</strong></td><td>4차시 <b>클래스 불균형</b></td></tr>
       <tr><td>집단괴롭힘</td><td>평균 1.04 · 왜도 <b style="color:#ff8080;">+7.9</b></td><td>거의 전원 "없었다". <strong>사실상 상수</strong> — 아무도 구분 못 한다</td><td>4차시 <b>feature 선별</b></td></tr>
-      <tr><td>한국어 실력</td><td>왜도 <b>−1.61</b></td><td>위쪽에 몰림 = <strong>천장 효과</strong>. 잘하는 학생들 사이 차이가 안 보인다</td><td>7차시 해석의 한계</td></tr>
+      <tr><td>한국어 실력</td><td>왜도 <b>−1.61</b></td><td>위쪽에 몰림 = <strong>천장 효과 (ceiling effect)</strong>. 잘하는 학생들 사이 차이가 안 보인다</td><td>7차시 해석의 한계</td></tr>
       <tr><td>친구지지</td><td>평균 <b>4.13</b></td><td>값이 큰 건 <strong>5점 척도</strong>이기 때문 (대부분 4점)</td><td>5차시 <b>표준화</b></td></tr>
     </table>
     <div class="finding" style="margin-top:14px;">
       <p style="margin:0;font-size:19px;color:#fff;">🔴 "친구지지 4.13 &gt; 우울 1.69" 를 보고 <b style="color:#ff8080;">"친구지지가 더 높다"고 말하면 안 된다.</b> 자를 다르게 쓰고 잰 길이다.</p>
     </div>
   </div>
+  <div class="term-note"><b>용어</b>클래스 불균형 (class imbalance) · 천장 효과 (ceiling effect) · 표준화 (standardization)</div>
   <div class="slide-no">19</div>
 </div>
 
@@ -518,7 +837,50 @@ bullying                        r = +0.058  <span class="cm">███</span></d
     <p style="font-size:19px;margin-top:14px;color:#fff;">부호는 1차시의 <strong>위험요인 / 보호요인</strong> 그림과 정확히 일치한다. 그런데 —<br>
     <b style="color:#ffd479;">가장 큰 상관도 |r| = .31 이다.</b> 전부 "작다~중간" 구간 → <b>1년 뒤를 맞히는 일은 쉽지 않다.</b></p>
   </div>
+  <div class="term-note"><b>용어</b>상관계수 (correlation coefficient) · 효과크기 (effect size) · 보호요인 (protective factor)</div>
   <div class="slide-no">20</div>
+</div>
+
+<!-- 20-A 📐 보충 -->
+<div class="slide-container supp" id="s20a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">.31 은 "관계의 크기"가 아니라 "우리 자로 잰 크기"다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">관측 r ≈ 진짜 r × √(α_x × α_y)      →      진짜 r ≈ 관측 r ÷ √(α_x × α_y)
+<span class="cm">측정오차는 우연이라 다른 변수와 상관되지 않는다 → 관측 상관이 작아진다 (감쇄, attenuation)</span></div>
+    <div class="table-layout">
+      <table style="font-size:19px;margin-top:8px;">
+        <tr><th>관계</th><th>관측 r</th><th>α (예측변인/target)</th><th>감쇄교정 r</th></tr>
+        <tr><td>1년 전 스트레스 → 6차 스트레스</td><td><strong>.314</strong></td><td>.762 / .757</td><td><b style="color:#ffd479;">.413</b></td></tr>
+        <tr><td>교우관계 → 6차 스트레스</td><td>−.235</td><td>.626 / .757</td><td><b style="color:#ffd479;">−.341</b></td></tr>
+      </table>
+    </div>
+    <p style="font-size:18px;margin-top:12px;">자가 흔들리는 만큼 관계는 작게 보인다. 완벽히 측정했다면 .41 쯤이었을 것이다.<br>
+    <span style="font-size:17px;color:#8892a4;">⚠️ 감쇄교정치는 <b style="color:#ffd479;">보고용 참고치</b>다 — 모델은 관측점수로 학습하니 6차시 성능은 여전히 .31 짜리 세계에서 나온다.</span></p>
+  </div>
+  <div class="term-note"><b>용어</b>측정오차 (measurement error) · 감쇄 (attenuation) · 감쇄교정 (correction)</div>
+  <div class="slide-no">20-A</div>
+</div>
+
+<!-- 20-B 📐 보충 -->
+<div class="slide-container supp" id="s20b">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">"유의하다"는 "크다"가 아니다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">t = r√(n−2) / √(1−r²)   →   n=1,321 에서 p&lt;.05 가 되는 최소 상관 = <span class="num">절댓값 .054</span>
+<span class="cm">Bonferroni(17개 검정) 보정 시 필요한 최소 상관 = 절댓값 .082 → bullying · national_identity 탈락</span></div>
+    <div class="table-layout">
+      <table style="font-size:18px;margin-top:8px;">
+        <tr><th>관계</th><th>피어슨 r</th><th>95% CI</th><th>r²</th><th>스피어만</th></tr>
+        <tr><td>1년 전 스트레스</td><td>+.314</td><td>[+.264, +.362]</td><td><b>9.8%</b></td><td>+.343</td></tr>
+        <tr><td>우울</td><td>+.239</td><td>[+.188, +.289]</td><td>5.7%</td><td>+.258</td></tr>
+        <tr><td>집단괴롭힘</td><td>+.058 <span style="color:#ffd479;">(p=.035)</span></td><td>[+.004, +.112]</td><td><b style="color:#ff8080;">0.3%</b></td><td><b style="color:#ffd479;">+.108</b></td></tr>
+      </table>
+    </div>
+    <p style="font-size:18px;margin-top:8px;color:#adff2f;">🔴 유의성은 "0 이 아니다"일 뿐 "크다"가 아니다 — <b>p 가 아니라 r 과 r² 로 말한다.</b></p>
+  </div>
+  <div class="term-note"><b>용어</b>유의성 (statistical significance) · 신뢰구간 (confidence interval) · 다중검정 (multiple comparisons)</div>
+  <div class="slide-no">20-B</div>
 </div>
 
 <!-- 21 다중공선성 -->
@@ -532,10 +894,35 @@ self_esteem     ↔ ego_resilience      r = +0.575</div>
     <div class="finding" style="margin-top:16px;">
       <p style="margin:0;font-size:19px;color:#fff;">겹치는 정보를 가진 변수를 한 모델에 같이 넣으면 <strong>다중공선성(multicollinearity)</strong> 으로 개별 계수가 불안정해진다 → 5·7차시에 <b>"왜 우울의 계수가 이렇게 작지?"</b> 를 만난다.</p>
     </div>
-    <p style="font-size:20px;margin-top:16px;color:#fff;">🔴 <b>상관은 인과가 아니다.</b> depression ↔ stress 가 +.24 라고 해서 "우울이 스트레스를 <b style="color:#ff8080;">일으킨다</b>"고 말할 수 없다.<br>
+    <p style="font-size:20px;margin-top:16px;color:#fff;">🔴 <b>상관(correlation)은 인과(causation)가 아니다.</b> depression ↔ stress 가 +.24 라고 해서 "우울이 스트레스를 <b style="color:#ff8080;">일으킨다</b>"고 말할 수 없다.<br>
     <span style="font-size:18px;color:#8892a4;">반대 방향일 수도, 제3의 원인(학교 분위기 등)이 둘 다 만들었을 수도 있다. 우리가 할 수 있는 말은 <b style="color:#adff2f;">"같이 움직인다 / 예측에 기여한다"</b> 까지다.</span></p>
   </div>
+  <div class="term-note"><b>용어</b>다중공선성 (multicollinearity) · 계수 (coefficient) · 인과 (causation)</div>
   <div class="slide-no">21</div>
+</div>
+
+<!-- 21-A 📐 보충 -->
+<div class="slide-container supp" id="s21a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">상관 −.66 은 실제로 얼마나 문제인가 (VIF)</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;">VIF_j = 1 / (1 − R²_j)     <span class="cm">R²_j = 변수 j 를 나머지 예측변인 전부로 회귀한 설명력</span>
+<span class="cm">의미: 그 변수의 계수 표준오차가 √VIF 배로 커진다 · 관례 경고 기준 5~10</span></div>
+    <div class="table-layout">
+      <table style="font-size:18px;margin-top:6px;">
+        <tr><th style="padding:14px 20px;">변수 (17개 중 상위)</th><th style="padding:14px 20px;">VIF</th><th style="padding:14px 20px;">두 변수만 볼 때 (r = −.656)</th></tr>
+        <tr><td style="padding:14px 20px;">ego_resilience</td><td style="padding:14px 20px;"><b>2.37</b></td><td rowspan="3" style="vertical-align:middle;padding:14px 20px;">1/(1−.656²) = <b style="color:#ffd479;">1.76</b><br><span style="font-size:17px;color:#8892a4;">전부 기준(5~10) 한참 아래</span></td></tr>
+        <tr><td style="padding:14px 20px;">depression</td><td style="padding:14px 20px;">2.33</td></tr>
+        <tr><td style="padding:14px 20px;">life_satisfaction</td><td style="padding:14px 20px;">2.32</td></tr>
+      </table>
+    </div>
+    <div class="finding" style="margin-top:10px;">
+      <p style="margin:0;font-size:18px;color:#fff;">🔴 "다중공선성이 심각하다"는 <b>과장</b>이다. VIF 2.3 = 계수 표준오차가 √2.3 ≈ <b>1.5배</b> —
+      <b>"모델이 망가진다"가 아니라 "계수 하나만 떼어 읽으면 안 된다"</b>가 맞다.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>VIF (variance inflation factor) · 표준오차 (standard error) · 설명력 R² (R-squared)</div>
+  <div class="slide-no">21-A</div>
 </div>
 
 <!-- 22 동점 -->
@@ -547,30 +934,88 @@ self_esteem     ↔ ego_resilience      r = +0.575</div>
 고스트레스 = <span style="color:#ff8080;">447명</span> / 1321명 = <span style="color:#ff8080;">33.8%</span>     <span class="cm"># 25% 가 아니다?!</span></div>
     <div class="finding" style="margin-top:16px;">
       <p style="margin:0;font-size:20px;color:#fff;">10문항 <b>평균</b>은 연속처럼 보이지만 실제로는 <b style="color:#adff2f;">0.1 단위로 뚝뚝 끊긴 값</b>이다 (1.4 · 1.5 · 1.6 …).<br>
-      1.50 점을 받은 사람만 <b>142명</b> — 백분위수는 이들을 쪼갤 수 없어 <b style="color:#ff8080;">전부 같은 쪽으로</b> 보낸다.</p>
+      1.50 점을 받은 사람만 <b>142명</b> — 백분위수(percentile)는 이들을 쪼갤 수 없어 <b style="color:#ff8080;">전부 같은 쪽으로</b> 보낸다.</p>
     </div>
   </div>
+  <div class="term-note"><b>용어</b>백분위수 (percentile) · 분위수 (quantile) · 이산적 (discrete) · 동점 (ties)</div>
   <div class="slide-no">22</div>
+</div>
+
+<!-- 22-A 📐 보충 -->
+<div class="slide-container supp" id="s22a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">백분위수는 계단을 쪼갤 수 없다</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;"><span class="cm">경험분포는 계단함수 · 백분위수는 그 역함수 → 동점이 몰린 자리에서 점프한다</span>
+q=0.75 → 위치 h = (n−1)×q = 1320×0.75 = <span class="num">990.0</span> → 정렬 990번째 값 = <span class="num">1.500</span>
+q=0.70 → h = 924.0                              → <span class="num">역시 1.500</span>
+
+관측된 서로 다른 값 = <span class="num">20개</span>   (1.5 미만 874명 · <span class="num">1.5 정확 142명</span> · 1.5 초과 305명)</div>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:20px;color:#fff;"><b>부등호 하나가 142명이다.</b> <code style="background:#000;color:#adff2f;padding:2px 8px;border-radius:4px;">&gt;= 1.5</code> 는 33.8% ·
+      <code style="background:#000;color:#adff2f;padding:2px 8px;border-radius:4px;">&gt; 1.5</code> 는 23.1% — 양성률이 <b>10%p</b> 움직인다.<br>
+      조작적 정의를 글로 쓸 때 <b>"이상"인지 "초과"인지까지</b> 적어야 하는 이유다.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>경험분포함수 (empirical CDF) · 계단함수 (step function) · 선형보간 (interpolation)</div>
+  <div class="slide-no">22-A</div>
+</div>
+
+<!-- 22-B 📐 보충 -->
+<div class="slide-container supp" id="s22b">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">경계가 흔들리는 두 번째 이유 — 측정오차</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:17px;"><span class="cm">고전검사이론: 관측점수 X = 진점수 T + 측정오차 E · 신뢰도 = T의 분산 ÷ X의 분산 (α)</span>
+SEM = SD × √(1 − α) = 0.325 × √(1 − .757) = <span class="num">0.160</span>      95% 폭 = ±<span class="num">0.31</span></div>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">관측점수 <b>1.50</b> 인 학생의 진점수는 대략 <b>1.19 ~ 1.81</b> 사이다.<br>
+      즉 <b>1.4 · 1.5 · 1.6 의 차이(0.1)는 측정오차(0.16)보다도 작다.</b></p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;">cutoff 가 흔들리는 이유는 <strong>두 개</strong>다 — ① 동점(백분위수가 사람을 못 쪼갠다) ② 측정오차(경계 근처는 동전 던지기).<br>
+    <span style="font-size:17px;color:#8892a4;">그래서 8차시 민감도 분석(0.70/0.75/0.80)은 취향이 아니라 <b style="color:#ffd479;">의무</b>다. 1차시의 "이 1 은 진단이 아니다"가 여기서 통계로 확인된다.</span></p>
+  </div>
+  <div class="term-note"><b>용어</b>고전검사이론 (classical test theory) · 진점수 (true score) · 측정의 표준오차 (SEM)</div>
+  <div class="slide-no">22-B</div>
 </div>
 
 <!-- 23 분위수 이동 -->
 <div class="slide-container" id="s23">
   <h2 class="slide-title">Step 6 — 분위수를 움직여 보면 (실측)</h2>
   <div class="content-area table-layout">
-    <table style="font-size:20px;">
+    <table class="compact" style="font-size:18px;">
       <tr><th>분위수</th><th>cutoff</th><th>고스트레스</th><th>비율</th></tr>
       <tr><td>0.70</td><td>1.500</td><td>447명</td><td><b style="color:#ffd479;">33.8%</b></td></tr>
       <tr><td><strong>0.75</strong></td><td><strong>1.500</strong></td><td><strong>447명</strong></td><td><b style="color:#ffd479;">33.8%</b> ← 똑같다</td></tr>
       <tr><td>0.80</td><td>1.600</td><td>305명</td><td>23.1% ← 갑자기 142명이 넘어간다</td></tr>
       <tr><td>0.90</td><td>2.000</td><td>138명</td><td>10.4%</td></tr>
     </table>
-    <div class="finding" style="margin-top:16px;">
-      <p style="margin:0;font-size:19px;color:#fff;">분위수를 조금 움직이면 <b>아무 일도 안 일어나다가</b>, 어느 순간 <b style="color:#ff8080;">100명이 한꺼번에 넘어간다.</b><br>
-      ✅ 규칙: 조작적 정의는 분위수만 적지 말고 <b style="color:#adff2f;">실제 양성 비율을 항상 함께 보고한다.</b></p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:18px;color:#fff;">분위수를 조금 움직이면 <b>아무 일도 안 일어나다가</b>, 어느 순간 <b style="color:#ff8080;">100명이 한꺼번에 넘어간다.</b><br>
+      ✅ 규칙: 조작적 정의(operational definition)는 분위수만 적지 말고 <b style="color:#adff2f;">실제 양성 비율을 항상 함께 보고한다.</b></p>
     </div>
-    <p style="font-size:18px;margin-top:12px;color:#8892a4;">⚠️ 오늘 구한 1.500 은 <b style="color:#ff8080;">진짜 cutoff 가 아니다</b> — 전체 1,321명을 보고 계산했다. 4차시에는 <b style="color:#adff2f;">train 으로 쓸 사람들만 보고</b> 계산한다. 전체 분포로 선을 그으면 그것 자체가 <b>데이터 누출</b>이다.</p>
+    <p style="font-size:18px;margin-top:10px;color:#8892a4;">⚠️ 오늘의 1.500 은 <b style="color:#ff8080;">진짜 cutoff 가 아니다</b> — 전체 1,321명으로 계산했다. 4차시에는 <b style="color:#adff2f;">train 만 보고</b> 계산한다. 전체 분포로 선을 그으면 그 자체가 <b>데이터 누출 (data leakage)</b>이다.</p>
   </div>
+  <div class="term-note"><b>용어</b>분위수 (quantile) · 양성률 (positive rate) · 데이터 누출 (data leakage)</div>
   <div class="slide-no">23</div>
+</div>
+
+<!-- 23-A 📐 보충 -->
+<div class="slide-container supp" id="s23a">
+  <div class="supp-badge">📐 보충 · 선택</div>
+  <h2 class="slide-title">연속 점수를 0/1 로 바꾸는 비용 (이분화)</h2>
+  <div class="content-area">
+    <div class="code-block" style="font-size:18px;">1년 전 스트레스 ↔ <span class="var">연속</span> target        r = <span class="num">.314</span>
+1년 전 스트레스 ↔ <span class="var">0/1</span> target (33.8%)   r = <span class="num">.291</span>   <span class="cm">← 관계의 7% 를 잃었다</span></div>
+    <p style="font-size:19px;margin:12px 0 0;">이분화는 정보를 버리는 일이다 — 1.0 과 1.4 가 똑같은 0, 1.5 와 4.0 이 똑같은 1 이 된다.<br>
+    <span style="font-size:17px;color:#8892a4;">중앙에서 자르면 상관이 약 0.8배로 줄어든다고 알려져 있다. 우리 손실이 작은 이유는 절단점이 꼬리쪽(33.8%)이고 점수가 이미 이산적이기 때문이다.</span></p>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:19px;color:#fff;">그럼 왜 이분화하나 — 연구 질문이 "고스트레스 <b>집단</b>을 미리 알아볼 수 있나"이고 산출물이 실무(우선 지원 대상)와 맞기 때문이다.<br>
+      <b>비용을 알고 선택하는 것</b>과 모르고 하는 것은 다르다. → 4차시에서 이 선택을 정면으로 다룬다.</p>
+    </div>
+  </div>
+  <div class="term-note"><b>용어</b>이분화 (dichotomization) · 이산적 (discrete) · 점이연 상관 (point-biserial)</div>
+  <div class="slide-no">23-A</div>
 </div>
 
 <!-- 24 회고 -->
@@ -584,6 +1029,7 @@ self_esteem     ↔ ego_resilience      r = +0.575</div>
     </ul>
     <p style="font-size:18px;margin-top:16px;color:#8892a4;">📝 과제: 내 구성개념의 α · 문항-전체 상관 표 (교정 전/후) · α &lt; .70 이면 문항 텍스트로 이유 설명 · <code>reverse_items</code> 갱신본 커밋</p>
   </div>
+  <div class="term-note"><b>용어</b>재현 (replication) · 문항-전체 상관 (item-total correlation) · 지표 최적화 (metric optimization)</div>
   <div class="slide-no">24</div>
 </div>
 
@@ -599,6 +1045,7 @@ self_esteem     ↔ ego_resilience      r = +0.575</div>
     </div>
     <p style="font-size:20px;margin-top:24px;color:#8892a4;">오늘 배운 문장: <b style="color:#adff2f;">"지표가 좋아졌다"와 "옳아졌다"는 다른 말이다.</b></p>
   </div>
+  <div class="term-note"><b>용어</b>데이터 누출 (data leakage) · AUC (area under the curve) · 민감도 분석 (sensitivity analysis)</div>
   <div class="slide-no">25</div>
 </div>
 </body>
