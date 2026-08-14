@@ -523,20 +523,20 @@ s_accul_str_10_w6   <span style="color:#ffd479;">+0.044</span>  <span class="cm"
   <div class="slide-no">10</div>
 </div>
 
-<!-- 11 전 척도 스캔 TODO -->
+<!-- 11 전 척도 스캔 -->
 <div class="slide-container" id="s11">
-  <h2 class="slide-title">Step 2 실습 — 전 척도를 한 번에 스캔한다 (TODO)</h2>
+  <h2 class="slide-title">Step 2 실습 — 전 척도를 한 번에 스캔한다</h2>
   <div class="content-area">
     <div class="code-block">suspects = {}
 <span class="kw">for</span> name, spec <span class="kw">in</span> V.<span class="fn">items</span>():
     r = scoring.<span class="fn">item_total_correlations</span>(p5, spec[<span class="str">"items"</span>])
-    bad = [c <span class="kw">for</span> c <span class="kw">in</span> r.index <span class="kw">if</span> r[c] <span class="num">_______</span>]      <span class="cm"># ← 조건을 채워라</span>
+    bad = [c <span class="kw">for</span> c <span class="kw">in</span> r.index <span class="kw">if</span> r[c] <span class="num">&lt; 0</span>]      <span class="cm"># 음수 = 나머지와 반대로 움직인다</span>
     <span class="kw">if</span> bad: suspects[name] = bad</div>
     <div class="finding" style="margin-top:16px;">
       <p style="margin:0;font-size:20px;color:#fff;">⚠️ <b>3개 척도</b>가 걸린다 — α 가 <b style="color:#ff8080;">.489 · .543 · .568</b> 로 처참하다.<br>
       <span style="font-size:18px;color:#8892a4;">참고로 나머지 13개는 .74 ~ .97 로 멀쩡하다. 셋만 유독 낮다.</span></p>
     </div>
-    <p style="font-size:19px;margin-top:14px;color:#8892a4;">힌트는 슬라이드 09 의 표 두 번째 줄에 있다.</p>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">조건이 <code>r[c] &lt; 0</code> 인 이유는 슬라이드 09 의 표 두 번째 줄에 있다 — <b style="color:#fff;">음수 = 방향이 반대</b>.</p>
   </div>
   <div class="term-note"><b>용어</b>척도 (scale) · 구성개념 (construct) · 진단 (diagnostic)</div>
   <div class="slide-no">11</div>

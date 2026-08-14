@@ -33,7 +33,8 @@ md("""# 3차시 — 이 점수를 믿어도 되는가
 3. **분포**(평균·SD·왜도·천장/바닥)와 **상관**을 읽고, 변수의 성격을 설명한다.
 4. target 분포에서 **동점(ties)** 문제를 발견해 4차시 조작적 정의로 넘긴다. ← 두 번째 봉우리
 
-> 💡 운영 방식은 1·2차시와 같다: 셀을 위에서 아래로. `# TODO` 채우고 `# CHECK` 에서 `✅`.
+> 💡 운영 방식은 1·2차시와 같다: 셀을 위에서 아래로. 코드는 **전부 채워져 있다** —
+> 실행 전에 결과를 예측하게 하고, `# CHECK` 에서 `✅` 를 확인한 뒤 넘어간다.
 > 오늘도 마지막엔 **에디터로 돌아가 `variables.yaml` 을 고친다** — 검증은 계속되는 상태다."""),
 
 md("""## 🗺️ 오늘의 위치 — 3차시
@@ -176,11 +177,11 @@ md("""## Step 1 — 신뢰도: 이 문항들은 한 팀인가 🧠
 우리 계산이 그 근처로 나오면 — 2차시의 컬럼 선택과 채점 규칙이 **옳았다는 강력한 증거**다.
 안 나오면? 우리가 어딘가 틀렸다는 뜻이다."""),
 
-code(r'''# TODO: 우리 모듈로 target(6차 문화적응 스트레스 10문항)의 α 를 계산하라
+code(r'''# 우리 모듈로 target(6차 문화적응 스트레스 10문항)의 α 를 계산한다
 from maps_risk import scoring
 
-alpha_w6 = scoring.____________(p6, TGT["items"])          # ← 함수 이름을 채워라
-alpha_w5 = scoring.____________(p5, OPT["previous_acculturative_stress"]["items"])
+alpha_w6 = scoring.cronbach_alpha(p6, TGT["items"])
+alpha_w5 = scoring.cronbach_alpha(p5, OPT["previous_acculturative_stress"]["items"])
 
 print(f"6차 문화적응 스트레스 α = {alpha_w6:.3f}   (선행연구 .74)")
 print(f"5차 문화적응 스트레스 α = {alpha_w5:.3f}   (선행연구 .76)")'''),
@@ -192,7 +193,7 @@ try:
     print("   재현(replication)은 '남이 한 걸 따라 해서 같은 숫자가 나오는 것' — 오늘의 첫 관문 통과.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 함수 이름은 cronbach_alpha. 그래도 다르면 items 나 참여 필터를 의심하라.")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 alpha_w6 = scoring.cronbach_alpha(p6, TGT["items"])
@@ -225,7 +226,7 @@ md("""## Step 2 — 문항-전체 상관: 역채점 실수를 잡아내는 그�
 
 > 🔴 마지막 줄이 오늘 배울 가장 미묘한 구분이다. 음수와 0은 완전히 다른 병이다."""),
 
-code(r'''# 먼저 target 10문항을 눈으로 본다 (TODO 아님 — 실행하고 표를 읽어라)
+code(r'''# 먼저 target 10문항을 눈으로 본다 (실행하고 표를 읽는다)
 r_it = scoring.item_total_correlations(p6, TGT["items"])
 print("6차 문화적응 스트레스 — 문항-전체 상관\n")
 for c, r in r_it.items():
@@ -240,11 +241,11 @@ target 은 괜찮아 보인다(10번만 빼고 — 그 얘기는 Step 3 에서).
 
 그래서 오늘, 전 척도를 한 번에 스캔한다."""),
 
-code(r'''# TODO: '역채점을 놓쳤다'고 의심할 조건을 채워라 (표의 두 번째 줄을 보라)
+code(r'''# '역채점을 놓쳤다'고 의심하는 조건은 r_it < 0 이다 (표의 두 번째 줄)
 suspects = {}
 for name, spec in V.items():
     r = scoring.item_total_correlations(p5, spec["items"])
-    bad = [c for c in r.index if r[c] _______ ]        # ← 조건을 채워라
+    bad = [c for c in r.index if r[c] < 0]             # 음수 = 나머지와 반대로 움직인다
     a = scoring.cronbach_alpha(p5, spec["items"])
     flag = "⚠️" if bad else "  "
     print(f"{flag} {name:24s} k={len(spec['items']):2d}  α={a:.3f}  최저 r_it={r.min():+.3f} ({r.idxmin()})")
@@ -268,7 +269,7 @@ try:
     print("   조건은 r < 0 이다. 방향이 반대인 문항은 나머지와 '반대로' 움직인다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 표의 두 번째 줄 — 음수(−)가 방향이 반대라는 신호다. r[c] < 0")'''),
-md("""<details><summary>💡 힌트 / 정답 — 그리고 문항 텍스트를 읽어 보라</summary>
+md("""<details><summary>💡 해설 — 그리고 문항 텍스트를 읽어 보라</summary>
 
 ```python
 bad = [c for c in r.index if r[c] < 0]
@@ -332,8 +333,9 @@ Step 2 의 표를 다시 보라. 10번의 문항-전체 상관은 **음수가 �
 
 **음수와 0 근처는 다른 병이다.** 오늘 배운 그 구분이 지금 필요하다."""),
 
-code(r'''# TODO: 10번을 역채점하면 α 는 오를까 내릴까? 먼저 예측하고, 그 다음 실행하라
-예측 = "_____"        # ← "오른다" 또는 "내린다"
+code(r'''# 10번을 역채점하면 α 는 오를까 내릴까?
+# 🖐 실행하기 전에 각자 예측해 보게 한 뒤 셀을 돌린다 — 대부분 "오른다"에 손을 든다.
+예측 = "내린다"        # 실측 결과다. 왜 그런지가 오늘의 두 번째 봉우리
 
 item10 = TGT["items"][9]
 flipped = p6.copy()
@@ -351,7 +353,7 @@ try:
     print("   → r_it 가 0 근처라는 건 '반대'가 아니라 '**따로 논다**'는 뜻이었다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 방향이 진짜 반대라면 뒤집었을 때 α 가 올라야 한다. 안 오른다면?")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 `예측 = "내린다"` — 실측 **.757 → .738**.
 
@@ -477,9 +479,9 @@ md("""## Step 5 — 상관: 무엇이 무엇과 같이 움직이나
 먼저 심리학자로서 **예측**해 보자. 우울이 높은 학생은 1년 뒤 스트레스가 높을까 낮을까?
 친구지지가 두터운 학생은?"""),
 
-code(r'''# TODO: 부호를 예측해서 채워라 ("+" 또는 "-")
-예측_우울    = "_"      # 5차 우울 ↔ 6차 문화적응 스트레스
-예측_친구지지 = "_"      # 5차 친구지지 ↔ 6차 문화적응 스트레스
+code(r'''# ▶ 부호는 이미 채워져 있다 — 🖐 실행 전에 각자 예측해 보게 한 뒤 셀을 돌린다
+예측_우울    = "+"      # 5차 우울 ↔ 6차 문화적응 스트레스 (위험요인 → 양의 상관)
+예측_친구지지 = "-"      # 5차 친구지지 ↔ 6차 문화적응 스트레스 (보호요인 → 음의 상관)
 
 target_col = "acculturative_stress_w6"
 corr = f.drop(columns="PID").corr()[target_col].drop(target_col)
@@ -546,9 +548,9 @@ md("""## Step 6 — target 분포와 동점: 25%가 25%가 아니다 🔍 (두 �
 > **train 데이터에서만** 계산한다 — 전체 분포로 정하면 그것 자체가 test 정보 누출이다.
 > 오늘 보려는 건 cutoff 값이 아니라 **점수가 이산적이라 생기는 현상**이다."""),
 
-code(r'''# TODO: 75 백분위수를 cutoff 로 잡고, 실제로 몇 %가 고스트레스가 되는지 세어라
+code(r'''# 75 백분위수를 cutoff 로 잡고, 실제로 몇 %가 고스트레스가 되는지 센다
 s = f[target_col]
-cutoff = s.quantile(_____)                  # ← 상위 25% 의 분위수 값은?
+cutoff = s.quantile(0.75)                   # 상위 25% → 75 백분위수
 n_pos = (s >= cutoff).sum()
 
 print(f"cutoff = {cutoff:.3f}")
@@ -565,7 +567,7 @@ try:
     print("   cutoff 1.50 에 **동점자 142명**이 몰려 있고, 이들이 통째로 넘어간다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 상위 25% = 아래에서 75% 지점 → quantile(0.75)")'''),
-md("""<details><summary>💡 힌트 / 정답 — 그리고 이게 왜 중요한가</summary>
+md("""<details><summary>💡 해설 — 그리고 이게 왜 중요한가</summary>
 
 ```python
 cutoff = s.quantile(0.75)      # → 1.500

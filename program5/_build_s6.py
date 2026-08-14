@@ -120,7 +120,7 @@ md("""## Step 1 — 로지스틱의 숨은 가정: 마음은 직선인가
 세어 본다. 비율이 계단처럼 **일정하게** 변하면 선형에 가깝고, 어느 구간에서 **뚝 떨어지면**
 비선형이다."""),
 
-code(r'''# TODO: 변수를 5분위로 나눠 구간별 실제 고스트레스 비율을 세어라
+code(r'''# ▶ 변수를 5분위로 나눠 구간별 실제 고스트레스 비율을 세어라
 import matplotlib.pyplot as plt
 from maps_risk import plots      # import 만 해도 한글 폰트가 잡힌다
 
@@ -129,7 +129,7 @@ fig, axes = plt.subplots(1, 4, figsize=(17, 3.4))
 for ax, v in zip(axes, show):
     col = frame.loc[idx_tr, v]
     q = pd.qcut(col, 5, labels=False, duplicates="drop")   # ← 5분위로 나눈다
-    rate = ytr.groupby(q).____()                            # ← 각 구간의 '평균'이 곧 고스트레스 비율
+    rate = ytr.groupby(q).mean()                            # 0/1 의 평균 = 그 구간의 고스트레스 비율
     ax.plot(rate.index, rate.values, "o-")
     ax.axhline(ytr.mean(), color="gray", ls="--", lw=.8)
     ax.set_title(v, fontsize=10); ax.set_xlabel("5분위 (낮음→높음)"); ax.set_ylim(0, .65)
@@ -149,7 +149,7 @@ try:
     print("   반면 우울은 단조 증가 — 직선 가정이 잘 맞는 변수도 있다. 변수마다 다르다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 0/1 라벨의 '평균'이 곧 그 구간의 고스트레스 비율이다 → .mean()")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 rate = ytr.groupby(q).mean()
@@ -246,7 +246,7 @@ md("""## Step 3 — 과적합: 트리를 자라게 두면 ⚠️ (첫 봉우리)
 
 깊이를 1부터 끝까지 늘려 가며, **train 점수와 CV 점수를 나란히** 본다."""),
 
-code(r'''# TODO: 깊이별로 train 점수와 CV 점수를 함께 재라
+code(r'''# ▶ 깊이별로 train 점수와 CV 점수를 함께 재라
 from sklearn.model_selection import cross_validate
 
 rows = []
@@ -254,7 +254,7 @@ for d in (1, 2, 3, 4, 5, 8, 12, None):
     est = build(DecisionTreeClassifier(max_depth=d, class_weight="balanced",
                                        random_state=cfg["random_seed"]))
     r = cross_validate(est, Xtr, ytr, cv=cv, scoring="roc_auc",
-                       return_train_score=_____)          # ← train 점수도 받아야 한다
+                       return_train_score=True)           # train 점수도 함께 받는다
     n_leaves = est.fit(Xtr, ytr).named_steps["clf"].get_n_leaves()
     rows.append({"max_depth": str(d), "train_AUC": r["train_score"].mean(),
                  "CV_AUC": r["test_score"].mean(),
@@ -283,7 +283,7 @@ try:
     print("   4차시의 AUC 1.0 은 누출이었고, 오늘의 1.0 은 과적합이다 — 병은 다르지만 증상은 같다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: cross_validate(..., return_train_score=True)")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 return_train_score=True
@@ -357,7 +357,7 @@ md("""## Step 5 — 4개 모델 정면 비교 🔍 (두 번째 봉우리)
 - 하이퍼파라미터는 `modeling.yaml` 의 그리드에서 **CV 로 선택**한다
 - **Dummy 를 반드시 옆에 둔다** (4차시의 규칙)"""),
 
-code(r'''# TODO: modeling.yaml 의 그리드로 네 모델을 튜닝하고 CV 로 비교하라
+code(r'''# ▶ modeling.yaml 의 그리드로 네 모델을 튜닝하고 CV 로 비교하라
 from sklearn.model_selection import GridSearchCV
 from maps_risk.models import build_models
 
@@ -366,7 +366,7 @@ def compare(cols, label):
     out = []
     for name, (est, grid) in build_models(cfg).items():
         if grid:
-            gs = GridSearchCV(est, grid, scoring="roc_auc", cv=_____, n_jobs=-1).fit(X, ytr)  # ← 같은 폴드!
+            gs = GridSearchCV(est, grid, scoring="roc_auc", cv=cv, n_jobs=-1).fit(X, ytr)  # 모든 모델에 같은 폴드!
             chosen, auc = gs.best_params_, gs.best_score_
             fitted = gs.best_estimator_
         else:

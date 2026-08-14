@@ -264,10 +264,10 @@ md("""## Step 1 — 데이터 사이언스의 뼈대 ①: **feature**
 
 target(y)은 feature 가 아니다. **맞혀야 할 답**이다 — 우리의 y 는 6차 고스트레스 여부다."""),
 
-code(r'''# TODO: 우리 모델이 볼 수 있는 것(feature)이 정확히 몇 개인지 세어 보라
+code(r'''# 우리 모델이 볼 수 있는 것(feature)이 정확히 몇 개인지 센다
 from maps_risk.dataset import split_features
 
-feats   = split_features(frame, "____")     # ← Model A: 5차 심리사회 변인만 ("A" 인가 "B" 인가)
+feats   = split_features(frame, "A")        # Model A = 5차 심리사회 변인만
 feats_B = split_features(frame, "B")        # Model B: A + 5차 문화적응 스트레스
 
 print(f"Model A feature {len(feats)}개")
@@ -285,7 +285,7 @@ try:
     print("   두 모델의 차이는 딱 하나다: 5차 문화적응 스트레스를 넣느냐 마느냐 (RQ3).")
 except Exception as e:
     print("❌ FAIL —", e, '\n힌트: split_features(frame, "A")')'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 feats = split_features(frame, "A")
@@ -351,7 +351,7 @@ feature 가 **재료**라면, parameter 는 모델의 **손잡이**다.
 > "상위 25%를 고스트레스로 본다", "test 를 20% 뗀다" — 데이터가 시킨 게 아니라 **우리가 정한 것**이다.
 > 그래서 이 프로젝트는 그것들을 코드에 흩어 두지 않고 **설정 파일 한 곳**에 모아 둔다."""),
 
-code(r'''# TODO: 학습 전과 학습 후 — 파라미터는 언제 생기는가
+code(r'''# 학습 전과 학습 후 — 파라미터는 언제 생기는가
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from maps_risk.preprocessing import make_preprocessor
@@ -367,7 +367,7 @@ X_all, y_tmp = frame[feats], (scores >= scores.quantile(0.75)).astype(int)   # �
 fitted = build(lr).fit(X_all, y_tmp)
 
 n_coef = fitted.named_steps["clf"].coef_.size
-n_param = n_coef + ____            # ← 절편(intercept)은 몇 개인가? 숫자를 채워라
+n_param = n_coef + 1               # 절편(intercept)은 모델 전체에 하나뿐이다
 
 print(f"학습 후: 계수 {n_coef}개 + 절편 1개 = 파라미터 {n_param}개")
 print("\n하이퍼파라미터(사람이 정한 값) — configs/modeling.yaml 에서 읽어 온다:")
@@ -480,11 +480,11 @@ md("""## Step 3 — 조작적 정의: 선을 긋는다는 것
 
 그리고 3차시에서 이미 봤듯이 — **선을 긋는 순간 이상한 일이 벌어진다.**"""),
 
-code(r'''# TODO: 부등호 하나가 몇 명을 옮기는지 직접 확인하라
+code(r'''# 부등호 하나가 몇 명을 옮기는지 확인한다
 cut = scores.quantile(0.75)
 
 n_ge = (scores >= cut).sum()      # cutoff 이상 (우리 파이프라인의 규칙)
-n_gt = (scores ____ cut).sum()    # ← cutoff '초과' 로 바꾸면? 부등호를 채워라
+n_gt = (scores > cut).sum()       # cutoff '초과' — 같은 값(동점자)을 포함하지 않는다
 n_tie = (scores == cut).sum()
 
 print(f"cutoff = {cut:.3f}")
@@ -500,7 +500,7 @@ try:
     print("   우리는 >= 를 쓴다(make_high_stress_label). 그리고 실제 양성 비율을 함께 보고한다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: '초과'는 같은 값을 포함하지 않는다.")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 n_gt = (scores > cut).sum()
@@ -539,13 +539,13 @@ Step 2 에서 "모델은 train 데이터의 **정답을 보면서** 배운다"�
 > train 을 다시 5조각으로 나눠 4조각으로 배우고 1조각으로 채점하기를 5번 돌려 평균 낸다.
 > (`n_splits=5` 도 하이퍼파라미터다. 설정 파일에 적혀 있다.)"""),
 
-code(r'''# TODO: 설정 파일대로 split 하라 (숫자를 코드에 직접 쓰지 않는다 — 설정에서 읽는다)
+code(r'''# 설정 파일대로 split 한다 (숫자를 코드에 직접 쓰지 않는다 — 설정에서 읽는다)
 from sklearn.model_selection import train_test_split
 
 idx_tr, idx_te = train_test_split(
     frame.index,
-    test_size=cfg["_______"],          # ← 설정 키를 채워라
-    random_state=cfg["_______"],       # ← 설정 키를 채워라
+    test_size=cfg["test_size"],        # modeling.yaml: 0.20
+    random_state=cfg["random_seed"],   # modeling.yaml: 42 — 고정해야 재현된다
     # 층화(stratify): 두 조각의 구성이 비슷하도록 맞춘다.
     # 진짜 라벨은 아직 없다(cutoff 를 train 에서 정해야 하니까 — 순환!)
     # → 6차 점수의 median 기준 임시 구분으로 층화한다.
@@ -562,7 +562,7 @@ try:
     print("   random_state=42 를 고정했으므로 누가 실행해도 같은 사람이 train 에 들어간다 (재현성).")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: modeling.yaml 의 키 이름은 test_size 와 random_seed 다.")'''),
-md("""<details><summary>💡 힌트 / 정답 — 그리고 stratify 의 순환 문제</summary>
+md("""<details><summary>💡 해설 — 그리고 stratify 의 순환 문제</summary>
 
 ```python
 test_size=cfg["test_size"], random_state=cfg["random_seed"]
@@ -596,12 +596,12 @@ md("""## Step 4 — 순서가 전부다: cutoff 는 train 에서만 ⚠️ (첫 
 > 비유: 시험 문제의 **합격선**을, 채점할 학생들의 답안을 미리 보고 정하는 것과 같다.
 > 문제를 안 보여줬어도 **합격선이 그들의 점수에 맞춰져 있다.**"""),
 
-code(r'''# TODO: cutoff 를 어느 집단에서 계산해야 하는가?
+code(r'''# cutoff 를 어느 집단에서 계산해야 하는가 — train 만 본다
 from maps_risk.dataset import make_high_stress_label
 
 q = cfg["target"]["high_stress_quantile"]
 y_all, cutoff = make_high_stress_label(
-    scores.loc[_______],      # ← cutoff 를 정할 때 볼 사람들 (idx_tr 인가 frame.index 인가)
+    scores.loc[idx_tr],       # cutoff 를 정할 때 보는 사람들 = train 뿐이다 🔴
     scores,                   # 라벨을 붙일 대상 (전체 — 같은 선을 모두에게 적용한다)
     q)
 frame["high_stress"] = y_all
@@ -622,7 +622,7 @@ try:
     print("   → 다음 셀에서 이게 무슨 뜻인지 생각해 보자. (규칙을 안 지켜도 된다는 뜻일까?)")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: cutoff 를 정할 때는 train 만 본다 → scores.loc[idx_tr]")'''),
-md("""<details><summary>💡 힌트 / 정답 — 그리고 오늘 가장 중요한 교훈</summary>
+md("""<details><summary>💡 해설 — 그리고 오늘 가장 중요한 교훈</summary>
 
 ```python
 scores.loc[idx_tr]
@@ -666,7 +666,7 @@ Step 2 의 ③번을 기억하는가 — **"외우는 것도 손실을 줄인다
 **어떻게 알아채나?** 두 점수를 **나란히** 본다 — `train 점수` 와 `새 데이터 점수(CV)`.
 그 **간극(gap)** 이 과적합의 크기다. 우리가 5-fold CV 를 쓰는 이유가 바로 이것이다."""),
 
-code(r'''# TODO: 트리의 깊이를 풀어 주면 무슨 일이 나는가 — max_depth 를 채워라
+code(r'''# 트리의 깊이를 풀어 주면 무슨 일이 나는가
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.metrics import roc_auc_score
@@ -674,7 +674,7 @@ from sklearn.metrics import roc_auc_score
 Xtr, ytr = frame.loc[idx_tr, feats], frame.loc[idx_tr, "high_stress"]
 cv = StratifiedKFold(n_splits=cfg["cv"]["folds"], shuffle=True, random_state=cfg["random_seed"])
 
-DEPTHS = [2, 3, 5, 10, ____]     # ← 마지막은 '깊이 제한 없음'. 파이썬으로 뭐라고 쓰나?
+DEPTHS = [2, 3, 5, 10, None]     # None = 깊이 제한 없음 (끝까지 쪼갠다)
 
 print(f"{'max_depth':>10s} {'잎(leaf)':>8s} {'파라미터 성격':>14s} {'train AUC':>10s} {'CV AUC':>8s} {'간극':>7s}")
 gap = {}
@@ -706,7 +706,7 @@ try:
     print("   train 점수만 보면 '제한 없는 트리'가 최고의 모델처럼 보인다. **완전히 반대다.**")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: sklearn 에서 '제한 없음'은 None 이다.")'''),
-md("""<details><summary>💡 힌트 / 정답 — 과적합과 데이터 누출은 어떻게 다른가</summary>
+md("""<details><summary>💡 해설 — 과적합과 데이터 누출은 어떻게 다른가</summary>
 
 ```python
 DEPTHS = [2, 3, 5, 10, None]
@@ -775,9 +775,10 @@ for nm, est in models.items():
     res[nm] = r
     print(f"{nm:16s} {r['accuracy']:9.3f} {r['roc_auc']:7.3f} {r['balanced_accuracy']:13.3f} {r['recall']:8.3f}")'''),
 
-code(r'''# TODO: 위 표를 보고 판단하라 — 어느 모델이 더 좋은 모델인가?
-더_좋은_모델 = "_______"        # ← "Dummy (전부 0)" 또는 "로지스틱 회귀"
-근거_지표    = "_______"        # ← 판단의 근거가 된 지표 이름 (accuracy / roc_auc / recall 중)
+code(r'''# 위 표를 보고 판단한다 — 어느 모델이 더 좋은 모델인가?
+# 🖐 학생에게 먼저 고르게 한 뒤 이 셀을 돌린다. accuracy 만 보면 Dummy 를 고르게 된다.
+더_좋은_모델 = "로지스틱 회귀"     # accuracy 가 더 낮은데도 이쪽이다
+근거_지표    = "recall"          # 고스트레스를 '찾아내는' 것이 목적이므로
 
 print(f"내 판단: {더_좋은_모델}  (근거: {근거_지표})")
 print(f"accuracy 만 보면 Dummy {res['Dummy (전부 0)']['accuracy']:.3f} vs 로지스틱 {res['로지스틱 회귀']['accuracy']:.3f}")'''),
@@ -792,7 +793,7 @@ try:
     print("   고스트레스 학생을 **한 명도** 찾아내지 못한다. 그런 모델은 쓸 데가 없다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 고스트레스 집단을 '찾아내는' 것이 목적이다. 그걸 재는 지표는?")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 `더_좋은_모델 = "로지스틱 회귀"`, `근거_지표 = "recall"` (또는 `roc_auc` / `balanced_accuracy`).
 
@@ -912,10 +913,10 @@ TP·FN·FP·TN 네 숫자를 어떻게 묶느냐에 따라 서로 다른 질문�
 - **균형정확도** balanced accuracy = (recall + specificity)/2 = **.613**
   → 불균형 데이터에서 accuracy 대신 쓸 수 있는 값. Dummy 는 여기서 정확히 **.500** 을 받는다."""),
 
-code(r'''# TODO: 네 지표를 네 숫자에서 직접 계산하라 (sklearn 없이, 공식 그대로)
+code(r'''# 네 지표를 네 숫자에서 직접 계산한다 (sklearn 없이, 공식 그대로)
 accuracy    = (TP + TN) / (TP + FN + FP + TN)
-precision   = TP / (TP + ____)      # ← 모델이 '양성'이라고 한 사람 전체가 분모다
-recall      = TP / (TP + ____)      # ← 실제 양성인 사람 전체가 분모다
+precision   = TP / (TP + FP)        # 분모 = 모델이 '양성'이라고 한 사람 전체
+recall      = TP / (TP + FN)        # 분모 = 실제 양성인 사람 전체
 specificity = TN / (TN + FP)
 npv         = TN / (TN + FN)
 balanced    = (recall + specificity) / 2
@@ -941,7 +942,7 @@ try:
     print("   → 그래서 '성능이 얼마인가'라는 질문은 그 자체로 불완전하다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: precision 은 '모델이 한 말'이 분모, recall 은 '실제 정답'이 분모다.")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 precision = TP / (TP + FP)
@@ -1038,8 +1039,8 @@ F1 은 결국 **네 칸 중 세 칸**에서 만들어진다.
 불균형 데이터에서 "다수 클래스를 맞힌 공"을 인정하지 않기 때문에 accuracy 보다 정직하지만,
 그 대신 **음성을 얼마나 잘 통과시켰는지는 F1 이 말해 주지 않는다.**"""),
 
-code(r'''# TODO: F1 을 직접 계산하고, 산술평균과 비교하라
-f1_manual = 2 * precision * recall / (____ + ____)      # ← 조화평균의 분모를 채워라
+code(r'''# F1 을 직접 계산하고, 산술평균과 비교한다
+f1_manual = 2 * precision * recall / (precision + recall)      # 조화평균
 arith     = (precision + recall) / 2
 
 print(f"precision {precision:.4f} · recall {recall:.4f}")
@@ -1100,7 +1101,7 @@ $$F_\\beta = (1+\\beta^2)\\cdot\\frac{P \\times R}{\\beta^2 P + R}$$
 
 > 🎯 그래서 β 를 정한다는 것은 **"어느 임계값을 좋은 임계값이라고 부를 것인가"** 를 정하는 일이다."""),
 
-code(r'''# TODO: 임계값을 움직이며 precision·recall·F 를 관찰하라 (선별 목적이면 어느 β?)
+code(r'''# 임계값을 움직이며 precision·recall·F 를 관찰한다 (선별 목적이면 어느 β?)
 print(f"{'임계값':>6s} {'TP':>4s} {'FN':>4s} {'FP':>4s} {'TN':>4s} "
       f"{'precision':>10s} {'recall':>7s} {'F0.5':>6s} {'F1':>6s} {'F2':>6s}")
 for t in (0.30, 0.40, 0.50, 0.60, 0.70):
@@ -1113,7 +1114,7 @@ for t in (0.30, 0.40, 0.50, 0.60, 0.70):
           f"{fbeta_score(ytr, p, beta=2.0, zero_division=0):6.3f}")
 
 # 우리 프로젝트는 '선별'이 목적이다. 놓침(FN)과 헛경보(FP) 중 무엇을 더 무겁게 볼 것인가?
-선별_목적의_beta = ____        # ← 0.5 / 1 / 2 중 하나를 숫자로 적어라
+선별_목적의_beta = 2           # 선별은 놓침(FN)이 더 아프다 → recall 을 2배 중시
 print(f"\n내가 고른 beta = {선별_목적의_beta}")'''),
 code(r'''# CHECK Step6-fbeta
 try:
@@ -1128,7 +1129,7 @@ try:
     print("   β=0.5 → 임계값 .58 (신중) · β=1 → .36 · β=2 → .20 (적극적으로 지목)")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 놓치는 것이 더 아프면 recall 쪽에 무게를 준다.")'''),
-md("""<details><summary>💡 힌트 / 정답 — 그리고 β 를 키울 때의 함정</summary>
+md("""<details><summary>💡 해설 — 그리고 β 를 키울 때의 함정</summary>
 
 ```python
 선별_목적의_beta = 2
@@ -1198,7 +1199,7 @@ md("""## Step 6 — 평가 ⑨: **AUC** — 임계값을 정하기 전에 모델
 | .80+ | 좋다 |
 | **1.00** | 곡선이 **왼쪽 위 모서리**를 지난다 — **🔴 축하가 아니라 경보다** (Step 7) |"""),
 
-code(r'''# TODO: 곡선 위의 점을 직접 찍어 보자 — 가로축(FPR) 공식을 채워라
+code(r'''# 곡선 위의 점을 직접 찍어 본다 (세로 TPR · 가로 FPR)
 P_all = int(ytr.sum())            # 실제 양성 356명
 N_all = int((ytr == 0).sum())     # 실제 음성 700명
 
@@ -1207,7 +1208,7 @@ for t in (1.00, 0.70, 0.60, 0.50, 0.40, 0.30, 0.00):
     p = (prob_lr >= t).astype(int)
     tn, fp, fn, tp = confusion_matrix(ytr, p, labels=[0, 1]).ravel()
     tpr_t = tp / P_all
-    fpr_t = fp / ____                  # ← 거짓양성률의 분모는? (실제 음성 전체다)
+    fpr_t = fp / N_all                 # 거짓양성률의 분모 = 실제 음성 전체
     mark = "  ← 우리 기본값" if t == 0.50 else ""
     print(f"{t:6.2f} {tp:4d} {fp:4d} {tpr_t:9.3f} {fpr_t:9.3f}   ({fpr_t:.2f}, {tpr_t:.2f}){mark}")
 
@@ -1351,8 +1352,9 @@ Step 2 의 ②번을 기억하는가 — **"모델의 목표는 손실을 줄이
 
 > 🖐 먼저 **예측**해 보라. AUC 가 얼마나 나올까? 0.7? 0.9?"""),
 
-code(r'''# TODO: 6차 스트레스 점수를 feature 에 넣어 보라 (해서는 안 되는 짓이다)
-leak_feats = feats + ["________________"]      # ← target 을 만든 그 컬럼 이름
+code(r'''# 6차 스트레스 점수를 feature 에 넣어 본다 (해서는 안 되는 짓이다)
+# 🖐 실행 전에 예측을 받는다: AUC 가 얼마나 나올까? (0.7? 0.9?)
+leak_feats = feats + ["acculturative_stress_w6"]      # ← target 을 만든 바로 그 컬럼
 
 honest = cross_val_score(build(LogisticRegression(max_iter=2000, class_weight="balanced",
                                                   random_state=42)),
@@ -1372,7 +1374,7 @@ try:
     print("   축하할 일일까? 아니다. 이건 성공이 아니라 **경보음**이다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: target(고스트레스)을 만들 때 쓴 컬럼이 frame 안에 그대로 있다.")'''),
-md("""<details><summary>💡 힌트 / 정답 — 왜 이것이 쓰레기인가</summary>
+md("""<details><summary>💡 해설 — 왜 이것이 쓰레기인가</summary>
 
 ```python
 leak_feats = feats + ["acculturative_stress_w6"]

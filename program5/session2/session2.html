@@ -335,13 +335,14 @@ score = scoring.<span class="fn">scale_score</span>(part6, items, method=<span c
 
 <!-- 11 실습: 뒤집어야 하나 -->
 <div class="slide-container" id="s11">
-  <h2 class="slide-title">Step 2 실습 — 이 문항, 뒤집어야 하나 (TODO)</h2>
+  <h2 class="slide-title">Step 2 실습 — 이 문항, 뒤집어야 하나</h2>
   <div class="content-area">
     <p style="font-size:20px;margin:0;">척도 방향: <strong>"점수가 높을수록 스트레스가 크다"</strong>. 다음 중 방향이 <b>반대</b>인 문항은?</p>
-    <div class="code-block" style="margin-top:14px;font-size:17px;">s_accul_str_03  <span class="str">"한국에 사는 것에 스트레스를 받는다"</span>              → _____
-s_accul_str_05  <span class="str">"주변에서 한국 사람처럼 행동하라고 스트레스를 준다"</span>   → _____
-s_accul_str_08  <span class="str">"우리 동네 사람들은 우리 식구를 못살게 군다"</span>        → _____
-s_accul_str_10  <span class="str">"외국인 부모님 나라보다 한국에서 더 잘 살 수 있을 것이다"</span> → _____  <span class="cm"># ← 잘 읽어라</span></div>
+    <p style="font-size:18px;margin:10px 0 0;color:#8892a4;">🖐 <b style="color:#fff;">먼저 각자 판단하게 한 뒤</b> 오른쪽 답을 연다.</p>
+    <div class="code-block" style="margin-top:10px;font-size:17px;">s_accul_str_03  <span class="str">"한국에 사는 것에 스트레스를 받는다"</span>              → <span class="num">정방향</span>
+s_accul_str_05  <span class="str">"주변에서 한국 사람처럼 행동하라고 스트레스를 준다"</span>   → <span class="num">정방향</span>
+s_accul_str_08  <span class="str">"우리 동네 사람들은 우리 식구를 못살게 군다"</span>        → <span class="num">정방향</span>
+s_accul_str_10  <span class="str">"외국인 부모님 나라보다 한국에서 더 잘 살 수 있을 것이다"</span> → <span style="color:#ffd479;">역채점 후보</span>  <span class="cm"># ← 이 문항만 긍정 방향</span></div>
     <div class="finding" style="margin-top:14px;">
       <p style="margin:0;font-size:18px;color:#fff;">⚠️ 노트북의 판단은 <b>후보</b>일 뿐이다. 최종 결정은 <b>조사표 원문과 대조</b>해 <code>variables.yaml</code> 의 <code>reverse_items</code> 에 기록한다. 그리고 3차시 <b>Cronbach α</b> 가 교차 검증한다 — 역채점을 틀리면 α 가 뚝 떨어진다.</p>
     </div>
@@ -381,7 +382,7 @@ s_accul_str_01 <span class="kw">+</span> _w6  →  <span class="var">s_accul_str
 
 <!-- 14 PID vs ID -->
 <div class="slide-container" id="s14">
-  <h2 class="slide-title">Step 3 — PID vs ID: 함정 (TODO)</h2>
+  <h2 class="slide-title">Step 3 — PID vs ID: 함정 (실습)</h2>
   <div class="content-area">
     <div class="code-block">w5[<span class="str">"PID"</span>].<span class="fn">duplicated</span>().<span class="fn">sum</span>()   <span class="cm"># → 0    개인 ID — 중복 없음</span>
 w5[<span class="str">"ID"</span>].<span class="fn">duplicated</span>().<span class="fn">sum</span>()    <span class="cm"># → 10   가구 ID — 형제자매 10쌍!</span>
@@ -476,12 +477,12 @@ clean[<span class="str">"s_accul_str_01_w5"</span>].dtype                 <span 
 
 <!-- 20 join -->
 <div class="slide-container" id="s20">
-  <h2 class="slide-title">Step 6 — ID join: 두 해를 한 표로 (TODO)</h2>
+  <h2 class="slide-title">Step 6 — ID join: 두 해를 한 표로</h2>
   <div class="content-area">
-    <div class="code-block">joined = w5.<span class="fn">merge</span>(w6, on=<span class="str">"PID"</span>, how=<span class="str">"_____"</span>)     <span class="cm"># ← 교집합 병합 방식</span>
+    <div class="code-block">joined = w5.<span class="fn">merge</span>(w6, on=<span class="str">"PID"</span>, how=<span class="str">"inner"</span>)     <span class="cm"># 양쪽에 다 있는 PID 만</span>
 
 both = joined[(joined[<span class="str">"SURVEY1_w5"</span>] == <span class="num">1</span>) &
-              (joined[<span class="str">"SURVEY1_w6"</span>] == <span class="num">_____</span>)]     <span class="cm"># ← 참여 코드</span></div>
+              (joined[<span class="str">"SURVEY1_w6"</span>] == <span class="num">1</span>)]     <span class="cm"># 참여 플래그 1 = 실제 응답</span></div>
     <p style="font-size:20px;margin-top:16px;color:#fff;">1차시 데모의 실전판이다 — <code>set(w5) & set(w6)</code> 의 merge 버전.</p>
     <p style="font-size:19px;margin-top:8px;color:#8892a4;">그런데 결과 행수가… 예상과 다를 것이다. 다음 슬라이드.</p>
   </div>

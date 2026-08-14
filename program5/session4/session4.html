@@ -520,7 +520,7 @@
 </div>
 
 <div class="slide-container" id="s18">
-  <h2 class="slide-title">Step 3 — 부등호 하나가 142명을 옮긴다 (TODO)</h2>
+  <h2 class="slide-title">Step 3 — 부등호 하나가 142명을 옮긴다 (실습)</h2>
   <div class="content-area">
     <div class="code-block" style="font-size:19px;">cutoff = <span class="num">1.500</span>
 
@@ -1160,7 +1160,7 @@ F<span class="num">β</span> = (1 + <span class="num">β²</span>) × ───�
     <div class="finding" style="margin-top:20px;">
       <p style="margin:0;font-size:21px;color:#fff;">우리 target 은 <b>6차 문화적응 스트레스 점수</b>로 만들었다.<br>그렇다면 — <b style="color:#ffd479;">그 6차 점수 자체를 feature 로 넣으면?</b></p>
     </div>
-    <div class="code-block" style="margin-top:18px;font-size:18px;">leak_feats = feats + [<span class="str">"________________"</span>]   <span class="cm"># ← target 을 만든 그 컬럼</span></div>
+    <div class="code-block" style="margin-top:18px;font-size:18px;">leak_feats = feats + [<span class="str">"acculturative_stress_w6"</span>]   <span class="cm"># ← target 을 만든 바로 그 컬럼</span></div>
     <p style="font-size:18px;margin-top:14px;color:#8892a4;">🖐 먼저 <b>예측</b>하게 한다 — AUC 가 얼마나 나올까? (0.7? 0.9?)</p>
   </div>
   <div class="term-note"><b>용어</b>데이터 누출 (data leakage) · 표적 누출 (target leakage) · 예측 시점 (prediction time)</div>

@@ -171,13 +171,13 @@ md("""## Step 3 — 표준화: 3차시의 숙제가 돌아왔다 ⚠️ (첫 봉
 > 우리 파이프라인은 이미 그렇게 돼 있다: `make_preprocessor(scale=True)` 안의 `StandardScaler`.
 > 그리고 4차시에 배운 대로 **Pipeline 안에 있으므로 train 에서만 fit** 된다."""),
 
-code(r'''# TODO: 표준화를 켠 모델과 끈 모델을 각각 만들어 계수 순위를 비교하라
+code(r'''# ▶ 표준화를 켠 모델과 끈 모델을 각각 만들어 계수 순위를 비교하라
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from maps_risk.preprocessing import make_preprocessor
 
 def logit(scale, C=1.0):
-    return Pipeline([("prep", make_preprocessor(scale=_____)),      # ← scale 인자를 넘겨라
+    return Pipeline([("prep", make_preprocessor(scale=scale)),      # 인자로 받은 scale 을 그대로
                      ("clf", LogisticRegression(max_iter=2000, class_weight="balanced",
                                                 random_state=cfg["random_seed"], C=C))])
 
@@ -209,7 +209,7 @@ try:
     print("   ※ 예측 성능은 거의 안 바뀐다. 표준화는 성능이 아니라 **해석**을 위한 것이다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: make_preprocessor(scale=scale) — 함수 인자를 그대로 넘긴다.")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 Pipeline([("prep", make_preprocessor(scale=scale)), ...])
@@ -254,7 +254,7 @@ md("""## Step 5 — 부호가 뒤집힌다 🔴 (두 번째 봉우리)
 순위표를 3차시의 **단순 상관**과 나란히 놓아 보자. 같은 데이터, 같은 변수, 같은 target 이다.
 당연히 비슷해야 할 것 같은데 —"""),
 
-code(r'''# TODO: 단순 상관을 계산해 계수와 나란히 놓고, 부호가 다른 변수를 세어라
+code(r'''# ▶ 단순 상관을 계산해 계수와 나란히 놓고, 부호가 다른 변수를 세어라
 r_biv = Xtr.apply(lambda col: col.corr(frame.loc[idx_tr, "acculturative_stress_w6"]))
 
 cmp = pd.DataFrame({"단순상관_r": r_biv, "표준화계수": c})
@@ -325,11 +325,11 @@ train 1,056명 중에서 1,056명을 "중복 허용"으로 다시 뽑는다  →
 특히 **95% 구간이 0을 포함하는지**를 본다. 포함한다면 —
 "이 데이터로는 **방향조차 단정할 수 없다**"는 뜻이다."""),
 
-code(r'''# TODO: 부트스트랩으로 계수의 불확실성을 재라 (500회, 30초쯤 걸린다)
+code(r'''# ▶ 부트스트랩으로 계수의 불확실성을 재라 (500회, 30초쯤 걸린다)
 boot = evaluation.bootstrap_coefficients(
     logit(True),               # 아직 fit 하지 않은 Pipeline 을 넘긴다
     Xtr, ytr,
-    n_boot=_____,              # ← 500
+    n_boot=500,
     seed=0)
 
 print(boot.round(3).to_string(index=False))
@@ -347,7 +347,7 @@ try:
     print("   → 부호 뒤집힘은 '발견'이 아니라 **불안정하다는 경고**였다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: n_boot=500")'''),
-md("""<details><summary>💡 힌트 / 정답 — 오늘의 결론</summary>
+md("""<details><summary>💡 해설 — 오늘의 결론</summary>
 
 ```python
 n_boot=500

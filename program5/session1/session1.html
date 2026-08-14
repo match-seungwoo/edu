@@ -221,7 +221,7 @@
       <div class="step-card"><h4>Step 4~5 · ML 언어로 번역</h4><p>feature / target / classification, 시간 설계</p></div>
       <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 6~7 · 데이터 확인 🔍 + 윤리</h4><p><strong>두 번째 봉우리</strong> — 데이터가 진짜 있나</p></div>
     </div>
-    <p style="font-size:19px;margin-top:16px;color:#adff2f;">운영 방식: 셀을 위에서 아래로 하나씩. <code># TODO</code> 채우고 <code># CHECK</code>에서 <strong>✅</strong> 뜨면 다음으로.</p>
+    <p style="font-size:19px;margin-top:16px;color:#adff2f;">운영 방식: 셀을 위에서 아래로 하나씩. 코드는 <strong>전부 채워져 있다</strong> — <strong>실행 전에 결과를 예측</strong>하고, <code># CHECK</code>에서 <strong>✅</strong> 를 확인한 뒤 다음으로.</p>
   </div>
   <div class="slide-no">03</div>
 </div>
@@ -400,15 +400,16 @@ protective = [<span class="str">"family_support"</span>, <span class="str">"peer
 <div class="slide-container" id="s14">
   <h2 class="slide-title">Step 3 실습 — 이 문장, 쓸 수 있나?</h2>
   <div class="content-area">
-    <div class="code-block">statements = {
-    <span class="str">"우울이 문화적응 스트레스를 유발한다"</span>:                <span class="num">_____</span>,
-    <span class="str">"우울 점수가 높은 집단에서 고스트레스 분류 비율이 높았다"</span>: <span class="num">_____</span>,
-    <span class="str">"가족지지를 늘리면 스트레스가 줄어든다"</span>:              <span class="num">_____</span>,
-    <span class="str">"가족지지는 고스트레스 분류에 음(-)의 기여를 보였다"</span>:    <span class="num">_____</span>,
+    <p style="font-size:19px;margin:0 0 12px;color:#8892a4;">🖐 <b style="color:#fff;">먼저 각자 골라 본다</b> — 그다음 오른쪽 값을 확인한다.</p>
+    <div class="code-block" style="font-size:18px;">statements = {
+    <span class="str">"우울이 문화적응 스트레스를 유발한다"</span>:                <span class="num">False</span>,
+    <span class="str">"우울 점수가 높은 집단에서 고스트레스 분류 비율이 높았다"</span>: <span class="num">True</span>,
+    <span class="str">"가족지지를 늘리면 스트레스가 줄어든다"</span>:              <span class="num">False</span>,
+    <span class="str">"가족지지는 고스트레스 분류에 음(-)의 기여를 보였다"</span>:    <span class="num">True</span>,
 }</div>
     <p style="font-size:20px;margin-top:18px;"><span class="src-tag">판별 기준</span> <strong style="color:#ff6b6b;">"유발한다" · "늘리면 줄어든다"</strong> → 인과·개입 주장 → 못 쓴다.<br>
     <strong style="color:#adff2f;">"비율이 높았다" · "기여를 보였다"</strong> → 관찰된 연관성 → 쓸 수 있다.</p>
-    <p style="font-size:19px;margin-top:10px;color:#8892a4;">정답: <code>False, True, False, True</code></p>
+    <p style="font-size:19px;margin-top:10px;color:#8892a4;">한 문장이라도 틀렸다면 — <b style="color:#fff;">그게 오늘의 첫 봉우리다.</b> 8차시 보고서까지 이 구분을 지킨다.</p>
   </div>
   <div class="slide-no">14</div>
 </div>
@@ -546,7 +547,7 @@ protective = [<span class="str">"family_support"</span>, <span class="str">"peer
     <div class="code-block">w5 = pd.<span class="fn">read_csv</span>(<span class="str">"data/demo_format/DEMO_wave5_NOT_MAPS.csv"</span>)  <span class="cm"># 5명</span>
 w6 = pd.<span class="fn">read_csv</span>(<span class="str">"data/demo_format/DEMO_wave6_NOT_MAPS.csv"</span>)  <span class="cm"># 5명</span>
 
-matched = <span class="fn">set</span>(w5[<span class="str">"DEMO_ID"</span>]) <span class="num">_____</span> <span class="fn">set</span>(w6[<span class="str">"DEMO_ID"</span>])   <span class="cm"># ← 채워라</span>
+matched = <span class="fn">set</span>(w5[<span class="str">"DEMO_ID"</span>]) <span class="num">&amp;</span> <span class="fn">set</span>(w6[<span class="str">"DEMO_ID"</span>])   <span class="cm"># &amp; = 교집합 (| 합집합 · - 차집합)</span>
 <span class="cm"># → 두 해 모두: 3 명</span></div>
     <div class="finding" style="margin-top:18px;">
       <p style="margin:0;font-size:21px;color:#fff;">사라진 응답자 = <b>패널 마모(attrition)</b>. 실제 MAPS에서도 똑같이 일어난다.<br>

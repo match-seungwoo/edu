@@ -31,7 +31,8 @@ md("""# 2차시 — 변수는 어디에 있는가
 4. 검증 결과를 `configs/variables.yaml` 에 기록하고 **Human Review Gate 를 연다**
    → `build_dataset.py` 첫 실행 → `reports/data_quality.md`.
 
-> 💡 운영 방식은 1차시와 같다: 셀을 위에서 아래로. `# TODO` 채우고 `# CHECK` 에서 `✅`.
+> 💡 운영 방식은 1차시와 같다: 셀을 위에서 아래로. 코드는 **전부 채워져 있다** —
+> 실행 전에 결과를 예측하게 하고, `# CHECK` 에서 `✅` 를 확인한 뒤 넘어간다.
 > 단, 오늘의 진짜 산출물인 **variables.yaml 편집은 노트북이 아니라 에디터에서 사람이 직접** 한다."""),
 
 md("""## 🗺️ 오늘의 위치 — 2차시
@@ -132,9 +133,9 @@ md("""## Step 2 — 역채점: 왜 거꾸로 묻나 ⚠️ (오늘의 첫 번째
 > 🔴 **함정:** MAPS 코드북의 값 라벨은 **전부 정방향 표기**(1=전혀 그렇지 않다 …)다.
 > 즉 **라벨만 봐서는 역채점 문항을 찾을 수 없다.** 문항의 **텍스트를 읽고** 사람이 판단한다."""),
 
-code(r'''# TODO: 역채점 공식을 완성하라 (4점 척도: scale_min=1, scale_max=4)
+code(r'''# 역채점 공식 — 4점 척도(scale_min=1, scale_max=4)에서 1↔4, 2↔3 이 된다
 def reverse_code(x, scale_min, scale_max):
-    return _____________________   # ← 공식을 채워라
+    return (scale_min + scale_max) - x
 
 print("1점 →", reverse_code(1, 1, 4), "  (4가 나와야 한다)")
 print("2점 →", reverse_code(2, 1, 4), "  (3이 나와야 한다)")
@@ -147,7 +148,7 @@ try:
     print("✅ PASS — (min + max) − x. 우리 모듈 src/maps_risk/scoring.py 의 reverse_code 와 같은 식이다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 최소값과 최대값을 더한 뒤 원점수를 빼면 양 끝이 서로 교환된다.")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 def reverse_code(x, scale_min, scale_max):
@@ -163,12 +164,12 @@ md("""### Step 2 실습 — 이 문항, 뒤집어야 하나
 target 척도(문화적응 스트레스 10문항) 중 4개의 **문항 텍스트**다. 척도의 방향은
 "점수가 높을수록 **스트레스가 크다**". 각 문항을 읽고 **역채점 후보인지** 판단하라."""),
 
-code(r'''# TODO: 역채점(방향 뒤집기)이 필요해 보이면 True, 정방향이면 False
+code(r'''# 역채점(방향 뒤집기)이 필요해 보이면 True, 정방향이면 False — 문항 텍스트를 읽으며 확인한다
 candidates = {
-    "s_accul_str_03  한국에 사는 것에 스트레스를 받는다":                  _____,
-    "s_accul_str_05  주변에서 한국 사람처럼 행동하라고 스트레스를 준다":       _____,
-    "s_accul_str_08  우리 동네 사람들은 우리 식구를 못살게 군다":            _____,
-    "s_accul_str_10  외국인 부모님 나라보다 한국에서 더 잘 살 수 있을 것이다":  _____,   # ← 잘 읽어라
+    "s_accul_str_03  한국에 사는 것에 스트레스를 받는다":                  False,   # 스트레스 정방향
+    "s_accul_str_05  주변에서 한국 사람처럼 행동하라고 스트레스를 준다":       False,   # 스트레스 정방향
+    "s_accul_str_08  우리 동네 사람들은 우리 식구를 못살게 군다":            False,   # 스트레스 정방향
+    "s_accul_str_10  외국인 부모님 나라보다 한국에서 더 잘 살 수 있을 것이다":  True,    # ← 이 문항만 긍정 방향
 }
 for k, v in candidates.items():
     print(("🔁 역채점 후보  " if v else "→ 정방향      ") + k)'''),
@@ -181,7 +182,7 @@ try:
     print("      reverse_items 에 기록한다 — 노트북의 판단은 후보일 뿐이다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: '점수가 높을수록 스트레스가 크다'와 방향이 반대인 문항을 찾아라.")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 `s_accul_str_10` 만 **True**. "더 잘 살 수 있을 것이다"에 "매우 그렇다(4점)"라고 답한
 학생은 스트레스가 **낮은** 쪽이다 — 그대로 평균 내면 이 문항이 점수를 거꾸로 끌어간다.
@@ -211,7 +212,7 @@ md("""## Step 3 — 코드북: 414개 열의 해설서
 - `PID` — **개인** ID
 - `ID` — **가구** ID (한 집에 형제자매가 둘이면 같은 값!)"""),
 
-code(r'''# TODO: 5차 데이터에서 두 ID 의 중복을 세어 보고, join 키를 골라라
+code(r'''# ▶ 5차 데이터에서 두 ID 의 중복을 세어 보고, join 키를 골라라
 import pandas as pd
 w5 = pd.read_csv("''' + W5 + r'''", na_values=["", " "], low_memory=False)
 
@@ -219,7 +220,7 @@ dup_pid = w5["PID"].duplicated().sum()
 dup_id  = w5["ID"].duplicated().sum()
 print(f"행 수 {len(w5)} · PID 중복 {dup_pid}개 · ID 중복 {dup_id}개")
 
-join_key = "___"    # ← "PID" 또는 "ID" — 5차와 6차를 합칠 때 쓸 키를 골라라'''),
+join_key = "PID"    # 중복 0개 = '한 사람 = 한 행' 을 보장하는 쪽. ID 는 가구 ID 다'''),
 code(r'''# CHECK Step3
 try:
     assert dup_pid == 0 and dup_id == 10, f"실측: PID 중복 0 · ID 중복 10 이어야 한다 (지금 {dup_pid}/{dup_id})"
@@ -227,7 +228,7 @@ try:
     print("✅ PASS — join 키는 PID. ID 는 가구 ID 라 형제자매 10쌍이 같은 값을 공유한다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 중복이 0개인 쪽만이 '한 사람 = 한 행'을 보장한다.")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 join_key = "PID"
@@ -250,7 +251,7 @@ MAPS CSV 에서 무응답·미참여는 **공백 문자열 `' '`** 로 들어 �
 > **유저가이드에서 확인 전까지 모른다.** "아마 무응답이겠지"라고 넘겨짚고 NaN 처리하는 것도,
 > 방치해서 소득 평균에 −9 가 섞이는 것도 둘 다 사고다. 확인 전까지 그 변수를 안 쓰는 게 정답이다."""),
 
-code(r'''# 데모 — 같은 파일을 두 방식으로 읽어 비교한다 (TODO 아님, 실행하고 출력을 읽어라)
+code(r'''# 데모 — 같은 파일을 두 방식으로 읽어 비교한다 (실행하고 출력을 읽는다)
 import pandas as pd
 col = "s_accul_str_01_w5"
 
@@ -304,11 +305,11 @@ md("""## Step 6 — ID join: 두 해를 한 표로 합치기
 > 매 차수 파일에는 **미참여자도 행으로 들어 있다** (응답은 전부 공백 = NaN).
 > 그래서 5차와 6차를 inner join 해도 행이 줄지 않는다 — **join 성공 ≠ 분석 표본**."""),
 
-code(r'''# TODO: 5차와 6차를 PID 로 병합하고, "두 해 모두 실제 참여"한 사람을 세어라
+code(r'''# 5차와 6차를 PID 로 병합하고, "두 해 모두 실제 참여"한 사람을 센다
 w6 = pd.read_csv("''' + W6 + r'''", na_values=["", " "], low_memory=False)
 
-joined = w5.merge(w6, on="PID", how="_____")          # ← 교집합 병합 방식을 채워라
-both = joined[(joined["SURVEY1_w5"] == 1) & (joined["SURVEY1_w6"] == _____)]   # ← 참여 코드
+joined = w5.merge(w6, on="PID", how="inner")          # inner = 양쪽에 다 있는 PID 만
+both = joined[(joined["SURVEY1_w5"] == 1) & (joined["SURVEY1_w6"] == 1)]   # 참여 플래그 1 = 실제 응답
 
 print(f"5차 {len(w5)}행 + 6차 {len(w6)}행 → join {len(joined)}행 → 두 해 모두 참여 {len(both)}명")'''),
 code(r'''# CHECK Step6
@@ -319,7 +320,7 @@ try:
     print("   'join 이 됐다'와 '데이터가 있다'는 다른 말이다 — 이게 오늘의 마지막 함정이었다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: 교집합 병합은 how='inner'. 참여 플래그는 SURVEY1_wN == 1.")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 joined = w5.merge(w6, on="PID", how="inner")

@@ -1,0 +1,9 @@
+model_set,model,best_params,cv_roc_auc,cv_average_precision,cv_recall,cv_balanced_accuracy,train_roc_auc
+A,Dummy,{},0.5,0.3371,0.0,0.5,0.5
+A,LogisticRegression,{'clf__C': 0.1},0.6535,0.4921,0.6183,0.6127,0.6898
+A,DecisionTree,{'clf__max_depth': 2},0.6355,0.4372,0.649,0.6067,0.6637
+A,RandomForest,{'clf__max_depth': 3},0.6651,0.5113,0.5985,0.6321,0.7368
+B,Dummy,{},0.5,0.3371,0.0,0.5,0.5
+B,LogisticRegression,{'clf__C': 0.1},0.6825,0.5224,0.576,0.6223,0.7199
+B,DecisionTree,{'clf__max_depth': 3},0.6833,0.5077,0.5674,0.6551,0.7302
+B,RandomForest,{'clf__max_depth': 3},0.6987,0.5643,0.5984,0.6471,0.7653

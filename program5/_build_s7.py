@@ -165,9 +165,9 @@ md("""## Step 2 — 세 방법이 같은 답을 주는가 ⚠️ (첫 봉우리)
 셋이 **같은 변수를 가리키면** 결론이 단단해진다. 이것을 **삼각검증(triangulation)** 이라 한다.
 다르면? **다른 이유를 설명해야 한다.**"""),
 
-code(r'''# TODO: 로지스틱의 permutation importance 를 out-of-fold 로 재라
+code(r'''# ▶ 로지스틱의 permutation importance 를 out-of-fold 로 재라
 perm_logit = evaluation.permutation_scores_cv(
-    _______,                       # ← 어떤 모델? (오늘의 주 모델)
+    LOGIT,                         # 오늘의 주 모델 = 로지스틱
     Xtr, ytr, cv, n_repeats=10, seed=0)
 
 print(perm_logit.round(4).to_string(index=False))
@@ -250,7 +250,7 @@ Permutation Importance 에는 **잘 알려진 함정**이 하나 있다.
 3차시에서 `peer_support`(친구지지)와 `peer_relationship`(교우관계)의 상관이 **.615** 였다.
 직접 확인해 보자."""),
 
-code(r'''# TODO: 한 변수를 빼면 다른 변수의 중요도가 어떻게 변하는지 확인하라
+code(r'''# ▶ 한 변수를 빼면 다른 변수의 중요도가 어떻게 변하는지 확인하라
 pair = ["peer_support", "peer_relationship"]
 print(f"두 변수의 상관 r = {Xtr[pair[0]].corr(Xtr[pair[1]]):.3f}\n")
 
@@ -258,7 +258,7 @@ base = perm_logit.set_index("feature")["imp_mean"]
 print(f"둘 다 있을 때   : {pair[0]} {base[pair[0]]:.4f} · {pair[1]} {base[pair[1]]:.4f}")
 
 for drop, keep in ((pair[1], pair[0]), (pair[0], pair[1])):
-    X2 = Xtr.drop(columns=[_____])          # ← 한 변수를 뺀다
+    X2 = Xtr.drop(columns=[drop])           # 짝 중 한 변수를 뺀다
     r2 = evaluation.permutation_scores_cv(LOGIT, X2, ytr, cv, n_repeats=10, seed=0)
     print(f"{drop} 제거 → {keep} {r2.set_index('feature')['imp_mean'][keep]:.4f}")'''),
 code(r'''# CHECK Step4
@@ -273,7 +273,7 @@ try:
     print("      비슷한 것을 재는 변수가 함께 들어 있으면 둘 다 작게 나온다.")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: drop 변수를 빼야 한다 → Xtr.drop(columns=[drop])")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 X2 = Xtr.drop(columns=[drop])
@@ -332,9 +332,9 @@ prof.insert(0, "n", grp.value_counts())
 print("\n집단별 프로파일 (평균)")
 print(prof.round(3).to_string())'''),
 
-code(r'''# TODO: 놓친 학생(FN)은 찾은 학생(TP)과 무엇이 달랐나?
+code(r'''# ▶ 놓친 학생(FN)은 찾은 학생(TP)과 무엇이 달랐나?
 fn = frame.loc[idx_tr][grp == "FN 놓침"]
-tp = frame.loc[idx_tr][grp == "________"]        # ← 비교 대상 집단 이름
+tp = frame.loc[idx_tr][grp == "TP 맞게 찾음"]     # 비교 대상 = 맞게 찾은 집단
 tn = frame.loc[idx_tr][grp == "TN 맞게 제외"]
 
 d = pd.DataFrame({"FN(놓침)": fn[look].mean(), "TP(찾음)": tp[look].mean(),

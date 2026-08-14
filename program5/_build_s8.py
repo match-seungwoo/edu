@@ -127,7 +127,7 @@ print(f"train {len(idx_tr)} · test {len(idx_te)}  ← 오늘 처음 쓴다")
 print(f"cutoff = {cutoff:.3f} (train 에서 계산한 값 그대로)")
 print(f"test 양성 {yte.mean():.1%} ({int(yte.sum())}명) · train 양성 {ytr.mean():.1%}")'''),
 
-code(r'''# TODO: train 으로 학습하고 test 로 '한 번만' 평가하라
+code(r'''# ▶ train 으로 학습하고 test 로 '한 번만' 평가하라
 rows, probs = [], {}
 for mset in ("A", "B"):
     cols = split_features(frame, mset)
@@ -137,7 +137,7 @@ for mset in ("A", "B"):
         model = (GridSearchCV(est, grid, scoring="roc_auc", cv=cv, n_jobs=-1)
                  .fit(Xtr, ytr).best_estimator_) if grid else est.fit(Xtr, ytr)
 
-        prob = model.predict_proba(_____)[:, 1]          # ← 어느 X 로 예측하나
+        prob = model.predict_proba(Xte)[:, 1]            # 오늘 딱 한 번 여는 test 로
         m = evaluation.score_all(yte, model.predict(Xte), prob)
         probs[(mset, name)] = prob
         rows.append({"model_set": mset, "model": name, **m})
@@ -155,7 +155,7 @@ try:
     print("   → 6차시 CV 순위와 비교해 보라. 무언가 이상하지 않은가?")
 except Exception as e:
     print("❌ FAIL —", e, "\n힌트: test 로 예측해야 한다 → model.predict_proba(Xte)")'''),
-md("""<details><summary>💡 힌트 / 정답</summary>
+md("""<details><summary>💡 해설 (펼쳐 보기)</summary>
 
 ```python
 prob = model.predict_proba(Xte)[:, 1]
@@ -230,7 +230,7 @@ for (mset, name), p in probs.items():
     lo, hi = boot_auc_ci(yte, p)
     print(f"  {mset} {name:20s} {roc_auc_score(yte, p):.4f}  95% [{lo:.4f}, {hi:.4f}]  폭 {hi-lo:.3f}")'''),
 
-code(r'''# TODO: 두 모델의 '차이'에 대한 신뢰구간을 구하라 (같은 부트스트랩 표본에서 둘 다 계산한다)
+code(r'''# ▶ 두 모델의 '차이'에 대한 신뢰구간을 구하라 (같은 부트스트랩 표본에서 둘 다 계산한다)
 rng = np.random.default_rng(1)
 yv = np.asarray(yte)
 pl, pf = probs[("A", "LogisticRegression")], probs[("A", "RandomForest")]
@@ -239,7 +239,7 @@ for _ in range(2000):
     i = rng.integers(0, len(yv), len(yv))
     if len(np.unique(yv[i])) < 2:
         continue
-    diffs.append(roc_auc_score(yv[i], pl[i]) - roc_auc_score(yv[i], _____[i]))   # ← 포레스트 확률
+    diffs.append(roc_auc_score(yv[i], pl[i]) - roc_auc_score(yv[i], pf[i]))   # pf = 포레스트 확률
 diffs = np.array(diffs)
 
 lo, hi = np.percentile(diffs, [2.5, 97.5])
@@ -510,7 +510,7 @@ outputs = {
     "reports/model_metrics_cv.csv":            "6차시 — CV 성능표 (모델 선택 근거)",
     "reports/feature_importance.csv":          "7차시 — 변수 중요도",
     "reports/model_metrics.csv":               "8차시 — **test 최종 성능**",
-    "reports/final_report.md":                 "8차시 — 최종 보고서 (TODO 를 채워 완성)",
+    "reports/final_report.md":                 "8차시 — 최종 보고서 (TODO(사람) 칸을 채워 완성)",
 }
 for f, why in outputs.items():
     print(f"  {'✅' if os.path.exists(f) else '⬜'} {f:42s} {why}")
