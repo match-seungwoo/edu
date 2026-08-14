@@ -37,7 +37,7 @@
 """
 import os
 
-from nb import md, code, save, SETUP
+from nb import md, code, save, SETUP, handoff_in, handoff_out
 
 cells = [
 md("""# 4차시 — 데이터 사이언스: 무엇으로 배우고, 무엇으로 재는가
@@ -95,6 +95,7 @@ code('!pip install pandas scikit-learn pyarrow matplotlib pyyaml -q\n'
      '# Colab 에서 그림의 한글이 □ 로 깨지면 아래 한 줄을 실행하고 런타임을 재시작한다.\n'
      '# !apt-get install -y fonts-nanum > /dev/null && rm -rf ~/.cache/matplotlib'),
 code(SETUP),
+code(handoff_in(pull=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], require=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], hint="지난 차시 노트북 맨 끝의 '드라이브에 저장' 셀을 실행하면 여기서 자동으로 복원된다")),
 
 md("""### 0-1. 오늘의 표를 **직접 만든다** — `modeling_frame.parquet`
 
@@ -1518,6 +1519,9 @@ print(f"  test {len(idx_te)}명 — 오늘 성능 평가에 한 번도 쓰지 �
 print("  모든 숫자는 train 안 5-fold CV 에서 나왔다. test 는 8차시 최종 평가 때 딱 한 번 연다.")
 print("\n※ 오늘 본 AUC 는 전부 CV 값이다. 최종 성능이 아니다 —")
 print("  5·6차시에서 모델을 제대로 세우고, 그 뒤에 test 를 연다.")'''),
+
+md("""## 💾 다음 차시를 위해 — 드라이브에 저장\n\n오늘 만든 것 중 **다음 차시가 재료로 쓰는 파일**을 내 드라이브(`program5_state/`)에 넣어 둔다.\n이렇게 해 두면 런타임이 끊겨도, 다른 컴퓨터에서 열어도 **다음 차시가 그냥 시작된다.**\n\n> 🔴 파생 파일이 들어가는 폴더다 — **개인 계정 안에만** 두고 링크 공유·양도하지 않는다."""),
+code(handoff_out(push=['reports/figures/*.png'], note="4차시 산출물 — 그림만 남는다 (라벨·분할은 설정에서 매번 같게 재생된다)")),
 
 md("""## 🎯 회고 (5분)
 

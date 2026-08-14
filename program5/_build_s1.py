@@ -4,7 +4,7 @@
 데이터 유무와 무관하게 완주 가능하게 설계됐다. 2026-08-10 원자료 수령을 반영해
 Step 6 은 "실물을 확인하는" 흐름이 기본이고, 데이터 없는 환경의 🔴 출력도
 오류가 아니라 결과로 다룬다."""
-from nb import md, code, save, SETUP
+from nb import md, code, save, SETUP, handoff_in, handoff_out
 
 cells = [
 md("""# 1차시 — 무엇을 예측할 것인가
@@ -51,6 +51,7 @@ md("""## Step 0 — 환경 설정
 오늘은 무거운 라이브러리가 필요 없다. 표를 다루는 `pandas` 와 설정을 읽는 `pyyaml` 뿐이다."""),
 code('!pip install pandas pyyaml -q'),
 code(SETUP),
+code(handoff_in() + '\nprint("1차시는 가져올 것이 없다 (첫 차시). 오늘 만든 것을 **맨 끝 셀에서 드라이브에 저장**한다.")\n'),
 
 md("""## Step 1 — 문화적응 스트레스란 무엇인가 🧠
 
@@ -339,6 +340,9 @@ my_rq = """
 3. 이 결과로 말할 수 없는 것: (                                        )
 """
 print(my_rq)'''),
+
+md("""## 💾 다음 차시를 위해 — 드라이브에 저장\n\n오늘 만든 것 중 **다음 차시가 재료로 쓰는 파일**을 내 드라이브(`program5_state/`)에 넣어 둔다.\n이렇게 해 두면 런타임이 끊겨도, 다른 컴퓨터에서 열어도 **다음 차시가 그냥 시작된다.**\n\n> 🔴 파생 파일이 들어가는 폴더다 — **개인 계정 안에만** 두고 링크 공유·양도하지 않는다."""),
+code(handoff_out(push=['reports/data_inventory.md'], note="1차시 산출물 — 2차시가 '무엇을 확인했는지' 이어받는다")),
 
 md("""## 🎯 회고 (5분)
 

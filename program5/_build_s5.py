@@ -19,7 +19,7 @@
 """
 import os
 
-from nb import md, code, save, SETUP
+from nb import md, code, save, SETUP, handoff_in, handoff_out
 
 cells = [
 md("""# 5차시 — 계수를 읽는다, 그리고 대부분을 읽지 않기로 한다
@@ -66,6 +66,7 @@ code('!pip install pandas scikit-learn pyarrow matplotlib pyyaml -q\n'
      '# Colab 에서 그림의 한글이 □ 로 깨지면 아래 한 줄을 실행하고 런타임을 재시작한다.\n'
      '# !apt-get install -y fonts-nanum > /dev/null && rm -rf ~/.cache/matplotlib'),
 code(SETUP),
+code(handoff_in(pull=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], require=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], hint="지난 차시 노트북 맨 끝의 '드라이브에 저장' 셀을 실행하면 여기서 자동으로 복원된다")),
 code(r'''# 4차시와 '똑같은' 라벨·분할을 다시 만든다 (seed 를 고정했으므로 완전히 동일하다)
 import numpy as np, pandas as pd
 from sklearn.model_selection import train_test_split
@@ -440,6 +441,9 @@ md("""### Step 7 해석 — 숫자를 어디까지 말할 수 있나
 1. 1년 전 스트레스를 알아도 **1년 뒤를 잘 맞히지는 못한다** (3차시에서 상관 .31 을 본 그대로)
 2. 뒤집어 말하면 — **중2 때 힘들었던 학생이 중3 때도 힘들 것이 정해져 있지 않다.**
    이건 개입 연구의 관점에서는 **희망적인 결과**다."""),
+
+md("""## 💾 다음 차시를 위해 — 드라이브에 저장\n\n오늘 만든 것 중 **다음 차시가 재료로 쓰는 파일**을 내 드라이브(`program5_state/`)에 넣어 둔다.\n이렇게 해 두면 런타임이 끊겨도, 다른 컴퓨터에서 열어도 **다음 차시가 그냥 시작된다.**\n\n> 🔴 파생 파일이 들어가는 폴더다 — **개인 계정 안에만** 두고 링크 공유·양도하지 않는다."""),
+code(handoff_out(push=['reports/figures/*.png'], note="5차시 산출물")),
 
 md("""## 🎯 회고 (5분)
 

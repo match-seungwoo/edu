@@ -10,7 +10,7 @@
 """
 import os
 
-from nb import md, code, save, SETUP
+from nb import md, code, save, SETUP, handoff_in, handoff_out
 
 W5 = "data/raw/csv/청소년(1-10차_12차_14차)/다문화청소년패널 1기패널 청소년 5차년도.csv"
 W6 = "data/raw/csv/청소년(1-10차_12차_14차)/다문화청소년패널 1기패널 청소년 6차년도.csv"
@@ -55,6 +55,7 @@ md("""## 🗺️ 오늘의 위치 — 2차시
 md("""## Step 0 — 환경 설정 + 재료 확인"""),
 code('!pip install pandas pyyaml openpyxl -q'),
 code(SETUP),
+code(handoff_in(pull=['reports/data_inventory.md'])),
 code(r'''# 오늘 쓸 재료가 다 있는지 먼저 확인한다 (1차시 Step 6 습관: 존재 → 형식 → 내용)
 import os, unicodedata
 
@@ -358,6 +359,9 @@ for f, why in {
     print(f"  {'✅' if os.path.exists(f) else '⬜'} {f:44s} {why}")
 print("\n⬜ 가 남아 있으면 → variables.yaml 검증을 마치고 위 셀을 다시 실행한다.")
 print("생성됐다면 reports/data_quality.md 를 열어 §2 병합(≈1,321명)과 §4 결측률부터 읽는다.")'''),
+
+md("""## 💾 다음 차시를 위해 — 드라이브에 저장\n\n오늘 만든 것 중 **다음 차시가 재료로 쓰는 파일**을 내 드라이브(`program5_state/`)에 넣어 둔다.\n이렇게 해 두면 런타임이 끊겨도, 다른 컴퓨터에서 열어도 **다음 차시가 그냥 시작된다.**\n\n> 🔴 파생 파일이 들어가는 폴더다 — **개인 계정 안에만** 두고 링크 공유·양도하지 않는다."""),
+code(handoff_out(push=['configs/variables.yaml', 'reports/data_quality.md', 'data/processed/modeling_frame.parquet'], note="2차시 산출물 — 3차시가 variables.yaml 을 그대로 이어받는다")),
 
 md("""## 🎯 회고 (5분)
 

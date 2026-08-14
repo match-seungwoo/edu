@@ -13,7 +13,7 @@ Cronbach α 와 문항-전체 상관이 역채점 판단을 교차 검증하고,
 """
 import os
 
-from nb import md, code, save, SETUP
+from nb import md, code, save, SETUP, handoff_in, handoff_out
 
 W5 = "data/raw/csv/청소년(1-10차_12차_14차)/다문화청소년패널 1기패널 청소년 5차년도.csv"
 W6 = "data/raw/csv/청소년(1-10차_12차_14차)/다문화청소년패널 1기패널 청소년 6차년도.csv"
@@ -60,6 +60,7 @@ code('!pip install pandas pyyaml matplotlib pyarrow -q\n'
      '# Colab 에서 그림의 한글이 □ 로 깨지면 아래 한 줄을 실행하고 런타임을 재시작한다.\n'
      '# !apt-get install -y fonts-nanum > /dev/null && rm -rf ~/.cache/matplotlib'),
 code(SETUP),
+code(handoff_in(pull=['configs/variables.yaml', 'data/processed/modeling_frame.parquet', 'reports/data_quality.md'], require=['configs/variables.yaml'], hint="2차시에서 사람이 채운 variables.yaml 이 있어야 오늘 척도 점수를 만들 수 있다")),
 
 # ── 2차시 산출물 반입 셀 ─────────────────────────────────────────────
 # 왜 넣나: 2차시 검증은 '에디터에서 사람이' 한 일이다. 그 결과 파일이 이 런타임에
@@ -103,8 +104,9 @@ else:
     for r in why:
         print("   -", r)
 
-    # ① 드라이브에 올려 둔 파일을 먼저 찾는다 (매번 업로드하지 않아도 되게)
-    found = [f for pat in ["/content/drive/MyDrive/variables.yaml",
+    # ① 드라이브에서 먼저 찾는다 — 2차시 마지막 셀이 program5_state/ 에 저장해 두었다면 그걸 쓴다
+    found = [f for pat in ["/content/drive/MyDrive/program5_state/configs/variables.yaml",
+                           "/content/drive/MyDrive/variables.yaml",
                            "/content/drive/MyDrive/*/variables.yaml",
                            "/content/drive/MyDrive/*/*/variables.yaml"]
              for f in sorted(glob.glob(pat))]
@@ -616,6 +618,9 @@ for name, bad in suspects.items():
     t = pd.DataFrame({"PID": p5["PID"].values, "raw": raw.values, "fix": fix.values}).merge(y6, on="PID")
     print(f"  {name:24s} r {t['raw'].corr(t[target_col]):+.3f} → {t['fix'].corr(t[target_col]):+.3f}")
 print("\n→ 역채점을 빠뜨리면 관계가 **희석돼서 안 보인다.** 없는 게 아니라 우리가 지운 것이다.")'''),
+
+md("""## 💾 다음 차시를 위해 — 드라이브에 저장\n\n오늘 만든 것 중 **다음 차시가 재료로 쓰는 파일**을 내 드라이브(`program5_state/`)에 넣어 둔다.\n이렇게 해 두면 런타임이 끊겨도, 다른 컴퓨터에서 열어도 **다음 차시가 그냥 시작된다.**\n\n> 🔴 파생 파일이 들어가는 폴더다 — **개인 계정 안에만** 두고 링크 공유·양도하지 않는다."""),
+code(handoff_out(push=['configs/variables.yaml', 'data/processed/modeling_frame.parquet', 'reports/data_quality.md', 'reports/figures/*.png'], note="3차시 산출물 — 역채점 교정본 variables.yaml 과 modeling_frame 을 4차시로")),
 
 md("""## 🎯 회고 (5분)
 

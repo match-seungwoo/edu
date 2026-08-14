@@ -20,7 +20,7 @@
 """
 import os
 
-from nb import md, code, save, SETUP
+from nb import md, code, save, SETUP, handoff_in, handoff_out
 
 cells = [
 md("""# 6차시 — 복잡한 모델이 늘 더 좋은 건 아니다
@@ -71,6 +71,7 @@ code('!pip install pandas scikit-learn pyarrow matplotlib pyyaml -q\n'
      '# Colab 에서 그림의 한글이 □ 로 깨지면 아래 한 줄을 실행하고 런타임을 재시작한다.\n'
      '# !apt-get install -y fonts-nanum > /dev/null && rm -rf ~/.cache/matplotlib'),
 code(SETUP),
+code(handoff_in(pull=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], require=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], hint="지난 차시 노트북 맨 끝의 '드라이브에 저장' 셀을 실행하면 여기서 자동으로 복원된다")),
 code(r'''# 4·5차시와 똑같은 상태를 재현한다 (seed 고정 — 한 명도 다르지 않다)
 import numpy as np, pandas as pd
 from sklearn.model_selection import train_test_split, StratifiedKFold
@@ -517,6 +518,9 @@ md("""### ⚠️ 오늘 결과를 볼 때의 정직한 단서 하나
 이 수업에서는 거기까지 가지 않는다. 대신 **그런 편향이 있다는 사실을 기록**한다.
 포레스트의 우위가 +0.012 로 작다는 점을 감안하면, 이 편향은 **결론을 뒤집을 수 있는 크기**다.
 8차시 한계 절에 적는다."""),
+
+md("""## 💾 다음 차시를 위해 — 드라이브에 저장\n\n오늘 만든 것 중 **다음 차시가 재료로 쓰는 파일**을 내 드라이브(`program5_state/`)에 넣어 둔다.\n이렇게 해 두면 런타임이 끊겨도, 다른 컴퓨터에서 열어도 **다음 차시가 그냥 시작된다.**\n\n> 🔴 파생 파일이 들어가는 폴더다 — **개인 계정 안에만** 두고 링크 공유·양도하지 않는다."""),
+code(handoff_out(push=['reports/model_metrics_cv.csv', 'reports/figures/*.png'], note="6차시 산출물 — 모델 비교표를 7·8차시가 이어받는다")),
 
 md("""## 🎯 회고 (5분)
 

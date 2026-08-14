@@ -94,6 +94,41 @@ MAPS 1기 5차년도 (2015, 중2)          MAPS 1기 6차년도 (2016, 중3)
 | **7** | 위험요인·보호요인, 인과 vs 예측, **오류의 편향** | **OOF** Permutation Importance, 표준화 계수, 오류 분석 | `session7/`, `feature_importance.csv/.png`, `error_analysis.png` | "그 결과를 심리학적으로 어디까지 해석할 수 있나"에 답한다 |
 | **8** | 결론·한계·윤리 서술, **재현 실패도 보고하기** | 재현성, **test 최종 1회**, 민감도 분석 | `session8/`, `model_metrics.csv`, `final_report.md` + 발표자료 | 남이 repo를 받아 같은 결과를 재현할 수 있다 |
 
+### 차시 간 산출물 전달 — 파일을 손으로 들고 다니지 않는다 📦
+
+Colab 런타임은 끊기면 `/content` 가 통째로 사라진다. 그러면 지난 차시에 만든
+`configs/variables.yaml` · `data/processed/modeling_frame.parquet` 이 없어 다음 차시를
+시작할 수 없다. 그래서 **모든 차시 노트북이 산출물을 구글 드라이브에 자동으로 넣고 뺀다.**
+
+| | 어디에 | 무엇을 |
+|---|---|---|
+| 차시 **시작** 셀 (SETUP 바로 다음) | `handoff_pull()` | 이번 차시에 필요한 파일을 **없을 때만** 드라이브에서 가져온다. 그다음 `handoff_require()` 로 재료가 다 있는지 확인하고, 없으면 "지난 차시 마지막 셀을 실행하라"고 알려준다 |
+| 차시 **끝** 셀 (회고 직전) | `handoff_push()` | 다음 차시가 재료로 쓰는 파일을 드라이브에 저장한다 |
+
+저장 위치는 **`내 드라이브/program5_state/`** 이고, 프로젝트와 **같은 경로 구조**로 쌓인다:
+
+```
+program5_state/configs/variables.yaml
+program5_state/data/processed/modeling_frame.parquet
+program5_state/reports/{data_quality.md, model_metrics_cv.csv, feature_importance.csv, final_report.md}
+program5_state/reports/figures/*.png
+```
+
+전달되는 재료의 사슬 — 1→2 `data_inventory.md` / 2→3 **`variables.yaml`** / 3→4~8
+**`variables.yaml` + `modeling_frame.parquet`** / 6→7·8 `model_metrics_cv.csv` /
+7→8 `feature_importance.csv` / 8 최종 `final_report.md` 한 벌.
+
+구현은 `nb.py` 의 `HANDOFF` 한 곳에 있고 8개 노트북에 같은 코드가 들어간다 (`SETUP` 과 같은 방식).
+동작 규칙 세 가지:
+
+- **덮어쓰지 않는다** — 로컬에 파일이 있으면 그대로 둔다 (작업 중인 파일을 드라이브 사본이 밀어내지 않게).
+- **로컬 실행에서는 건너뛴다** — Colab 이 아니면 아무 일도 하지 않는다 (디스크에 이미 파일이 있으므로).
+  테스트용으로 `PROGRAM5_STATE_DIR` 환경변수를 주면 임의 폴더로 동작을 재현할 수 있다.
+- **없어도 멈추지 않는다** — 아직 안 만든 파일은 `⬜` 로 표시만 하고 지나간다.
+
+> 🔴 `program5_state/` 에는 MAPS 원자료에서 **파생된** 파일이 들어간다.
+> **개인 계정 안에만** 두고 링크 공유·양도하지 않는다 (이용 조건). 공용 드라이브에 두지 말 것.
+
 **4차시의 백미 — 일부러 누출시키기.** 6차 스트레스 문항으로 6차 고스트레스를 예측하는
 "완벽한 모델"(AUC≈1.0)을 만들어 보이고, 왜 이것이 쓸모없는지 학생이 설명하게 한다.
 
