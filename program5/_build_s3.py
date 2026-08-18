@@ -322,6 +322,64 @@ parenting_neglect:
 > 지난주에 `verified` 라고 적었던 것을 오늘 고친다. 그게 잘못이 아니라 **그게 과학**이다.
 > 새 근거가 나오면 판단을 갱신하고, 갱신했다는 사실을 기록한다."""),
 
+code(r'''# 위 편집을 이 셀이 대신 해 준다 — Step 2 가 데이터로 찾아낸 문항만 적어 넣는다.
+# 왜 노트북이 하나: Colab 은 런타임이 끊기면 /content 가 사라져 손으로 고친 yaml 도 같이
+#   날아간다. 그러면 Step 7 이 다시 만드는 표에 역채점이 빠지고, **그 표가 4~8차시로
+#   그대로 넘어간다.** 눈에 안 띄는 채로 모든 숫자가 조금씩 달라지는 사고다.
+# 규칙: **비어 있는 reverse_items 만** 채운다. 사람이 이미 적어 둔 값은 건드리지 않는다.
+#   yaml 로 읽어 통째로 다시 쓰지 않고 해당 줄만 갈아 끼운다 — 이 파일은 절반이 주석이고
+#   그 주석이 '왜 이렇게 정했는가'의 기록이다. 다시 쓰면 전부 사라진다.
+import re
+
+YAML = "configs/variables.yaml"
+
+
+def write_reverse_items(found, path=YAML):
+    """찾아낸 역채점 문항을 variables.yaml 의 reverse_items 에 적는다.
+
+    받는 것: {구성개념: [문항, ...]}  (Step 2 의 suspects)
+    돌려주는 것: 실제로 채워 넣은 {구성개념: [문항, ...]}
+    """
+    lines = open(path, encoding="utf-8").read().splitlines(keepends=True)
+    out, cur, done = [], None, {}
+    for ln in lines:
+        m = re.match(r"^  (\w+):\s*$", ln)          # 척도 이름 줄 (들여쓰기 2칸)
+        if m:
+            cur = m.group(1)
+        if cur in found and re.match(r"^\s*reverse_items: \[\]", ln):
+            pad = " " * (len(ln) - len(ln.lstrip()))
+            out.append(pad + "reverse_items:\n")
+            out += [pad + "  - " + c + "\n" for c in found[cur]]
+            done[cur] = found[cur]                   # 비어 있었다 → 채웠다
+            continue
+        out.append(ln)
+    if done:
+        open(path, "w", encoding="utf-8").write("".join(out))
+    return done
+
+
+filled = write_reverse_items(suspects)
+if filled:
+    print("✏️  configs/variables.yaml 에 적어 넣었다:")
+    for k, v in filled.items():
+        print(f"     {k:24s} reverse_items ← {', '.join(v)}")
+else:
+    print("✅ 이미 적혀 있다 — 그대로 둔다 (사람이 손으로 채웠거나 지난 실행에서 채웠다).")
+print("\n→ 이 파일이 Step 7 에서 표를 다시 만드는 **규칙서**다. 여기에 안 적히면 교정도 없다.")'''),
+code(r'''# CHECK — yaml 에 정말 들어갔는지 파일을 다시 읽어 확인한다
+import yaml as _yaml
+
+_all = _yaml.safe_load(open(YAML, encoding="utf-8"))
+_v = {**(_all.get("predictors") or {}), **(_all.get("optional_predictors") or {})}
+_missing = {k: v for k, v in suspects.items()
+            if sorted(_v.get(k, {}).get("reverse_items") or []) != sorted(v)}
+try:
+    assert not _missing, f"yaml 에 반영되지 않았다: {_missing}"
+    print("✅ PASS — Step 2 가 찾은 역채점 문항이 전부 variables.yaml 에 들어 있다.")
+    print("   이제 Step 7 에서 표를 다시 만들면 교정이 반영된다.")
+except Exception as e:
+    print("❌ FAIL —", e, "\n힌트: 해당 구성개념의 reverse_items 가 [] 가 아니라 목록이어야 한다.")'''),
+
 md("""## Step 3 — 10번 문항의 재판: 우리 판단이 틀렸을 때 🔍
 
 2차시에 학생 전원이 이렇게 답했다:

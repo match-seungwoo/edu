@@ -82,7 +82,20 @@ need = {
 }
 for k, v in need.items():
     print(("✅" if v else "❌"), k, "—", os.path.basename(v[0]) if v else "없음")
-print("\n※ 체크리스트/제안본이 없으면:  python scripts/codebook_candidates.py --propose")'''),
+
+# 체크리스트·제안본은 **코드북에서 자동 생성되는 파일**이다 (원자료 문항 텍스트가 들어가
+# 있어 저장소에 커밋하지 않는다). zip 에 없는 게 정상이므로, 없으면 지금 만든다.
+if not (need["체크리스트"] and need["제안본 yaml"]):
+    import subprocess, sys
+    print("\n🛠  체크리스트/제안본이 없다 — 코드북에서 생성한다 (수십 초 걸린다)")
+    print("    python scripts/codebook_candidates.py --propose")
+    r = subprocess.run([sys.executable, "scripts/codebook_candidates.py", "--propose"],
+                       capture_output=True, text=True)
+    print(r.stdout.strip()[-1500:] or r.stderr.strip()[-1500:])
+    need["체크리스트"]   = find_file("reports", "codebook_candidates", ".md")
+    need["제안본 yaml"] = find_file("configs", "variables_proposed", ".yaml")
+    print(("✅" if need["체크리스트"] else "🛑"), "reports/codebook_candidates.md")
+    print(("✅" if need["제안본 yaml"] else "🛑"), "configs/variables_proposed.yaml")'''),
 
 md("""## Step 1 — 심리척도: 왜 한 번 안 묻고 열 번 묻나 🧠
 
@@ -293,9 +306,14 @@ md("""## Step 5 — 검증 워크플로: 사람이 게이트를 연다 🔍 (두
    (없는 것을 억지로 채우지 않는다)."""),
 
 code(r'''# 체크리스트의 target 부분을 미리 본다 (전체는 에디터에서 열어 작업한다)
-text = open("reports/codebook_candidates.md", encoding="utf-8").read()
-start = text.find("### `acculturative_stress")
-print(text[start:start + 1400])'''),
+CHECKLIST = "reports/codebook_candidates.md"
+if not os.path.exists(CHECKLIST):
+    print("🛑", CHECKLIST, "이 없다 — 맨 위 '오늘 쓸 재료' 셀을 다시 실행하면 만들어 준다.")
+    print("   (코드북 xlsx 가 data/raw 에 있어야 한다)")
+else:
+    text = open(CHECKLIST, encoding="utf-8").read()
+    start = text.find("### `acculturative_stress")
+    print(text[start:start + 1400])'''),
 
 md("""## Step 6 — ID join: 두 해를 한 표로 합치기
 

@@ -408,6 +408,34 @@ prob    = <span class="num">1</span> / (<span class="num">1</span> + np.<span cl
   <div class="slide-no">13</div>
 </div>
 
+<!-- Step 2-3 계수의 출처 -->
+<div class="slide-container">
+  <h2 class="slide-title">Step 2 — 그 19개 숫자는 어디서 왔나</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;"><code>.fit(Xtr, ytr)</code> 한 줄이 하는 일 — <b style="color:#adff2f;">train 1,056명의 실제 라벨(0/1)을 가장 잘 맞히는 계수 조합</b>을 찾는다.<br>
+    선형회귀처럼 공식 한 방에 풀리지 않아 <b>조금씩 고쳐 가며</b> 찾는다. <code>max_iter=2000</code> 이 붙어 있는 이유다.</p>
+    <div class="step-grid">
+      <div class="step-card">
+        <h4>모델이 배운 것 — 파라미터 19개</h4>
+        <p><code>clf.coef_</code> 피처당 1개 × 18 &nbsp;+&nbsp; <code>clf.intercept_</code> 1개.<br>
+        fit 이 만들어낸 값이라 이름 끝에 <b style="color:#adff2f;">밑줄(_)</b>이 붙는다.<br>
+        앞 장에서 손으로 계산할 때 쓴 것이 <b>정확히 이 19개</b>다. 모델이 데이터에서 배운 것의 전부.</p>
+      </div>
+      <div class="step-card" style="border-left-color:#ffd479;">
+        <h4 style="color:#ffd479;">우리가 정해 준 것 — 하이퍼파라미터</h4>
+        <p><code>C=1.0</code> · <code>class_weight='balanced'</code> · <code>max_iter</code> · <code>random_state</code>.<br>
+        데이터에서 추정되는 값이 아니라 <b style="color:#ffd479;">설정</b>이다.<br>
+        계수를 직접 정하지는 않지만 <b>어떤 계수가 나올지</b>는 바꾼다.</p>
+      </div>
+    </div>
+    <div class="finding">
+      <p style="margin:0;font-size:19px;color:#fff;">그래서 오늘 남은 시간은 전부 <b>이 19개 숫자를 읽는 일</b>이다 — 표준화(Step 3)도 부트스트랩(Step 6)도 같은 숫자를 다르게 보는 것.<br>
+      <span style="color:#8892a4;font-size:17px;">C 는 계수를 0 쪽으로 조금 당기고(슬라이드 34 에서 CV 로 고른다) · balanced 는 절편을 밀어 올린다(슬라이드 21).</span></p>
+    </div>
+  </div>
+  <div class="slide-no">14</div>
+</div>
+
 <!-- Step 2-2 확률 변화폭 -->
 <div class="slide-container">
   <h2 class="slide-title">Step 2 — 왜 "확률 몇 %"라고 말할 수 없나</h2>
@@ -423,7 +451,7 @@ prob    = <span class="num">1</span> / (<span class="num">1</span> + np.<span cl
     <p style="font-size:19px;margin-top:14px;color:#fff;">같은 계수·같은 오즈비인데 확률 변화는 <b style="color:#ff8080;">6배 차이</b>다. 시그모이드가 곡선이기 때문.<br>
     ❌ "확률이 6%p 낮아진다" (누구인지 안 밝히면 틀린 문장) ·  ✅ "오즈가 0.77배가 된다" · ✅ "평균적인 학생 기준 약 6%p"</p>
   </div>
-  <div class="slide-no">14</div>
+  <div class="slide-no">15</div>
 </div>
 
 <div class="slide-container" id="s8">
@@ -441,7 +469,7 @@ prob    = <span class="num">1</span> / (<span class="num">1</span> + np.<span cl
     <p style="font-size:20px;margin-top:16px;color:#fff;">원단위 계수 비교 = <b style="color:#ff8080;">"1cm 늘었을 때"와 "1km 늘었을 때"를 나란히 놓는 것.</b><br>
     <span style="font-size:18px;color:#8892a4;">→ 해결책: <b style="color:#adff2f;">표준화</b> — 모든 변수를 평균 0, SD 1 로. 계수의 뜻이 <b>"1 표준편차만큼 늘 때"</b> 로 통일된다.</span></p>
   </div>
-  <div class="slide-no">15</div>
+  <div class="slide-no">16</div>
 </div>
 
 <!-- 9 표준화 실측 -->
@@ -459,7 +487,7 @@ prob    = <span class="num">1</span> / (<span class="num">1</span> + np.<span cl
     </table>
     <p style="font-size:19px;margin-top:14px;color:#fff;">값의 <b>순서는 하나도 안 바뀐다.</b> 바뀐 것은 <b style="color:#adff2f;">눈금</b>뿐이다 — 그래서 성능은 그대로이고 <b>해석만</b> 달라진다.</p>
   </div>
-  <div class="slide-no">16</div>
+  <div class="slide-no">17</div>
 </div>
 
 <div class="slide-container" id="s9">
@@ -478,7 +506,7 @@ prob    = <span class="num">1</span> / (<span class="num">1</span> + np.<span cl
     </div>
     <p style="font-size:18px;margin-top:12px;color:#8892a4;">※ <b style="color:#adff2f;">표준화는 성능이 아니라 해석을 위한 것</b>이다. AUC 는 거의 그대로다.</p>
   </div>
-  <div class="slide-no">17</div>
+  <div class="slide-no">18</div>
 </div>
 
 <!-- 10 순위표 -->
@@ -503,7 +531,7 @@ prob    = <span class="num">1</span> / (<span class="num">1</span> + np.<span cl
       ⚠️ 단, 표준화 계수는 <b style="color:#adff2f;">"이 표본의 SD 기준"</b> 이다 — 만능 자는 아니다.</p>
     </div>
   </div>
-  <div class="slide-no">18</div>
+  <div class="slide-no">19</div>
 </div>
 
 <div class="slide-container" id="s10">
@@ -520,7 +548,7 @@ prob    = <span class="num">1</span> / (<span class="num">1</span> + np.<span cl
     </table>
     <p style="font-size:19px;margin-top:14px;color:#fff;">깔끔해 보인다. 그런데 <b style="color:#ff8080;">6위가 이상하다</b> — 자아탄력성이 <b>위험요인</b>이라고?</p>
   </div>
-  <div class="slide-no">19</div>
+  <div class="slide-no">20</div>
 </div>
 
 <!-- 11 부호 뒤집힘 -->
@@ -539,7 +567,7 @@ self_esteem    −1SD → 0.546   ·   +1SD → 0.420    <span class="cm"># 차�
     </div>
     <p style="font-size:19px;margin-top:14px;color:#8892a4;">계수를 확률로 옮기면 크기가 실감 난다 — 친구지지 2 SD 차이(하위권 ↔ 상위권)가 확률 <b>약 13%p</b> 다.</p>
   </div>
-  <div class="slide-no">20</div>
+  <div class="slide-no">21</div>
 </div>
 
 <div class="slide-container" id="s11">
@@ -556,7 +584,7 @@ self_esteem    −1SD → 0.546   ·   +1SD → 0.420    <span class="cm"># 차�
     </table>
     <p style="font-size:20px;margin-top:14px;color:#adff2f;">총 <strong>7개 / 18개</strong>가 부호를 바꿨다. 무슨 일이 벌어진 걸까?</p>
   </div>
-  <div class="slide-no">21</div>
+  <div class="slide-no">22</div>
 </div>
 
 <!-- 12 추적 -->
@@ -574,7 +602,7 @@ self_esteem    −1SD → 0.546   ·   +1SD → 0.420    <span class="cm"># 차�
       <b style="color:#adff2f;">공통 부분을 다른 변수들이 먼저 가져가고, 남은 것</b>이 자아탄력성의 계수가 된다.</p>
     </div>
   </div>
-  <div class="slide-no">22</div>
+  <div class="slide-no">23</div>
 </div>
 
 <!-- 13 계수의 진짜 뜻 -->
@@ -593,33 +621,42 @@ self_esteem    −1SD → 0.546   ·   +1SD → 0.420    <span class="cm"># 차�
       <span style="color:#8892a4;">그럼 변수끼리 얼마나 얽혔는지는 어떻게 재나? → 다음 슬라이드</span></p>
     </div>
   </div>
-  <div class="slide-no">23</div>
+  <div class="slide-no">24</div>
 </div>
 
 <!-- 14 부트스트랩 -->
 <!-- Step 5-3 VIF 계산 -->
 <div class="slide-container">
   <h2 class="slide-title">Step 5 — 얽힘을 재는 표준 도구: VIF</h2>
-  <div class="content-area">
-    <div class="code-block" style="font-size:17px;"><span class="cm"># VIF(자아탄력성) = 1 / (1 − R²)   ← 나머지 17개로 자아탄력성을 예측했을 때의 R²</span>
-<span class="kw">for</span> f <span class="kw">in</span> featsA:
-    others = [x <span class="kw">for</span> x <span class="kw">in</span> featsA <span class="kw">if</span> x != f]
-    r2 = <span class="fn">LinearRegression</span>().<span class="fn">fit</span>(sub[others], sub[f]).<span class="fn">score</span>(sub[others], sub[f])
-    vif[f] = <span class="num">1</span> / (<span class="num">1</span> - r2)</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px;">
-      <div>
-        <p style="font-size:19px;margin:0;color:#fff;">VIF 상위</p>
-        <p style="font-size:18px;margin:6px 0 0 0;line-height:1.9;">
-        <b style="color:#adff2f;">ego_resilience 2.455</b><br>life_satisfaction 2.359<br>depression 2.282<br>peer_relationship 2.280<br>peer_support 2.230</p>
+  <div class="content-area" style="gap:14px;">
+    <div class="finding" style="border-left-color:#00f2ff;padding:14px 22px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#00f2ff;">VIF (Variance Inflation Factor, 분산팽창인자)</b> — 회귀에서 <b>독립변수들 사이에 강한 상관관계가 있는지</b>를 재는 통계 척도.<br>
+      변수 간 <b>다중공선성(multicollinearity)</b> 진단에 쓰며, <b style="color:#00f2ff;">값이 클수록 그 변수가 다른 독립변수와 많이 겹친다</b>는 뜻이다.</p>
+    </div>
+    <p style="font-size:19px;margin:0;">모델 전체의 설명력을 재는 그 R² 가 <b style="color:#ff8080;">아니다.</b> 오직 <b>독립변수끼리의 겹침</b>을 재려고 <b style="color:#adff2f;">가상의 회귀</b>를 하나 만든다 — 고스트레스 라벨은 등장하지 않는다.</p>
+    <div class="step-grid" style="grid-template-columns:1fr 1fr 1fr;gap:16px;">
+      <div class="step-card">
+        <h4>① 가상 회귀를 세운다</h4>
+        <p>자아탄력성을 <b style="color:#adff2f;">종속변수(과녁)</b>로 두고,<br>나머지 <b>17개</b>를 설명변수로 삼아 선형회귀를 학습시킨다.</p>
       </div>
-      <div>
-        <p style="font-size:19px;margin:0;color:#fff;">흔히 쓰는 경고 기준</p>
-        <p style="font-size:34px;margin:10px 0 0 0;color:#adff2f;font-weight:700;">5 또는 10</p>
-        <p style="font-size:19px;margin-top:12px;color:#b0b0b0;">우리 데이터의 최댓값은 <b>2.45</b> —<br>기준에 <b>한참 못 미친다.</b></p>
+      <div class="step-card">
+        <h4>② R² 를 읽는다</h4>
+        <p><b style="color:#adff2f;">"나머지 17개가 이 변수를 얼마나 잘 설명하는가(= 중복되는가)"</b><br>1 에 가까울수록 다른 변수만으로 거의 완벽히 재현된다 = 얽힘이 극심하다.</p>
+      </div>
+      <div class="step-card">
+        <h4>③ 공식에 대입한다</h4>
+        <p style="font-size:19px;color:#adff2f;">VIF = 1 / (1 − R²)</p>
+        <p style="margin-top:6px;">R² .5 → <b>2</b> · R² .8 → <b>5</b>(경고) · R² .9 → <b>10</b>(심각)</p>
       </div>
     </div>
+    <div class="code-block" style="font-size:16px;padding:18px 24px;"><span class="kw">for</span> f <span class="kw">in</span> featsA:
+    others = [x <span class="kw">for</span> x <span class="kw">in</span> featsA <span class="kw">if</span> x != f]          <span class="cm"># 자기 자신만 뺀 17개</span>
+    r2 = <span class="fn">LinearRegression</span>().<span class="fn">fit</span>(sub[others], sub[f]).<span class="fn">score</span>(sub[others], sub[f])
+    vif[f] = <span class="num">1</span> / (<span class="num">1</span> - r2)                     <span class="cm"># y 자리에 그 피처 자신이 들어간다</span></div>
+    <p style="font-size:18px;margin:0;color:#b0b0b0;"><span class="src-tag">우리 데이터</span> ego_resilience <b style="color:#adff2f;">2.455</b>(R² .593) · life_satisfaction 2.359 · depression 2.282 · peer_relationship 2.280 —
+    최댓값이 <b>2.45</b> 로 경고 기준 <b style="color:#adff2f;">5 또는 10</b> 에 <b>한참 못 미친다.</b></p>
   </div>
-  <div class="slide-no">24</div>
+  <div class="slide-no">25</div>
 </div>
 
 <!-- Step 5-3 VIF 반전 -->
@@ -635,7 +672,7 @@ self_esteem    −1SD → 0.546   ·   +1SD → 0.420    <span class="cm"># 차�
     <p style="font-size:20px;margin-top:20px;color:#b0b0b0;">검사는 <b>최소한의 위생</b>이지 <b style="color:#adff2f;">해석의 면허가 아니다.</b><br>
     그럼 무엇으로 판정하나? → 다음 Step 에서 <strong>계수가 흔들리는 폭</strong>을 직접 잰다.</p>
   </div>
-  <div class="slide-no">25</div>
+  <div class="slide-no">26</div>
 </div>
 
 <!-- Step 6-1 예열 -->
@@ -650,7 +687,7 @@ self_esteem    −1SD → 0.546   ·   +1SD → 0.420    <span class="cm"># 차�
       공식도, 정규분포 가정도 필요 없다. <b style="color:#adff2f;">데이터를 다시 뽑기만 하면 된다.</b></p>
     </div>
   </div>
-  <div class="slide-no">26</div>
+  <div class="slide-no">27</div>
 </div>
 
 <!-- Step 6-1 표본크기 -->
@@ -669,7 +706,7 @@ self_esteem    −1SD → 0.546   ·   +1SD → 0.420    <span class="cm"># 차�
     </div>
     <p style="font-size:19px;margin-top:14px;color:#8892a4;">이제 '평균' 자리에 <strong>계수</strong>를 넣는다. 방법은 똑같다.</p>
   </div>
-  <div class="slide-no">27</div>
+  <div class="slide-no">28</div>
 </div>
 
 <div class="slide-container" id="s14">
@@ -685,7 +722,7 @@ train 1,056명 중에서 1,056명을 <span class="var">중복 허용</span>으�
       포함한다면 — <b style="color:#ff8080;">"이 데이터로는 방향조차 단정할 수 없다"</b>는 뜻이다.</p>
     </div>
   </div>
-  <div class="slide-no">28</div>
+  <div class="slide-no">29</div>
 </div>
 
 <!-- 15 결과 -->
@@ -705,7 +742,7 @@ train 1,056명 중에서 1,056명을 <span class="var">중복 허용</span>으�
       <b style="color:#adff2f;">부호 뒤집힘은 '발견'이 아니라 '불안정하다는 경고'였다.</b></p>
     </div>
   </div>
-  <div class="slide-no">29</div>
+  <div class="slide-no">30</div>
 </div>
 
 <!-- 16 3개의 의미 -->
@@ -722,7 +759,7 @@ fig.<span class="fn">savefig</span>(<span class="str">"reports/figures/logistic_
     </div>
     <p style="font-size:19px;margin-top:18px;color:#8892a4;">이 그림은 <code>reports/figures/</code> 에 저장되고, 마지막 셀에서 <b>드라이브로 전달</b>된다 (7·8차시 재료).</p>
   </div>
-  <div class="slide-no">30</div>
+  <div class="slide-no">31</div>
 </div>
 
 <div class="slide-container" id="s16">
@@ -737,7 +774,7 @@ fig.<span class="fn">savefig</span>(<span class="str">"reports/figures/logistic_
     <p style="font-size:20px;margin-top:18px;color:#adff2f;">🔴 순위표 4위까지 해석하고 싶은 유혹이 <strong>정확히 여기서 꺾인다.</strong></p>
     <p style="font-size:19px;margin-top:16px;color:#8892a4;">오늘의 결론: <b style="color:#adff2f;">18개 중 3개만 말한다. 나머지 15개에 대해서는 "모른다"고 말한다.</b></p>
   </div>
-  <div class="slide-no">31</div>
+  <div class="slide-no">32</div>
 </div>
 
 <!-- 17 RQ3 -->
@@ -756,7 +793,7 @@ fig.<span class="fn">savefig</span>(<span class="str">"reports/figures/logistic_
       오늘 살아남은 3개는 <b style="color:#adff2f;">세 관문을 다 통과한 것</b>이다.</p>
     </div>
   </div>
-  <div class="slide-no">32</div>
+  <div class="slide-no">33</div>
 </div>
 
 <div class="slide-container" id="s17">
@@ -772,7 +809,7 @@ Model B 계수 1위: previous_acculturative_stress = <span class="num">+0.448</s
       누출의 기준은 "강력한가"가 아니라 <b>"그때 알 수 있는가"</b>였다.</p>
     </div>
   </div>
-  <div class="slide-no">33</div>
+  <div class="slide-no">34</div>
 </div>
 
 <!-- 18 서술 -->
@@ -791,7 +828,7 @@ Model B 계수 1위: previous_acculturative_stress = <span class="num">+0.448</s
       ② 뒤집어 말하면 — <b style="color:#adff2f;">중2 때 힘들었던 학생이 중3 때도 힘들 것이 정해져 있지 않다.</b> 개입의 관점에선 희망적이다</p>
     </div>
   </div>
-  <div class="slide-no">34</div>
+  <div class="slide-no">35</div>
 </div>
 
 <!-- 19 회고 -->
@@ -807,7 +844,7 @@ Model B 계수 1위: previous_acculturative_stress = <span class="num">+0.448</s
     </ul>
     <p style="font-size:18px;margin-top:16px;color:#8892a4;">📝 과제: ① 내 변수 하나의 계수·오즈비·95% 구간 + 해석 가능/불가 판정 ② "자아탄력성이 위험요인" 문장이 왜 틀렸는지 한 문단 ③ Model A/B 비교를 인과 주장 없이 3문장으로</p>
   </div>
-  <div class="slide-no">35</div>
+  <div class="slide-no">36</div>
 </div>
 
 <!-- 20 다음 -->
@@ -823,7 +860,7 @@ Model B 계수 1위: previous_acculturative_stress = <span class="num">+0.448</s
     </div>
     <p style="font-size:20px;margin-top:22px;color:#8892a4;">오늘 배운 문장: <b style="color:#adff2f;">모른다고 말하는 것도 결과다.</b></p>
   </div>
-  <div class="slide-no">36</div>
+  <div class="slide-no">37</div>
 </div>
 </body>
 </html>

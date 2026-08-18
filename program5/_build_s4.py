@@ -95,7 +95,7 @@ code('!pip install pandas scikit-learn pyarrow matplotlib pyyaml -q\n'
      '# Colab 에서 그림의 한글이 □ 로 깨지면 아래 한 줄을 실행하고 런타임을 재시작한다.\n'
      '# !apt-get install -y fonts-nanum > /dev/null && rm -rf ~/.cache/matplotlib'),
 code(SETUP),
-code(handoff_in(pull=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], require=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], hint="지난 차시 노트북 맨 끝의 '드라이브에 저장' 셀을 실행하면 여기서 자동으로 복원된다")),
+code(handoff_in(pull=['configs/variables.yaml', 'data/processed/modeling_frame.parquet'], require=['configs/variables.yaml'], hint="2·3차시에서 검증한 variables.yaml 이 있어야 한다 (modeling_frame 은 없으면 아래 0-1 셀이 원자료에서 다시 만든다)")),
 
 md("""### 0-1. 오늘의 표를 **직접 만든다** — `modeling_frame.parquet`
 
@@ -173,25 +173,41 @@ def apply_s3_reverse(path=YAML):
     return done
 
 
-if os.path.exists(FRAME) and not REBUILD:
-    print(f"✅ 이미 있다 — {FRAME}")
+# 순서가 중요하다: **먼저** yaml 을 점검한다. 3차시가 적어 넣었어야 할 역채점이
+# 비어 있다면, 지금 들고 있는 표는 '교정 전' 표다 — 있어도 다시 만들어야 한다.
+filled = apply_s3_reverse()
+if filled:
+    print("✏️  configs/variables.yaml 에 3차시의 역채점 결론을 적어 넣었다:")
+    for k, v in filled.items():
+        print(f"     {k:20s} ← {', '.join(v)}")
+    print("   → 지금 있는 표는 이 교정 **이전**에 만들어진 것이다. 다시 만든다.")
+else:
+    print("✅ variables.yaml 의 reverse_items 는 이미 채워져 있다 (그대로 쓴다).")
+
+if os.path.exists(FRAME) and not REBUILD and not filled:
+    print(f"\n✅ 이미 있다 — {FRAME}")
     print("   원자료에서 다시 만들어 보려면 위 REBUILD = True 로 바꾸고 이 셀을 재실행한다.")
 else:
     w5, w6 = find_wave(5), find_wave(6)
     if not (w5 and w6):
-        print("🛑 5·6차 원자료 CSV 를 찾지 못했다.")
+        print("\n🛑 5·6차 원자료 CSV 를 찾지 못했다.")
         print("   data/raw/csv/청소년…/ 아래에 '…청소년 5차년도.csv' 와 6차 파일이 있어야 한다.")
         print("   (MAPS 원자료는 배포·양도 금지라 저장소에 없다 — DATA_ACQUISITION.md 참고)")
+        if os.path.exists(FRAME) and filled:
+            print("   ⚠️ 교정 전 표가 남아 있다 — 오늘 숫자가 강의노트와 다르게 나온다.")
     else:
-        filled = apply_s3_reverse()
-        if filled:
-            print("✏️  configs/variables.yaml 에 3차시의 역채점 결론을 적어 넣었다:")
-            for k, v in filled.items():
-                print(f"     {k:20s} ← {', '.join(v)}")
-        else:
-            print("✅ variables.yaml 의 reverse_items 는 이미 채워져 있다 (그대로 쓴다).")
         print(f"\n🛠  5차 원자료: {w5}")
         print(f"🛠  6차 원자료: {w6}")
+    if not (w5 and w6):
+        pass
+    elif not os.path.isfile("scripts/build_dataset.py"):
+        # 프로젝트 폴더가 '반쪽'이다 — 표를 만드는 코드 자체가 없다.
+        print("\n🛑 scripts/build_dataset.py 가 없다. 지금 붙어 있는 폴더가 반쪽이다:")
+        print("   ", os.getcwd())
+        print("   → 맨 위 환경설정 셀의 '✅ 프로젝트 경로' 출력을 확인하라.")
+        print("   → Colab 이면 반쪽 폴더를 지우고 zip 을 다시 푼다:")
+        print("        !rm -rf /content/program5      ← 그 뒤 맨 위 셀부터 다시 실행")
+    else:
         print("→ scripts/build_dataset.py 실행 … (몇 초 걸린다)\n")
         r = subprocess.run([sys.executable, "scripts/build_dataset.py",
                             "--wave5", w5, "--wave6", w6, "--out", FRAME],
@@ -211,24 +227,29 @@ from maps_risk.config import load_configs
 _, cfg = load_configs("configs")
 FRAME = "data/processed/modeling_frame.parquet"
 
+# 여기서 못 읽으면 **바로 멈춘다.** 그냥 넘어가면 frame 이 정의되지 않은 채로
+# 아래 셀들이 전부 NameError 를 내는데, 진짜 원인은 이 자리에 있다.
 if not os.path.exists(FRAME):
-    print("🛑 modeling_frame.parquet 이 없다 — 바로 위 셀(0-1)을 먼저 실행한다.")
-else:
-    frame = pd.read_parquet(FRAME)
-    scores = frame["acculturative_stress_w6"]
+    raise FileNotFoundError(
+        f"{FRAME} 이 없다 — 바로 위 0-1 셀을 먼저 실행하라. "
+        "0-1 셀에 🛑 가 떴다면 그 메시지를 먼저 해결해야 한다 (여기서 멈추지 않으면 "
+        "아래 셀들이 전부 'frame is not defined' 로 이어진다).")
 
-    # ① 응답자 1명 = 1행인가  ② target 에 결측이 없나  ③ X 에 6차 변수가 없나
-    dup   = frame["id"].duplicated().sum()
-    na_y  = scores.isna().sum()
-    w6cols = [c for c in frame.columns
-              if c.endswith("_w6") and c != "acculturative_stress_w6"]
+frame = pd.read_parquet(FRAME)
+scores = frame["acculturative_stress_w6"]
 
-    print(f"행 {len(frame)} × 열 {frame.shape[1]}")
-    print(f"  ① id 중복 {dup}개            {'✅' if dup == 0 else '🛑 병합이 깨졌다'}")
-    print(f"  ② target 결측 {na_y}개        {'✅' if na_y == 0 else '🛑 라벨이 조용히 0 이 된다'}")
-    print(f"  ③ 6차 컬럼 {w6cols or '없음'}   {'✅' if not w6cols else '🛑 시간 누출'}")
-    print(f"\n설정: random_seed={cfg['random_seed']} · test_size={cfg['test_size']} · "
-          f"cutoff 분위수={cfg['target']['high_stress_quantile']}")'''),
+# ① 응답자 1명 = 1행인가  ② target 에 결측이 없나  ③ X 에 6차 변수가 없나
+dup   = frame["id"].duplicated().sum()
+na_y  = scores.isna().sum()
+w6cols = [c for c in frame.columns
+          if c.endswith("_w6") and c != "acculturative_stress_w6"]
+
+print(f"행 {len(frame)} × 열 {frame.shape[1]}")
+print(f"  ① id 중복 {dup}개            {'✅' if dup == 0 else '🛑 병합이 깨졌다'}")
+print(f"  ② target 결측 {na_y}개        {'✅' if na_y == 0 else '🛑 라벨이 조용히 0 이 된다'}")
+print(f"  ③ 6차 컬럼 {w6cols or '없음'}   {'✅' if not w6cols else '🛑 시간 누출'}")
+print(f"\n설정: random_seed={cfg['random_seed']} · test_size={cfg['test_size']} · "
+      f"cutoff 분위수={cfg['target']['high_stress_quantile']}")'''),
 
 # ══════════════════════════════════════════════════════════════════
 # Step 1 — 데이터 사이언스의 뼈대: feature
@@ -1523,7 +1544,7 @@ print("\n※ 오늘 본 AUC 는 전부 CV 값이다. 최종 성능이 아니다 
 print("  5·6차시에서 모델을 제대로 세우고, 그 뒤에 test 를 연다.")'''),
 
 md("""## 💾 다음 차시를 위해 — 드라이브에 저장\n\n오늘 만든 것 중 **다음 차시가 재료로 쓰는 파일**을 내 드라이브(`program5_state/`)에 넣어 둔다.\n이렇게 해 두면 런타임이 끊겨도, 다른 컴퓨터에서 열어도 **다음 차시가 그냥 시작된다.**\n\n> 🔴 파생 파일이 들어가는 폴더다 — **개인 계정 안에만** 두고 링크 공유·양도하지 않는다."""),
-code(handoff_out(push=['reports/figures/*.png'], note="4차시 산출물 — 그림만 남는다 (라벨·분할은 설정에서 매번 같게 재생된다)")),
+code(handoff_out(push=['configs/variables.yaml', 'data/processed/modeling_frame.parquet', 'reports/figures/*.png'], note="4차시 산출물 — 라벨·분할은 설정에서 매번 같게 재생되므로, 그 '설정'인 variables.yaml 과 표를 함께 넘긴다")),
 
 md("""## 🎯 회고 (5분)
 
