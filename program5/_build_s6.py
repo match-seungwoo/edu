@@ -546,5 +546,8 @@ md("""## 🎯 회고 (5분)
 > 마지막으로 가장 어려운 질문이 온다 — **이 중요도를 '위험요인'이라고 불러도 되는가?**"""),
 ]
 
-os.makedirs("session6", exist_ok=True)
-save(cells, "session6/session6.ipynb")
+# import 해서 cells 를 재사용할 수 있게 가드를 둔다 (_build_s6_detail.py 가 쓴다).
+# 직접 실행할 때의 동작은 이전과 완전히 같다.
+if __name__ == "__main__":
+    os.makedirs("session6", exist_ok=True)
+    save(cells, "session6/session6.ipynb")

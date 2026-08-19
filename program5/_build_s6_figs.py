@@ -38,7 +38,10 @@ import os
 import re
 import sys
 
-HTML = os.path.join(os.path.dirname(os.path.abspath(__file__)), "session6", "session6.html")
+_HERE = os.path.dirname(os.path.abspath(__file__))
+HTML = os.path.join(_HERE, "session6", "session6.html")            # 기본 덱
+HTML_DETAIL = os.path.join(_HERE, "session6", "session6_detail.html")  # 상세 덱
+TARGETS = [HTML, HTML_DETAIL]
 
 CY, LM, RD, GY, AM = "#00f2ff", "#adff2f", "#ff8080", "#8892a4", "#ffd479"
 GRID, FRAME, INK, MUTE, FAINT = "#222c38", "#3a4250", "#b0b0b0", "#8892a4", "#55606f"
@@ -377,6 +380,45 @@ def bump_chart():
                 o.append(_t(lx, ly + 16, f"+{b-a:.4f}", c, 14.5, anch, LATO, "700"))
     o.append(_t(W / 2, H - 4, "Dummy 는 A·B 모두 .5000 (축 밖)  ·  세로 눈금은 생략 — 모든 점에 값이 붙어 있다", FAINT, 12.5))
     return "\n".join(o) + "\n</svg>"
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 상세 버전(session6_detail) 전용 실측치
+#   출처: _build_s6_detail.py 독스트링의 '상세 실측 근거' 블록.
+#   전부 train 1,056 · seed 42 · Model A 18변수 상태에서 잰 값이다.
+# ─────────────────────────────────────────────────────────────────────────────
+# 깊이 1 트리의 첫 분할과 지니 (class_weight 미적용 raw 지니 — 손계산과 맞춘다)
+GINI = {
+    "root_n": 1056, "root_pos": .3371, "root_gini": .4469,
+    "feat": "peer_support", "thr": 4.0714,
+    "left_n": 550, "left_pos": .4400, "left_gini": .4928,
+    "right_n": 506, "right_pos": .2253, "right_gini": .3491,
+    "child_weighted": .4239, "gain": .0230,
+    "sk_root": .5000, "sk_left": .4771, "sk_right": .4629,   # class_weight=balanced 적용 시
+}
+SPLIT_CANDIDATES_TOTAL = 294      # 18개 변수의 임계값 후보 합
+SPLIT_CANDIDATES_ROOT = 24        # peer_support 하나의 후보 수
+
+# 재표집 40회 — 첫 분기 변수가 무엇으로 잡히나
+FIRST_SPLIT = [("peer_support", 15), ("self_esteem", 13), ("depression", 7),
+               ("parenting_monitoring", 3), ("peer_relationship", 2)]
+RESAMPLE_B = 40
+RESAMPLE = {"tree_sd": .1032, "tree_max": .2274, "forest_sd": .0367,
+            "forest_max": .0768, "ratio": 2.81}
+
+# 가지치기 — min_samples_leaf 별 (값, CV AUC, 잎 수)
+MIN_LEAF = [(1, .5185, 299), (5, .5465, 136), (20, .6148, 41), (50, .6003, 15), (100, .6352, 8)]
+
+# 부트스트랩 / OOB
+BOOTSTRAP = {"n": 1056, "unique": .6313, "oob": .3687, "theory": .6321}
+OOB = {"auc": .6571, "acc": .6278, "cv_auc": .6651}
+
+# max_features 별 (라벨, 후보 변수 수, 트리 간 예측 상관 rho, CV AUC)
+MAXFEAT = [("1", 1, .377, .6636), ("2", 2, .437, .6631), ("sqrt", 4, .474, .6651),
+           ("6", 6, .494, .6633), ("12", 12, .488, .6633), ("없음", 18, .486, .6604)]
+
+# n_estimators 별 CV AUC
+N_TREES = [(1, .6251), (5, .6573), (25, .6598), (100, .6664), (300, .6651), (1000, .6653)]
 
 
 def _node(x, y, w, h, label, fill="#151a21", stroke=CY, size=15, sub=None, sub_c=None):
@@ -845,6 +887,373 @@ def auc_three_ways():
     return "\n".join(o)
 
 
+# ═════════════════════════════════════════════════════════════════════════════
+# 상세 버전 전용 그림 — 결정 트리 심화
+# ═════════════════════════════════════════════════════════════════════════════
+def gini_split():
+    """지니 불순도가 실제로 어떻게 줄어드는가 — 루트 → 두 자식."""
+    W, H = 1140, 330
+    g = GINI
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="첫 분할 전후의 지니 불순도와 정보 이득">']
+
+    def box(cx, cy, w, h, title, n, pos, gini, col):
+        out = [f'<rect x="{cx-w/2}" y="{cy-h/2}" width="{w}" height="{h}" rx="11" '
+               f'fill="#151a21" stroke="{col}" stroke-width="2"/>']
+        out.append(_t(cx, cy - h/2 + 26, title, "#ffffff", 16, "middle", POP, "700"))
+        out.append(_t(cx, cy - h/2 + 50, f"n = {n:,}", MUTE, 14))
+        # 양성 비율 막대
+        bw = w - 56
+        bx = cx - bw/2
+        by = cy - h/2 + 64
+        out.append(f'<rect x="{bx}" y="{by}" width="{bw}" height="16" rx="4" fill="{GY}" fill-opacity=".25"/>')
+        out.append(f'<rect x="{bx}" y="{by}" width="{bw*pos:.1f}" height="16" rx="4" fill="{col}" fill-opacity=".9"/>')
+        out.append(_t(cx, by + 36, f"고스트레스 {pos:.1%}", col, 14, "middle", LATO, "700"))
+        out.append(_t(cx, by + 60, f"지니 {gini:.4f}", "#ffffff", 17, "middle", POP, "700"))
+        return "\n".join(out)
+
+    o.append(box(570, 76, 330, 132, "분할 전 (루트)", g["root_n"], g["root_pos"], g["root_gini"], AM))
+    o.append(_edge(500, 142, 270, 206, LM, 2.5))
+    o.append(_edge(640, 142, 870, 206, LM, 2.5))
+    o.append(_t(298, 160, f'{g["feat"]} ≤ {g["thr"]}', LM, 15, "middle", LATO, "700"))
+    o.append(_t(846, 160, "초과", MUTE, 15, "middle", LATO, "700"))
+    o.append(box(270, 272, 330, 132, "왼쪽 자식", g["left_n"], g["left_pos"], g["left_gini"], RD))
+    o.append(box(870, 272, 330, 132, "오른쪽 자식", g["right_n"], g["right_pos"], g["right_gini"], CY))
+
+    # 가운데 계산 요약
+    o.append(f'<rect x="{570-142}" y="216" width="284" height="112" rx="11" fill="#101820" '
+             f'stroke="{LM}" stroke-width="1.5"/>')
+    o.append(_t(570, 242, "가중 평균 자식 지니", MUTE, 14))
+    o.append(_t(570, 266, f'{g["left_n"]}/{g["root_n"]}·{g["left_gini"]:.4f} + '
+                          f'{g["right_n"]}/{g["root_n"]}·{g["right_gini"]:.4f}', FAINT, 12.5))
+    o.append(_t(570, 290, f'= {g["child_weighted"]:.4f}', "#ffffff", 17, "middle", POP, "700"))
+    o.append(_t(570, 316, f'정보 이득 {g["root_gini"]:.4f} − {g["child_weighted"]:.4f} = '
+                          f'{g["gain"]:.4f}', LM, 15, "middle", LATO, "700"))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def split_search():
+    """모든 변수 × 모든 임계값을 다 해 보고 이득이 가장 큰 하나를 고른다."""
+    W, H = 1140, 268
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="분할 후보를 전부 시도해 정보 이득이 가장 큰 것을 고르는 과정">']
+    L, T, pw, ph = 80, 44, 640, 150
+    # 개념적 이득 곡선 (모양을 보여주는 도해 — 눈금은 실측치가 아니다)
+    pts = [(0, .18), (.08, .34), (.16, .46), (.26, .62), (.36, .78), (.46, .93),
+           (.52, 1.0), (.60, .88), (.70, .70), (.80, .52), (.90, .36), (1, .22)]
+    poly = " ".join(f"{L+pw*x:.1f},{T+ph-ph*y:.1f}" for x, y in pts)
+    o.append(f'<polyline points="{poly}" fill="none" stroke="{CY}" stroke-width="3" stroke-linejoin="round"/>')
+    for x, y in pts:
+        o.append(f'<circle cx="{L+pw*x:.1f}" cy="{T+ph-ph*y:.1f}" r="4.5" fill="{CY}" '
+                 f'stroke="#0a0e14" stroke-width="1.5"/>')
+    bx, by = L + pw*.52, T + ph - ph*1.0
+    o.append(f'<circle cx="{bx:.1f}" cy="{by:.1f}" r="11" fill="none" stroke="{LM}" stroke-width="2.5"/>')
+    o.append(f'<line x1="{bx:.1f}" y1="{by+12:.1f}" x2="{bx:.1f}" y2="{T+ph}" stroke="{LM}" '
+             f'stroke-width="1.5" stroke-dasharray="4 4"/>')
+    o.append(_t(bx + 14, T + ph - 16, f'이득 최대 → {GINI["feat"]} ≤ {GINI["thr"]}', LM, 15, "start", LATO, "700"))
+    o.append(f'<line x1="{L}" y1="{T+ph}" x2="{L+pw}" y2="{T+ph}" stroke="{FRAME}" stroke-width="2"/>')
+    o.append(_t(L + pw/2, T + ph + 24, f'{GINI["feat"]} 의 임계값 후보 {SPLIT_CANDIDATES_ROOT}개 (작은 값 → 큰 값)', MUTE, 14))
+    o.append(_t(L - 14, T + ph/2, "정보 이득", INK, 14, "middle", LATO, None,
+                f' transform="rotate(-90 {L-14} {T+ph/2})"'))
+    o.append(_t(L + pw/2, 22, "변수 하나에서 모든 임계값을 다 시도한다", "#ffffff", 16, "middle", LATO, "700"))
+
+    # 오른쪽 요약
+    rx = L + pw + 70
+    o.append(f'<rect x="{rx}" y="{T-6}" width="290" height="152" rx="11" fill="#151a21" stroke="{FRAME}" stroke-width="1.5"/>')
+    o.append(_t(rx + 145, T + 26, "이 일을 18개 변수 전부에", "#ffffff", 15))
+    o.append(_t(rx + 145, T + 66, f"{SPLIT_CANDIDATES_TOTAL}", LM, 40, "middle", POP, "700"))
+    o.append(_t(rx + 145, T + 90, "개 후보를 모두 계산", MUTE, 14))
+    o.append(_t(rx + 145, T + 118, "가장 이득이 큰 하나만 채택", AM, 14, "middle", LATO, "700"))
+    o.append(_t(W/2, H - 6, "※ 곡선은 모양을 보여주는 개념도 — 세로 눈금은 실측치가 아니다. 후보 개수와 채택된 분할은 실측이다.", FAINT, 12.5))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def tree_instability():
+    """훈련 데이터를 40번 재표집하면 '첫 질문'이 5가지로 갈린다."""
+    W, H = 1140, 296
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="재표집 40회에서 트리의 첫 분기 변수가 갈리는 분포">']
+    L, T, bh, gap = 300, 40, 30, 12
+    pw = 420
+    mx = max(v for _, v in FIRST_SPLIT)
+    for i, (name, cnt) in enumerate(FIRST_SPLIT):
+        y = T + i * (bh + gap)
+        col = LM if i == 0 else (CY if i == 1 else GY)
+        o.append(_t(L - 16, y + bh/2 + 6, name, "#ffffff" if i < 2 else MUTE, 15, "end", LATO, "700" if i < 2 else None))
+        o.append(f'<rect x="{L}" y="{y}" width="{pw*cnt/mx:.1f}" height="{bh}" rx="5" fill="{col}" fill-opacity=".85"/>')
+        o.append(_t(L + pw*cnt/mx + 12, y + bh/2 + 6, f"{cnt}회", col, 15, "start", LATO, "700"))
+    o.append(_t(L + pw/2, 22, f"같은 데이터를 {RESAMPLE_B}번 재표집해 깊이 2 트리를 다시 학습", MUTE, 14))
+    rx = L + pw + 130
+    o.append(f'<rect x="{rx}" y="{T+4}" width="270" height="150" rx="11" fill="#101820" stroke="{RD}" stroke-width="1.5"/>')
+    o.append(_t(rx + 135, T + 36, "첫 질문이", "#ffffff", 16))
+    o.append(_t(rx + 135, T + 76, f"{len(FIRST_SPLIT)}가지", RD, 38, "middle", POP, "700"))
+    o.append(_t(rx + 135, T + 102, "로 갈린다", "#ffffff", 16))
+    o.append(_t(rx + 135, T + 132, "데이터가 조금만 달라져도", MUTE, 13))
+    o.append(_t(W/2, H - 8, "→ 트리 구조는 '발견'이 아니라 '가설'로 읽어야 하는 이유. 그리고 포레스트가 필요한 이유.",
+                AM, 15, "middle", LATO, "700"))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def axis_parallel():
+    """트리는 축에 평행한 선만 그을 수 있다 — 대각선 경계는 계단으로 근사한다."""
+    W, H = 700, 348
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="대각선 경계를 트리가 계단 모양으로 근사하는 그림">']
+    for i, (title, stair) in enumerate((("실제 경계", False), ("트리가 그은 경계", True))):
+        x0 = 30 + i * 350
+        S = 210
+        y0 = 52
+        o.append(f'<rect x="{x0}" y="{y0}" width="{S}" height="{S}" fill="#151a21" stroke="{FRAME}" stroke-width="1.5"/>')
+        if not stair:
+            o.append(f'<path d="M{x0},{y0+S} L{x0+S},{y0} L{x0+S},{y0+S} Z" fill="{CY}" fill-opacity=".16"/>')
+            o.append(f'<line x1="{x0}" y1="{y0+S}" x2="{x0+S}" y2="{y0}" stroke="{CY}" stroke-width="3"/>')
+        else:
+            k = 6
+            step = S / k
+            d = [f"M{x0},{y0+S}"]
+            for j in range(k):
+                d.append(f"L{x0+j*step:.1f},{y0+S-(j)*step:.1f}")
+                d.append(f"L{x0+(j+1)*step:.1f},{y0+S-(j)*step:.1f}")
+            d.append(f"L{x0+S},{y0+S} Z")
+            o.append(f'<path d="{" ".join(d)}" fill="{LM}" fill-opacity=".16" stroke="{LM}" stroke-width="3"/>')
+            o.append(f'<line x1="{x0}" y1="{y0+S}" x2="{x0+S}" y2="{y0}" stroke="{CY}" stroke-width="1.5" stroke-dasharray="5 5" opacity=".7"/>')
+        o.append(_t(x0 + S/2, 34, title, "#ffffff", 17, "middle", POP, "700"))
+        o.append(_t(x0 + S/2, y0 + S + 24, "변수 A", FAINT, 13))
+        o.append(_t(x0 - 12, y0 + S/2, "변수 B", FAINT, 13, "middle", LATO, None,
+                    f' transform="rotate(-90 {x0-12} {y0+S/2})"'))
+    o.append(_t(W/2, H - 30, "질문이 늘 \"변수 하나 ≤ 값\" 꼴이라", MUTE, 14))
+    o.append(_t(W/2, H - 10, "경계가 계단이 된다 — 깊게 자랄수록 계단이 잘아진다(= 과적합)", MUTE, 14))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def pruning_curve():
+    """가지치기(min_samples_leaf)를 세게 할수록 잎이 줄고 CV 가 회복된다."""
+    W, H = 1140, 290
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="min_samples_leaf 를 키울 때 잎 수와 교차검증 AUC 변화">']
+    L, T, pw, ph = 96, 40, 900, 168
+    lo, hi = .50, .66
+    sy = lambda v: T + ph - (v - lo) / (hi - lo) * ph
+    sx = lambda k: L + pw * k / (len(MIN_LEAF) - 1)
+    for gv in (.50, .54, .58, .62, .66):
+        o.append(f'<line x1="{L}" y1="{sy(gv):.1f}" x2="{L+pw}" y2="{sy(gv):.1f}" stroke="{GRID}" stroke-width="1"/>')
+        o.append(_t(L - 12, sy(gv) + 5, f"{gv:.2f}", FAINT, 13, "end"))
+    pts = " ".join(f"{sx(k):.1f},{sy(c):.1f}" for k, (_, c, _) in enumerate(MIN_LEAF))
+    o.append(f'<polyline points="{pts}" fill="none" stroke="{LM}" stroke-width="3.5" stroke-linejoin="round"/>')
+    for k, (msl, c, lv) in enumerate(MIN_LEAF):
+        o.append(f'<circle cx="{sx(k):.1f}" cy="{sy(c):.1f}" r="7" fill="{LM}" stroke="#0a0e14" stroke-width="2.5"/>')
+        o.append(_t(sx(k), sy(c) - 16, f"{c:.4f}".lstrip("0"), LM, 14, "middle", LATO, "700"))
+        o.append(_t(sx(k), T + ph + 26, f"{msl}", "#ffffff", 15, "middle", POP, "700"))
+        o.append(_t(sx(k), T + ph + 46, f"잎 {lv}", FAINT, 13))
+    o.append(_t(L + pw/2, T + ph + 72, "min_samples_leaf — 잎 하나에 최소 몇 명은 있어야 하는가", INK, 15))
+    o.append(_t(20, T + ph/2, "CV AUC", INK, 14, "middle", LATO, None, f' transform="rotate(-90 20 {T+ph/2})"'))
+    o.append(_t(sx(0), sy(MIN_LEAF[0][1]) + 30, "제한 없음 = 한 명씩 가둔다", RD, 14, "middle", LATO, "700"))
+    o.append(_t(L + pw/2, 20, "가지를 칠수록 train 은 나빠지지만 CV 는 회복된다", "#ffffff", 16, "middle", LATO, "700"))
+    o.append(_t(W/2, H - 6, "단조롭지는 않다 (50에서 한 번 내려간다) — 그래서 '값을 고르는' 일 자체를 CV 에 맡긴다", FAINT, 13))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+# 상세 버전 전용 그림 — 랜덤 포레스트 심화
+# ═════════════════════════════════════════════════════════════════════════════
+def bootstrap_632():
+    """복원추출 n번 → 약 63%만 뽑히고 37%는 남는다(OOB). 실측과 이론이 맞는다."""
+    W, H = 1140, 262
+    b = BOOTSTRAP
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="부트스트랩 표본에서 뽑히는 비율과 남는 OOB 비율">']
+    # 왼쪽: 점 격자 (10×10 = 100명 축약)
+    gx, gy, cell = 60, 52, 17
+    o.append(_t(gx + 5*cell, 30, "학생 100명이라 치면", MUTE, 14, "middle"))
+    n_in = round(b["unique"] * 100)
+    for i in range(100):
+        r, c = divmod(i, 10)
+        picked = i < n_in
+        o.append(f'<circle cx="{gx+c*cell+8}" cy="{gy+r*cell+8}" r="6" '
+                 f'fill="{LM if picked else RD}" fill-opacity="{".85" if picked else ".55"}"/>')
+    o.append(_t(gx + 5*cell, gy + 10*cell + 24, f"● 뽑힘 {n_in}   ● 안 뽑힘 {100-n_in}", MUTE, 14))
+
+    # 오른쪽: 수치
+    rx = 400
+    o.append(f'<rect x="{rx}" y="44" width="330" height="106" rx="11" fill="#151a21" stroke="{LM}" stroke-width="2"/>')
+    o.append(_t(rx + 165, 72, "부트스트랩 표본에 들어간 비율", MUTE, 14))
+    o.append(_t(rx + 165, 112, f'{b["unique"]:.1%}', LM, 36, "middle", POP, "700"))
+    o.append(_t(rx + 165, 136, f'이론값 1 − 1/e = {b["theory"]:.1%}', FAINT, 13))
+
+    o.append(f'<rect x="{rx}" y="164" width="330" height="88" rx="11" fill="#151a21" stroke="{RD}" stroke-width="2"/>')
+    o.append(_t(rx + 165, 190, "한 번도 안 뽑힌 학생 (OOB)", MUTE, 14))
+    o.append(_t(rx + 165, 226, f'{b["oob"]:.1%}', RD, 32, "middle", POP, "700"))
+
+    # 화살표 + 설명
+    ax = rx + 360
+    o.append(f'<line x1="{ax}" y1="148" x2="{ax+46}" y2="148" stroke="{FRAME}" stroke-width="2.5"/>')
+    o.append(f'<polygon points="{ax+60},148 {ax+46},141 {ax+46},155" fill="{FRAME}"/>')
+    tx = ax + 78
+    o.append(_t(tx, 74, "그루마다 다른 표본을 쓴다", "#ffffff", 17, "start", POP, "700"))
+    o.append(_t(tx, 102, "같은 데이터인데 그루마다 조금씩", MUTE, 14, "start"))
+    o.append(_t(tx, 124, "다른 세상을 본다 → 서로 다른 트리가", MUTE, 14, "start"))
+    o.append(_t(tx, 146, "자란다 → 평균 낼 값이 생긴다", MUTE, 14, "start"))
+    o.append(_t(tx, 180, "안 뽑힌 37% 는 그 그루에게", AM, 14, "start", LATO, "700"))
+    o.append(_t(tx, 202, "'처음 보는 데이터'다 —", AM, 14, "start", LATO, "700"))
+    o.append(_t(tx, 224, "여기서 공짜 검증 점수가 나온다 (OOB)", AM, 14, "start", LATO, "700"))
+    o.append(_t(tx, 246, f'n = {b["n"]:,} 로 실제 계산한 값이다', FAINT, 12.5, "start"))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def oob_vs_cv():
+    """OOB 점수는 CV 를 따로 돌리지 않고도 얻는 검증 점수다."""
+    W, H = 1140, 224
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="OOB AUC 와 교차검증 AUC 비교">']
+    L, T, bh, gap = 300, 44, 44, 26
+    pw = 480
+    lo, hi = .60, .68
+    sx = lambda v: L + (v - lo) / (hi - lo) * pw
+    rows = [("OOB AUC", OOB["auc"], AM, "그루마다 남은 37% 로 채점 · 추가 학습 0회"),
+            ("CV AUC (5-fold)", OOB["cv_auc"], LM, "5번 다시 학습해서 채점")]
+    for gv in (.60, .62, .64, .66, .68):
+        o.append(f'<line x1="{sx(gv):.1f}" y1="{T-8}" x2="{sx(gv):.1f}" y2="{T+2*(bh+gap)-gap+8}" stroke="{GRID}" stroke-width="1"/>')
+        o.append(_t(sx(gv), T + 2*(bh+gap) + 6, f"{gv:.2f}", FAINT, 13))
+    for i, (name, v, col, note) in enumerate(rows):
+        y = T + i * (bh + gap)
+        o.append(_t(L - 18, y + bh/2 + 6, name, "#ffffff", 17, "end", POP, "700"))
+        o.append(f'<rect x="{L}" y="{y}" width="{max(sx(v)-L,3):.1f}" height="{bh}" rx="5" fill="{col}" fill-opacity=".9"/>')
+        o.append(_t(sx(v) + 14, y + bh/2 - 2, f"{v:.4f}", col, 20, "start", POP, "700"))
+        o.append(_t(sx(v) + 14, y + bh/2 + 18, note, FAINT, 12.5, "start"))
+    o.append(_t(W/2, 22, f'두 점수가 {abs(OOB["auc"]-OOB["cv_auc"]):.4f} 차이 — OOB 는 CV 의 '
+               f'값싼 대용품으로 쓸 만하다', "#ffffff", 16, "middle", LATO, "700"))
+    o.append(_t(W/2, H - 8, "단, 이 수업의 모든 비교표는 CV 로 통일한다 — 모델끼리는 '같은 자로' 재야 하기 때문이다", MUTE, 13.5))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def maxfeat_rho():
+    """변수를 적게 볼수록 트리들이 서로 덜 닮고(rho↓), 평균의 이득이 커진다."""
+    W, H = 1140, 330
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="max_features 에 따른 트리 간 상관과 교차검증 AUC">']
+    # 두 개의 작은 차트를 나란히 (한 그림에 두 세로축을 겹치지 않는다)
+    for panel, (label, key, col, lo, hi, fmt) in enumerate((
+            ("트리 간 예측 상관 ρ  (낮을수록 서로 다른 트리)", 2, CY, .34, .52, "{:.3f}"),
+            ("CV AUC", 3, LM, .658, .667, "{:.4f}"))):
+        x0 = 70 + panel * 545
+        pw, ph, T = 400, 160, 62
+        sy = lambda v: T + ph - (v - lo) / (hi - lo) * ph
+        sx = lambda k: x0 + pw * k / (len(MAXFEAT) - 1)
+        o.append(_t(x0 + pw/2, 32, label, "#ffffff", 15, "middle", LATO, "700"))
+        for gi in range(4):
+            gv = lo + (hi - lo) * gi / 3
+            o.append(f'<line x1="{x0}" y1="{sy(gv):.1f}" x2="{x0+pw}" y2="{sy(gv):.1f}" stroke="{GRID}" stroke-width="1"/>')
+            o.append(_t(x0 - 10, sy(gv) + 5, fmt.format(gv), FAINT, 12, "end"))
+        pts = " ".join(f"{sx(k):.1f},{sy(r[key]):.1f}" for k, r in enumerate(MAXFEAT))
+        o.append(f'<polyline points="{pts}" fill="none" stroke="{col}" stroke-width="3" stroke-linejoin="round"/>')
+        for k, r in enumerate(MAXFEAT):
+            best = (r[0] == "sqrt")
+            o.append(f'<circle cx="{sx(k):.1f}" cy="{sy(r[key]):.1f}" r="{7 if best else 5.5}" fill="{col}" '
+                     f'stroke="#0a0e14" stroke-width="2"/>')
+            o.append(_t(sx(k), T + ph + 24, r[0], "#ffffff" if best else MUTE, 14, "middle", LATO, "700" if best else None))
+            o.append(_t(sx(k), T + ph + 42, f"{r[1]}개", FAINT, 12))
+        if panel == 1:
+            k = [i for i, r in enumerate(MAXFEAT) if r[0] == "sqrt"][0]
+            o.append(f'<circle cx="{sx(k):.1f}" cy="{sy(MAXFEAT[k][3]):.1f}" r="13" fill="none" stroke="{LM}" stroke-width="2"/>')
+            o.append(_t(sx(k), sy(MAXFEAT[k][3]) - 20, "기본값 sqrt 가 최고", LM, 13.5, "middle", LATO, "700"))
+        o.append(_t(x0 + pw/2, T + ph + 68, "max_features (각 분기에서 후보로 보는 변수 수)", FAINT, 13))
+    o.append(_t(W/2, H - 10, "변수를 다 보게 하면(=18) 그루들이 같은 강한 변수로 몰려 서로 닮고, 평균의 이득이 줄어 CV 가 가장 낮다",
+                MUTE, 14))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def n_trees_curve():
+    """그루를 늘리면 수렴한다 — 더 늘려도 과적합하지 않는다."""
+    W, H = 1140, 300
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="트리 개수에 따른 교차검증 AUC 수렴">']
+    L, T, pw, ph = 96, 46, 830, 148
+    lo, hi = .620, .670
+    sy = lambda v: T + ph - (v - lo) / (hi - lo) * ph
+    sx = lambda k: L + pw * k / (len(N_TREES) - 1)
+    for gv in (.62, .635, .65, .665):
+        o.append(f'<line x1="{L}" y1="{sy(gv):.1f}" x2="{L+pw}" y2="{sy(gv):.1f}" stroke="{GRID}" stroke-width="1"/>')
+        o.append(_t(L - 12, sy(gv) + 5, f"{gv:.3f}", FAINT, 12.5, "end"))
+    pts = " ".join(f"{sx(k):.1f},{sy(c):.1f}" for k, (_, c) in enumerate(N_TREES))
+    o.append(f'<polyline points="{pts}" fill="none" stroke="{LM}" stroke-width="3.5" stroke-linejoin="round"/>')
+    for k, (n, c) in enumerate(N_TREES):
+        o.append(f'<circle cx="{sx(k):.1f}" cy="{sy(c):.1f}" r="6.5" fill="{LM}" stroke="#0a0e14" stroke-width="2.5"/>')
+        o.append(_t(sx(k), T + ph + 26, f"{n:,}", "#ffffff", 15, "middle", POP, "700"))
+    o.append(_t(sx(0) + 16, sy(N_TREES[0][1]) - 14,
+                f'한 그루 {N_TREES[0][1]:.4f} = 그냥 트리 한 그루', RD, 14, "start", LATO, "700"))
+    # 수렴 구간 표시
+    o.append(f'<rect x="{sx(3)-18:.1f}" y="{T-4}" width="{sx(5)-sx(3)+36:.1f}" height="{ph+8}" rx="10" '
+             f'fill="{LM}" fill-opacity=".07" stroke="{LM}" stroke-width="1.2" stroke-dasharray="6 5"/>')
+    o.append(_t((sx(3)+sx(5))/2, T - 14, "100그루 이후는 사실상 평평 — 더 늘려도 나빠지지 않는다", LM, 14, "middle", LATO, "700"))
+    o.append(_t(L + pw/2, T + ph + 56, "n_estimators (그루 수)", INK, 15))
+    o.append(_t(22, T + ph/2, "CV AUC", INK, 14, "middle", LATO, None, f' transform="rotate(-90 22 {T+ph/2})"'))
+    o.append(_t(W/2, H - 8, "깊이(max_depth)와 달리 그루 수는 '너무 크면 과적합하는' 손잡이가 아니다 — 계산 시간만 는다", MUTE, 14))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def resample_spread():
+    """같은 학생의 예측확률이 훈련 데이터 재표집에 따라 얼마나 흔들리나."""
+    W, H = 1140, 272
+    r = RESAMPLE
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="재표집에 따른 예측확률 흔들림 비교">']
+    o.append(_t(W/2, 26, f"훈련 데이터를 {RESAMPLE_B}번 재표집해 다시 학습 — 같은 학생의 예측확률이 얼마나 달라지나",
+                "#ffffff", 16, "middle", LATO, "700"))
+    cx, top = 300, 62
+    for i, (name, sd, mx, col) in enumerate((
+            ("단일 트리 (깊이 2)", r["tree_sd"], r["tree_max"], RD),
+            ("랜덤 포레스트 (300그루)", r["forest_sd"], r["forest_max"], LM))):
+        x = 190 + i * 560
+        o.append(_t(x, top, name, col, 17, "middle", POP, "700"))
+        # 흔들림 폭을 띠로 표현 (± sd, 중심은 임의의 한 학생 예측 .5 로 둔 도해)
+        scale = 900
+        bw = sd * scale
+        o.append(f'<rect x="{x-bw/2:.1f}" y="{top+30}" width="{bw:.1f}" height="34" rx="6" fill="{col}" fill-opacity=".28" stroke="{col}" stroke-width="2"/>')
+        o.append(f'<line x1="{x}" y1="{top+26}" x2="{x}" y2="{top+68}" stroke="{col}" stroke-width="2.5"/>')
+        o.append(_t(x, top + 92, f"± {sd:.4f}", col, 24, "middle", POP, "700"))
+        o.append(_t(x, top + 114, "학생 1명 예측확률의 표준편차 (평균)", MUTE, 13))
+        o.append(_t(x, top + 140, f"가장 심한 학생은 ± {mx:.4f}", FAINT, 13))
+    o.append(f'<line x1="{570}" y1="{top+10}" x2="{570}" y2="{top+150}" stroke="{FRAME}" stroke-width="1.5" stroke-dasharray="6 6"/>')
+    o.append(f'<rect x="{W/2-155}" y="{H-50}" width="310" height="42" rx="10" fill="{LM}" fill-opacity=".10" stroke="{LM}" stroke-width="1.5"/>')
+    o.append(_t(W/2, H - 22, f"트리가 {r['ratio']}배 더 흔들린다", LM, 19, "middle", POP, "700"))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
+def variance_math():
+    """왜 평균이 분산을 줄이나 — 그리고 왜 상관이 관건인가."""
+    W, H = 1140, 234
+    o = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block;" '
+         f'role="img" aria-label="트리 B개를 평균했을 때 분산 공식과 상관의 역할">']
+    o.append(f'<rect x="{W/2-400}" y="24" width="800" height="62" rx="11" fill="#000" stroke="{LM}" stroke-width="2"/>')
+    o.append(_t(W/2, 52, "Var( 트리 B개의 평균 )  =  ρ·σ²  +  (1 − ρ)·σ² / B", "#ffffff", 24, "middle", POP, "700"))
+    o.append(_t(W/2, 76, "σ² = 트리 하나의 분산 · ρ = 트리끼리의 상관 · B = 그루 수", MUTE, 13.5))
+    cards = [("B 를 키우면", CY, "오른쪽 항이 0 으로 간다", f"그루 {N_TREES[-1][0]:,}개까지 늘려도 나빠지지 않는 이유"),
+             ("그런데 왼쪽 항은", RD, "ρ·σ² 로 남는다", "그루를 아무리 늘려도 여기서 멈춘다"),
+             ("그래서 ρ 를 낮춘다", LM, "변수를 무작위로 고른다", f"max_features=sqrt 에서 ρ {MAXFEAT[2][2]}")]
+    bw, gap = 340, 30
+    x0 = (W - (bw*3 + gap*2)) / 2
+    for i, (t, col, mid, note) in enumerate(cards):
+        x = x0 + i * (bw + gap)
+        o.append(f'<rect x="{x}" y="106" width="{bw}" height="98" rx="11" fill="#151a21" stroke="{col}" stroke-width="2"/>')
+        o.append(f'<rect x="{x}" y="106" width="{bw}" height="5" rx="2.5" fill="{col}"/>')
+        o.append(_t(x + bw/2, 136, t, col, 16, "middle", POP, "700"))
+        o.append(_t(x + bw/2, 162, mid, "#ffffff", 16))
+        o.append(_t(x + bw/2, 188, note, MUTE, 13))
+    o.append(_t(W/2, H - 6, "부트스트랩(다른 표본) + 변수 무작위 선택(다른 후보) 두 장치가 모두 ρ 를 낮추려고 있는 것이다", MUTE, 14))
+    o.append('</svg>')
+    return "\n".join(o)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 레지스트리 · 치환 · 검증
 # ─────────────────────────────────────────────────────────────────────────────
@@ -868,6 +1277,18 @@ FIGURES = {
     "sealed_test":        sealed_test,
     "candidate_bias":     candidate_bias,
     "black_box":          black_box,
+    # ── 상세 버전(session6_detail) 전용 ──
+    "gini_split":         gini_split,
+    "split_search":       split_search,
+    "tree_instability":   tree_instability,
+    "axis_parallel":      axis_parallel,
+    "pruning_curve":      pruning_curve,
+    "bootstrap_632":      bootstrap_632,
+    "oob_vs_cv":          oob_vs_cv,
+    "maxfeat_rho":        maxfeat_rho,
+    "n_trees_curve":      n_trees_curve,
+    "resample_spread":    resample_spread,
+    "variance_math":      variance_math,
 }
 
 BLOCK = re.compile(r'<svg data-fig="([A-Za-z0-9_]+)".*?</svg>', re.S)
@@ -881,27 +1302,36 @@ def render(name):
     return svg.replace("<svg ", f'<svg data-fig="{name}" ', 1)
 
 
-def _check_registry(html):
-    """불변성 1 — HTML 의 NAME 집합과 FIGURES 키가 1:1 이고 각 1회만 등장하는가."""
+def _check_registry(html, label):
+    """불변성 1 (파일 단위) — 한 파일 안에서 NAME 은 유일하고, 전부 FIGURES 에 있는가.
+
+    덱이 둘이므로 '모든 FIGURES 키가 이 파일에 있어야 한다'는 성립하지 않는다.
+    대신 파일마다 중복·미등록을 막고, 전체 커버리지는 _check_coverage() 가 본다.
+    """
     found = BLOCK.findall(html)
     dup = sorted({n for n in found if found.count(n) > 1})
-    missing = sorted(set(FIGURES) - set(found))       # 코드에는 있는데 HTML 에 없다
-    unknown = sorted(set(found) - set(FIGURES))       # HTML 에는 있는데 코드에 없다
+    unknown = sorted(set(found) - set(FIGURES))
     problems = []
     if dup:
-        problems.append(f"HTML 에 중복된 data-fig: {dup} (첫 블록만 갱신돼 나머지가 낡은 채 남는다)")
-    if missing:
-        problems.append(f"HTML 에 자리가 없는 그림: {missing}")
+        problems.append(f"{label}: 중복된 data-fig {dup} (첫 블록만 갱신돼 나머지가 낡은 채 남는다)")
     if unknown:
-        problems.append(f"코드에 없는 data-fig: {unknown}")
+        problems.append(f"{label}: 코드에 없는 data-fig {unknown}")
     return found, problems
+
+
+def _check_coverage(all_found):
+    """FIGURES 에 있는데 어느 덱에도 안 쓰인 그림은 '만들었지만 아무 데도 안 들어간' 상태다."""
+    orphan = sorted(set(FIGURES) - set(all_found))
+    return [f"어느 덱에도 쓰이지 않은 그림: {orphan}"] if orphan else []
 
 
 def verify_numbers():
     """불변성 3 — 차트에 그린 모든 수치가 원본 표/독스트링에 실재하는가."""
-    here = os.path.dirname(os.path.abspath(__file__))
-    src = open(HTML, encoding="utf-8").read()
-    src += "\n" + open(os.path.join(here, "_build_s6.py"), encoding="utf-8").read()
+    src = ""
+    for f in (HTML, HTML_DETAIL, os.path.join(_HERE, "_build_s6.py"),
+              os.path.join(_HERE, "_build_s6_detail.py")):
+        if os.path.exists(f):
+            src += "\n" + open(f, encoding="utf-8").read()
 
     def present(v):
         return any(t in src for t in (f"{v:.4f}", f"{v:.4f}".lstrip("0"),
@@ -937,43 +1367,73 @@ def verify_numbers():
         n += 1
         if str(c) not in src:
             fails.append(f"후보수 {name}: {c}")
+
+    # ── 상세 버전 전용 실측치 ──
+    if os.path.exists(HTML_DETAIL):
+        check("지니", [GINI["root_gini"], GINI["left_gini"], GINI["right_gini"],
+                      GINI["child_weighted"], GINI["gain"], GINI["thr"],
+                      GINI["root_pos"], GINI["left_pos"], GINI["right_pos"],
+                      GINI["sk_root"], GINI["sk_left"], GINI["sk_right"]])
+        check("부트스트랩", [BOOTSTRAP["unique"], BOOTSTRAP["oob"], BOOTSTRAP["theory"]])
+        check("OOB", [OOB["auc"], OOB["acc"], OOB["cv_auc"]])
+        check("재표집", [RESAMPLE["tree_sd"], RESAMPLE["tree_max"],
+                       RESAMPLE["forest_sd"], RESAMPLE["forest_max"]])
+        check("max_features rho", [r[2] for r in MAXFEAT])
+        check("max_features CV", [r[3] for r in MAXFEAT])
+        check("n_estimators", [r[1] for r in N_TREES])
+        check("min_samples_leaf CV", [r[1] for r in MIN_LEAF])
+        for v in ([SPLIT_CANDIDATES_TOTAL, SPLIT_CANDIDATES_ROOT, RESAMPLE_B,
+                   GINI["root_n"], GINI["left_n"], GINI["right_n"]]
+                  + [c for _, c in FIRST_SPLIT] + [lv for _, _, lv in MIN_LEAF]
+                  + [r[1] for r in MAXFEAT] + [r[0] for r in N_TREES]):
+            n += 1
+            if str(v) not in src and f"{v:,}" not in src:
+                fails.append(f"상세 정수: {v}")
+        n += 1
+        if str(RESAMPLE["ratio"]) not in src:
+            fails.append(f'재표집 배수: {RESAMPLE["ratio"]}')
     return n, fails
 
 
-def apply(path=HTML, dry_run=False):
-    html = open(path, encoding="utf-8").read()
-    found, problems = _check_registry(html)
+def apply(paths=None, dry_run=False):
+    paths = paths or TARGETS
+    paths = [p for p in paths if os.path.exists(p)]
+    if not paths:
+        print("  ❌ 대상 HTML 이 하나도 없다"); return 1
+
+    loaded, all_found, problems = [], [], []
+    for path in paths:
+        html = open(path, encoding="utf-8").read()
+        found, probs = _check_registry(html, os.path.basename(path))
+        loaded.append((path, html, found)); all_found += found; problems += probs
+    problems += _check_coverage(all_found)
     if problems:
-        for p in problems:
-            print("  ❌", p)
+        for pr in problems:
+            print("  ❌", pr)
         return 1
 
-    replaced = []
-    def swap(m):
-        replaced.append(m.group(1))
-        return render(m.group(1))
-    out = BLOCK.sub(swap, html)
-
-    # 불변성 2 사후 확인 — 치환으로 태그 균형이 깨지지 않았는가
-    if out.count("<svg") != out.count("</svg>"):
-        print(f"  ❌ 태그 불균형: <svg> {out.count('<svg')} / </svg> {out.count('</svg>')}")
-        return 1
-
-    # write 직후 cardinality 로그 — 등록 수 vs 실제 치환 수 (둘 다 찍는다)
-    changed = out != html
-    print(f"  그림 등록 {len(FIGURES)}개 · HTML 자리 {len(found)}개 · 치환 {len(replaced)}개 "
-          f"· 내용 변경 {'있음' if changed else '없음'}")
-    if len(replaced) != len(FIGURES):
-        print("  ❌ 등록 수와 치환 수가 다르다")
-        return 1
-
-    if dry_run:
-        return 0
-    if changed:
-        open(path, "w", encoding="utf-8").write(out)
-        print(f"  ✅ {os.path.relpath(path)} 갱신")
-    else:
-        print(f"  ✅ 변경 없음 (이미 최신)")
+    rendered = {}
+    for path, html, found in loaded:
+        def swap(m):
+            rendered.setdefault(path, []).append(m.group(1))
+            return render(m.group(1))
+        out = BLOCK.sub(swap, html)
+        if out.count("<svg") != out.count("</svg>"):
+            print(f"  ❌ {os.path.basename(path)}: 태그 불균형 "
+                  f"<svg> {out.count('<svg')} / </svg> {out.count('</svg>')}")
+            return 1
+        # write 직후 cardinality 로그 — 자리 수 vs 치환 수를 둘 다 찍는다
+        n_place, n_swap = len(found), len(rendered.get(path, []))
+        changed = out != html
+        print(f"  {os.path.basename(path):22s} 자리 {n_place:2d}개 · 치환 {n_swap:2d}개 · "
+              f"{'변경 있음' if changed else '변경 없음'}")
+        if n_place != n_swap:
+            print("  ❌ 자리 수와 치환 수가 다르다"); return 1
+        if not dry_run and changed:
+            open(path, "w", encoding="utf-8").write(out)
+    print(f"  등록 {len(FIGURES)}개 · 두 덱에서 쓰인 그림 {len(set(all_found))}개")
+    if not dry_run:
+        print("  ✅ 반영 완료")
     return 0
 
 
