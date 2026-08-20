@@ -187,8 +187,8 @@
 <div class="slide-container">
   <div class="content-area title-layout">
     <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:50px;">무엇을 보고 판단했니,<br>그리고 그걸 뭐라고 불러야 하나</h1>
-    <p class="subtitle">세 방법이 같은 답을 주는지 확인하고, 누구를 놓쳤는지 들여다본다</p>
-    <p style="margin-top:34px;font-weight:700;letter-spacing:2px;color:#adff2f;">7차시 · Permutation Importance · 오류 분석 · 인과 vs 예측</p>
+    <p class="subtitle">새로운 모델을 만드는 시간은 끝났다 —<br>오늘은 모델에게 질문을 던지고, 그 대답을 <b style="color:#adff2f;">사람의 언어로 번역</b>한다</p>
+    <p style="margin-top:30px;font-weight:700;letter-spacing:2px;color:#adff2f;">7차시 · Permutation Importance · 오류 분석 · 인과 vs 예측</p>
   </div>
   <div class="slide-no">01</div>
 </div>
@@ -204,25 +204,58 @@
     <div class="finding" style="margin-top:20px;">
       <p style="margin:0;font-size:21px;color:#fff;">마지막 질문이 제일 어렵다 —<br><b style="color:#ff8080;">"이 중요도를 '위험요인'이라고 불러도 되는가?"</b></p>
     </div>
-    <p style="font-size:18px;margin-top:16px;color:#8892a4;">🔒 오늘도 test 는 열지 않는다. 중요도는 폴드별 <b>validation</b> 에서 잰다.</p>
+    <p style="font-size:18px;margin-top:16px;color:#8892a4;">이 질문에 답할 수 있게 되면, 알고리즘의 결과를 <b style="color:#adff2f;">읽는 사람</b>에서 <b style="color:#adff2f;">책임지고 쓰는 사람</b>이 된다.<br>🔒 오늘도 test 는 열지 않는다. 중요도는 폴드별 <b>validation</b> 에서 잰다.</p>
   </div>
   <div class="slide-no">02</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <h2 class="slide-title">오늘의 3막 — 심문 · 발견 · 판결</h2>
+  <div class="content-area">
+    <div class="tiled-content">
+      <div class="tile">
+        <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <h3>1막 · 심문</h3>
+        <p style="font-size:17px;color:#cfcfcf;">Interrogating the Machine</p>
+        <p style="font-size:17px;margin-top:12px;">기계의 시선을 <b style="color:#adff2f;">교차 검증</b>하고,<br>상관관계가 만드는 <b>통계적 착시</b>를 파헤친다.</p>
+        <p style="font-size:15px;color:#8892a4;margin-top:10px;">Step 1~4</p>
+      </div>
+      <div class="tile" style="border-bottom-color:#ff6b6b;">
+        <div class="icon" style="color:#ff8080;"><i class="fa-solid fa-user-slash"></i></div>
+        <h3>2막 · 발견</h3>
+        <p style="font-size:17px;color:#cfcfcf;">The Human Cost</p>
+        <p style="font-size:17px;margin-top:12px;">오류의 장막을 걷어내고,<br>기계의 눈에서 <b style="color:#ff8080;">누락된 아이들(FN)</b> 의 얼굴을 마주한다.</p>
+        <p style="font-size:15px;color:#8892a4;margin-top:10px;">Step 5</p>
+      </div>
+      <div class="tile">
+        <div class="icon"><i class="fa-solid fa-gavel"></i></div>
+        <h3>3막 · 판결</h3>
+        <p style="font-size:17px;color:#cfcfcf;">The Verdict</p>
+        <p style="font-size:17px;margin-top:12px;"><b style="color:#adff2f;">예측과 인과를 분리</b>하고,<br>통계적 사실을 서술하는 <b>언어의 원칙</b>을 세운다.</p>
+        <p style="font-size:15px;color:#8892a4;margin-top:10px;">Step 6~7</p>
+      </div>
+    </div>
+    <p style="font-size:19px;margin-top:20px;color:#fff;text-align:center;">숫자를 <b style="color:#00f2ff;">믿는 법</b>에서 시작해, 사람을 <b style="color:#adff2f;">이해하는 것</b>으로 끝나는 여정이다.</p>
+  </div>
+  <div class="slide-no">03</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">오늘의 흐름 — 7 Step, 두 개의 봉우리</h2>
   <div class="content-area">
     <div class="step-grid">
       <div class="step-card"><h4>Step 0~1 · Permutation 이란</h4><p>변수를 망가뜨려 본다 · <strong>어디서 섞느냐</strong>가 결정적</p></div>
-      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 2 · 삼각검증 ⚠️</h4><p><strong>첫 봉우리</strong> — 세 방법이 같은 3개를 가리킨다</p></div>
+      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 2 · 삼각검증 ⚠️ 첫 봉우리</h4><p>숫자를 <strong>어떻게 믿을 것인가</strong> — 세 방법이 같은 3개를 가리킨다</p></div>
       <div class="step-card"><h4>Step 3 · 포레스트는 다른 답</h4><p>순위 상관 .47 — 왜 다른가</p></div>
       <div class="step-card"><h4>Step 4 · 상관 변수의 함정</h4><p>서로의 중요도를 가린다</p></div>
-      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 5 · 오류 분석 🔍</h4><p><strong>둘째 봉우리</strong> — 우리는 누구를 놓쳤나</p></div>
+      <div class="step-card" style="border-left-color:#ff6b6b;"><h4>Step 5 · 오류 분석 🔍 둘째 봉우리</h4><p>우리는 <strong>누구를 놓쳤는가</strong> — 오늘의 정점</p></div>
       <div class="step-card"><h4>Step 6~7 · 뭐라고 부를까</h4><p>인과 vs 예측 · 서술 규칙 · 산출물</p></div>
     </div>
-    <p style="font-size:19px;margin-top:16px;color:#adff2f;">🔴 오늘의 규칙: <strong>"모델이 무엇을 썼는가"와 "무엇이 원인인가"는 다른 질문이다.</strong></p>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 오늘의 대원칙: <b style="color:#adff2f;">"모델이 무엇을 썼는가"와 "무엇이 원인인가"는 완전히 다른 질문이다.</b></p>
+    </div>
   </div>
-  <div class="slide-no">03</div>
+  <div class="slide-no">04</div>
 </div>
 
 <div class="slide-container">
@@ -237,62 +270,70 @@
       <tr><td>8</td><td>결론 · 한계 · 윤리 서술</td><td>재현성 · <b style="color:#adff2f;">test 최종 1회</b></td><td>final_report.md</td></tr>
     </table>
     <div class="finding" style="margin-top:18px;">
-      <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b>"그 결과를 심리학적으로 어디까지 해석할 수 있나"에 답한다.</b></p>
+      <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b>"그 결과를 심리학적으로 어디까지 해석할 수 있나"에 답한다.</b><br>
+      <span style="font-size:17px;color:#8892a4;">오늘의 해석 과정을 통과해야만 다음 주 최종 test 를 열 자격이 생긴다.</span></p>
     </div>
-  </div>
-  <div class="slide-no">04</div>
-</div>
-
-<div class="slide-container">
-  <h2 class="slide-title">Step 1 — Permutation Importance: 변수를 망가뜨려 본다</h2>
-  <div class="content-area">
-    <p style="font-size:20px;margin:0;">5차시의 <b>계수</b>는 로지스틱에만 있다. 포레스트에는 없다.<br>그럼 나무 300그루가 무엇을 보고 판단했는지 어떻게 알까?</p>
-    <div class="code-block" style="margin-top:14px;font-size:18px;">① 모델의 성능(AUC)을 잰다
-② 변수 하나만 골라 그 열의 값을 <span class="var">무작위로 섞는다</span>   <span class="cm"># 그 변수를 '망가뜨린다'</span>
-③ 다시 성능을 잰다
-④ <span class="num">떨어진 만큼</span>이 그 변수의 중요도다</div>
-    <p style="font-size:20px;margin-top:16px;color:#fff;"><strong>성능이 많이 떨어졌다 = 모델이 그 변수에 많이 기대고 있었다.</strong></p>
-    <p style="font-size:19px;margin-top:10px;color:#8892a4;">모델 종류와 무관하게 쓸 수 있어서, 로지스틱과 포레스트를 <b style="color:#adff2f;">같은 자로</b> 비교할 수 있다.</p>
   </div>
   <div class="slide-no">05</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">Step 1 — ⚠️ 어디서 섞느냐가 결정적이다</h2>
+  <h2 class="slide-title">Step 1 — 변수를 망가뜨려 중요도를 잰다</h2>
   <div class="content-area">
-    <p style="font-size:20px;margin:0;">학습에 쓴 데이터(train)에서 섞으면, <b style="color:#ff8080;">과적합된 모델이 외운 것</b>까지 중요도로 잡힌다.<br>6차시에서 봤듯 트리·포레스트는 train 을 잘 외운다.</p>
-    <div class="table-layout">
-      <table style="font-size:18px;margin-top:14px;">
-        <tr><th>변수 (포레스트)</th><th>train 에서 잰 값</th><th>validation 에서 잰 값</th></tr>
-        <tr><td>peer_support</td><td>.0199</td><td>.0165</td></tr>
-        <tr><td>self_esteem</td><td>.0162</td><td>.0152</td></tr>
-        <tr><td>depression</td><td>.0128</td><td>.0089</td></tr>
-        <tr><td><b>합계</b></td><td><b style="color:#ff8080;">.1001</b></td><td><b style="color:#adff2f;">.0559</b></td></tr>
-      </table>
+    <p class="kicker" style="margin:0;">PERMUTATION IMPORTANCE · 순열 중요도</p>
+    <p style="font-size:20px;margin:0;">5차시의 <b>계수</b>는 로지스틱에만 있다. 포레스트에는 없다.<br>그럼 나무 300그루가 무엇을 보고 판단했는지 어떻게 알까?</p>
+    <div class="two-column" style="gap:28px;margin-top:6px;">
+      <div class="code-block" style="font-size:17px;">① 모델의 성능(AUC)을 잰다
+② 변수 하나만 골라 그 열의 값을
+   <span class="var">무작위로 섞는다</span>
+   <span class="cm"># 그 변수를 '망가뜨린다'</span>
+③ 다시 성능을 잰다
+④ <span class="num">떨어진 만큼</span>이 그 변수의 중요도다</div>
+      <svg data-fig="jenga" viewBox="0 0 500 300" width="100%" style="max-height:300px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="a_lm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#adff2f"/></marker><marker id="a_rd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ff8080"/></marker><marker id="a_am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffd479"/></marker></defs><rect x="40.0" y="60.0" width="96.0" height="20.0" fill="#2b3442" rx="3" stroke="#3a4250" stroke-width="1"/><rect x="40.0" y="84.0" width="96.0" height="20.0" fill="#2b3442" rx="3" stroke="#3a4250" stroke-width="1"/><rect x="40.0" y="108.0" width="96.0" height="20.0" fill="#2b3442" rx="3" stroke="#3a4250" stroke-width="1"/><rect x="40.0" y="132.0" width="96.0" height="20.0" fill="#2b3442" rx="3" stroke="#3a4250" stroke-width="1"/><rect x="66.0" y="156.0" width="96.0" height="20.0" fill="#ffd479" rx="3" stroke="#fff" stroke-width="1"/><line x1="58" y1="166.0" x2="38" y2="166.0" stroke="#ffd479" stroke-width="2" marker-end="url(#a_am)"/><rect x="40.0" y="180.0" width="96.0" height="20.0" fill="#2b3442" rx="3" stroke="#3a4250" stroke-width="1"/><rect x="40.0" y="204.0" width="96.0" height="20.0" fill="#2b3442" rx="3" stroke="#3a4250" stroke-width="1"/><rect x="40.0" y="228.0" width="96.0" height="20.0" fill="#2b3442" rx="3" stroke="#3a4250" stroke-width="1"/><text x="88.0" y="44.0" fill="#8892a4" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">블록 하나를 뺀다</text><text x="88.0" y="274.0" fill="#ffd479" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">= 그 변수만 섞는다</text><rect x="210.0" y="58.0" width="250.0" height="96.0" fill="#101820" rx="8" stroke="#adff2f" stroke-width="2"/><rect x="224.0" y="136.0" width="40.0" height="9.0" fill="#adff2f" rx="2" opacity="0.85"/><rect x="224.0" y="123.0" width="40.0" height="9.0" fill="#adff2f" rx="2" opacity="0.85"/><rect x="224.0" y="110.0" width="40.0" height="9.0" fill="#adff2f" rx="2" transform="rotate(-14 244 114)" opacity="0.85"/><rect x="233.0" y="97.0" width="40.0" height="9.0" fill="#adff2f" rx="2" transform="rotate(-28 244 101)" opacity="0.85"/><rect x="242.0" y="84.0" width="40.0" height="9.0" fill="#adff2f" rx="2" transform="rotate(-42 244 88)" opacity="0.85"/><text x="286.0" y="96.0" fill="#adff2f" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">탑이 와르르 무너진다</text><text x="286.0" y="120.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">= 이 탑을 지탱하던 핵심 기둥</text><rect x="210.0" y="178.0" width="250.0" height="96.0" fill="#101820" rx="8" stroke="#8892a4" stroke-width="2"/><rect x="224.0" y="256.0" width="40.0" height="9.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="224.0" y="243.0" width="40.0" height="9.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="224.0" y="230.0" width="40.0" height="9.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="224.0" y="217.0" width="40.0" height="9.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="224.0" y="204.0" width="40.0" height="9.0" fill="#8892a4" rx="2" opacity="0.55"/><text x="286.0" y="216.0" fill="#8892a4" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">빼도 멀쩡하다</text><text x="286.0" y="240.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">= 있으나 마나 한 블록</text><text x="250.0" y="294.0" fill="#00f2ff" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">중요도의 단위 = AUC 하락폭</text></svg>
     </div>
-    <div class="finding" style="margin-top:16px;">
-      <p style="margin:0;font-size:20px;color:#fff;">같은 모델, 같은 방법인데 <b style="color:#adff2f;">어디서 재느냐</b>만으로 <b>약 1.8배</b> 차이가 난다.<br>
-      → 우리는 폴드마다 train 으로 학습하고, <b>본 적 없는 validation 에서 섞는다.</b></p>
-    </div>
+    <p style="font-size:20px;margin-top:14px;color:#fff;"><strong>성능이 많이 떨어졌다 = 모델이 그 변수에 많이 기대고 있었다.</strong>
+    <span style="font-size:18px;color:#8892a4;">모델 종류와 무관하게 쓸 수 있어서, 로지스틱과 포레스트를 <b style="color:#adff2f;">같은 자로</b> 비교할 수 있다.</span></p>
   </div>
   <div class="slide-no">06</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 1 — ⚠️ 어디서 섞느냐가 모든 것을 결정한다</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">학습에 쓴 데이터(train)에서 섞으면, <b style="color:#ff8080;">과적합된 모델이 외운 것</b>까지 중요도로 잡힌다.<br>6차시에서 봤듯 트리·포레스트는 train 을 잘 외운다(train AUC 1.0).</p>
+    <div class="two-column" style="gap:28px;">
+      <svg data-fig="train_val" viewBox="0 0 520 300" width="100%" style="max-height:300px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="tv_a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffd479"/></marker></defs><rect x="168.0" y="8.0" width="12.0" height="12.0" fill="#ff8080" rx="2"/><text x="186.0" y="18.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">train (틀린 방식)</text><rect x="343.0" y="8.0" width="12.0" height="12.0" fill="#adff2f" rx="2"/><text x="361.0" y="18.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">validation (우리 방식)</text><text x="160.0" y="58.0" fill="#8892a4" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">peer_support</text><rect x="168.0" y="40.0" width="49.7" height="15.0" fill="#ff8080" rx="2" opacity="0.65"/><text x="225.7" y="52.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">.0199</text><rect x="168.0" y="60.0" width="41.2" height="15.0" fill="#adff2f" rx="2" opacity="0.65"/><text x="217.2" y="72.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">.0165</text><text x="160.0" y="118.0" fill="#8892a4" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">self_esteem</text><rect x="168.0" y="100.0" width="40.5" height="15.0" fill="#ff8080" rx="2" opacity="0.65"/><text x="216.5" y="112.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">.0162</text><rect x="168.0" y="120.0" width="38.0" height="15.0" fill="#adff2f" rx="2" opacity="0.65"/><text x="214.0" y="132.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">.0152</text><text x="160.0" y="178.0" fill="#8892a4" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">depression</text><rect x="168.0" y="160.0" width="32.0" height="15.0" fill="#ff8080" rx="2" opacity="0.65"/><text x="208.0" y="172.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">.0128</text><rect x="168.0" y="180.0" width="22.2" height="15.0" fill="#adff2f" rx="2" opacity="0.65"/><text x="198.2" y="192.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">.0089</text><line x1="10.0" y1="210.0" x2="510.0" y2="210.0" stroke="#3a4250" stroke-width="1"/><text x="160.0" y="238.0" fill="#e8ecf2" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">합계</text><rect x="168.0" y="220.0" width="250.0" height="15.0" fill="#ff8080" rx="2"/><text x="426.0" y="232.0" fill="#ff8080" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.1001</text><rect x="168.0" y="240.0" width="139.6" height="15.0" fill="#adff2f" rx="2"/><text x="315.6" y="252.0" fill="#adff2f" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.0559</text><path d="M365.6103896103896,250 L412.0,228" fill="none" stroke="#ffd479" stroke-width="2" marker-end="url(#tv_a)"/><text x="318.0" y="272.0" fill="#ffd479" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">약 1.8배 부풀려짐</text><text x="260.0" y="294.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">같은 모델 · 같은 방법 — 어디서 재느냐만 다르다</text></svg>
+      <div class="finding" style="border-left-color:#ff6b6b;">
+        <p style="margin:0;font-size:18px;color:#fff;"><b style="color:#ff8080;">📝 기출문제를 외운 학생 비유</b><br><br>
+        공식을 이해한 게 아니라 <b>기출문제 정답 번호를 통째로 외운</b> 학생이 있다.<br><br>
+        그 학생에게 <b>같은 기출문제</b>를 주고 "뭘 보고 풀었니?"라고 물으면 —<br>
+        실력으로 푼 부분과 <b style="color:#ff8080;">외워서 맞힌 부분이 뒤섞인</b> 답이 돌아온다.<br><br>
+        <span style="color:#8892a4;font-size:17px;">그래서 <b style="color:#adff2f;">처음 보는 문제</b>로 물어야 한다.</span></p>
+      </div>
+    </div>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">같은 모델, 같은 방법인데 <b style="color:#adff2f;">어디서 재느냐</b>만으로 <b>약 1.8배</b> 차이가 난다.<br>
+      🔴 남의 분석 보고서를 받으면 <b style="color:#adff2f;">이 질문 하나만 던져도 된다 — "그거 train 에서 재셨어요, validation 에서 재셨어요?"</b></p>
+    </div>
+  </div>
+  <div class="slide-no">07</div>
 </div>
 
 <div class="slide-container">
   <h2 class="slide-title">Step 2 — 세 방법이 같은 답을 주는가 ⚠️</h2>
   <div class="content-area table-layout">
     <table style="font-size:18px;">
-      <tr><th style="width:230px;">방법</th><th style="width:90px;">차시</th><th>무엇을 재나</th></tr>
-      <tr><td><strong>표준화 계수</strong></td><td>5차시</td><td>다른 변수를 통제했을 때의 관계 (방향 + 크기)</td></tr>
-      <tr><td><strong>부트스트랩 신뢰구간</strong></td><td>5차시</td><td>그 계수가 표본이 바뀌어도 버티는가</td></tr>
-      <tr><td><strong>Permutation Importance</strong></td><td>오늘</td><td>그 변수를 망가뜨리면 성능이 얼마나 떨어지나</td></tr>
+      <tr><th style="width:230px;">방법</th><th style="width:90px;">차시</th><th>무엇을 재나</th><th style="width:210px;">비유: 세 명의 탐정</th></tr>
+      <tr><td><strong>표준화 계수</strong></td><td>5차시</td><td>다른 변수를 통제했을 때의 관계 (방향 + 크기)</td><td>서류만 파는 <b>장부 분석가</b></td></tr>
+      <tr><td><strong>부트스트랩 신뢰구간</strong></td><td>5차시</td><td>그 계수가 표본이 바뀌어도 버티는가</td><td>수천 번 돌리는 <b>시뮬레이터</b></td></tr>
+      <tr><td><strong>Permutation Importance</strong></td><td>오늘</td><td>그 변수를 망가뜨리면 성능이 얼마나 떨어지나</td><td>현장을 부수는 <b>행동파</b></td></tr>
     </table>
     <div class="finding" style="margin-top:20px;">
-      <p style="margin:0;font-size:21px;color:#fff;">셋이 <b style="color:#adff2f;">같은 변수를 가리키면</b> 결론이 단단해진다 — <b>삼각검증(triangulation)</b>.<br>
-      다르면? <b style="color:#ffd479;">다른 이유를 설명해야 한다.</b></p>
+      <p style="margin:0;font-size:20px;color:#fff;">도구도 시각도 완전히 다른 세 탐정이 <b style="color:#adff2f;">같은 범인을 지목하면</b> 결론이 단단해진다 — <b>삼각검증(triangulation)</b>.<br>
+      다르면? <b style="color:#ffd479;">실패가 아니라, 다른 이유를 설명해야 한다는 뜻이다.</b></p>
     </div>
   </div>
-  <div class="slide-no">07</div>
+  <div class="slide-no">08</div>
 </div>
 
 <div class="slide-container">
@@ -307,30 +348,24 @@
       <tr><td>ego_resilience</td><td>+.161 (6위)</td><td>🔴 0 포함</td><td><b style="color:#ff8080;">.0009 (10위)</b></td><td>3/5</td></tr>
     </table>
     <div class="finding" style="margin-top:14px;">
-      <p style="margin:0;font-size:19px;color:#fff;">방법이 완전히 다른데(계수 vs 성능 하락) <b style="color:#adff2f;">같은 3개</b>가 나왔다. 순위 상관 <b>.866</b>, 상위 5개는 순위가 <b>완전히 일치</b>한다.<br>
-      그리고 5차시에 기각했던 <code>ego_resilience</code> 는 오늘도 <b style="color:#ff8080;">거의 0</b> — 삼각검증이 또 작동했다.</p>
+      <p style="margin:0;font-size:19px;color:#fff;">방법이 완전히 다른데(계수 vs 성능 하락) <b style="color:#adff2f;">같은 3개</b>가 나왔다. 순위 상관 <b>.866</b>, 상위 5개는 순위가 <b>완전히 일치</b>(1,2,3,4,5)한다.<br>
+      그리고 5차시에 "신뢰구간이 0을 포함"이라며 기각했던 <code>ego_resilience</code> 는 오늘도 <b style="color:#ff8080;">거의 0 · 10위 · 폴드 3/5</b> — 삼각검증이 또 작동했다.</p>
     </div>
   </div>
-  <div class="slide-no">08</div>
+  <div class="slide-no">09</div>
 </div>
 
 <div class="slide-container">
   <h2 class="slide-title">Step 3 — 그런데 포레스트는 다른 답을 준다</h2>
   <div class="content-area">
-    <div class="code-block" style="font-size:18px;">순위 상관(스피어만)
-  계수 ↔ 로지스틱 permutation   <span class="num">0.866</span>   <span class="cm"># 같은 모델을 두 방식으로 물어봤으니 당연</span>
-  로지스틱 perm ↔ 포레스트 perm  <span style="color:#ffd479;">0.467</span>   <span class="cm"># 꽤 다르다</span>
-
-  peer_relationship   로지스틱 <span class="num">5</span>위 → 포레스트 <span style="color:#ff8080;">13</span>위
-  school_adjustment   로지스틱 7위 → 포레스트 <span class="num">4</span>위
-  bicultural_attitude 로지스틱 13위 → 포레스트 <span class="num">6</span>위</div>
+    <svg data-fig="rank_flow" viewBox="0 0 560 320" width="100%" style="max-height:320px" xmlns="http://www.w3.org/2000/svg"><text x="150.0" y="24.0" fill="#00f2ff" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">로지스틱</text><text x="410.0" y="24.0" fill="#adff2f" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">포레스트</text><text x="280.0" y="24.0" fill="#ffd479" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">순위 상관 .467</text><text x="280.0" y="44.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">(계수 ↔ 로지스틱 perm 은 .866)</text><text x="142.0" y="66.0" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">1</text><text x="418.0" y="66.0" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">1</text><line x1="150.0" y1="62.0" x2="164.0" y2="62.0" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="62.0" x2="410.0" y2="62.0" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="83.5" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">2</text><text x="418.0" y="83.5" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">2</text><line x1="150.0" y1="79.5" x2="164.0" y2="79.5" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="79.5" x2="410.0" y2="79.5" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="101.0" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">3</text><text x="418.0" y="101.0" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">3</text><line x1="150.0" y1="97.0" x2="164.0" y2="97.0" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="97.0" x2="410.0" y2="97.0" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="118.5" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">4</text><text x="418.0" y="118.5" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">4</text><line x1="150.0" y1="114.5" x2="164.0" y2="114.5" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="114.5" x2="410.0" y2="114.5" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="136.0" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">5</text><text x="418.0" y="136.0" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">5</text><line x1="150.0" y1="132.0" x2="164.0" y2="132.0" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="132.0" x2="410.0" y2="132.0" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="153.5" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">6</text><text x="418.0" y="153.5" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">6</text><line x1="150.0" y1="149.5" x2="164.0" y2="149.5" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="149.5" x2="410.0" y2="149.5" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="171.0" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">7</text><text x="418.0" y="171.0" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">7</text><line x1="150.0" y1="167.0" x2="164.0" y2="167.0" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="167.0" x2="410.0" y2="167.0" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="188.5" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">8</text><text x="418.0" y="188.5" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">8</text><line x1="150.0" y1="184.5" x2="164.0" y2="184.5" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="184.5" x2="410.0" y2="184.5" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="206.0" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">9</text><text x="418.0" y="206.0" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">9</text><line x1="150.0" y1="202.0" x2="164.0" y2="202.0" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="202.0" x2="410.0" y2="202.0" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="223.5" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">10</text><text x="418.0" y="223.5" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">10</text><line x1="150.0" y1="219.5" x2="164.0" y2="219.5" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="219.5" x2="410.0" y2="219.5" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="241.0" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">11</text><text x="418.0" y="241.0" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">11</text><line x1="150.0" y1="237.0" x2="164.0" y2="237.0" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="237.0" x2="410.0" y2="237.0" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="258.5" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">12</text><text x="418.0" y="258.5" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">12</text><line x1="150.0" y1="254.5" x2="164.0" y2="254.5" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="254.5" x2="410.0" y2="254.5" stroke="#3a4250" stroke-width="1"/><text x="142.0" y="276.0" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">13</text><text x="418.0" y="276.0" fill="#55606f" font-size="12" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">13</text><line x1="150.0" y1="272.0" x2="164.0" y2="272.0" stroke="#3a4250" stroke-width="1"/><line x1="396.0" y1="272.0" x2="410.0" y2="272.0" stroke="#3a4250" stroke-width="1"/><path d="M164,62.0 C260,62.0 300,62.0 396,62.0" fill="none" stroke="#adff2f" stroke-width="3" opacity="1"/><text x="126.0" y="66.0" fill="#adff2f" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">친구지지</text><path d="M164,79.5 C260,79.5 300,79.5 396,79.5" fill="none" stroke="#adff2f" stroke-width="3" opacity="1"/><text x="126.0" y="83.5" fill="#adff2f" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">자아존중감</text><path d="M164,132.0 C260,132.0 300,272.0 396,272.0" fill="none" stroke="#ff8080" stroke-width="3" opacity="1"/><text x="126.0" y="136.0" fill="#ff8080" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">교우관계</text><path d="M164,167.0 C260,167.0 300,114.5 396,114.5" fill="none" stroke="#ffd479" stroke-width="2" opacity="0.8"/><text x="126.0" y="171.0" fill="#ffd479" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">학교적응</text><path d="M164,272.0 C260,272.0 300,149.5 396,149.5" fill="none" stroke="#ffd479" stroke-width="2" opacity="0.8"/><text x="126.0" y="276.0" fill="#ffd479" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">이중문화</text><text x="280.0" y="294.0" fill="#adff2f" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">상위 2개는 두 모델이 똑같이 1·2위로 합의</text><text x="280.0" y="314.0" fill="#ff8080" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">교우관계는 5위 → 13위로 추락</text></svg>
     <div class="finding" style="margin-top:16px;">
       <p style="margin:0;font-size:19px;color:#fff;"><b>상위 2개(친구지지·자아존중감)는 두 모델이 똑같이 1·2위</b>로 꼽는다. 그 아래가 흔들린다.<br>
-      → <b style="color:#adff2f;">"상위 2~3개만 두 모델이 합의한다"는 것이 결론이다.</b> 5차시 부트스트랩도 3개만 살아남았다.</p>
+      → <b style="color:#adff2f;">흔들린다고 실패가 아니다. "상위 2~3개만 두 모델이 합의한다"는 것이 우리의 진짜 결론이다.</b> 5차시 부트스트랩도 3개만 살아남았다.</p>
     </div>
     <p style="font-size:18px;margin-top:12px;color:#8892a4;">왜 다른가? ① 포레스트는 역치·상호작용을 쓴다 ② <b style="color:#ffd479;">상관된 변수끼리 서로를 가린다</b> ← 다음 슬라이드</p>
   </div>
-  <div class="slide-no">09</div>
+  <div class="slide-no">10</div>
 </div>
 
 <div class="slide-container">
@@ -340,74 +375,143 @@
       <p style="margin:0;color:#fff;">서로 강하게 상관된 변수가 둘 있으면, 하나를 망가뜨려도 <b style="color:#adff2f;">다른 하나가 대신 정보를 준다.</b><br>
       그래서 <b>둘 다 중요도가 낮게</b> 나온다 — 실제로는 둘 다 중요한데도.</p>
     </div>
-    <div class="table-layout">
-      <table style="font-size:18px;margin-top:16px;">
-        <tr><th>상태 (r = .615)</th><th>peer_support</th><th>peer_relationship</th></tr>
-        <tr><td>둘 다 있을 때</td><td>.0291</td><td>.0122 (5위)</td></tr>
-        <tr><td><code>peer_relationship</code> 제거</td><td><b style="color:#adff2f;">.0382</b></td><td>—</td></tr>
-        <tr><td><code>peer_support</code> 제거</td><td>—</td><td><b style="color:#adff2f;">.0268</b> (2배 이상!)</td></tr>
-      </table>
-    </div>
-    <p style="font-size:20px;margin-top:16px;color:#fff;">🔴 <strong>"중요도가 낮다"가 "중요하지 않다"를 뜻하지 않는다.</strong></p>
-    <p style="font-size:18px;margin-top:8px;color:#8892a4;">해석 규칙: 중요도를 읽기 전에 <b>상관행렬을 옆에 둔다</b>(3차시 산출물). 상관 높은 묶음은 <b style="color:#adff2f;">개별 순위가 아니라 묶음 단위로</b> 이야기한다 — "또래 관계가 중요하다"처럼.</p>
+    <svg data-fig="masking" viewBox="0 0 560 250" width="100%" style="max-height:250px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="mk_a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#adff2f"/></marker></defs><rect x="190.0" y="10.0" width="12.0" height="12.0" fill="#8892a4" rx="2"/><text x="208.0" y="20.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">둘 다 있을 때</text><rect x="355.0" y="10.0" width="12.0" height="12.0" fill="#adff2f" rx="2"/><text x="373.0" y="20.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">짝을 뺐을 때</text><text x="180.0" y="72.0" fill="#e8ecf2" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">peer_support</text><rect x="190.0" y="56.0" width="98.9" height="22.0" fill="#8892a4" rx="2" opacity="0.75"/><text x="296.9" y="73.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">.0291</text><rect x="190.0" y="86.0" width="129.9" height="22.0" fill="#adff2f" rx="2"/><text x="327.9" y="103.0" fill="#adff2f" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.0382</text><path d="M290.94,80 L315.88,86" fill="none" stroke="#adff2f" stroke-width="2" marker-end="url(#mk_a)"/><text x="180.0" y="156.0" fill="#e8ecf2" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">peer_relationship</text><rect x="190.0" y="140.0" width="41.5" height="22.0" fill="#8892a4" rx="2" opacity="0.75"/><text x="239.5" y="157.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">.0122</text><rect x="190.0" y="170.0" width="91.1" height="22.0" fill="#adff2f" rx="2"/><text x="289.1" y="187.0" fill="#adff2f" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.0268</text><path d="M233.48000000000002,164 L277.12,170" fill="none" stroke="#adff2f" stroke-width="2" marker-end="url(#mk_a)"/><path d="M100,74 C74,110 74,132 100,168" fill="none" stroke="#ffd479" stroke-width="2" stroke-dasharray="4 3"/><text x="62.0" y="126.0" fill="#ffd479" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">r = .615</text><text x="280.0" y="242.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">변수 자체는 그대로다 — 바뀐 건 옆에 누가 있느냐뿐이다</text></svg>
+    <p style="font-size:21px;margin-top:16px;color:#fff;">🔴 <strong>"중요도가 낮다"가 "중요하지 않다"를 뜻하지 않는다.</strong></p>
+    <p style="font-size:18px;margin-top:6px;color:#8892a4;">해석 규칙: 중요도를 읽기 전에 <b>상관행렬을 옆에 둔다</b>(3차시 산출물). 상관 높은 묶음은 <b style="color:#adff2f;">개별 순위가 아니라 묶음 단위로</b> 이야기한다 — "또래 관계가 중요하다"처럼.</p>
   </div>
-  <div class="slide-no">10</div>
+  <div class="slide-no">11</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 4 — 그럼 하나 지우면 되지 않나? 🏀</h2>
+  <div class="content-area">
+    <div class="two-column">
+      <div class="finding" style="border-left-color:#ffd479;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ffd479;">🙋 실무자의 반론 (일리 있다)</b><br><br>
+        "어차피 <b>중복되는 정보</b>잖아. 중요도 낮게 나온 쪽을 지워서 모델을 가볍게 만들면 되지."<br><br>
+        <span style="color:#8892a4;font-size:17px;">농구로 치면 — 어시스트를 똑같이 잘하는 포인트 가드가 둘. 코트에서 서로 공을 잡으려다 <b>각자 기록만 깎아먹는다.</b><br>
+        한 명을 벤치로 빼면 교통정리도 되고, 남은 한 명 기록도 오른다.</span></p>
+      </div>
+      <div class="finding" style="border-left-color:#adff2f;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">🏟 그런데 코트 전체를 보면</b><br><br>
+        둘이 같이 뛸 때는 상대 수비가 <b>누굴 막을지 몰라 흩어졌다.</b> 그래서 공간이 열리고 공격이 다양해졌다.<br><br>
+        <span style="color:#8892a4;font-size:17px;">한 명을 빼면 남은 선수 <b style="color:#adff2f;">개인 기록은 올라간다.</b><br>
+        하지만 팀이 만들던 <b style="color:#ff8080;">그 보이지 않는 시너지는 사라진다.</b></span></p>
+      </div>
+    </div>
+    <div class="finding" style="margin-top:18px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 빼는 게 늘 틀린 건 아니다. <b style="color:#adff2f;">숫자 하나만 보고 결정하는 것</b>이 틀린 거다.<br>
+      <span style="font-size:18px;color:#8892a4;">지우기 전에 <b>상관행렬부터 펼쳐</b> 누가 누구와 짐을 나눠 들고 있는지 지도를 그린다. 뺐다면 그 사실과 이유를 기록한다.</span></p>
+    </div>
+  </div>
+  <div class="slide-no">12</div>
 </div>
 
 <div class="slide-container">
   <h2 class="slide-title">Step 5 — 오류 분석: 우리는 누구를 놓쳤나 🔍</h2>
   <div class="content-area table-layout">
     <p style="font-size:19px;margin:0;">지금까지는 "모델이 <b>무엇을</b> 봤나"를 물었다. 이제 "모델이 <b style="color:#adff2f;">누구에게</b> 틀렸나"를 묻는다.</p>
-    <table style="font-size:19px;">
-      <tr><th></th><th>실제 고스트레스</th><th>실제 일반</th></tr>
-      <tr><td><b>모델: 고스트레스</b></td><td><b>TP</b> 맞게 찾음 · 220</td><td><b>FP</b> 잘못 지목 · 275</td></tr>
-      <tr><td><b>모델: 일반</b></td><td><b style="color:#ff8080;">FN 놓침 · 136</b> ⚠️</td><td><b>TN</b> 맞게 제외 · 425</td></tr>
-    </table>
+    <svg data-fig="confusion" viewBox="0 0 520 262" width="100%" style="max-height:262px" xmlns="http://www.w3.org/2000/svg"><text x="238.0" y="26.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">실제 고스트레스</text><text x="414.0" y="26.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">실제 일반</text><rect x="153.0" y="53.0" width="170.0" height="72.0" fill="#1d2632" rx="6" stroke="#3a4250" stroke-width="1"/><text x="238.0" y="86.0" fill="#e8ecf2" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">TP</text><text x="238.0" y="112.0" fill="#8892a4" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">220명</text><rect x="329.0" y="53.0" width="170.0" height="72.0" fill="#1d2632" rx="6" stroke="#3a4250" stroke-width="1"/><text x="414.0" y="86.0" fill="#e8ecf2" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">FP</text><text x="414.0" y="112.0" fill="#8892a4" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">275명</text><rect x="153.0" y="131.0" width="170.0" height="72.0" fill="#3a1d1d" rx="6" stroke="#ff8080" stroke-width="3"/><text x="238.0" y="164.0" fill="#ff8080" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">FN</text><text x="238.0" y="190.0" fill="#ff8080" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">136명</text><rect x="329.0" y="131.0" width="170.0" height="72.0" fill="#1d2632" rx="6" stroke="#3a4250" stroke-width="1"/><text x="414.0" y="164.0" fill="#e8ecf2" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">TN</text><text x="414.0" y="190.0" fill="#8892a4" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">425명</text><text x="138.0" y="96.0" fill="#8892a4" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">모델: 고스트레스</text><text x="138.0" y="174.0" fill="#8892a4" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">모델: 일반</text><text x="260.0" y="232.0" fill="#adff2f" font-size="16" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">recall = 220 ÷ (220+136) = 220 ÷ 356 = .618</text><text x="260.0" y="254.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">고스트레스 학생 10명 중 4명 가까이를 놓친다</text></svg>
     <div class="finding" style="margin-top:18px;">
-      <p style="margin:0;font-size:20px;color:#fff;"><b style="color:#ff8080;">FN(놓친 학생)</b> 이 가장 걱정해야 할 집단이다.<br>
-      이 모델이 학교 선별 도구로 쓰인다면 — <b>도움이 필요한데 발견되지 않는 학생들</b>이다.</p>
+      <p style="margin:0;font-size:20px;color:#fff;"><b style="color:#ff8080;">FN(놓친 학생 136명)</b> 이 가장 걱정해야 할 집단이다.<br>
+      이 모델이 학교 선별 도구로 쓰인다면 — <b>도움이 절실한데 기계에 의해 발견되지 않는 사각지대의 학생들</b>이다.</p>
     </div>
     <p style="font-size:18px;margin-top:10px;color:#8892a4;">recall = 220 / 356 = <b>.618</b> — 고스트레스 학생 10명 중 4명 가까이를 놓친다.</p>
   </div>
-  <div class="slide-no">11</div>
+  <div class="slide-no">13</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">Step 5 — 놓친 학생들의 프로파일 💥</h2>
+  <h2 class="slide-title">Step 5 — 투명 인간 프로파일 💥</h2>
   <div class="content-area table-layout">
-    <table style="font-size:19px;">
-      <tr><th></th><th>FN (놓침)</th><th>TP (찾음)</th><th>TN (맞게 제외)</th></tr>
-      <tr><td>자아존중감</td><td><b style="color:#ffd479;">3.42</b></td><td>2.76</td><td>3.50</td></tr>
-      <tr><td>친구지지</td><td><b style="color:#ffd479;">4.45</b></td><td>3.58</td><td>4.57</td></tr>
-      <tr><td>부모 감독</td><td><b style="color:#ffd479;">3.42</b></td><td>2.85</td><td>3.52</td></tr>
-      <tr><td>우울</td><td><b style="color:#ffd479;">1.47</b></td><td>2.07</td><td>1.38</td></tr>
-    </table>
+    <p style="font-size:19px;margin:0;color:#8892a4;">기계의 눈에 <b style="color:#fff;">'정상'</b>으로 보였던 아이들 — 자아존중감 높고, 친구 관계 좋고, 부모가 챙기고, 우울도 낮다.</p>
+    <svg data-fig="error_profile" viewBox="0 0 620 262" width="100%" style="max-height:262px" xmlns="http://www.w3.org/2000/svg"><rect x="150.0" y="8.0" width="12.0" height="12.0" fill="#ffd479" rx="2"/><text x="168.0" y="19.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">FN (놓침)</text><rect x="300.0" y="8.0" width="12.0" height="12.0" fill="#ff8080" rx="2"/><text x="318.0" y="19.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">TP (찾음)</text><rect x="450.0" y="8.0" width="12.0" height="12.0" fill="#8892a4" rx="2"/><text x="468.0" y="19.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">TN (맞게 제외)</text><line x1="28.0" y1="165.6" x2="608.0" y2="165.6" stroke="#222c38" stroke-width="1"/><text x="20.0" y="169.6" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">1</text><line x1="28.0" y1="135.2" x2="608.0" y2="135.2" stroke="#222c38" stroke-width="1"/><text x="20.0" y="139.2" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">2</text><line x1="28.0" y1="104.8" x2="608.0" y2="104.8" stroke="#222c38" stroke-width="1"/><text x="20.0" y="108.8" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">3</text><line x1="28.0" y1="74.4" x2="608.0" y2="74.4" stroke="#222c38" stroke-width="1"/><text x="20.0" y="78.4" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">4</text><line x1="28.0" y1="44.0" x2="608.0" y2="44.0" stroke="#222c38" stroke-width="1"/><text x="20.0" y="48.0" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">5</text><rect x="44.0" y="92.0" width="30.0" height="104.0" fill="#ffd479" rx="2"/><text x="59.0" y="86.0" fill="#ffd479" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.42</text><rect x="80.0" y="112.1" width="30.0" height="83.9" fill="#ff8080" rx="2" opacity="0.9"/><text x="95.0" y="106.1" fill="#ff8080" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">2.76</text><rect x="116.0" y="89.6" width="30.0" height="106.4" fill="#8892a4" rx="2"/><text x="131.0" y="83.6" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.50</text><text x="92.0" y="216.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">자아존중감</text><rect x="192.0" y="60.7" width="30.0" height="135.3" fill="#ffd479" rx="2"/><text x="207.0" y="54.7" fill="#ffd479" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">4.45</text><rect x="228.0" y="87.2" width="30.0" height="108.8" fill="#ff8080" rx="2" opacity="0.9"/><text x="243.0" y="81.2" fill="#ff8080" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.58</text><rect x="264.0" y="57.1" width="30.0" height="138.9" fill="#8892a4" rx="2"/><text x="279.0" y="51.1" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">4.57</text><text x="240.0" y="216.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">친구지지</text><rect x="340.0" y="92.0" width="30.0" height="104.0" fill="#ffd479" rx="2"/><text x="355.0" y="86.0" fill="#ffd479" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.42</text><rect x="376.0" y="109.4" width="30.0" height="86.6" fill="#ff8080" rx="2" opacity="0.9"/><text x="391.0" y="103.4" fill="#ff8080" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">2.85</text><rect x="412.0" y="89.0" width="30.0" height="107.0" fill="#8892a4" rx="2"/><text x="427.0" y="83.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.52</text><text x="388.0" y="216.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">부모 감독</text><rect x="488.0" y="151.3" width="30.0" height="44.7" fill="#ffd479" rx="2"/><text x="503.0" y="145.3" fill="#ffd479" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">1.47</text><rect x="524.0" y="133.1" width="30.0" height="62.9" fill="#ff8080" rx="2" opacity="0.9"/><text x="539.0" y="127.1" fill="#ff8080" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">2.07</text><rect x="560.0" y="154.0" width="30.0" height="42.0" fill="#8892a4" rx="2"/><text x="575.0" y="148.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">1.38</text><text x="536.0" y="216.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">우울</text><line x1="28.0" y1="196.0" x2="608.0" y2="196.0" stroke="#3a4250" stroke-width="1"/><text x="310.0" y="240.0" fill="#adff2f" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">FN 열은 TP 가 아니라 TN 을 닮았다</text><text x="310.0" y="258.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">네 지표 모두 TN 과의 차이가 0.1 근처다</text></svg>
     <div class="finding" style="margin-top:18px;">
-      <p style="margin:0;font-size:21px;color:#fff;"><b style="color:#adff2f;">FN 은 TP 가 아니라 TN 을 닮았다.</b><br>
+      <p style="margin:0;font-size:21px;color:#fff;"><b style="color:#adff2f;">FN 열은 TP 가 아니라 TN 을 닮았다.</b><br>
       자아존중감 높고, 친구지지 두텁고, 부모가 챙기고, 우울 낮은 학생들 — 그런데 <b>1년 뒤 고스트레스가 됐다.</b></p>
     </div>
-    <p style="font-size:19px;margin-top:14px;color:#8892a4;">모델 입장에선 <b>'멀쩡해 보이는'</b> 학생들이었고, 그래서 놓쳤다.</p>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">모델 입장에선 <b style="color:#ff8080;">'멀쩡해 보이는'</b> 학생들이었고, 그래서 놓쳤다.</p>
   </div>
-  <div class="slide-no">12</div>
+  <div class="slide-no">14</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">Step 5 — 이 발견을 어떻게 읽을 것인가</h2>
+  <h2 class="slide-title">Step 5 — 기계는 왜 이들을 끝까지 못 봤나</h2>
   <div class="content-area">
     <div class="two-column">
-      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">① 완화 요인 — 경계선 효과</b><br><br>
-      FN 의 <b>75.7%</b> 가 6차 스트레스 1.5~1.7 로 <b>cutoff 바로 위</b>다 (TP 는 44.5%).<br><br>
-      놓친 학생 상당수는 "간신히 고스트레스" — 4차시 <b>동점 문제</b>의 연장선이다.</p></div>
-      <div class="finding" style="border-left-color:#ff6b6b;"><p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ff8080;">② 심각한 경고 — 눈에 안 띄는 학생</b><br><br>
-      그럼에도 남는 사실: 우리 모델이 놓치는 학생은 <b>겉보기에 멀쩡한</b> 학생들이다.<br><br>
-      학교 선별 도구로 쓰면 <b>가장 주목받지 못하는 학생들을 계속 놓친다.</b></p></div>
+      <div class="finding" style="border-left-color:#00f2ff;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#00f2ff;">⚙️ 기계 쪽 이유 — 최적화의 지름길</b><br><br>
+        모델은 <b>다수의 패턴</b>을 찾는 기계다.<br>
+        데이터에서 가장 강한 패턴은<br>
+        <span style="color:#8892a4;">"자아존중감 낮고 친구 없으면 스트레스 높다"</span><br><br>
+        그래서 <b>서류상 멀쩡한</b> 입력이 들어오면 미세한 경고 신호를 따지는 대신 <b style="color:#ffd479;">"이런 애들은 대개 정상"</b> 으로 묶는다.<br><br>
+        <span style="color:#ff8080;">다수를 맞히려고 소수의 예외를 통계적으로 희생시킨다.</span></p>
+      </div>
+      <div class="finding" style="border-left-color:#adff2f;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">🧠 심리학 쪽 이유 — 숨기는 아이들</b><br><br>
+        사람의 마음은 수학 공식이 아니다.<br><br>
+        내면의 불안을 <b>숨기려고</b> 오히려<br>
+        · 완벽주의에 집착하고<br>
+        · 친구들에게 더 밝게 웃고<br>
+        · 교우 관계에 과도하게 에너지를 쏟는다<br><br>
+        <span style="color:#8892a4;">→ 척도 위에서 <b style="color:#adff2f;">자아존중감 만점</b>을 찍는 학생이 실제 교실에 존재한다.</span></p>
+      </div>
+    </div>
+    <div class="finding" style="margin-top:18px;border-left-color:#ff6b6b;">
+      <p style="margin:0;font-size:20px;color:#fff;">두 이유가 겹치는 지점에서 <b style="color:#ff8080;">'투명 인간'</b> 이 만들어진다 —<br>
+      <b>교사의 눈에도 잘 안 띄고, 그걸 보완하라고 도입한 기계의 눈에도 안 띄는</b> 학생들.</p>
+    </div>
+  </div>
+  <div class="slide-no">15</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — 튜닝 문제인가, 구조적 결함인가</h2>
+  <div class="content-area">
+    <div class="two-column">
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">① 완화 요인 — 기술적 한계 (75.7%)</b><br><br>
+      FN 의 <b>75.7%</b> 는 6차 스트레스가 1.5~1.7 로 <b>cutoff 바로 위</b>다 (TP 는 44.5%).<br><br>
+      선을 조금만 움직였다면 구해낼 수 있었던 <b>기술적 동점(tie)</b> 의 연장선 — 4차시 동점 문제 그대로다.<br><br>
+      <span style="color:#8892a4;font-size:17px;">→ 민감도 조정으로 상당수 구제 가능.</span></p></div>
+      <div class="finding" style="border-left-color:#ff6b6b;"><p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ff8080;">② 심각한 경고 — 구조적 결함 (약 24%)</b><br><br>
+      나머지 <b>약 24%</b> 는 <b style="color:#ff8080;">경계선 근처가 아니었다.</b> 누가 봐도 명백한 고위험인데 놓쳤다.<br><br>
+      기준선을 낮추는 방법으로는 <b>잡을 수 없다</b> — 서류상 완벽하게 위장돼 있기 때문이다.<br><br>
+      <span style="color:#8892a4;font-size:17px;">→ 민감도가 아니라 <b style="color:#ff8080;">설계의 문제</b>다.</span></p></div>
     </div>
     <div class="finding" style="margin-top:18px;">
-      <p style="margin:0;font-size:20px;color:#fff;">🔴 8차시 윤리 절에 반드시 들어갈 문장:<br>
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 8차시 윤리 절에 반드시 들어갈 문장 — <b>두 해석을 모두 적어야 정직한 서술이다:</b><br>
       <b style="color:#adff2f;">"이 모델의 오류는 무작위가 아니다. 특정한 종류의 학생에게 체계적으로 쏠려 있다."</b></p>
     </div>
   </div>
-  <div class="slide-no">13</div>
+  <div class="slide-no">16</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">잠깐 — 이건 학교만의 이야기가 아니다</h2>
+  <div class="content-area">
+    <div class="tiled-content">
+      <div class="tile" style="border-bottom-color:#ff6b6b;">
+        <div class="icon" style="color:#ff8080;"><i class="fa-solid fa-file-lines"></i></div>
+        <h3>채용</h3>
+        <p style="font-size:18px;">AI 이력서 필터가<br><b style="color:#ff8080;">걸러내는 사람</b>은 누구인가?</p>
+      </div>
+      <div class="tile" style="border-bottom-color:#ff6b6b;">
+        <div class="icon" style="color:#ff8080;"><i class="fa-solid fa-user-doctor"></i></div>
+        <h3>의료</h3>
+        <p style="font-size:18px;">중증도 분류에서<br><b style="color:#ff8080;">'건강함'으로 돌려보내는</b> 환자는 누구인가?</p>
+      </div>
+      <div class="tile" style="border-bottom-color:#ff6b6b;">
+        <div class="icon" style="color:#ff8080;"><i class="fa-solid fa-scale-unbalanced"></i></div>
+        <h3>평가 · 진단</h3>
+        <p style="font-size:18px;">"기계가 객관적"이라는 믿음이<br><b style="color:#ff8080;">누구를 지우고</b> 있는가?</p>
+      </div>
+    </div>
+    <div class="finding" style="margin-top:22px;">
+      <p style="margin:0;font-size:21px;color:#fff;">"정확도 90%" 라는 숫자에 박수치고 끝낼 일이 아니다.<br>
+      🔴 <b style="color:#adff2f;">"우리 모델이 놓치는 그 10%는 누구인가?"</b> — 이 질문을 집요하게 파고드는 것이 분석가의 책임이다.</p>
+    </div>
+  </div>
+  <div class="slide-no">17</div>
 </div>
 
 <div class="slide-container">
@@ -421,44 +525,92 @@
       <tr><td>모델이 그 변수에 <b>실제로 기댄다</b>(permutation)</td><td>제3의 원인이 둘 다 만든 것인지</td></tr>
     </table>
     <div class="finding" style="margin-top:16px;">
-      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">우리 설계의 강점</b>: X 는 중2, y 는 중3 — <b>시간 순서가 확보</b>돼 있다. "스트레스 때문에 친구 관계가 나빠진 것 아니냐"를 <b>부분적으로</b> 배제한다.<br>
-      <b style="color:#ff8080;">그래도 인과는 아니다</b>: <b>학급 분위기</b>가 좋으면 친구지지도 높고 스트레스도 낮을 수 있다 — 우리는 학급 변수를 통제하지 않았다.</p>
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">우리 설계의 강점</b>: X 는 중2, y 는 중3 — <b>시간 순서가 확보</b>돼 있다. 횡단 자료보다 훨씬 낫다.<br>
+      <b style="color:#ff8080;">그래도 인과는 아니다</b>: <b>담임·학급 분위기</b>가 좋으면 친구지지도 높고 스트레스도 낮다 — 보이지 않는 진짜 원인이 <b>두 결과를 동시에</b> 만들 수 있다. 우리는 학급 변수를 넣지도 않았다.</p>
     </div>
   </div>
-  <div class="slide-no">14</div>
+  <div class="slide-no">18</div>
 </div>
 
 <div class="slide-container">
   <h2 class="slide-title">Step 6 — 그래서 이렇게 쓴다</h2>
   <div class="content-area table-layout">
-    <table style="font-size:19px;">
-      <tr><th style="width:70px;"></th><th>표현</th></tr>
-      <tr><td>❌</td><td>"친구지지가 고스트레스를 <b>예방한다</b>"</td></tr>
-      <tr><td>❌</td><td>"친구지지는 <b>보호요인으로 확인되었다</b>"</td></tr>
-      <tr><td>❌</td><td>"친구지지가 <b>가장 중요한 변수다</b>"</td></tr>
-      <tr><td>✅</td><td>"중2 시점 친구지지는 1년 뒤 고스트레스 집단 분류에 <b style="color:#adff2f;">가장 크게 기여한 예측변수</b>였다"</td></tr>
-      <tr><td>✅</td><td>"친구지지가 낮은 학생이 이후 고스트레스 집단에 속할 <b style="color:#adff2f;">가능성이 높았다</b>"</td></tr>
-      <tr><td>✅</td><td>"이 결과는 <b style="color:#adff2f;">개입 효과를 보장하지 않는다</b> — 인과 검증에는 실험·준실험 설계가 필요하다"</td></tr>
+    <table style="font-size:18px;">
+      <tr><th style="width:70px;"></th><th>표현</th><th style="width:330px;">첨삭</th></tr>
+      <tr><td>❌</td><td>"친구지지가 고스트레스를 <b>예방한다</b>"</td><td style="color:#ff8080;font-size:16px;">'예방'은 개입 효과를 약속한다</td></tr>
+      <tr><td>❌</td><td>"친구지지는 <b>보호요인으로 확인되었다</b>"</td><td style="color:#ff8080;font-size:16px;">'확인'은 인과가 검증된 것처럼 읽힌다</td></tr>
+      <tr><td>❌</td><td>"친구지지가 <b>가장 중요한 변수다</b>"</td><td style="color:#ff8080;font-size:16px;">'중요'라는 단어가 원인이라는 착각을 부른다</td></tr>
+      <tr><td>✅</td><td>"<b style="color:#adff2f;">중2 시점</b> 친구지지는 1년 뒤 고스트레스 집단 분류에 <b style="color:#adff2f;">가장 크게 기여한 예측변수</b>였다"</td><td style="color:#adff2f;font-size:16px;">시점 명시 + '기여'</td></tr>
+      <tr><td>✅</td><td>"친구지지가 낮은 학생이 이후 고스트레스 집단에 속할 <b style="color:#adff2f;">가능성이 높았다</b>"</td><td style="color:#adff2f;font-size:16px;">'가능성'</td></tr>
+      <tr><td>✅</td><td>"이 결과는 <b style="color:#adff2f;">개입 효과를 보장하지 않는다</b> — 인과 검증에는 실험·준실험 설계가 필요하다"</td><td style="color:#adff2f;font-size:16px;">한계를 먼저 적는다</td></tr>
     </table>
-    <div class="finding" style="margin-top:16px;">
-      <p style="margin:0;font-size:20px;color:#fff;">🔴 <b style="color:#adff2f;">"모델이 무엇을 썼는가"와 "무엇이 원인인가"는 다른 질문이다.</b><br>
-      우리는 앞의 질문에만 답했다. 그리고 <b>그 사실을 정확히 적는 것</b>까지가 연구다.</p>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">🔴 <b style="color:#adff2f;">"모델이 무엇을 썼는가"와 "무엇이 원인인가"는 다른 질문이다.</b> 우리는 앞의 질문에만 답했다.<br>
+      그리고 <b>그 사실을 정확히 적는 것</b>까지가 연구다 — 이 문장들이 그대로 8차시 <code>final_report.md</code> 의 결과 절이 된다.</p>
     </div>
   </div>
-  <div class="slide-no">15</div>
+  <div class="slide-no">19</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">최종 판결 — 성능이 낮다는 것도 '결과'다</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;color:#fff;">선별 도구로서의 성능이 낮다고 해서 <b style="color:#adff2f;">이 연구가 실패한 것은 아니다.</b></p>
+    <ul class="bullet-list" style="font-size:20px;margin-top:10px;">
+      <li><i class="fa-solid fa-1"></i> 어떤 변수가 관련되는지에 대한 <strong>삼각검증된 증거 3개</strong>를 얻었다</li>
+      <li><i class="fa-solid fa-2"></i> 기계가 <strong>놓치는 학생의 유형</strong>을 수치로 드러냈다 — 아무도 몰랐던 편향이다</li>
+      <li><i class="fa-solid fa-3"></i> 훗날 누군가 진행할 <strong>인과 검증 실험의 정확한 타깃</strong>을 제공했다</li>
+    </ul>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:20px;color:#fff;">"서류상 완벽해 보이는 아이들 중에도 고위험군이 숨어 있다"를 <b>수치로 증명</b>했기 때문에,<br>
+      다음 연구자는 <b style="color:#adff2f;">"그 아이들을 찾으려면 어떤 데이터를 더 넣어야 하나"</b> 라는 한 단계 높은 질문을 던질 수 있다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">예측 연구는 <b style="color:#adff2f;">종착역이 아니라 징검다리</b>다 — 어떤 학교엔 친구지지 향상 프로그램을 넣고 다른 학교는 그대로 두어 비교하는 <b>진짜 인과 검증 실험</b>을, 이제 근거를 갖고 설계할 수 있다.<br>
+    🔴 <b style="color:#adff2f;">실패의 형태를 정직하게 기록하는 것</b> 자체가 다음 연구의 디딤돌이 된다.</p>
+  </div>
+  <div class="slide-no">20</div>
 </div>
 
 <div class="slide-container">
   <h2 class="slide-title">회고 — 3개 질문</h2>
   <div class="content-area">
     <ul class="bullet-list" style="font-size:20px;">
-      <li><i class="fa-solid fa-1"></i> Permutation Importance 를 <strong>train 에서 재면</strong> 왜 안 되나? 실측으로 몇 배 차이가 났나?</li>
+      <li><i class="fa-solid fa-1"></i> Permutation Importance 를 <strong>train 에서 재면</strong> 왜 위험한가? 실측으로 몇 배 차이가 났나? <span style="color:#8892a4;">(힌트: 1.8배)</span></li>
       <li><i class="fa-solid fa-2"></i> <code>peer_relationship</code> 은 중요도 5위(.0122)인데 짝을 빼면 .0268 로 뛴다. <strong>"이 변수는 중요하지 않다"고 말해도 되나?</strong></li>
-      <li><i class="fa-solid fa-3"></i> 놓친 학생(FN)들은 자아존중감도 높고 친구지지도 두터웠다. <strong>이 사실이 "이 모델을 학교에서 써도 되는가"에 어떤 영향을 주나?</strong></li>
+      <li><i class="fa-solid fa-3"></i> 자아존중감도 높고 친구지지도 두터운 학생들을 놓친다(FN)는 사실은, <strong>이 모델의 현장 도입에 어떤 함의를 주는가?</strong></li>
     </ul>
-    <p style="font-size:18px;margin-top:14px;color:#8892a4;">📝 과제: ① 내 변수의 계수·부트스트랩 구간·permutation 세 값을 한 표로 + 일치 판정 ② FN 집단 특징 3문장 + 실무 함의 1문장 ③ "친구지지는 보호요인이다"를 윤리에 맞게 고쳐 쓰기</p>
+    <div class="finding" style="margin-top:10px;">
+      <p style="margin:0;font-size:19px;color:#fff;">세 질문에 <b style="color:#adff2f;">자신만의 근거</b>를 댈 수 있다면 오늘 수업의 목표를 달성한 것이다. 3번에는 정답이 없다.</p>
+    </div>
+    <p style="font-size:17px;margin-top:12px;color:#8892a4;">📝 과제: ① 내 변수의 계수·부트스트랩 구간·permutation 세 값을 한 표로 + 일치 판정 ② FN 집단 특징 3문장 + 실무 함의 1문장 ③ "친구지지는 보호요인이다"를 윤리에 맞게 고쳐 쓰기</p>
   </div>
-  <div class="slide-no">16</div>
+  <div class="slide-no">21</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">마지막 질문 — 완벽한 AI라면 괜찮은가</h2>
+  <div class="content-area">
+    <div class="two-column">
+      <div class="finding" style="border-left-color:#ffd479;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ffd479;">① 만약 오류율 0% 라면?</b><br><br>
+        기술이 극도로 발전해 <b>단 한 명도 놓치지 않는</b> 완벽한 스트레스 예측 AI 가 나왔다고 하자.<br><br>
+        오류가 없으니 유토피아일까? 아니면 중2 아이에게<br>
+        <b style="color:#ff8080;">"너는 1년 뒤 고위험군이 될 운명이다"</b><br>
+        라고 통계적 낙인을 찍는 <b>운명론적 통제</b>일까?</p>
+      </div>
+      <div class="finding" style="border-left-color:#ff6b6b;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ff8080;">② 우리가 물려주고 있는 것</b><br><br>
+        데이터를 모으고, 정답표를 달고, 학습시키는 건 <b>결국 사람</b>이다.<br><br>
+        그렇다면 우리는 AI 에 <b style="color:#ffd479;">'객관적 데이터'라는 포장지</b>를 씌워서 —<br>
+        <b style="color:#ff8080;">우리 사회의 편견과 사각지대까지 고스란히 유산처럼 물려주고</b> 있는 것은 아닐까?</p>
+      </div>
+    </div>
+    <div class="finding" style="margin-top:20px;">
+      <p style="margin:0;font-size:21px;color:#fff;text-align:center;">다음에 "AI 가 분석한 객관적인 결과입니다"라는 말을 들으면, 한 번 멈춰서 물어보자 —<br>
+      <b style="color:#adff2f;">"저 인공지능은 지금 무엇을 보지 못하고 있을까?"</b></p>
+    </div>
+  </div>
+  <div class="slide-no">22</div>
 </div>
 
 <div class="slide-container">
@@ -468,12 +620,12 @@
       <p style="margin:0;color:#fff;">다음 주에 드디어 <b style="color:#adff2f;">test 를 연다.</b><br>
       4차시부터 <b>265명</b>을 봉인해 뒀다 — <b>딱 한 번, 되돌릴 수 없다.</b></p>
     </div>
-    <p style="font-size:21px;margin-top:24px;color:#fff;">그 숫자가 CV 보다 낮게 나와도 <strong>그대로 보고한다.</strong><br>
-    <span style="font-size:19px;color:#8892a4;">그게 우리가 4주 동안 지켜 온 규칙이다.</span></p>
+    <p style="font-size:21px;margin-top:24px;color:#fff;">그 숫자가 CV 보다 낮게 나와도 <strong>조작 없이 그대로 보고한다.</strong><br>
+    <span style="font-size:19px;color:#8892a4;">그게 우리가 4주 동안 지켜 온 규칙이고, 데이터를 다루는 자의 윤리이자 과학이다.</span></p>
     <p style="font-size:21px;margin-top:20px;color:#fff;">그리고 <strong>최종 보고서</strong>를 쓴다 — 결론, 한계, 윤리.<br>
     <span style="font-size:19px;color:#8892a4;">남이 이 repo 를 받아 <b style="color:#adff2f;">같은 결과를 재현</b>할 수 있으면 이 프로그램은 성공이다.</span></p>
   </div>
-  <div class="slide-no">17</div>
+  <div class="slide-no">23</div>
 </div>
 </body>
 </html>
