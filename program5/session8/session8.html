@@ -123,6 +123,12 @@
         .table-layout table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .table-layout th { background: #151a21; color: #00f2ff; text-align: left; padding: 20px; border-bottom: 2px solid #333; }
         .table-layout td { padding: 20px; border-bottom: 1px solid #222; color: #ffffff; }
+        /* 행이 많은 표(6줄 이상)용 — 720px 안에 들어가게 촘촘히 */
+        .table-layout table.compact th,
+        .table-layout table.compact td { padding: 10px 16px; font-size: 17px; }
+        .table-layout table.tight { margin-top: 0; }
+        .table-layout table.tight th,
+        .table-layout table.tight td { padding: 7px 16px; font-size: 16px; }
 
         /* Formula Container */
         #formula-container { background: #000; padding: 25px; border-radius: 10px; border-left: 4px solid #adff2f; display: inline-block; }
@@ -186,115 +192,158 @@
 <body>
 <div class="slide-container">
   <div class="content-area title-layout">
-    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:70px;">봉투를 연다</h1>
-    <p class="subtitle">4차시부터 봉인한 265명 — 오늘 딱 한 번, 되돌릴 수 없다</p>
-    <p style="margin-top:36px;font-weight:700;letter-spacing:2px;color:#adff2f;">8차시 (마지막) · test 최종 1회 · 민감도 분석 · 결론 · 한계 · 윤리</p>
+    <h1 style="text-shadow:0 0 20px rgba(0,242,255,0.4);font-size:60px;margin-bottom:6px;">봉투를 연다</h1>
+    <div style="width:520px;max-width:100%;"><svg data-fig="envelope" viewBox="0 0 520 252" width="100%" style="max-height:252px" xmlns="http://www.w3.org/2000/svg"><rect x="39.0" y="29.0" width="460.0" height="216.0" fill="#05080c" rx="10"/><rect x="30.0" y="18.0" width="460.0" height="216.0" fill="#1d2632" rx="10" stroke="#8892a4" stroke-width="2.4"/><path d="M32,22 L260.0,114 L488,22" fill="#222c38" stroke="#8892a4" stroke-width="2.4" stroke-linejoin="round"/><circle cx="260.0" cy="96.0" r="11" fill="#2b3442" stroke="#8892a4" stroke-width="1.8"/><circle cx="260.0" cy="96.0" r="2.8" fill="#8892a4"/><circle cx="260.0" cy="146.0" r="11" fill="#2b3442" stroke="#8892a4" stroke-width="1.8"/><circle cx="260.0" cy="146.0" r="2.8" fill="#8892a4"/><path d="M260.0,96 C240.0,118 280.0,126 260.0,146" fill="none" stroke="#8892a4" stroke-width="1.6"/><g transform="rotate(-6 260.0 179.0)"><rect x="88.0" y="140.0" width="344.0" height="78.0" fill="none" rx="7" stroke="#ff8080" stroke-width="3.4" stroke-dasharray="10 6" opacity="0.92"/><text x="260.0" y="173.0" fill="#ff8080" font-size="25" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">265 TEST SUBJECTS</text><text x="260.0" y="202.0" fill="#ff8080" font-size="22" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">SEALED FOR 4 WEEKS</text></g></svg></div>
+    <p class="subtitle" style="margin-top:10px;">4주 동안 금고에 봉인해 둔 265명 — 오늘 딱 한 번, 되돌릴 수 없다</p>
+    <p style="margin-top:18px;font-weight:700;letter-spacing:2px;color:#adff2f;">8차시 (마지막) · test 최종 1회 · 민감도 분석 · 결론 · 한계 · 윤리</p>
   </div>
   <div class="slide-no">01</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">오늘 두 번의 반전이 있다 — 미리 알려 준다</h2>
+  <h2 class="slide-title">오늘 세 번 뒤집힌다 — 미리 알려 준다</h2>
   <div class="content-area">
-    <div class="two-column">
-      <div class="finding"><p style="margin:0;font-size:20px;color:#fff;"><b style="color:#ffd479;">반전 ①</b><br><br>
-      <b>CV 에서 이겼던 모델이 test 에서 진다.</b><br>6차시에 기록해 둔 경고가 <b style="color:#adff2f;">실제로 실현된다.</b></p></div>
-      <div class="finding"><p style="margin:0;font-size:20px;color:#fff;"><b style="color:#ffd479;">반전 ②</b><br><br>
-      <b>그런데 그 뒤집힘조차 믿을 수 없다.</b><br>신뢰구간이 답을 준다.</p></div>
+    <div class="tiled-content">
+      <div class="tile" style="border-bottom-color:#ffd479;">
+        <div class="icon" style="color:#ffd479;"><i class="fa-solid fa-right-left"></i></div>
+        <h3>반전 ①</h3>
+        <p style="font-size:18px;color:#fff;margin-top:8px;">CV 에서 이겼던 모델이<br><b style="color:#ffd479;">test 에서 진다</b></p>
+        <p style="font-size:16px;color:#8892a4;margin-top:12px;">6차시에 적어 둔 경고가<br>그대로 실현된다</p>
+      </div>
+      <div class="tile">
+        <div class="icon"><i class="fa-solid fa-camera-retro"></i></div>
+        <h3>반전 ②</h3>
+        <p style="font-size:18px;color:#fff;margin-top:8px;">그 뒤집힘조차<br><b style="color:#00f2ff;">믿을 수 없다</b></p>
+        <p style="font-size:16px;color:#8892a4;margin-top:12px;">차이의 신뢰구간이<br>0 을 가로지른다</p>
+      </div>
+      <div class="tile" style="border-bottom-color:#ff6b6b;">
+        <div class="icon" style="color:#ff8080;"><i class="fa-solid fa-heart-crack"></i></div>
+        <h3>반전 ③</h3>
+        <p style="font-size:18px;color:#fff;margin-top:8px;">우리가 써 둔<br><b style="color:#ff8080;">변명이 무너진다</b></p>
+        <p style="font-size:16px;color:#8892a4;margin-top:12px;">7차시의 완화 설명이<br>test 에서 지지받지 못한다</p>
+      </div>
     </div>
-    <p style="font-size:21px;margin-top:24px;color:#fff;">오늘은 새로 배우는 기법이 거의 없다.<br>대신 <strong>지금까지 한 모든 것을 검증대에 올린다.</strong></p>
-    <p style="font-size:19px;margin-top:16px;color:#adff2f;">🔴 오늘의 규칙: <b>"결과를 보고 나서 방법을 바꾸지 않는다."</b> 이 규칙을 지켰기 때문에 오늘의 숫자를 믿을 수 있다.</p>
+    <p style="font-size:20px;margin-top:20px;color:#fff;">반전을 <strong>미리 알려 주는 것이 의도적</strong>이다. 놀래키는 게 목적이 아니라, <b style="color:#adff2f;">왜 이런 일이 일어나는지</b> 이해하는 것이 오늘의 수업이다.</p>
+    <p style="font-size:19px;margin-top:10px;color:#adff2f;">🔴 오늘의 규칙: <b>"결과를 보고 나서 방법을 바꾸지 않는다."</b> 이 규칙을 지켰기 때문에 오늘의 숫자를 믿을 수 있다.</p>
   </div>
   <div class="slide-no">02</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">오늘의 흐름 — 7 Step</h2>
+  <h2 class="slide-title">오늘 여러분의 마음이 지나갈 길</h2>
   <div class="content-area">
-    <div class="step-grid">
-      <div class="step-card"><h4>Step 0 · 봉인 감사</h4><p>정말 안 봤는지 <strong>코드로 확인</strong>한다</p></div>
-      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 1~2 · 봉투를 연다 ⚠️</h4><p><strong>첫 봉우리</strong> — 순위가 뒤집힌다</p></div>
-      <div class="step-card"><h4>Step 3 · 신뢰구간</h4><p>그 뒤집힘조차 믿을 수 없다</p></div>
-      <div class="step-card"><h4>Step 4 · 민감도 분석</h4><p>정의를 바꾸면 결론이 흔들리나</p></div>
-      <div class="step-card" style="border-left-color:#adff2f;"><h4>Step 5 · 재현 확인 🔍</h4><p><strong>둘째 봉우리</strong> — 7차시 발견은 재현되나</p></div>
-      <div class="step-card"><h4>Step 6~7 · 보고서 · 재현성</h4><p>final_report.md · 파이프라인 대조</p></div>
-    </div>
-    <p style="font-size:19px;margin-top:16px;color:#8892a4;">완료 기준: <b style="color:#adff2f;">"남이 이 repo 를 받아 같은 결과를 재현할 수 있다."</b></p>
+    <p class="kicker" style="margin:0;">EMOTIONAL ARC · 오늘은 정서 곡선이 곧 수업 설계다</p>
+    <svg data-fig="arc" viewBox="0 0 1080 250" width="100%" style="max-height:250px" xmlns="http://www.w3.org/2000/svg"><path d="M100,104 C188,104 188,68 276,68 C364,68 364,152 452,152 C540,152 540,116 628,116 C716,116 716,74 804,74 C892,74 892,158 980,158" fill="none" stroke="#3a4250" stroke-width="3"/><line x1="100.0" y1="116.0" x2="100.0" y2="186.0" stroke="#222c38" stroke-width="1" stroke-dasharray="3 4"/><circle cx="100.0" cy="104.0" r="8" fill="#ffd479" stroke="#101820" stroke-width="2"/><text x="100.0" y="86.0" fill="#ffd479" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">긴장</text><text x="100.0" y="206.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">봉투를 연다</text><text x="100.0" y="230.0" fill="#55606f" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">Step 1</text><line x1="276.0" y1="80.0" x2="276.0" y2="186.0" stroke="#222c38" stroke-width="1" stroke-dasharray="3 4"/><circle cx="276.0" cy="68.0" r="8" fill="#ff8080" stroke="#101820" stroke-width="2"/><text x="276.0" y="50.0" fill="#ff8080" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">당황</text><text x="276.0" y="206.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">순위가 뒤집혔다</text><text x="276.0" y="230.0" fill="#55606f" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">Step 2</text><line x1="452.0" y1="164.0" x2="452.0" y2="186.0" stroke="#222c38" stroke-width="1" stroke-dasharray="3 4"/><circle cx="452.0" cy="152.0" r="8" fill="#adff2f" stroke="#101820" stroke-width="2"/><text x="452.0" y="134.0" fill="#adff2f" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">안도</text><text x="452.0" y="206.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">우리는 이미 적어 뒀다</text><text x="452.0" y="230.0" fill="#55606f" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">Step 2</text><line x1="628.0" y1="128.0" x2="628.0" y2="186.0" stroke="#222c38" stroke-width="1" stroke-dasharray="3 4"/><circle cx="628.0" cy="116.0" r="8" fill="#00f2ff" stroke="#101820" stroke-width="2"/><text x="628.0" y="98.0" fill="#00f2ff" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">겸허</text><text x="628.0" y="206.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">그 뒤집힘조차 못 믿는다</text><text x="628.0" y="230.0" fill="#55606f" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">Step 3</text><line x1="804.0" y1="86.0" x2="804.0" y2="186.0" stroke="#222c38" stroke-width="1" stroke-dasharray="3 4"/><circle cx="804.0" cy="74.0" r="8" fill="#ff8080" stroke="#101820" stroke-width="2"/><text x="804.0" y="56.0" fill="#ff8080" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">무거움</text><text x="804.0" y="206.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">우리 변명이 무너졌다</text><text x="804.0" y="230.0" fill="#55606f" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">Step 5</text><line x1="980.0" y1="170.0" x2="980.0" y2="186.0" stroke="#222c38" stroke-width="1" stroke-dasharray="3 4"/><circle cx="980.0" cy="158.0" r="8" fill="#adff2f" stroke="#101820" stroke-width="2"/><text x="980.0" y="140.0" fill="#adff2f" font-size="20" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">착지</text><text x="980.0" y="206.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">재현성으로 끝낸다</text><text x="980.0" y="230.0" fill="#55606f" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">Step 6~7</text><line x1="60.0" y1="186.0" x2="1020.0" y2="186.0" stroke="#3a4250" stroke-width="1"/></svg>
+    <p style="font-size:19px;margin-top:8px;color:#8892a4;text-align:center;">이 곡선을 <b style="color:#adff2f;">끝까지 타는 것</b>이 오늘 수업이다. 중간에서 멈추면 — 숫자만 남고 태도는 남지 않는다.</p>
   </div>
   <div class="slide-no">03</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">Step 0 — 봉인 확인: 정말 안 봤는가</h2>
+  <h2 class="slide-title">오늘의 흐름 — 7 Step, 두 개의 봉우리</h2>
   <div class="content-area">
-    <div class="code-block" style="font-size:18px;"><span class="cm"># 4~7차시 노트북에서 test 인덱스로 성능을 잰 흔적을 검색한다</span>
-<span class="kw">for</span> path <span class="kw">in</span> <span class="fn">glob</span>(<span class="str">"session[4-7]/session?.ipynb"</span>):
-    ... <span class="kw">if</span> <span class="str">"idx_te"</span> <span class="kw">in</span> line <span class="kw">and</span> <span class="fn">search</span>(<span class="str">"score|predict|fit|auc"</span>, line): ...
-
-<span class="cm"># → 4~7차시에서 test 로 성능을 잰 흔적: 0 건</span></div>
-    <div class="finding" style="margin-top:20px;">
-      <p style="margin:0;font-size:21px;color:#fff;"><b style="color:#adff2f;">0 건이면 — 우리는 규칙을 지켰다. 이제 열 자격이 있다.</b></p>
+    <svg data-fig="steprail" viewBox="0 0 1080 234" width="100%" style="max-height:234px" xmlns="http://www.w3.org/2000/svg"><line x1="110.0" y1="104.0" x2="970.0" y2="104.0" stroke="#3a4250" stroke-width="5"/><circle cx="110.0" cy="104.0" r="26" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="110.0" y="112.0" fill="#e8ecf2" font-size="19" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">0</text><text x="110.0" y="160.0" fill="#e8ecf2" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">봉인 감사</text><text x="110.0" y="182.0" fill="#8892a4" font-size="13.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">정말 안 봤는지 코드로</text><circle cx="282.0" cy="104.0" r="43" fill="#adff2f" opacity="0.14"/><circle cx="282.0" cy="104.0" r="34" fill="#101820" stroke="#adff2f" stroke-width="4"/><text x="282.0" y="112.0" fill="#adff2f" font-size="22" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">1~2</text><text x="282.0" y="54.0" fill="#adff2f" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">⛰ 봉우리</text><text x="282.0" y="168.0" fill="#adff2f" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">봉투를 연다</text><text x="282.0" y="190.0" fill="#8892a4" font-size="13.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">순위가 뒤집힌다</text><circle cx="454.0" cy="104.0" r="26" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="454.0" y="112.0" fill="#e8ecf2" font-size="19" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">3</text><text x="454.0" y="160.0" fill="#e8ecf2" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">신뢰구간</text><text x="454.0" y="182.0" fill="#8892a4" font-size="13.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">판독 불가</text><circle cx="626.0" cy="104.0" r="26" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="626.0" y="112.0" fill="#e8ecf2" font-size="19" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">4</text><text x="626.0" y="160.0" fill="#e8ecf2" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">민감도</text><text x="626.0" y="182.0" fill="#8892a4" font-size="13.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">명단이 바뀐다</text><circle cx="798.0" cy="104.0" r="43" fill="#ff8080" opacity="0.14"/><circle cx="798.0" cy="104.0" r="34" fill="#101820" stroke="#ff8080" stroke-width="4"/><text x="798.0" y="112.0" fill="#ff8080" font-size="22" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">5</text><text x="798.0" y="54.0" fill="#ff8080" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">⛰ 봉우리</text><text x="798.0" y="168.0" fill="#ff8080" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">재현 확인</text><text x="798.0" y="190.0" fill="#8892a4" font-size="13.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">변명이 무너진다</text><circle cx="970.0" cy="104.0" r="26" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="970.0" y="112.0" fill="#e8ecf2" font-size="19" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">6~7</text><text x="970.0" y="160.0" fill="#e8ecf2" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">보고서 · 재현성</text><text x="970.0" y="182.0" fill="#8892a4" font-size="13.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">계산은 코드, 판단은 사람</text><text x="540.0" y="30.0" fill="#8892a4" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">Step 0 → 7 · 봉우리는 두 개다</text></svg>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:19px;color:#fff;">완료 기준: <b style="color:#adff2f;">"남이 이 repo 를 받아 같은 결과를 재현할 수 있다."</b>
+      <span style="color:#8892a4;">— 성능이 아니라 <b>재현성</b>이 마지막 관문이다.</span></p>
     </div>
-    <p style="font-size:19px;margin-top:18px;color:#8892a4;">※ 이 감사는 형식적인 절차가 아니다.<br>
-    <b style="color:#adff2f;">"안 봤다고 믿는 것"과 "안 봤음을 확인하는 것"은 다르다.</b></p>
   </div>
   <div class="slide-no">04</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">Step 1 — 봉투를 연다 ⚠️</h2>
+  <h2 class="slide-title">Step 0 — 봉인 확인: 정말 안 봤는가</h2>
   <div class="content-area">
-    <p style="font-size:21px;margin:0;">이제 <strong>딱 한 번</strong> 연다. 규칙을 다시 확인한다:</p>
-    <ul class="bullet-list" style="font-size:20px;margin-top:14px;">
-      <li><i class="fa-solid fa-lock"></i> 모델도, 변수도, 하이퍼파라미터도 <strong>이미 다 정해져 있다</strong> (6차시 CV 로 확정)</li>
-      <li><i class="fa-solid fa-lock"></i> cutoff 도 <strong>train 에서 계산한 1.500</strong> 을 그대로 쓴다</li>
-      <li><i class="fa-solid fa-lock"></i> <strong>결과를 보고 아무것도 바꾸지 않는다</strong></li>
-    </ul>
-    <div class="finding" style="margin-top:16px;">
-      <p style="margin:0;font-size:20px;color:#fff;">만약 결과가 마음에 안 들어서 무언가를 바꾸고 다시 잰다면,<br>
-      그 순간 test 는 <b style="color:#ff8080;">더 이상 test 가 아니다.</b> 두 번째 측정은 train 과 같아진다.</p>
+    <svg data-fig="seal" viewBox="0 0 1080 180" width="100%" style="max-height:180px" xmlns="http://www.w3.org/2000/svg"><rect x="21.0" y="8.0" width="826.0" height="28.0" fill="#101820" rx="8" stroke="#ffd479" stroke-width="1.6" stroke-dasharray="7 5"/><text x="434.0" y="28.0" fill="#ffd479" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">🔒 test 265명 — 4주 동안 한 번도 열지 않았다</text><rect x="21.0" y="46.0" width="190.0" height="88.0" fill="#101820" rx="10" stroke="#8892a4" stroke-width="1.2"/><text x="116.0" y="70.0" fill="#e8ecf2" font-size="17" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">4차시</text><text x="116.0" y="91.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">split · 라벨 · 봉인</text><rect x="36.0" y="107.0" width="22.0" height="16.0" fill="#8892a4" rx="3"/><path d="M40,107 v-7 a7,7 0 0 1 14,0 v7" fill="none" stroke="#8892a4" stroke-width="2.5"/><text x="65.0" y="122.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">test 0건</text><rect x="233.0" y="46.0" width="190.0" height="88.0" fill="#101820" rx="10" stroke="#8892a4" stroke-width="1.2"/><text x="328.0" y="70.0" fill="#e8ecf2" font-size="17" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">5차시</text><text x="328.0" y="91.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">계수 · 부트스트랩</text><rect x="248.0" y="107.0" width="22.0" height="16.0" fill="#8892a4" rx="3"/><path d="M252,107 v-7 a7,7 0 0 1 14,0 v7" fill="none" stroke="#8892a4" stroke-width="2.5"/><text x="277.0" y="122.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">test 0건</text><rect x="445.0" y="46.0" width="190.0" height="88.0" fill="#101820" rx="10" stroke="#8892a4" stroke-width="1.2"/><text x="540.0" y="70.0" fill="#e8ecf2" font-size="17" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">6차시</text><text x="540.0" y="91.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">트리 · 포레스트 · CV</text><rect x="460.0" y="107.0" width="22.0" height="16.0" fill="#8892a4" rx="3"/><path d="M464,107 v-7 a7,7 0 0 1 14,0 v7" fill="none" stroke="#8892a4" stroke-width="2.5"/><text x="489.0" y="122.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">test 0건</text><rect x="657.0" y="46.0" width="190.0" height="88.0" fill="#101820" rx="10" stroke="#8892a4" stroke-width="1.2"/><text x="752.0" y="70.0" fill="#e8ecf2" font-size="17" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">7차시</text><text x="752.0" y="91.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">중요도 · 오류 분석</text><rect x="672.0" y="107.0" width="22.0" height="16.0" fill="#8892a4" rx="3"/><path d="M676,107 v-7 a7,7 0 0 1 14,0 v7" fill="none" stroke="#8892a4" stroke-width="2.5"/><text x="701.0" y="122.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">test 0건</text><rect x="869.0" y="46.0" width="190.0" height="88.0" fill="#101820" rx="10" stroke="#adff2f" stroke-width="2.4"/><text x="964.0" y="70.0" fill="#adff2f" font-size="17" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">8차시 (오늘)</text><text x="964.0" y="91.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">봉투를 연다</text><rect x="884.0" y="107.0" width="22.0" height="16.0" fill="#adff2f" rx="3"/><path d="M896,107 v-7 a7,7 0 0 1 14,0" fill="none" stroke="#adff2f" stroke-width="2.5"/><text x="913.0" y="122.0" fill="#adff2f" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">개봉</text><text x="540.0" y="156.0" fill="#adff2f" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">감사 결과 — 4~7차시 노트북 전체를 스캔해도 test 로 성능을 잰 흔적 0 건</text><text x="540.0" y="176.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">그동안 우리가 본 것은 train 1,056명뿐이다</text></svg>
+    <div style="background:#000;border-radius:10px 10px 0 0;padding:8px 14px;border-left:4px solid #adff2f;margin-top:6px;">
+      <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#ff5f57;margin-right:6px;"></span>
+      <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#febc2e;margin-right:6px;"></span>
+      <span style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#28c840;margin-right:14px;"></span>
+      <span style="font-family:'Courier New',monospace;font-size:14px;color:#6272a4;">audit — 4주치 노트북 스캔</span>
     </div>
-    <p style="font-size:19px;margin-top:14px;color:#8892a4;">test 265명 · 양성 <b>34.3%</b>(91명) · train 양성 33.7%</p>
+    <div class="code-block" style="font-size:17px;margin-top:0;border-radius:0 0 10px 10px;"><span class="cm">$ scanning session[4-7]/session?.ipynb ...</span>
+<span class="kw">for</span> path <span class="kw">in</span> <span class="fn">glob</span>(<span class="str">"session[4-7]/session?.ipynb"</span>):
+    ... <span class="kw">if</span> <span class="str">"idx_te"</span> <span class="kw">in</span> line <span class="kw">and</span> <span class="fn">search</span>(<span class="str">"score|predict|fit|auc"</span>, line): ...
+
+<span style="color:#50fa7b;font-weight:700;">[ TEST EVALUATION TRACES = 0 FOUND ]</span></div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">※ 이 감사는 형식적인 절차가 아니다.
+    <b style="color:#adff2f;">"안 봤다고 믿는 것"과 "안 봤음을 확인하는 것"은 다르다.</b></p>
   </div>
   <div class="slide-no">05</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">Step 1 — test 최종 결과</h2>
-  <div class="content-area table-layout">
-    <table style="font-size:17px;">
-      <tr><th>세트</th><th>모델</th><th>ROC-AUC</th><th>AP</th><th>Recall</th><th>Precision</th><th>Bal.Acc</th></tr>
-      <tr><td>A</td><td>Dummy</td><td>.5000</td><td>.3434</td><td>.0000</td><td>.0000</td><td>.5000</td></tr>
-      <tr><td>A</td><td><b>로지스틱</b></td><td><b style="color:#adff2f;">.6718</b></td><td>.5126</td><td>.6484</td><td>.4683</td><td>.6316</td></tr>
-      <tr><td>A</td><td>결정 트리</td><td>.6375</td><td>.4359</td><td>.6593</td><td>.4380</td><td>.6084</td></tr>
-      <tr><td>A</td><td>랜덤 포레스트</td><td>.6566</td><td>.4846</td><td>.6154</td><td>.4786</td><td>.6324</td></tr>
-      <tr><td>B</td><td><b>로지스틱</b></td><td><b style="color:#adff2f;">.7165</b></td><td>.6153</td><td>.5934</td><td>.4779</td><td>.6272</td></tr>
-      <tr><td>B</td><td>랜덤 포레스트</td><td>.7032</td><td>.5541</td><td>.5714</td><td>.4906</td><td>.6305</td></tr>
-    </table>
-    <div class="finding" style="margin-top:14px;">
-      <p style="margin:0;font-size:19px;color:#fff;"><b>RQ3 재현</b>: Model A .6718 → Model B <b style="color:#adff2f;">.7165</b> (<b>+.045</b>) — CV 에서는 +.029 였다. 방향 일치.</p>
+  <h2 class="slide-title">Step 0 — 결백은 선언이 아니라 기록으로 증명한다</h2>
+  <div class="content-area">
+    <p class="kicker" style="margin:0;">PRE-REGISTRATION · 사전등록</p>
+    <div class="two-column">
+      <div class="finding" style="border-left-color:#ff6b6b;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ff8080;">보통의 보고서</b><br><br>
+        "연구 윤리를 준수하여 <b>테스트 데이터를 분리하였다.</b>"<br><br>
+        <span style="color:#8892a4;font-size:17px;">→ 한 줄 <b style="color:#ff8080;">선언</b>으로 끝난다. 읽는 사람은 <b>확인할 방법이 없다.</b></span></p>
+      </div>
+      <div class="finding">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">우리가 한 것</b><br><br>
+        4주간의 노트북 <b>전체를 코드로 스캔</b>해 접근 로그가 <b style="color:#adff2f;">0 건</b>임을 출력한다.<br><br>
+        <span style="color:#8892a4;font-size:17px;">→ 신뢰를 개인의 도덕성이 아니라 <b style="color:#adff2f;">검증 가능한 절차</b>에 맡긴다.</span></p>
+      </div>
     </div>
-    <p style="font-size:18px;margin-top:10px;color:#8892a4;">6차시 CV 순위와 비교해 보라. <b style="color:#ffd479;">무언가 이상하지 않은가?</b></p>
+    <p style="font-size:20px;margin-top:20px;color:#fff;">사람은 <b style="color:#ffd479;">결과를 보고 나면 "나는 원래 그렇게 예상했다"고 기억을 고쳐 쓴다</b> — 사후과잉확신 편향.<br>
+    <span style="font-size:18px;color:#8892a4;">데이터를 한 번 슬쩍 열어 본 뒤 무의식적으로 방향을 트는 것도 같은 뿌리다. 그래서 <b style="color:#adff2f;">의지로 참지 않고 구조로 막는다.</b></span></p>
   </div>
   <div class="slide-no">06</div>
 </div>
 
 <div class="slide-container">
+  <h2 class="slide-title">Step 1 — 봉투를 연다 ⚠️</h2>
+  <div class="content-area">
+    <p style="font-size:21px;margin:0;">이제 <strong>딱 한 번</strong> 연다. 지금 <b style="color:#ffd479;">정할 것이 하나도 없다</b>는 점이 핵심이다:</p>
+    <svg data-fig="locks" viewBox="0 0 1080 216" width="100%" style="max-height:216px" xmlns="http://www.w3.org/2000/svg"><rect x="40.0" y="18.0" width="1000.0" height="56.0" fill="#101820" rx="10" stroke="#3a4250" stroke-width="1"/><rect x="67.0" y="37.0" width="22.0" height="16.0" fill="#ff8080" rx="3"/><path d="M71,37 v-7 a7,7 0 0 1 14,0 v7" fill="none" stroke="#ff8080" stroke-width="2.5"/><rect x="112.0" y="33.0" width="92.0" height="26.0" fill="#2a1416" rx="5" stroke="#ff8080" stroke-width="1.6"/><text x="158.0" y="51.0" fill="#ff8080" font-size="15" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">LOCKED</text><text x="228.0" y="52.0" fill="#ffd479" font-size="16" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">[MODEL]</text><text x="400.0" y="52.0" fill="#e8ecf2" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">로지스틱 회귀 · C = 0.1</text><text x="1020.0" y="52.0" fill="#8892a4" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">6차시 CV 가 확정했다</text><rect x="40.0" y="84.0" width="1000.0" height="56.0" fill="#101820" rx="10" stroke="#3a4250" stroke-width="1"/><rect x="67.0" y="103.0" width="22.0" height="16.0" fill="#ff8080" rx="3"/><path d="M71,103 v-7 a7,7 0 0 1 14,0 v7" fill="none" stroke="#ff8080" stroke-width="2.5"/><rect x="112.0" y="99.0" width="92.0" height="26.0" fill="#2a1416" rx="5" stroke="#ff8080" stroke-width="1.6"/><text x="158.0" y="117.0" fill="#ff8080" font-size="15" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">LOCKED</text><text x="228.0" y="118.0" fill="#ffd479" font-size="16" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">[VARIABLES]</text><text x="400.0" y="118.0" fill="#e8ecf2" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">Model A 변수 세트</text><text x="1020.0" y="118.0" fill="#8892a4" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">4차시에 확정했다</text><rect x="40.0" y="150.0" width="1000.0" height="56.0" fill="#101820" rx="10" stroke="#3a4250" stroke-width="1"/><rect x="67.0" y="169.0" width="22.0" height="16.0" fill="#ff8080" rx="3"/><path d="M71,169 v-7 a7,7 0 0 1 14,0 v7" fill="none" stroke="#ff8080" stroke-width="2.5"/><rect x="112.0" y="165.0" width="92.0" height="26.0" fill="#2a1416" rx="5" stroke="#ff8080" stroke-width="1.6"/><text x="158.0" y="183.0" fill="#ff8080" font-size="15" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">LOCKED</text><text x="228.0" y="184.0" fill="#ffd479" font-size="16" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">[CUTOFF]</text><text x="400.0" y="184.0" fill="#e8ecf2" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">1.500</text><text x="1020.0" y="184.0" fill="#8892a4" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">train 에서 계산 — test 로 다시 계산하지 않는다</text></svg>
+    <div class="finding" style="margin-top:16px;">
+      <p style="margin:0;font-size:20px;color:#fff;">만약 결과가 마음에 안 들어서 무언가를 바꾸고 다시 잰다면,<br>
+      그 순간 test 는 <b style="color:#ff8080;">더 이상 test 가 아니다.</b> 두 번째 측정은 train 과 같아진다.</p>
+    </div>
+    <p style="font-size:19px;margin-top:14px;color:#8892a4;">test 265명 · 양성 <b>34.3%</b>(91명) · train 양성 33.7% — <b style="color:#adff2f;">실행한다.</b></p>
+  </div>
+  <div class="slide-no">07</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 1 — test 최종 결과</h2>
+  <div class="content-area">
+    <svg data-fig="testbars" viewBox="0 0 1080 300" width="100%" style="max-height:286px" xmlns="http://www.w3.org/2000/svg"><text x="836.0" y="40.0" fill="#00f2ff" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">AP</text><text x="906.0" y="40.0" fill="#00f2ff" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">Recall</text><text x="978.0" y="40.0" fill="#00f2ff" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">Precision</text><text x="1056.0" y="40.0" fill="#00f2ff" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">Bal.Acc</text><text x="196.0" y="40.0" fill="#00f2ff" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">ROC-AUC</text><rect x="196.0" y="54.0" width="346.7" height="24.0" fill="#8892a4" rx="3" opacity="0.45"/><text x="184.0" y="71.0" fill="#8892a4" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">A · Dummy</text><text x="551.7" y="71.0" fill="#8892a4" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.5000</text><text x="836.0" y="71.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.3434</text><text x="906.0" y="71.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.0000</text><text x="978.0" y="71.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.0000</text><text x="1056.0" y="71.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.5000</text><rect x="196.0" y="90.0" width="465.8" height="24.0" fill="#00f2ff" rx="3" opacity="1"/><text x="184.0" y="107.0" fill="#e8ecf2" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">A · 로지스틱</text><text x="670.8" y="107.0" fill="#00f2ff" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.6718</text><text x="836.0" y="107.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.5126</text><text x="906.0" y="107.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6484</text><text x="978.0" y="107.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.4683</text><text x="1056.0" y="107.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6316</text><rect x="196.0" y="126.0" width="442.0" height="24.0" fill="#8892a4" rx="3" opacity="0.8"/><text x="184.0" y="143.0" fill="#8892a4" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">A · 결정 트리</text><text x="647.0" y="143.0" fill="#8892a4" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.6375</text><text x="836.0" y="143.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.4359</text><text x="906.0" y="143.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6593</text><text x="978.0" y="143.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.4380</text><text x="1056.0" y="143.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6084</text><rect x="196.0" y="162.0" width="455.2" height="24.0" fill="#8892a4" rx="3" opacity="0.8"/><text x="184.0" y="179.0" fill="#8892a4" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">A · 랜덤 포레스트</text><text x="660.2" y="179.0" fill="#8892a4" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.6566</text><text x="836.0" y="179.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.4846</text><text x="906.0" y="179.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6154</text><text x="978.0" y="179.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.4786</text><text x="1056.0" y="179.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6324</text><rect x="196.0" y="198.0" width="496.8" height="24.0" fill="#adff2f" rx="3" opacity="1"/><text x="184.0" y="215.0" fill="#e8ecf2" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">B · 로지스틱</text><text x="701.8" y="215.0" fill="#adff2f" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.7165</text><text x="836.0" y="215.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6153</text><text x="906.0" y="215.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.5934</text><text x="978.0" y="215.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.4779</text><text x="1056.0" y="215.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6272</text><rect x="196.0" y="234.0" width="487.6" height="24.0" fill="#8892a4" rx="3" opacity="0.8"/><text x="184.0" y="251.0" fill="#8892a4" font-size="15" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">B · 랜덤 포레스트</text><text x="692.6" y="251.0" fill="#8892a4" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.7032</text><text x="836.0" y="251.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.5541</text><text x="906.0" y="251.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.5714</text><text x="978.0" y="251.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.4906</text><text x="1056.0" y="251.0" fill="#8892a4" font-size="13.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6305</text><line x1="542.7" y1="38.0" x2="542.7" y2="266.0" stroke="#ffd479" stroke-width="2" stroke-dasharray="6 5"/><text x="542.7" y="30.0" fill="#ffd479" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">DUMMY .5000 — 동전 던지기</text><line x1="196.0" y1="272.0" x2="716.0" y2="272.0" stroke="#3a4250" stroke-width="1"/><text x="540.0" y="292.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">여섯 모델 · test 265명 · 단 한 번의 측정</text></svg>
+    <div class="finding" style="margin-top:12px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b>Dummy .5000</b> — 기준선은 여전히 동전 던지기다. <b>RQ3 재현</b>: A .6718 → B <b style="color:#adff2f;">.7165</b> (<b>+.045</b>) — CV 는 +.029, <b>방향 일치.</b><br>
+      recall <b>.6484</b> 를 사람 수로: 고스트레스 <b>91명 중 59명을 찾고 32명을 놓쳤다.</b>
+      &nbsp;→ <b style="color:#ffd479;">6차시 CV 순위와 비교해 보라. 무언가 이상하지 않은가?</b></p>
+    </div>
+  </div>
+  <div class="slide-no">08</div>
+</div>
+
+<div class="slide-container">
   <h2 class="slide-title">Step 2 — 반전 ①: 순위가 뒤집혔다</h2>
-  <div class="content-area table-layout">
-    <table style="font-size:19px;">
-      <tr><th>Model A</th><th>CV (6차시)</th><th>test (오늘)</th><th>차이</th></tr>
-      <tr><td>로지스틱</td><td>.6535</td><td><b style="color:#adff2f;">.6718</b></td><td>+.0183</td></tr>
-      <tr><td>결정 트리</td><td>.6355</td><td>.6375</td><td>+.0020</td></tr>
-      <tr><td>랜덤 포레스트</td><td><b>.6651</b></td><td>.6566</td><td><b style="color:#ff8080;">−.0085</b></td></tr>
-    </table>
-    <p style="font-size:21px;margin-top:16px;color:#fff;">CV 1위는 <b>포레스트</b>였는데 test 1위는 <b style="color:#adff2f;">로지스틱</b>이다.</p>
-    <div class="finding" style="margin-top:14px;">
+  <div class="content-area">
+    <svg data-fig="rankflip" viewBox="0 0 620 300" width="100%" style="max-height:356px" xmlns="http://www.w3.org/2000/svg"><line x1="90.0" y1="250.0" x2="600.0" y2="250.0" stroke="#222c38" stroke-width="1"/><text x="84.0" y="254.0" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.62</text><line x1="90.0" y1="195.7" x2="600.0" y2="195.7" stroke="#222c38" stroke-width="1"/><text x="84.0" y="199.7" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.64</text><line x1="90.0" y1="141.4" x2="600.0" y2="141.4" stroke="#222c38" stroke-width="1"/><text x="84.0" y="145.4" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.66</text><line x1="90.0" y1="87.1" x2="600.0" y2="87.1" stroke="#222c38" stroke-width="1"/><text x="84.0" y="91.1" fill="#55606f" font-size="12" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.68</text><line x1="200.0" y1="56.0" x2="200.0" y2="258.0" stroke="#3a4250" stroke-width="1"/><line x1="440.0" y1="56.0" x2="440.0" y2="258.0" stroke="#3a4250" stroke-width="1"/><text x="200.0" y="44.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">CV · 6차시 (1,056명)</text><text x="440.0" y="44.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">test · 오늘 (265명)</text><line x1="200.0" y1="159.1" x2="440.0" y2="109.4" stroke="#00f2ff" stroke-width="3"/><circle cx="200.0" cy="159.1" r="6" fill="#00f2ff"/><circle cx="440.0" cy="109.4" r="6" fill="#00f2ff"/><text x="188.0" y="164.1" fill="#00f2ff" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6535</text><text x="454.0" y="114.4" fill="#00f2ff" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">로지스틱 .6718</text><line x1="200.0" y1="127.6" x2="440.0" y2="150.7" stroke="#ff8080" stroke-width="3"/><circle cx="200.0" cy="127.6" r="6" fill="#ff8080"/><circle cx="440.0" cy="150.7" r="6" fill="#ff8080"/><text x="188.0" y="132.6" fill="#ff8080" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6651</text><text x="454.0" y="155.7" fill="#ff8080" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">랜덤 포레스트 .6566</text><line x1="200.0" y1="207.9" x2="440.0" y2="202.5" stroke="#8892a4" stroke-width="2"/><circle cx="200.0" cy="207.9" r="6" fill="#8892a4"/><circle cx="440.0" cy="202.5" r="6" fill="#8892a4"/><text x="188.0" y="212.9" fill="#8892a4" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.6355</text><text x="454.0" y="207.5" fill="#8892a4" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">결정 트리 .6375</text><circle cx="303.9" cy="137.6" r="19" fill="#ff8080" opacity="0.18"/><circle cx="303.9" cy="137.6" r="19" fill="none" stroke="#ff8080" stroke-width="2.5"/><text x="303.9" y="109.6" fill="#ff8080" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">여기서 뒤집힌다</text><text x="310.0" y="272.0" fill="#ff8080" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">CV 1위 포레스트 → test 1위 로지스틱</text><text x="310.0" y="292.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">포레스트만 −.0085 · 로지스틱 +.0183 · 트리 +.0020</text></svg>
+    <div class="finding" style="margin-top:10px;">
       <p style="margin:0;font-size:19px;color:#fff;">당황스러운가? 그런데 <b>6차시 마지막에 우리는 이미 이렇게 적어 뒀다</b>:<br>
       <span style="color:#8892a4;">"후보가 많은 모델이 약간 유리하게 채점된다. nested CV 를 안 썼으므로 <b style="color:#adff2f;">+0.012 라는 작은 격차는 이 편향으로 뒤집힐 수 있다.</b>"</span></p>
     </div>
   </div>
-  <div class="slide-no">07</div>
+  <div class="slide-no">09</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 2 — 왜 뒤집혔나: 다중 비교의 문제</h2>
+  <div class="content-area">
+    <p style="font-size:19px;margin:0;">포레스트는 <b>후보 조합이 많고</b>, 로지스틱은 <b>적다.</b> 후보가 많을수록 <b style="color:#ffd479;">운 좋은 한 판</b>이 나올 확률이 올라간다.</p>
+    <svg data-fig="winner" viewBox="0 0 620 282" width="100%" style="max-height:330px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="w_rd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ff8080"/></marker><marker id="w_am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffd479"/></marker></defs><text x="30.0" y="34.0" fill="#e8ecf2" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">CV — 후보 12개를 모두 채점하고, 그중 1등을 고른다</text><rect x="50.0" y="92.0" width="13.0" height="114.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="50.0" y="92.0" width="13.0" height="4.0" fill="#ffd479" rx="2"/><rect x="71.0" y="102.0" width="13.0" height="104.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="92.0" y="87.0" width="13.0" height="119.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="92.0" y="87.0" width="13.0" height="9.0" fill="#ffd479" rx="2"/><rect x="113.0" y="99.0" width="13.0" height="107.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="134.0" y="82.0" width="13.0" height="124.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="134.0" y="82.0" width="13.0" height="14.0" fill="#ffd479" rx="2"/><rect x="155.0" y="94.0" width="13.0" height="112.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="155.0" y="94.0" width="13.0" height="2.0" fill="#ffd479" rx="2"/><rect x="176.0" y="104.0" width="13.0" height="102.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="197.0" y="90.0" width="13.0" height="116.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="197.0" y="90.0" width="13.0" height="6.0" fill="#ffd479" rx="2"/><rect x="218.0" y="74.0" width="13.0" height="132.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="218.0" y="74.0" width="13.0" height="22.0" fill="#ffd479" rx="2"/><rect x="214.0" y="67.0" width="21.0" height="144.0" fill="none" rx="5" stroke="#ffd479" stroke-width="2"/><text x="224.0" y="60.0" fill="#ffd479" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">CV 1등</text><rect x="239.0" y="98.0" width="13.0" height="108.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="260.0" y="85.0" width="13.0" height="121.0" fill="#8892a4" rx="2" opacity="0.55"/><rect x="260.0" y="85.0" width="13.0" height="11.0" fill="#ffd479" rx="2"/><rect x="281.0" y="101.0" width="13.0" height="105.0" fill="#8892a4" rx="2" opacity="0.55"/><line x1="44.0" y1="96.0" x2="300.0" y2="96.0" stroke="#8892a4" stroke-width="1.4" stroke-dasharray="5 4"/><line x1="30.0" y1="54.0" x2="54.0" y2="54.0" stroke="#8892a4" stroke-width="1.4" stroke-dasharray="5 4"/><text x="60.0" y="58.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">점선 = 진짜 실력 수준</text><line x1="44.0" y1="206.0" x2="300.0" y2="206.0" stroke="#3a4250" stroke-width="1"/><text x="172.0" y="228.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">후보 12개</text><path d="M312,136 L364,136" fill="none" stroke="#ffd479" stroke-width="2" marker-end="url(#w_am)"/><text x="338.0" y="128.0" fill="#ffd479" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">1개만 고른다</text><rect x="400.0" y="74.0" width="58.0" height="132.0" fill="#8892a4" rx="3" opacity="0.55"/><rect x="400.0" y="74.0" width="58.0" height="22.0" fill="#ffd479" rx="3"/><text x="429.0" y="64.0" fill="#ffd479" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">실력+운</text><text x="429.0" y="228.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">CV 점수</text><rect x="496.0" y="96.0" width="58.0" height="110.0" fill="#8892a4" rx="3" opacity="0.55"/><text x="525.0" y="228.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">test 점수</text><path d="M468,72 L494,90" fill="none" stroke="#ff8080" stroke-width="2.4" marker-end="url(#w_rd)"/><text x="525.0" y="62.0" fill="#ff8080" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">운은 따라오지</text><text x="525.0" y="80.0" fill="#ff8080" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">않는다</text><text x="310.0" y="256.0" fill="#ffd479" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">후보가 많을수록 '운 좋은 한 판'이 1등이 될 확률이 커진다</text><text x="310.0" y="276.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">세트당 후보 12개 — 포레스트 4 · 트리 4 · 로지스틱 3 · Dummy 1</text></svg>
+    <div class="finding" style="margin-top:8px;">
+      <p style="margin:0;font-size:19px;color:#fff;">CV 1등 점수 = <b>실력</b> + <b style="color:#ffd479;">운</b>. 그런데 test 는 새 표본이라 <b style="color:#ffd479;">운은 따라오지 않는다.</b><br>
+      <span style="color:#8892a4;">→ 후보를 많이 놓고 최고를 고른 모델은 새 데이터에서 <b>내려앉는 것이 정상</b>이다. 실패가 아니라 <b style="color:#adff2f;">예상된 편향</b>이다.</span></p>
+    </div>
+  </div>
+  <div class="slide-no">10</div>
 </div>
 
 <div class="slide-container">
@@ -304,35 +353,51 @@
       <p style="margin:0;color:#fff;">🔴 교훈은 <b style="color:#ff8080;">"우리가 옳았다"가 아니다.</b><br><br>
       <b style="color:#adff2f;">"불확실성을 미리 기록해 뒀기 때문에 이 결과에 놀라지 않는다"</b> 는 것이다.</p>
     </div>
-    <p style="font-size:21px;margin-top:26px;color:#fff;">만약 6차시에 <b>"포레스트가 더 좋은 모델이다"</b> 라고 단정했다면,<br>오늘 <b style="color:#ff8080;">말을 바꿔야 했을 것이다.</b></p>
-    <p style="font-size:19px;margin-top:20px;color:#8892a4;">연구에서 신뢰를 잃는 가장 빠른 길은 <b>틀리는 것</b>이 아니라 <b style="color:#adff2f;">단정했다가 말을 바꾸는 것</b>이다.</p>
+    <svg data-fig="prophecy" viewBox="0 0 1080 236" width="100%" style="max-height:236px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="p_am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffd479"/></marker></defs><rect x="40.0" y="40.0" width="400.0" height="150.0" fill="#101820" rx="12" stroke="#3a4250" stroke-width="1.4"/><text x="240.0" y="70.0" fill="#8892a4" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">오늘의 결과</text><text x="240.0" y="116.0" fill="#ff8080" font-size="30" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">포레스트의 패배</text><text x="240.0" y="150.0" fill="#ff8080" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">CV 1위 → test 2위 · −.0085</text><text x="240.0" y="176.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">test 1위는 로지스틱</text><path d="M456,115 L536,115" fill="none" stroke="#ffd479" stroke-width="2.4" marker-end="url(#p_am)"/><text x="496.0" y="100.0" fill="#ffd479" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">예언대로</text><g transform="rotate(-2 800 115)"><rect x="566.0" y="34.0" width="476.0" height="162.0" fill="#efe9d6" rx="6" stroke="#c9c0a6" stroke-width="1.4"/><rect x="566.0" y="34.0" width="476.0" height="26.0" fill="#e2d9bd" rx="6"/><text x="804.0" y="52.0" fill="#5b5340" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">2주 전의 기록 — 6차시 슬라이드 21</text><rect x="584.0" y="76.0" width="440.0" height="26.0" fill="#f6e05e" rx="3" opacity="0.75"/><text x="590.0" y="95.0" fill="#1a1c22" font-size="16" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">후보가 많은 모델이 약간 유리하게 채점된다 …</text><rect x="584.0" y="116.0" width="440.0" height="52.0" fill="#f6e05e" rx="3" opacity="0.75"/><text x="590.0" y="136.0" fill="#1a1c22" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">+0.012 라는 작은 격차는</text><text x="590.0" y="160.0" fill="#1a1c22" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">이 편향으로 뒤집힐 수 있다.</text><text x="1024.0" y="186.0" fill="#7a7156" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">— 우리가 직접 써 둔 문장</text></g><text x="540.0" y="228.0" fill="#adff2f" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">단정했다면 오늘 말을 바꿔야 했다 — 우리는 바꿀 말이 없다</text></svg>
+    <p style="font-size:18px;margin-top:2px;color:#8892a4;">연구에서 신뢰를 잃는 가장 빠른 길은 <b>틀리는 것</b>이 아니라 <b style="color:#adff2f;">단정했다가 말을 바꾸는 것</b>이다.</p>
   </div>
-  <div class="slide-no">08</div>
+  <div class="slide-no">11</div>
 </div>
 
 <div class="slide-container">
   <h2 class="slide-title">Step 3 — 반전 ②: 그 뒤집힘조차 믿을 수 없다</h2>
   <div class="content-area">
-    <p style="font-size:20px;margin:0;">"로지스틱이 이겼다"고 결론 내리고 싶어진다. <b style="color:#ffd479;">잠깐 멈추자.</b><br>
-    test 는 <strong>265명</strong>뿐이다. 5차시의 <b>부트스트랩</b>을 여기에도 쓴다.</p>
-    <div class="code-block" style="margin-top:14px;font-size:17px;">A 로지스틱   .6718   95% [<span class="num">.6041</span>, <span class="num">.7398</span>]   폭 <span style="color:#ffd479;">.136</span>
-A 포레스트   .6566   95% [<span class="num">.5865</span>, <span class="num">.7261</span>]   폭 <span style="color:#ffd479;">.140</span>
-                              ↑ 두 구간이 <span style="color:#ff8080;">크게 겹친다</span>
-
-로지스틱 − 포레스트 차이:  +<span class="num">.0147</span>   95% [<span style="color:#ff8080;">−.0157</span>, +.0443]   ← <span style="color:#ff8080;">0 을 포함</span></div>
-    <div class="finding" style="margin-top:16px;">
-      <p style="margin:0;font-size:20px;color:#fff;">🔴 <b style="color:#adff2f;">결론: 두 모델의 성능 차이는 이 표본 크기로는 판별할 수 없다.</b><br>
-      → 성능이 사실상 같다면, <b>해석 가능한 쪽을 고르는 것이 명백히 옳다.</b> 6차시의 선택이 사후적으로도 정당화된다.</p>
+    <p style="font-size:19px;margin:0;">"로지스틱이 이겼다"고 결론 내리고 싶어진다. <b style="color:#ffd479;">잠깐 멈추자.</b>
+    test 는 <strong>265명</strong>뿐이다 — 5차시의 <b>부트스트랩</b>을 계수가 아니라 <b>AUC</b> 에 그대로 쓴다.</p>
+    <svg data-fig="ci" viewBox="0 0 640 300" width="100%" style="max-height:340px" xmlns="http://www.w3.org/2000/svg"><text x="168.0" y="30.0" fill="#e8ecf2" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">① test AUC 의 95% 부트스트랩 구간 (B = 2,000)</text><line x1="168.0" y1="46.0" x2="168.0" y2="148.0" stroke="#222c38" stroke-width="1"/><text x="168.0" y="164.0" fill="#55606f" font-size="12" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">.56</text><line x1="253.6" y1="46.0" x2="253.6" y2="148.0" stroke="#222c38" stroke-width="1"/><text x="253.6" y="164.0" fill="#55606f" font-size="12" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">.60</text><line x1="339.2" y1="46.0" x2="339.2" y2="148.0" stroke="#222c38" stroke-width="1"/><text x="339.2" y="164.0" fill="#55606f" font-size="12" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">.64</text><line x1="424.8" y1="46.0" x2="424.8" y2="148.0" stroke="#222c38" stroke-width="1"/><text x="424.8" y="164.0" fill="#55606f" font-size="12" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">.68</text><line x1="510.4" y1="46.0" x2="510.4" y2="148.0" stroke="#222c38" stroke-width="1"/><text x="510.4" y="164.0" fill="#55606f" font-size="12" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">.72</text><line x1="596.0" y1="46.0" x2="596.0" y2="148.0" stroke="#222c38" stroke-width="1"/><text x="596.0" y="164.0" fill="#55606f" font-size="12" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">.76</text><line x1="262.4" y1="70.0" x2="552.8" y2="70.0" stroke="#00f2ff" stroke-width="3"/><line x1="262.4" y1="62.0" x2="262.4" y2="78.0" stroke="#00f2ff" stroke-width="3"/><line x1="552.8" y1="62.0" x2="552.8" y2="78.0" stroke="#00f2ff" stroke-width="3"/><circle cx="407.3" cy="70.0" r="7" fill="#00f2ff" stroke="#101820" stroke-width="2"/><text x="156.0" y="75.0" fill="#00f2ff" font-size="16" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">로지스틱</text><text x="407.3" y="54.0" fill="#00f2ff" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.6718</text><text x="562.8" y="75.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">폭 .136</text><line x1="224.7" y1="116.0" x2="523.5" y2="116.0" stroke="#ff8080" stroke-width="3"/><line x1="224.7" y1="108.0" x2="224.7" y2="124.0" stroke="#ff8080" stroke-width="3"/><line x1="523.5" y1="108.0" x2="523.5" y2="124.0" stroke="#ff8080" stroke-width="3"/><circle cx="374.7" cy="116.0" r="7" fill="#ff8080" stroke="#101820" stroke-width="2"/><text x="156.0" y="121.0" fill="#ff8080" font-size="16" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">포레스트</text><text x="374.7" y="100.0" fill="#ff8080" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.6566</text><text x="533.5" y="121.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">폭 .140</text><text x="382.0" y="186.0" fill="#ffd479" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">두 구간이 거의 통째로 겹친다</text><text x="168.0" y="216.0" fill="#e8ecf2" font-size="15" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">② 두 모델 차이(로지스틱 − 포레스트)의 95% 구간</text><line x1="346.3" y1="228.0" x2="346.3" y2="274.0" stroke="#ff8080" stroke-width="2" stroke-dasharray="5 4"/><text x="353.3" y="234.0" fill="#ff8080" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">0</text><line x1="290.3" y1="250.0" x2="504.3" y2="250.0" stroke="#adff2f" stroke-width="3"/><line x1="290.3" y1="242.0" x2="290.3" y2="258.0" stroke="#adff2f" stroke-width="3"/><line x1="504.3" y1="242.0" x2="504.3" y2="258.0" stroke="#adff2f" stroke-width="3"/><circle cx="398.8" cy="250.0" r="7" fill="#adff2f" stroke="#101820" stroke-width="2"/><text x="398.8" y="234.0" fill="#adff2f" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">+.0147</text><text x="282.3" y="255.0" fill="#8892a4" font-size="13" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">−.0157</text><text x="512.3" y="255.0" fill="#8892a4" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">+.0443</text><text x="156.0" y="255.0" fill="#adff2f" font-size="16" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">차이</text><text x="382.0" y="290.0" fill="#8892a4" font-size="13.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">구간이 0 을 가로지른다 — 부트스트랩 2,000회 중 로지스틱이 이긴 비율 83.9%</text></svg>
+    <div class="finding" style="margin-top:8px;">
+      <p style="margin:0;font-size:20px;color:#fff;">🔴 <b style="color:#adff2f;">결론: 두 모델의 성능 차이는 이 표본 크기로는 판별할 수 없다.</b>
+      <span style="color:#8892a4;font-size:18px;">— 로지스틱이 뒤처질 가능성부터 크게 앞설 가능성까지 모두 열려 있다.</span></p>
     </div>
   </div>
-  <div class="slide-no">09</div>
+  <div class="slide-no">12</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 3 — 화질이 나쁘면 "판독 불가"가 정답이다</h2>
+  <div class="content-area">
+    <div class="two-column" style="gap:30px;">
+      <svg data-fig="photofinish" viewBox="0 0 520 300" width="100%" style="max-height:300px" xmlns="http://www.w3.org/2000/svg"><text x="140.0" y="40.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">실제 (알 수 없는 진실)</text><text x="392.0" y="40.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">우리 카메라가 본 것</text><line x1="46.0" y1="132.0" x2="236.0" y2="132.0" stroke="#3a4250" stroke-width="1.5"/><path d="M152,124 l8,-15 l-16,0 z" fill="#00f2ff"/><line x1="152.0" y1="124.0" x2="152.0" y2="140.0" stroke="#00f2ff" stroke-width="2.4"/><path d="M138,124 l8,-15 l-16,0 z" fill="#ff8080"/><line x1="138.0" y1="124.0" x2="138.0" y2="140.0" stroke="#ff8080" stroke-width="2.4"/><line x1="138.0" y1="100.0" x2="152.0" y2="100.0" stroke="#ffd479" stroke-width="2"/><line x1="138.0" y1="96.0" x2="138.0" y2="104.0" stroke="#ffd479" stroke-width="2"/><line x1="152.0" y1="96.0" x2="152.0" y2="104.0" stroke="#ffd479" stroke-width="2"/><text x="145.0" y="88.0" fill="#ffd479" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.0147</text><line x1="152.0" y1="142.0" x2="190.0" y2="160.0" stroke="#00f2ff" stroke-width="1"/><text x="194.0" y="166.0" fill="#00f2ff" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">로지스틱 .6718</text><line x1="138.0" y1="142.0" x2="112.0" y2="184.0" stroke="#ff8080" stroke-width="1"/><text x="46.0" y="192.0" fill="#ff8080" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">포레스트 .6566</text><rect x="300.0" y="100.0" width="62.0" height="62.0" fill="#101820" rx="2" stroke="#3a4250" stroke-width="1"/><rect x="364.0" y="100.0" width="62.0" height="62.0" fill="#2b3442" rx="2" stroke="#ffd479" stroke-width="2"/><rect x="428.0" y="100.0" width="62.0" height="62.0" fill="#101820" rx="2" stroke="#3a4250" stroke-width="1"/><text x="395.0" y="136.0" fill="#ffd479" font-size="30" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">?</text><text x="395.0" y="180.0" fill="#ffd479" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">한 화소 = .136</text><text x="395.0" y="200.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">둘 다 이 안에 들어간다</text><text x="260.0" y="236.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">격차 .0147 은 화소 한 칸의 약 1/9 — 확대해도 픽셀만 깨진다</text><rect x="120.0" y="252.0" width="280.0" height="36.0" fill="#101820" rx="8" stroke="#adff2f" stroke-width="1.6"/><text x="260.0" y="276.0" fill="#adff2f" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">가장 정확한 판정 = 판독 불가</text></svg>
+      <div class="finding" style="border-left-color:#00f2ff;">
+        <p style="margin:0;font-size:18px;color:#fff;"><b style="color:#00f2ff;">📷 결승선 판독 비유</b><br><br>
+        두 선수가 <b>거의 동시에</b> 결승선에 들어왔다. 판독 카메라를 돌렸는데 — <b style="color:#ff8080;">화질이 너무 낮다.</b><br><br>
+        여기서 심판이 억지로 화면을 확대해 <b>깨진 픽셀 하나를 가리키며 "이 선수가 이겼다"</b>고 선언하면, 그건 판정이 아니라 <b style="color:#ff8080;">과잉 확신</b>이다.<br><br>
+        <b style="color:#adff2f;">화질이 나쁘면 "판독 불가"를 선언하는 것이 가장 정확한 판정이다.</b></p>
+      </div>
+    </div>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">저해상도 카메라 = <b>표본 265명</b>. <b style="color:#adff2f;">"판별할 수 없다"는 실패한 결론이 아니라 데이터의 한계를 정확히 반영한 결론이다.</b><br>
+      <span style="color:#8892a4;">그리고 6차시의 사전 원칙이 여기서 회수된다 — <b>"차이가 미미하면 해석 가능한 쪽을 고른다."</b> 사후적으로도 정당화된다.</span></p>
+    </div>
+  </div>
+  <div class="slide-no">13</div>
 </div>
 
 <div class="slide-container">
   <h2 class="slide-title">Step 4 — 민감도 분석: 정의를 바꾸면?</h2>
   <div class="content-area table-layout">
-    <p style="font-size:19px;margin:0;">4차시의 "상위 25%" 에는 두 가지 자의성이 있었다 — <b>분위수</b>(0.75)와 <b>부등호</b>(<code>&gt;=</code>).</p>
-    <table style="font-size:18px;">
+    <svg data-fig="gauges" viewBox="0 0 1080 182" width="100%" style="max-height:152px" xmlns="http://www.w3.org/2000/svg"><text x="20.0" y="20.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">4차시 "상위 25%" 의 두 자의성 — 분위수 × 부등호를 바꿔 여섯 번 다시 재면</text><path d="M68.0,150.0 A84,84 0 0 1 236.0,150.0" fill="none" stroke="#222c38" stroke-width="20"/><path d="M100.5,83.7 A84,84 0 0 1 112.4,75.9" fill="none" stroke="#adff2f" stroke-width="20" opacity="0.9"/><line x1="152" y1="150" x2="109.1" y2="94.7" stroke="#e8ecf2" stroke-width="3" stroke-linecap="round" opacity="0.4"/><line x1="152" y1="150" x2="114.7" y2="90.8" stroke="#adff2f" stroke-width="5" stroke-linecap="round" opacity="1.0"/><line x1="152" y1="150" x2="119.0" y2="88.3" stroke="#e8ecf2" stroke-width="3" stroke-linecap="round" opacity="0.4"/><circle cx="152.0" cy="150.0" r="10" fill="#adff2f"/><text x="62.0" y="168.0" fill="#55606f" font-size="12.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">.50</text><text x="242.0" y="168.0" fill="#55606f" font-size="12.5" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">1.00</text><text x="356.0" y="78.0" fill="#e8ecf2" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">성능 수치 (AUC)</text><text x="356.0" y="106.0" fill="#adff2f" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">.6449 ~ .6718 · 폭 .027</text><text x="356.0" y="140.0" fill="#adff2f" font-size="21" text-anchor="start" font-family="Poppins, sans-serif" font-weight="700">① 견고하다</text><path d="M592.0,150.0 A84,84 0 0 1 760.0,150.0" fill="none" stroke="#222c38" stroke-width="20"/><path d="M606.4,103.0 A84,84 0 0 1 636.2,76.0" fill="none" stroke="#ffd479" stroke-width="20" opacity="0.9"/><line x1="676" y1="150" x2="618.0" y2="110.8" stroke="#e8ecf2" stroke-width="3" stroke-linecap="round" opacity="0.4"/><line x1="676" y1="150" x2="626.3" y2="100.7" stroke="#ffd479" stroke-width="5" stroke-linecap="round" opacity="1.0"/><line x1="676" y1="150" x2="642.9" y2="88.3" stroke="#e8ecf2" stroke-width="3" stroke-linecap="round" opacity="0.4"/><circle cx="676.0" cy="150.0" r="10" fill="#ffd479"/><text x="586.0" y="168.0" fill="#55606f" font-size="12.5" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">0%</text><text x="766.0" y="168.0" fill="#55606f" font-size="12.5" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">100%</text><text x="880.0" y="78.0" fill="#e8ecf2" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">고스트레스 양성률</text><text x="880.0" y="106.0" fill="#ffd479" font-size="17" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">18.9% ~ 34.3% · 1.8배</text><text x="880.0" y="140.0" fill="#ffd479" font-size="21" text-anchor="start" font-family="Poppins, sans-serif" font-weight="700">② 크게 흔들린다</text><line x1="556.0" y1="44.0" x2="556.0" y2="172.0" stroke="#3a4250" stroke-width="1" stroke-dasharray="5 5"/></svg>
+    <table class="compact tight">
       <tr><th>분위수</th><th>부등호</th><th>cutoff</th><th>test 양성률</th><th>test AUC</th></tr>
       <tr><td>0.70</td><td>&gt;=</td><td>1.5</td><td>34.3%</td><td>.6718</td></tr>
       <tr><td><b>0.75</b></td><td><b>&gt;=</b></td><td><b>1.5</b></td><td><b>34.3%</b></td><td><b>.6718</b> ← 우리 선택</td></tr>
@@ -340,114 +405,169 @@ A 포레스트   .6566   95% [<span class="num">.5865</span>, <span class="num">
       <tr><td>0.80</td><td>&gt;=</td><td>1.6</td><td>24.9%</td><td>.6605</td></tr>
       <tr><td>0.80</td><td>&gt;</td><td>1.6</td><td>18.9%</td><td>.6449</td></tr>
     </table>
-    <div class="finding" style="margin-top:14px;">
-      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">① 성능 결론은 견고하다</b> — AUC .6449~.6718 (폭 .027). 어떤 정의여도 "중간 정도로 구분"이다.<br>
-      <b style="color:#ffd479;">② 그런데 '누가 고스트레스인가'는 크게 달라진다</b> — 양성률 18.9%~34.3%, <b>1.8배</b>.</p>
-    </div>
-  </div>
-  <div class="slide-no">10</div>
-</div>
-
-<div class="slide-container">
-  <h2 class="slide-title">Step 4 — 이산성이 만든 기묘한 일치</h2>
-  <div class="content-area">
-    <div class="code-block" style="font-size:19px;">q=<span class="num">0.70</span> 과 q=<span class="num">0.75</span>  →  <span style="color:#ffd479;">완전히 같은 결과</span>   <span class="cm"># 둘 다 cutoff 1.5 (동점 덩어리)</span>
-
-<span class="str">"&gt; 1.5"</span> 와 <span class="str">"&gt;= 1.6"</span>  →  <span style="color:#ffd479;">완전히 같은 결과</span>   <span class="cm"># 점수가 0.1 단위라 같은 집합</span></div>
-    <div class="finding" style="margin-top:20px;">
-      <p style="margin:0;font-size:20px;color:#fff;">🔴 <b>부등호 하나를 바꾸는 것</b>과 <b>분위수를 한 단계 올리는 것</b>이 <b style="color:#adff2f;">같은 효과</b>를 낸다.</p>
-    </div>
-    <p style="font-size:20px;margin-top:20px;color:#fff;">3·4차시의 <strong>이산성 문제</strong>가 마지막까지 따라왔다.<br>
-    <span style="font-size:18px;color:#8892a4;">"분위수 0.75" 라는 표기가 실제로 무엇을 뜻하는지는 <b style="color:#adff2f;">데이터를 봐야만</b> 알 수 있다.</span></p>
-  </div>
-  <div class="slide-no">11</div>
-</div>
-
-<div class="slide-container">
-  <h2 class="slide-title">Step 5 — 7차시의 발견은 재현되는가 🔍</h2>
-  <div class="content-area">
-    <p style="font-size:20px;margin:0;">7차시에 train 에서 <b>가장 중요한 발견</b>을 했다. 그리고 그것을 <b>완화하는 설명</b>도 함께 적었다.</p>
-    <div class="two-column" style="margin-top:16px;">
-      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>발견</b><br>놓친 학생(FN)은 TP 가 아니라 <b style="color:#adff2f;">TN 을 닮았다</b> — 자아존중감 높고 친구지지 두텁고 우울 낮은데 고스트레스가 됐다</p></div>
-      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b>완화 설명</b><br>FN 의 <b>75.7%</b> 가 cutoff 바로 위 <b>경계선</b>이다 (TP 는 44.5%) — "간신히 고스트레스"</p></div>
-    </div>
-    <p style="font-size:21px;margin-top:22px;color:#adff2f;">둘 다 test 에서 재현되는가? — <b>이것이 오늘 가장 중요한 확인이다.</b></p>
-  </div>
-  <div class="slide-no">12</div>
-</div>
-
-<div class="slide-container">
-  <h2 class="slide-title">Step 5 — 하나는 재현됐고, 하나는 아니다 💥</h2>
-  <div class="content-area table-layout">
-    <table style="font-size:18px;">
-      <tr><th>test (n=265)</th><th>FN 놓침 (32)</th><th>TP 찾음 (59)</th><th>TN 맞게 제외 (107)</th></tr>
-      <tr><td>자아존중감</td><td><b style="color:#ffd479;">3.602</b></td><td>2.839</td><td>3.460</td></tr>
-      <tr><td>친구지지</td><td><b style="color:#ffd479;">4.455</b></td><td>3.552</td><td>4.545</td></tr>
-      <tr><td>부모 감독</td><td><b style="color:#ffd479;">3.677</b></td><td>2.949</td><td>3.542</td></tr>
-      <tr><td>우울</td><td><b style="color:#ffd479;">1.547</b></td><td>2.071</td><td>1.409</td></tr>
-    </table>
-    <div class="finding" style="margin-top:14px;">
-      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">① 핵심 발견은 재현됐다</b> — test 에서도 FN 은 TN 을 닮았다 (오히려 더 뚜렷하다).<br>
-      <b style="color:#ff8080;">② 완화 설명은 재현되지 않았다</b> — 경계선 비율 FN <b>50.0%</b> vs TP <b>59.3%</b>. train(75.7 vs 44.5)과 <b>방향이 반대</b>다.</p>
-    </div>
-    <p style="font-size:19px;margin-top:12px;color:#8892a4;">🔴 그래서 결론이 <b style="color:#ff8080;">더 무거워진다</b> — "단지 경계선이라 놓친 것"이라는 변명을 test 가 지지하지 않는다.</p>
-  </div>
-  <div class="slide-no">13</div>
-</div>
-
-<div class="slide-container">
-  <h2 class="slide-title">Step 5 — 그래서 윤리 절에 이렇게 쓴다</h2>
-  <div class="content-area">
-    <div class="finding" style="font-size:23px;">
-      <p style="margin:0;color:#fff;"><b style="color:#adff2f;">"이 모델의 오류는 무작위가 아니다.<br>특정한 종류의 학생에게 체계적으로 쏠려 있다."</b></p>
-    </div>
-    <p style="font-size:20px;margin-top:24px;color:#fff;">그리고 이 문장은 이제 <b>train 에서 발견되고 test 에서 재현된</b> 사실이다 —<br>
-    <span style="font-size:19px;color:#8892a4;">우연이라고 말하기 어렵다.</span></p>
-    <div class="finding" style="margin-top:20px;">
-      <p style="margin:0;font-size:19px;color:#fff;">💡 <b>재현되지 않은 것도 반드시 보고서에 쓴다.</b><br>
-      "경계선 설명이 test 에서 재현되지 않았다"를 빼면, 우리 결론은 <b style="color:#ff8080;">실제보다 안전해 보인다.</b></p>
-    </div>
+    <p style="font-size:18px;margin-top:6px;color:#8892a4;">성능 결론은 같다. 그런데 <b style="color:#ffd479;">상담실에 넘어가는 명단이 달라진다</b> — 실무에서는 ②가 더 중요하다.</p>
   </div>
   <div class="slide-no">14</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">Step 6~7 — 보고서와 재현성</h2>
+  <h2 class="slide-title">Step 4 — 점수는 계단이다: 이산성이 만든 기묘한 일치</h2>
   <div class="content-area">
-    <p style="font-size:20px;margin:0;">`final_report.md` 를 만든다. 원칙은 8주 내내 같았다 —<br>
-    <b style="color:#adff2f;">숫자는 코드가 채우고, 판단은 사람이 쓴다.</b> (<code>TODO(사람)</code> 6칸이 여러분의 과제다)</p>
-    <div class="code-block" style="margin-top:14px;font-size:17px;">$ python scripts/run_models.py     <span class="cm"># 공식 파이프라인을 처음부터 다시</span>
-
-model_set  model               roc_auc_파이프라인  roc_auc_노트북   일치
-A          LogisticRegression         0.6718       0.6718   <span class="num">True</span>
-A          RandomForest               0.6566       0.6566   <span class="num">True</span>
-...                                                          <span class="num">전부 일치: True</span></div>
-    <div class="finding" style="margin-top:16px;">
-      <p style="margin:0;font-size:19px;color:#fff;">노트북에서 손으로 짠 코드와 파이프라인이 <b style="color:#adff2f;">같은 답</b>을 낸다.<br>
-      seed {42} · test_size {0.20} 고정 — <b>이것이 재현성이다.</b></p>
+    <p style="margin:0;text-align:center;font-family:'Poppins',sans-serif;font-size:36px;font-weight:700;color:#ffd479;letter-spacing:1px;">
+      q .70 <span style="color:#8892a4;">==</span> q .75 &nbsp;&nbsp;·&nbsp;&nbsp; &gt; 1.5 <span style="color:#8892a4;">==</span> &gt;= 1.6</p>
+    <svg data-fig="stair" viewBox="0 0 640 310" width="100%" style="max-height:276px" xmlns="http://www.w3.org/2000/svg"><rect x="26.0" y="22.0" width="11.0" height="11.0" fill="#adff2f" rx="2"/><text x="43.0" y="32.0" fill="#adff2f" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">≥ 1.5 → 양성 34.3%</text><text x="43.0" y="48.0" fill="#55606f" font-size="11.5" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">q .70 = q .75 · 우리 선택</text><rect x="226.0" y="22.0" width="11.0" height="11.0" fill="#ffd479" rx="2"/><text x="243.0" y="32.0" fill="#ffd479" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">> 1.5 = ≥ 1.6 → 24.9%</text><text x="243.0" y="48.0" fill="#55606f" font-size="11.5" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">부등호 하나 = 분위수 한 단계</text><rect x="426.0" y="22.0" width="11.0" height="11.0" fill="#ff8080" rx="2"/><text x="443.0" y="32.0" fill="#ff8080" font-size="13" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">> 1.6 → 18.9%</text><text x="443.0" y="48.0" fill="#55606f" font-size="11.5" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">명단이 거의 절반으로 준다</text><path d="M60,250 H160 V216 H260 V182 H360 V148 H460 V114 H560" fill="none" stroke="#3a4250" stroke-width="3"/><text x="110.0" y="270.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">1.3</text><text x="210.0" y="236.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">1.4</text><text x="310.0" y="202.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">1.5</text><text x="410.0" y="168.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">1.6</text><text x="510.0" y="134.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">1.7</text><circle cx="272.0" cy="168.0" r="4.4" fill="#ffd479"/><circle cx="285.0" cy="168.0" r="4.4" fill="#ffd479"/><circle cx="298.0" cy="168.0" r="4.4" fill="#ffd479"/><circle cx="311.0" cy="168.0" r="4.4" fill="#ffd479"/><circle cx="324.0" cy="168.0" r="4.4" fill="#ffd479"/><circle cx="337.0" cy="168.0" r="4.4" fill="#ffd479"/><circle cx="350.0" cy="168.0" r="4.4" fill="#ffd479"/><circle cx="272.0" cy="154.0" r="4.4" fill="#ffd479"/><circle cx="285.0" cy="154.0" r="4.4" fill="#ffd479"/><circle cx="298.0" cy="154.0" r="4.4" fill="#ffd479"/><circle cx="311.0" cy="154.0" r="4.4" fill="#ffd479"/><circle cx="324.0" cy="154.0" r="4.4" fill="#ffd479"/><circle cx="337.0" cy="154.0" r="4.4" fill="#ffd479"/><circle cx="350.0" cy="154.0" r="4.4" fill="#ffd479"/><text x="310.0" y="138.0" fill="#ffd479" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">1.50 에만 142명이 함께 서 있다</text><text x="310.0" y="121.0" fill="#55606f" font-size="12" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">(3차시 실측 · 전체 1,321명 기준)</text><line x1="260.0" y1="152.0" x2="260.0" y2="276.0" stroke="#adff2f" stroke-width="2" stroke-dasharray="6 5"/><line x1="360.0" y1="152.0" x2="360.0" y2="276.0" stroke="#ffd479" stroke-width="2" stroke-dasharray="6 5"/><line x1="460.0" y1="152.0" x2="460.0" y2="276.0" stroke="#ff8080" stroke-width="2" stroke-dasharray="6 5"/><line x1="60.0" y1="276.0" x2="580.0" y2="276.0" stroke="#3a4250" stroke-width="1"/><text x="60.0" y="296.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">문화적응 스트레스 점수 — 0.1 단위로 뚝뚝 끊긴다</text><text x="580.0" y="296.0" fill="#adff2f" font-size="14" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">선은 계단 사이에만 그을 수 있다</text></svg>
+    <div class="finding" style="margin-top:8px;">
+      <p style="margin:0;font-size:19px;color:#fff;">🔴 <b>부등호 하나를 바꾸는 것</b>과 <b>분위수를 한 단계 올리는 것</b>이 <b style="color:#adff2f;">같은 효과</b>를 낸다.<br>
+      <span style="color:#8892a4;">계단 한 칸에 수십·수백 명이 함께 서 있다. 선은 <b>사람 사이</b>가 아니라 <b style="color:#ffd479;">계단 사이</b>에만 그을 수 있다 — 그래서 한 칸이 통째로 움직인다.</span></p>
     </div>
+    <p style="font-size:18px;margin-top:10px;color:#8892a4;">3차시(동점 발견) → 4차시(부등호 142명) → 8차시(민감도)로 이어진 실이 여기서 매듭지어진다.</p>
   </div>
   <div class="slide-no">15</div>
 </div>
 
 <div class="slide-container">
-  <h2 class="slide-title">회고 — 8주 전체</h2>
+  <h2 class="slide-title">Step 4 — 그 선을 긋는 것은 결국 사람이다</h2>
   <div class="content-area">
-    <ul class="bullet-list" style="font-size:20px;">
-      <li><i class="fa-solid fa-1"></i> test 를 열기 전에 <strong>감사(audit)</strong> 부터 한 이유는? "안 봤다고 믿는 것"과 "안 봤음을 확인하는 것"의 차이는?</li>
-      <li><i class="fa-solid fa-2"></i> CV 에서는 포레스트가, test 에서는 로지스틱이 이겼고 <strong>둘 다 신뢰구간이 0을 포함</strong>한다. 이 상황에서 <strong>"어떤 모델이 더 좋다"고 말할 수 있는가?</strong></li>
-      <li><i class="fa-solid fa-3"></i> 7차시 발견은 재현됐지만 완화 설명은 재현되지 않았다. <strong>재현되지 않은 것을 보고서에 쓰는 이유</strong>는?</li>
-    </ul>
-    <p style="font-size:18px;margin-top:14px;color:#8892a4;">📝 최종 과제: <code>final_report.md</code> 의 <code>TODO(사람)</code> 6칸 채우기 · 5~10분 발표자료(<b style="color:#adff2f;">한계 절에 시간을 더 쓴다</b>) · 동료 repo 직접 재현해 보기</p>
+    <p style="font-size:20px;margin:0;">모델이 하는 일은 여기까지다 — <b>각 학생의 위험 확률을 계산해 순서대로 줄 세우는 것.</b><br>
+    <span style="font-size:18px;color:#8892a4;">AUC 가 재는 것도 딱 그 <b>순서</b>다. 그런데 학교는 순서만 받아 들고 가만히 있을 수 없다.</span></p>
+    <div class="two-column" style="margin-top:12px;">
+      <div class="finding">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#adff2f;">모델이 답할 수 있는 것</b><br><br>
+        누가 더 위험해 보이는가 <b>(순위)</b><br>
+        <span style="color:#8892a4;font-size:17px;">→ 데이터가 정한다</span></p>
+      </div>
+      <div class="finding" style="border-left-color:#ffd479;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ffd479;">모델이 답할 수 없는 것</b><br><br>
+        <b>몇 명</b>부터 개입 대상인가 <b>(선)</b><br>
+        <span style="color:#8892a4;font-size:17px;">→ 예산 · 상담 인력 · 학교의 정책 목표가 정한다</span></p>
+      </div>
+    </div>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">같은 265명인데 정의 하나로 명단이 <b style="color:#ffd479;">약 50명 ↔ 91명</b> 사이를 오간다 (18.9% ↔ 34.3%).<br>
+      🔴 <b style="color:#adff2f;">숫자는 객관적으로 보이지만, 선을 긋는 순간부터는 정책적·윤리적 판단의 영역이다.</b></p>
+    </div>
   </div>
   <div class="slide-no">16</div>
 </div>
 
 <div class="slide-container">
+  <h2 class="slide-title">Step 5 — 7차시의 발견은 재현되는가 🔍</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">7차시에 train 에서 <b>가장 중요한 발견</b>을 했다. 그리고 우리는 그것을 <b style="color:#ffd479;">완화하는 설명</b>도 함께 적었다.</p>
+    <div class="two-column" style="margin-top:16px;">
+      <div class="finding"><p style="margin:0;font-size:19px;color:#fff;"><b style="font-family:'Courier New',monospace;color:#ffd479;">[ &nbsp; ]</b> <b>① 발견</b><br><br>놓친 학생(FN)은 TP 가 아니라 <b style="color:#adff2f;">TN 을 닮았다</b> — 자아존중감 높고 친구지지 두텁고 우울 낮은데 고스트레스가 됐다<br>
+      <span style="color:#8892a4;font-size:17px;">→ 불편한 발견</span></p></div>
+      <div class="finding" style="border-left-color:#ffd479;"><p style="margin:0;font-size:19px;color:#fff;"><b style="font-family:'Courier New',monospace;color:#ffd479;">[ &nbsp; ]</b> <b>② 완화 설명</b><br><br>FN 의 <b style="color:#ffd479;">75.7%</b> 가 cutoff 바로 위 <b>경계선</b>이다 (TP 는 44.5%) — "간신히 고스트레스라 아깝게 놓친 것뿐"<br>
+      <span style="color:#8892a4;font-size:17px;">→ 우리를 안심시키던 설명</span></p></div>
+    </div>
+    <p style="font-size:20px;margin-top:18px;color:#fff;"><b style="color:#adff2f;">발견만 확인하고 완화 설명은 넘어간다면 공정하지 않다.</b> 둘 다 검증한다.</p>
+    <p style="font-size:21px;margin-top:10px;color:#ffd479;">둘 다 재현될까? — <b>손을 들어 보자.</b></p>
+  </div>
+  <div class="slide-no">17</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — ① 발견은 재현됐다 💥</h2>
+  <div class="content-area">
+    <p class="kicker" style="margin:0;color:#adff2f;"><span style="font-family:'Courier New',monospace;">[ &#10003; ]</span> 재현 성공 &middot; TEST CONFIRMS</p>
+    <svg data-fig="fnprof" viewBox="0 0 620 272" width="100%" style="max-height:286px" xmlns="http://www.w3.org/2000/svg"><rect x="120.0" y="8.0" width="12.0" height="12.0" fill="#ffd479" rx="2"/><text x="138.0" y="19.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">FN 놓친 32명</text><rect x="288.0" y="8.0" width="12.0" height="12.0" fill="#ff8080" rx="2"/><text x="306.0" y="19.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">TP 찾은 59명</text><rect x="456.0" y="8.0" width="12.0" height="12.0" fill="#8892a4" rx="2"/><text x="474.0" y="19.0" fill="#8892a4" font-size="14" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif">TN 맞게 제외 107명</text><line x1="28.0" y1="169.6" x2="608.0" y2="169.6" stroke="#222c38" stroke-width="1"/><text x="20.0" y="173.6" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">1</text><line x1="28.0" y1="139.2" x2="608.0" y2="139.2" stroke="#222c38" stroke-width="1"/><text x="20.0" y="143.2" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">2</text><line x1="28.0" y1="108.8" x2="608.0" y2="108.8" stroke="#222c38" stroke-width="1"/><text x="20.0" y="112.8" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">3</text><line x1="28.0" y1="78.4" x2="608.0" y2="78.4" stroke="#222c38" stroke-width="1"/><text x="20.0" y="82.4" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">4</text><line x1="28.0" y1="48.0" x2="608.0" y2="48.0" stroke="#222c38" stroke-width="1"/><text x="20.0" y="52.0" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">5</text><rect x="44.0" y="90.5" width="30.0" height="109.5" fill="#ffd479" rx="2"/><text x="59.0" y="84.5" fill="#ffd479" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.602</text><rect x="80.0" y="113.7" width="30.0" height="86.3" fill="#ff8080" rx="2" opacity="0.9"/><text x="95.0" y="107.7" fill="#ff8080" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">2.839</text><rect x="116.0" y="94.8" width="30.0" height="105.2" fill="#8892a4" rx="2"/><text x="131.0" y="88.8" fill="#8892a4" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.460</text><text x="92.0" y="220.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">자아존중감</text><rect x="192.0" y="64.6" width="30.0" height="135.4" fill="#ffd479" rx="2"/><text x="207.0" y="58.6" fill="#ffd479" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">4.455</text><rect x="228.0" y="92.0" width="30.0" height="108.0" fill="#ff8080" rx="2" opacity="0.9"/><text x="243.0" y="86.0" fill="#ff8080" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.552</text><rect x="264.0" y="61.8" width="30.0" height="138.2" fill="#8892a4" rx="2"/><text x="279.0" y="55.8" fill="#8892a4" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">4.545</text><text x="240.0" y="220.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">친구지지</text><rect x="340.0" y="88.2" width="30.0" height="111.8" fill="#ffd479" rx="2"/><text x="355.0" y="82.2" fill="#ffd479" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.677</text><rect x="376.0" y="110.4" width="30.0" height="89.6" fill="#ff8080" rx="2" opacity="0.9"/><text x="391.0" y="104.4" fill="#ff8080" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">2.949</text><rect x="412.0" y="92.3" width="30.0" height="107.7" fill="#8892a4" rx="2"/><text x="427.0" y="86.3" fill="#8892a4" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">3.542</text><text x="388.0" y="220.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">부모 감독</text><rect x="488.0" y="153.0" width="30.0" height="47.0" fill="#ffd479" rx="2"/><text x="503.0" y="147.0" fill="#ffd479" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">1.547</text><rect x="524.0" y="137.0" width="30.0" height="63.0" fill="#ff8080" rx="2" opacity="0.9"/><text x="539.0" y="131.0" fill="#ff8080" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">2.071</text><rect x="560.0" y="157.2" width="30.0" height="42.8" fill="#8892a4" rx="2"/><text x="575.0" y="151.2" fill="#8892a4" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">1.409</text><text x="536.0" y="220.0" fill="#e8ecf2" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">우울</text><line x1="28.0" y1="200.0" x2="608.0" y2="200.0" stroke="#3a4250" stroke-width="1"/><text x="310.0" y="246.0" fill="#adff2f" font-size="17" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">test 에서도 FN 은 TP 가 아니라 TN 을 닮았다</text><text x="310.0" y="266.0" fill="#ffd479" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">자아존중감은 스트레스 없는 학생(TN 3.460)보다도 높다</text></svg>
+    <div class="finding" style="margin-top:8px;">
+      <p style="margin:0;font-size:19px;color:#fff;">놓친 32명의 자아존중감 <b style="color:#ffd479;">3.602</b> — 모델이 찾아낸 고스트레스군(2.839)보다 높은 건 물론이고,
+      <b>스트레스가 없는 일반 학생(3.460)보다도 높다.</b><br>
+      <span style="color:#8892a4;">스트레스가 심한데 자존감 수치는 가장 높게 찍힌다 — 직관과 정면으로 모순되고, <b style="color:#adff2f;">train 보다 오히려 더 뚜렷하다.</b></span></p>
+    </div>
+    <p style="font-size:18px;margin-top:10px;color:#8892a4;">로지스틱은 <b>선형 가중치</b>를 매긴다 — 자존감이 높게 들어오면 기계적으로 위험 점수를 깎는다. <b style="color:#adff2f;">방어인지 아닌지, 기계는 알 수 없다.</b></p>
+  </div>
+  <div class="slide-no">18</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — ② 그런데 우리 변명은 무너졌다</h2>
+  <div class="content-area">
+    <p class="kicker" style="margin:0;color:#ff8080;"><span style="font-family:'Courier New',monospace;">[ &#10007; ]</span> 재현 실패 &middot; TEST DOES NOT SUPPORT</p>
+    <svg data-fig="borderline" viewBox="0 0 620 284" width="100%" style="max-height:284px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="b_rd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ff8080"/></marker></defs><line x1="40.0" y1="174.5" x2="600.0" y2="174.5" stroke="#222c38" stroke-width="1"/><text x="34.0" y="178.5" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">20%</text><line x1="40.0" y1="137.0" x2="600.0" y2="137.0" stroke="#222c38" stroke-width="1"/><text x="34.0" y="141.0" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">40%</text><line x1="40.0" y1="99.5" x2="600.0" y2="99.5" stroke="#222c38" stroke-width="1"/><text x="34.0" y="103.5" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">60%</text><line x1="40.0" y1="62.0" x2="600.0" y2="62.0" stroke="#222c38" stroke-width="1"/><text x="34.0" y="66.0" fill="#55606f" font-size="11" text-anchor="end" font-family="Lato, 'Nanum Gothic', sans-serif">80%</text><rect x="110.0" y="70.1" width="52.0" height="141.9" fill="#ffd479" rx="3"/><text x="136.0" y="62.1" fill="#ffd479" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">75.7%</text><text x="136.0" y="232.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">FN</text><rect x="178.0" y="128.6" width="52.0" height="83.4" fill="#8892a4" rx="3"/><text x="204.0" y="120.6" fill="#8892a4" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">44.5%</text><text x="204.0" y="232.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">TP</text><text x="170.0" y="254.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">train · 7차시 (1,056명)</text><rect x="390.0" y="118.2" width="52.0" height="93.8" fill="#ff8080" rx="3"/><text x="416.0" y="110.2" fill="#ff8080" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">50.0%</text><text x="416.0" y="232.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">FN</text><rect x="458.0" y="100.8" width="52.0" height="111.2" fill="#8892a4" rx="3"/><text x="484.0" y="92.8" fill="#8892a4" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">59.3%</text><text x="484.0" y="232.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">TP</text><text x="450.0" y="254.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">test · 오늘 (265명)</text><line x1="40.0" y1="212.0" x2="600.0" y2="212.0" stroke="#3a4250" stroke-width="1"/><line x1="310.0" y1="52.0" x2="310.0" y2="236.0" stroke="#3a4250" stroke-width="1" stroke-dasharray="5 5"/><text x="176.0" y="44.0" fill="#ffd479" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">FN 이 훨씬 높다 → "경계선이라 놓친 것"</text><text x="452.0" y="44.0" fill="#ff8080" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">역전 — FN 이 오히려 낮다</text><rect x="258.0" y="126.0" width="104.0" height="32.0" fill="#101820" rx="16" stroke="#ff8080" stroke-width="1.6"/><text x="310.0" y="147.0" fill="#ff8080" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">방향이 반대</text><text x="310.0" y="276.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">경계선 = 문화적응 스트레스 점수 ≤ 1.7 (cutoff 1.5 바로 위)</text></svg>
+    <div class="finding" style="margin-top:8px;">
+      <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ff8080;">방향이 반대다.</b> test 에서는 오히려 <b>맞힌 학생(TP)</b> 쪽이 경계선에 더 많이 몰려 있다.<br>
+      🔴 <b style="color:#adff2f;">"단지 경계선이라 놓친 것"이라는 우리의 완화 설명을 test 가 지지하지 않는다.</b> 남는 것은 더 무거운 해석이다.</p>
+    </div>
+    <p style="font-size:18px;margin-top:12px;color:#8892a4;">⚠️ 다만 과장하지 않는다. test FN 은 <b>32명</b>뿐이다 — 정확한 표현은 <b style="color:#adff2f;">"반박됐다"가 아니라 "지지하지 않는다"</b>이다.
+    이 구분 자체가 오늘 배울 것이다.</p>
+  </div>
+  <div class="slide-no">19</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 5 — 여기서 시험받는 것은 모델이 아니라 우리다</h2>
+  <div class="content-area">
+    <p class="kicker" style="margin:0;">SELECTIVE REPORTING · 선택적 보고</p>
+    <p style="font-size:20px;margin:0;">유혹은 이렇게 온다 — <b style="color:#ffd479;">"자존감 높은 학생이 오답군에 많더라"까지만 쓰고, 내 변명이 틀렸다는 부분은 빼자."</b></p>
+    <div class="two-column" style="margin-top:12px;">
+      <div class="finding" style="border-left-color:#ff6b6b;">
+        <p style="margin:0;font-size:18px;color:#fff;"><b style="color:#ff8080;">빼면 무슨 일이 생기나</b><br><br>
+        보고서가 <b>실제보다 안전해 보인다</b> → 학교·상담 시스템이 이 모델을 <b style="color:#ff8080;">과신</b>한다 →
+        <b>자존감으로 스트레스를 가리는 학생들</b>을 계속, 체계적으로 놓친다.</p>
+      </div>
+      <div class="finding">
+        <p style="margin:0;font-size:18px;color:#fff;"><b style="color:#adff2f;">그래서 규칙은 하나다</b><br><br>
+        내 가설을 지지하는 결과만 고르지 않는다.<br>
+        <b style="color:#adff2f;">재현되지 않은 것도 반드시 보고서에 쓴다.</b><br>
+        <span style="color:#8892a4;font-size:17px;">— 8차시 윤리 절에 그대로 들어간다.</span></p>
+      </div>
+    </div>
+    <div style="margin-top:14px;position:relative;background:#101820;border-radius:10px;padding:16px 28px 12px 62px;border:1px solid #223140;">
+      <span style="position:absolute;left:16px;top:0;font-family:'Poppins',sans-serif;font-size:62px;line-height:1;color:#1e2c3a;">&ldquo;</span>
+      <p style="margin:0;font-size:25px;line-height:1.35;color:#adff2f;font-weight:700;">이 모델의 오류는 무작위가 아니다.<br>특정한 종류의 학생에게 체계적으로 쏠려 있다.</p>
+      <p style="margin:8px 0 0;font-size:16px;color:#8892a4;">— train 에서 발견되고 test 에서 재현된 문장이다. 우연이라고 말하기 어렵다.</p>
+    </div>
+  </div>
+  <div class="slide-no">20</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">Step 6~7 — 계산은 코드가, 판단은 사람이</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;"><code>final_report.md</code> 를 만든다. 표와 숫자는 코드가 자동으로 채우고,
+    <b style="color:#adff2f;"><code>TODO(사람)</code> 6칸은 여러분이 쓴다.</b> 8주 내내 같은 원칙이었다 — 2차시 검증 게이트, 3차시 역채점 판단, 5차시 해석 범위.</p>
+    <svg data-fig="pipeline" viewBox="0 0 1080 268" width="100%" style="max-height:268px" xmlns="http://www.w3.org/2000/svg"><defs><marker id="pl_c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#00f2ff"/></marker><marker id="pl_l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#adff2f"/></marker><marker id="pl_g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8892a4"/></marker></defs><rect x="24.0" y="62.0" width="186.0" height="84.0" fill="#101820" rx="10" stroke="#3a4250" stroke-width="1.4"/><text x="117.0" y="90.0" fill="#e8ecf2" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">같은 입력</text><text x="117.0" y="112.0" fill="#8892a4" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">modeling_frame.parquet</text><text x="117.0" y="130.0" fill="#8892a4" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">seed 42 · test_size 0.20</text><path d="M216,104 C250,104 252,60 286,60" fill="none" stroke="#8892a4" stroke-width="2" marker-end="url(#pl_g)"/><rect x="294.0" y="28.0" width="300.0" height="64.0" fill="#101820" rx="10" stroke="#00f2ff" stroke-width="1.6"/><text x="444.0" y="54.0" fill="#00f2ff" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">노트북에서 손으로 짠 코드</text><text x="444.0" y="76.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">session8.ipynb</text><path d="M602,60 C638,60 640,104 676,104" fill="none" stroke="#00f2ff" stroke-width="2" marker-end="url(#pl_c)"/><path d="M216,104 C250,104 252,152 286,152" fill="none" stroke="#8892a4" stroke-width="2" marker-end="url(#pl_g)"/><rect x="294.0" y="120.0" width="300.0" height="64.0" fill="#101820" rx="10" stroke="#adff2f" stroke-width="1.6"/><text x="444.0" y="146.0" fill="#adff2f" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">공식 파이프라인</text><text x="444.0" y="168.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">scripts/run_models.py</text><path d="M602,152 C638,152 640,104 676,104" fill="none" stroke="#adff2f" stroke-width="2" marker-end="url(#pl_l)"/><rect x="684.0" y="52.0" width="210.0" height="104.0" fill="#101820" rx="10" stroke="#adff2f" stroke-width="2"/><text x="789.0" y="78.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">A 로지스틱 ROC-AUC</text><text x="789.0" y="108.0" fill="#e8ecf2" font-size="21" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">.6718  =  .6718</text><text x="789.0" y="132.0" fill="#8892a4" font-size="12.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">노트북        파이프라인</text><rect x="916.0" y="76.0" width="140.0" height="56.0" fill="#12200f" rx="10" stroke="#adff2f" stroke-width="1.6"/><text x="986.0" y="100.0" fill="#adff2f" font-size="16" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">전부 일치</text><text x="986.0" y="120.0" fill="#adff2f" font-size="15" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">True</text><line x1="24.0" y1="188.0" x2="1056.0" y2="188.0" stroke="#3a4250" stroke-width="1" stroke-dasharray="6 5"/><text x="24.0" y="218.0" fill="#e8ecf2" font-size="16" text-anchor="start" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">final_report.md</text><rect x="200.0" y="200.0" width="400.0" height="50.0" fill="#101820" rx="8" stroke="#00f2ff" stroke-width="1.4"/><text x="400.0" y="220.0" fill="#00f2ff" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">표와 숫자</text><text x="400.0" y="240.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">코드가 자동으로 채운다</text><rect x="624.0" y="200.0" width="432.0" height="50.0" fill="#101820" rx="8" stroke="#ffd479" stroke-width="1.6"/><text x="840.0" y="220.0" fill="#ffd479" font-size="15" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">TODO(사람) 6칸</text><text x="840.0" y="240.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">결론 · 해석 · 한계 · 윤리 — 사람이 쓴다</text></svg>
+    <div class="finding" style="margin-top:14px;">
+      <p style="margin:0;font-size:19px;color:#fff;">노트북에서 손으로 짠 코드와 공식 파이프라인이 <b style="color:#adff2f;">같은 답</b>을 낸다. seed 42 · test_size 0.20 고정 — <b>이것이 재현성이다.</b><br>
+      <span style="color:#8892a4;">우리가 숫자를 믿는 이유는 코드가 거짓말을 안 해서가 아니라, <b style="color:#adff2f;">한계까지 함께 적어 두는 절차가 있기 때문이다.</b></span></p>
+    </div>
+  </div>
+  <div class="slide-no">21</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">회고 — 8주 전체</h2>
+  <div class="content-area">
+    <div class="tiled-content">
+      <div class="tile" style="padding:26px 22px;text-align:left;">
+        <h3 style="font-size:19px;color:#00f2ff;">Q1</h3>
+        <p style="font-size:18px;color:#fff;margin-top:10px;">test 를 열기 전에 <b>감사</b>부터 한 이유는? "안 봤다고 믿는 것"과 "안 봤음을 확인하는 것"의 차이는?</p>
+        <p style="font-size:16px;color:#8892a4;margin-top:14px;border-top:1px solid #223140;padding-top:12px;">→ 믿음이 아니라 <b style="color:#adff2f;">검사 가능한 증명</b>을 남기려고</p>
+      </div>
+      <div class="tile" style="padding:26px 22px;text-align:left;">
+        <h3 style="font-size:19px;color:#00f2ff;">Q2</h3>
+        <p style="font-size:18px;color:#fff;margin-top:10px;">CV 와 test 의 승자가 다르고 <b>차이의 신뢰구간은 0을 포함</b>한다. "어떤 모델이 더 좋다"고 말할 수 있는가?</p>
+        <p style="font-size:16px;color:#8892a4;margin-top:14px;border-top:1px solid #223140;padding-top:12px;">→ <b style="color:#adff2f;">"알 수 없다"가 답이고, 그것도 결론</b>이다</p>
+      </div>
+      <div class="tile" style="padding:26px 22px;text-align:left;border-bottom-color:#ff6b6b;">
+        <h3 style="font-size:19px;color:#00f2ff;">Q3</h3>
+        <p style="font-size:18px;color:#fff;margin-top:10px;">7차시 발견은 재현됐지만 완화 설명은 재현되지 않았다. <b>재현되지 않은 것을 굳이 쓰는 이유</b>는?</p>
+        <p style="font-size:16px;color:#8892a4;margin-top:14px;border-top:1px solid #223140;padding-top:12px;">→ 결론이 과장되는 <b style="color:#ff8080;">선택적 보고</b>를 막으려고</p>
+      </div>
+    </div>
+    <p style="font-size:18px;margin-top:14px;color:#8892a4;">📝 최종 과제: <code>final_report.md</code> 의 <code>TODO(사람)</code> 6칸 채우기 · 5~10분 발표자료(<b style="color:#adff2f;">한계 절에 시간을 더 쓴다</b>) · 동료 repo 직접 재현해 보기</p>
+  </div>
+  <div class="slide-no">22</div>
+</div>
+
+<div class="slide-container">
   <h2 class="slide-title">8주에 배운 것 — 한 차시에 한 문장</h2>
   <div class="content-area table-layout">
-    <table style="font-size:17px;">
-      <tr><th style="width:60px;">차시</th><th>한 문장</th></tr>
+    <svg data-fig="journey" viewBox="0 0 1080 88" width="100%" style="max-height:88px" xmlns="http://www.w3.org/2000/svg"><line x1="76.0" y1="42.0" x2="1000.0" y2="42.0" stroke="#3a4250" stroke-width="3"/><circle cx="76.0" cy="42.0" r="15" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="76.0" y="48.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">1</text><text x="76.0" y="78.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">문제 정의</text><circle cx="208.0" cy="42.0" r="15" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="208.0" y="48.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">2</text><text x="208.0" y="78.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">컬럼 검증</text><circle cx="340.0" cy="42.0" r="15" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="340.0" y="48.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">3</text><text x="340.0" y="78.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">지속 검증</text><circle cx="472.0" cy="42.0" r="15" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="472.0" y="48.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">4</text><text x="472.0" y="78.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">누출 · 정의</text><circle cx="604.0" cy="42.0" r="15" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="604.0" y="48.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">5</text><text x="604.0" y="78.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">불확실성</text><circle cx="736.0" cy="42.0" r="15" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="736.0" y="48.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">6</text><text x="736.0" y="78.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">목적</text><circle cx="868.0" cy="42.0" r="15" fill="#101820" stroke="#8892a4" stroke-width="2"/><text x="868.0" y="48.0" fill="#e8ecf2" font-size="14" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">7</text><text x="868.0" y="78.0" fill="#8892a4" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">해석</text><circle cx="1000.0" cy="42.0" r="27" fill="#00f2ff" opacity="0.16"/><circle cx="1000.0" cy="42.0" r="19" fill="#101820" stroke="#00f2ff" stroke-width="3"/><text x="1000.0" y="48.0" fill="#00f2ff" font-size="16" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700">8</text><text x="1000.0" y="78.0" fill="#00f2ff" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">기록</text><text x="1000.0" y="16.0" fill="#00f2ff" font-size="13" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">오늘</text></svg>
+    <table class="compact">
+      <tr><th style="width:70px;">차시</th><th>한 문장</th></tr>
       <tr><td>1</td><td>무엇을 예측할지 정하는 것이 절반이다</td></tr>
       <tr><td>2</td><td>컬럼명을 절대 추측하지 않는다 — 검증은 사람이 연다</td></tr>
       <tr><td>3</td><td>검증은 한 번의 행사가 아니라 계속되는 상태다</td></tr>
@@ -458,17 +578,42 @@ A          RandomForest               0.6566       0.6566   <span class="num">Tr
       <tr><td><b>8</b></td><td><b style="color:#adff2f;">불확실성을 미리 기록해 두면, 결과가 뒤집혀도 말을 바꾸지 않아도 된다</b></td></tr>
     </table>
   </div>
-  <div class="slide-no">17</div>
+  <div class="slide-no">23</div>
+</div>
+
+<div class="slide-container">
+  <h2 class="slide-title">마지막 질문 — 이 불편한 기록은 누가 감당하는가</h2>
+  <div class="content-area">
+    <p style="font-size:20px;margin:0;">오늘 우리가 한 가장 어려운 일은 계산이 아니었다.<br>
+    <b style="color:#adff2f;">내 가설이 틀렸음을 확인하고, 그 실패를 한 글자씩 보고서에 적어 넣는 것</b>이었다.</p>
+    <div class="two-column" style="margin-top:16px;">
+      <div class="finding" style="border-left-color:#00f2ff;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#00f2ff;">질문 ①</b><br><br>
+        AI 가 분석·보고서 작성·한계 서술·<b>컷오프 결정</b>까지 자동화하는 시대가 온다면,<br>
+        <b>스스로의 실패를 낱낱이 고발하는 일</b>은 누가 하게 될까?</p>
+      </div>
+      <div class="finding" style="border-left-color:#ffd479;">
+        <p style="margin:0;font-size:19px;color:#fff;"><b style="color:#ffd479;">질문 ②</b><br><br>
+        AI 는 자기 오류를 정당화하지 않을 만큼 정직해질까?<br>
+        아니면 우리는 <b style="color:#ffd479;">더 정교하고 매끄러운 확신의 벽</b> 안에 갇히게 될까?</p>
+      </div>
+    </div>
+    <p style="font-size:20px;margin-top:20px;color:#fff;">답은 주지 않는다. 다만 다음에 "AI 가 분석한 객관적 결과입니다"라는 말을 들으면, 속으로 한 번만 물어보자.<br>
+    <b style="color:#adff2f;">"이 분석은 자기가 틀린 부분을 어디에 적어 뒀습니까?"</b></p>
+  </div>
+  <div class="slide-no">24</div>
 </div>
 
 <div class="slide-container">
   <div class="content-area title-layout">
     <h1 style="font-size:44px;color:#ffffff;text-shadow:0 0 20px rgba(0,242,255,0.3);">우리가 만든 것은 모델이 아니라<br><span style="color:#00f2ff;">믿을 수 있는 결론과 그 한계의 목록</span>이다</h1>
-    <p style="font-size:21px;color:#b0b0b0;margin-top:36px;">이 프로그램에서 <b style="color:#adff2f;">모델 성능에는 점수를 주지 않았다.</b><br>
-    성능이 낮아도 "현재 변수만으로는 충분히 구분하기 어려웠다"는 결론을<br><b>정확히</b> 도출했다면 그것이 성공이다.</p>
-    <p style="margin-top:34px;font-weight:700;letter-spacing:2px;color:#00f2ff;font-size:22px;">8주, 수고했습니다 🎓</p>
+    <p style="font-size:21px;color:#b0b0b0;margin-top:26px;">이 프로그램에서 <b style="color:#adff2f;">모델 성능에는 점수를 주지 않았다.</b><br>
+    성능이 낮아도 "현재 변수만으로는 충분히 구분하기 어려웠다"는 결론을<br><b>정확히</b> 도출했다면 그것이 성공이다. — <b style="color:#adff2f;">여러분은 그것을 해냈다.</b></p>
+    <p style="font-size:19px;color:#8892a4;margin-top:10px;">가져갈 것은 sklearn 사용법이 아니라 <b style="color:#00f2ff;">숫자를 끝까지 의심하는 습관</b>이다.</p>
+    <div style="width:100%;max-width:100%;"><svg data-fig="artifacts" viewBox="0 0 1080 128" width="100%" style="max-height:128px" xmlns="http://www.w3.org/2000/svg"><g transform="rotate(-3 84.0 56)"><rect x="15.0" y="16.0" width="138.0" height="80.0" fill="#101820" rx="7" stroke="#3a4250" stroke-width="1"/><line x1="27.0" y1="36.0" x2="141.0" y2="36.0" stroke="#222c38" stroke-width="1"/><line x1="27.0" y1="46.0" x2="127.0" y2="46.0" stroke="#222c38" stroke-width="1"/><text x="84.0" y="68.0" fill="#55606f" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">configs/</text><text x="84.0" y="86.0" fill="#8892a4" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">variables.yaml</text></g><g transform="rotate(2 236.0 56)"><rect x="167.0" y="16.0" width="138.0" height="80.0" fill="#101820" rx="7" stroke="#3a4250" stroke-width="1"/><line x1="179.0" y1="36.0" x2="293.0" y2="36.0" stroke="#222c38" stroke-width="1"/><line x1="179.0" y1="46.0" x2="279.0" y2="46.0" stroke="#222c38" stroke-width="1"/><text x="236.0" y="68.0" fill="#55606f" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">reports/</text><text x="236.0" y="86.0" fill="#8892a4" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">data_quality.md</text></g><g transform="rotate(-1 388.0 56)"><rect x="319.0" y="16.0" width="138.0" height="80.0" fill="#101820" rx="7" stroke="#3a4250" stroke-width="1"/><line x1="331.0" y1="36.0" x2="445.0" y2="36.0" stroke="#222c38" stroke-width="1"/><line x1="331.0" y1="46.0" x2="431.0" y2="46.0" stroke="#222c38" stroke-width="1"/><text x="388.0" y="68.0" fill="#55606f" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">data/processed/</text><text x="388.0" y="86.0" fill="#8892a4" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">modeling_frame.parquet</text></g><g transform="rotate(3 540.0 56)"><rect x="471.0" y="16.0" width="138.0" height="80.0" fill="#101820" rx="7" stroke="#3a4250" stroke-width="1"/><line x1="483.0" y1="36.0" x2="597.0" y2="36.0" stroke="#222c38" stroke-width="1"/><line x1="483.0" y1="46.0" x2="583.0" y2="46.0" stroke="#222c38" stroke-width="1"/><text x="540.0" y="68.0" fill="#55606f" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">reports/</text><text x="540.0" y="86.0" fill="#8892a4" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">model_metrics_cv.csv</text></g><g transform="rotate(-2 692.0 56)"><rect x="623.0" y="16.0" width="138.0" height="80.0" fill="#101820" rx="7" stroke="#3a4250" stroke-width="1"/><line x1="635.0" y1="36.0" x2="749.0" y2="36.0" stroke="#222c38" stroke-width="1"/><line x1="635.0" y1="46.0" x2="735.0" y2="46.0" stroke="#222c38" stroke-width="1"/><text x="692.0" y="68.0" fill="#55606f" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">reports/</text><text x="692.0" y="86.0" fill="#8892a4" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">feature_importance.csv</text></g><g transform="rotate(1 844.0 56)"><rect x="775.0" y="16.0" width="138.0" height="80.0" fill="#101820" rx="7" stroke="#adff2f" stroke-width="1.8"/><line x1="787.0" y1="36.0" x2="901.0" y2="36.0" stroke="#222c38" stroke-width="1"/><line x1="787.0" y1="46.0" x2="887.0" y2="46.0" stroke="#222c38" stroke-width="1"/><text x="844.0" y="68.0" fill="#55606f" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">reports/</text><text x="844.0" y="86.0" fill="#adff2f" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">final_report.md</text></g><g transform="rotate(-2 996.0 56)"><rect x="927.0" y="16.0" width="138.0" height="80.0" fill="#101820" rx="7" stroke="#3a4250" stroke-width="1"/><line x1="939.0" y1="36.0" x2="1053.0" y2="36.0" stroke="#222c38" stroke-width="1"/><line x1="939.0" y1="46.0" x2="1039.0" y2="46.0" stroke="#222c38" stroke-width="1"/><text x="996.0" y="68.0" fill="#55606f" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">session1~8/</text><text x="996.0" y="86.0" fill="#8892a4" font-size="11.5" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif" font-weight="700">*.ipynb + lecture_notes</text></g><text x="540.0" y="120.0" fill="#8892a4" font-size="14" text-anchor="middle" font-family="Lato, 'Nanum Gothic', sans-serif">8주가 남긴 것 — 모델이 아니라 재현 가능한 기록</text></svg></div>
+    <p style="margin-top:14px;font-weight:700;letter-spacing:2px;color:#00f2ff;font-size:22px;">8주, 수고했습니다 🎓</p>
   </div>
-  <div class="slide-no">18</div>
+  <div class="slide-no">25</div>
 </div>
 </body>
 </html>
