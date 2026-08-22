@@ -1,0 +1,737 @@
+<title>program5 만족도 진단지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#EDEEF2; --card:#FFFFFF; --card-2:#F6F7FA;
+  --ink:#14171E; --ink-2:#4D5464; --ink-3:#7B8294;
+  --rule:#D3D7E0; --rule-soft:#E3E6ED;
+  --accent:#2E3D7C; --accent-soft:#E5E9F6;
+  --mark:#AC443A; --mark-soft:#F7E8E5;
+  --shadow:0 1px 0 rgba(20,23,30,.04);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1218; --card:#161A22; --card-2:#1B202A;
+    --ink:#E7E9EF; --ink-2:#A7AEBE; --ink-3:#79808F;
+    --rule:#2A3040; --rule-soft:#212633;
+    --accent:#9DACEE; --accent-soft:#1B2240;
+    --mark:#E2907F; --mark-soft:#33211D;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1218; --card:#161A22; --card-2:#1B202A;
+  --ink:#E7E9EF; --ink-2:#A7AEBE; --ink-3:#79808F;
+  --rule:#2A3040; --rule-soft:#212633;
+  --accent:#9DACEE; --accent-soft:#1B2240;
+  --mark:#E2907F; --mark-soft:#33211D;
+  --shadow:none;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  font-weight:400; font-size:16px; line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:53rem; margin:0 auto; padding:3.5rem 1.5rem 6rem;}
+
+/* ── header ─────────────────────────────── */
+.masthead{border-bottom:2px solid var(--ink); padding-bottom:1.6rem; margin-bottom:2.6rem;}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace; font-size:.7rem; font-weight:500;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-3);
+  display:flex; flex-wrap:wrap; gap:.9rem; margin-bottom:1.1rem;
+}
+h1{
+  font-family:"Gowun Batang",serif; font-weight:700;
+  font-size:clamp(2rem,5.5vw,2.9rem); line-height:1.25; letter-spacing:-.01em;
+  margin:0 0 .7rem; text-wrap:balance;
+}
+.dek{font-size:1.02rem; color:var(--ink-2); max-width:38rem; margin:0;}
+.facts{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));
+  gap:1px; background:var(--rule); border:1px solid var(--rule);
+  margin-top:1.8rem;
+}
+.fact{background:var(--card); padding:.8rem .95rem;}
+.fact dt{
+  font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.13em;
+  text-transform:uppercase; color:var(--ink-3); margin:0 0 .25rem;
+}
+.fact dd{margin:0; font-size:.93rem; font-weight:500; line-height:1.45;}
+
+/* ── sections ───────────────────────────── */
+section{margin-top:3.4rem;}
+.sec-head{display:flex; align-items:baseline; gap:.85rem; border-bottom:1px solid var(--ink); padding-bottom:.55rem; margin-bottom:.4rem;}
+.sec-letter{
+  font-family:"IBM Plex Mono",monospace; font-size:.95rem; font-weight:600;
+  color:var(--mark); flex:none;
+}
+h2{font-family:"Gowun Batang",serif; font-weight:700; font-size:1.5rem; margin:0; letter-spacing:-.005em;}
+.sec-why{font-size:.9rem; color:var(--ink-3); margin:.7rem 0 1.7rem; max-width:40rem;}
+
+/* ── items ──────────────────────────────── */
+.item{
+  display:grid; grid-template-columns:4.6rem 1fr; gap:0 1.1rem;
+  padding:1.25rem 0; border-bottom:1px solid var(--rule-soft);
+}
+.item:last-child{border-bottom:none;}
+.code{
+  font-family:"IBM Plex Mono",monospace; font-size:.78rem; font-weight:600;
+  color:var(--ink-3); padding-top:.28rem; letter-spacing:.02em;
+}
+.code .star{color:var(--mark); display:block; font-size:.9rem; margin-top:.1rem;}
+.q{margin:0; font-size:1rem; font-weight:500; line-height:1.62; color:var(--ink);}
+.sub{margin:.5rem 0 0; font-size:.92rem; color:var(--ink-2);}
+.hint{margin:.5rem 0 0; font-size:.84rem; color:var(--ink-3); border-left:2px solid var(--rule); padding-left:.7rem;}
+
+.tags{display:flex; gap:.35rem; flex-wrap:wrap; margin:0 0 .45rem;}
+.tag{
+  font-family:"IBM Plex Mono",monospace; font-size:.62rem; font-weight:600;
+  letter-spacing:.1em; padding:.14rem .42rem; border-radius:2px; white-space:nowrap;
+}
+.t-fix{background:var(--accent-soft); color:var(--accent);}
+.t-sell{background:var(--mark-soft); color:var(--mark);}
+
+/* scale */
+.scale{display:flex; flex-wrap:wrap; gap:.28rem; margin:.65rem 0 0; align-items:center;}
+.scale b{
+  font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums;
+  font-weight:500; font-size:.82rem; width:1.85rem; height:1.85rem;
+  display:grid; place-items:center; border:1px solid var(--rule);
+  background:var(--card); color:var(--ink-2); border-radius:2px;
+}
+.scale em{font-style:normal; font-size:.78rem; color:var(--ink-3); margin-left:.4rem;}
+
+/* option / check lists */
+ul.opts{margin:.6rem 0 0; padding:0; list-style:none; display:flex; flex-wrap:wrap; gap:.35rem;}
+ul.opts li{
+  font-size:.86rem; color:var(--ink-2); background:var(--card);
+  border:1px solid var(--rule); border-radius:2px; padding:.24rem .58rem;
+}
+ul.checks{margin:.7rem 0 0; padding:0; list-style:none; display:grid; gap:.32rem;}
+ul.checks li{font-size:.92rem; color:var(--ink-2); display:flex; gap:.55rem; align-items:flex-start;}
+ul.checks li::before{
+  content:""; flex:none; width:.85rem; height:.85rem; margin-top:.4rem;
+  border:1.5px solid var(--ink-3); border-radius:2px;
+}
+
+/* write-in line */
+.write{
+  margin:.65rem 0 0; border:1px solid var(--rule); background:var(--card-2);
+  border-radius:2px; padding:.55rem .7rem; min-height:2.6rem;
+  font-family:"IBM Plex Mono",monospace; font-size:.75rem; color:var(--ink-3);
+}
+
+/* ── table ──────────────────────────────── */
+.tablewrap{overflow-x:auto; margin:1rem 0 0; border:1px solid var(--rule); background:var(--card);}
+table{border-collapse:collapse; width:100%; min-width:34rem; font-size:.88rem;}
+th,td{text-align:left; padding:.55rem .7rem; border-bottom:1px solid var(--rule-soft); vertical-align:top;}
+thead th{
+  font-family:"IBM Plex Mono",monospace; font-size:.66rem; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:600;
+  border-bottom:1px solid var(--rule); background:var(--card-2);
+}
+tbody tr:last-child td{border-bottom:none;}
+td.n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--ink-3); width:2.6rem;}
+td.blank{background:var(--card-2); min-width:5.5rem;}
+td .topic{display:block; color:var(--ink-3); font-size:.82rem; margin-top:.1rem;}
+
+/* ── callouts ───────────────────────────── */
+.callout{
+  border:1px solid var(--rule); border-left:3px solid var(--mark);
+  background:var(--card); padding:1.05rem 1.2rem; margin:1.4rem 0 0;
+}
+.callout h3{
+  font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--mark); margin:0 0 .55rem; font-weight:600;
+}
+.callout p{margin:0 0 .5rem; font-size:.93rem; color:var(--ink-2);}
+.callout p:last-child{margin-bottom:0;}
+.callout ol,.callout ul{margin:.4rem 0 0; padding-left:1.15rem; font-size:.93rem; color:var(--ink-2);}
+.callout li{margin-bottom:.32rem;}
+
+.steps{display:grid; gap:1px; background:var(--rule); border:1px solid var(--rule); margin-top:1rem;}
+.step{background:var(--card); padding:.9rem 1.05rem; display:grid; grid-template-columns:auto 1fr; gap:0 .9rem;}
+.step .num{
+  font-family:"IBM Plex Mono",monospace; font-size:.75rem; font-weight:600;
+  color:var(--mark); padding-top:.2rem;
+}
+.step strong{display:block; font-weight:600; font-size:.97rem; margin-bottom:.15rem;}
+.step span{font-size:.9rem; color:var(--ink-2);}
+
+footer{margin-top:4rem; padding-top:1.3rem; border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--ink-3); letter-spacing:.04em;}
+
+@media (max-width:640px){
+  .wrap{padding:2.5rem 1.1rem 4rem;}
+  .item{grid-template-columns:1fr; gap:.3rem;}
+  .code{padding-top:0;}
+  .code .star{display:inline; margin-left:.3rem;}
+  .step{grid-template-columns:1fr;}
+}
+@media print{
+  body{background:#fff; color:#000; font-size:11pt;}
+  .wrap{max-width:none; padding:0;}
+  section{break-inside:avoid;}
+}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+</style>
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">
+    <span>program5</span><span>90분 × 8차시</span><span>1:1</span><span>수강생 n = 1</span>
+  </div>
+  <h1>수업 만족도 진단지</h1>
+  <p class="dek">
+    한 명의 점수는 지표가 아니라 <strong>가설</strong>이다. 이 조사가 실제로 캐내야 하는 것은
+    평점이 아니라 ① 다음 학생의 만족을 올릴 <em>고칠 지점</em>과 ② 다음 학생을 데려올 <em>그 학생의 문장</em>이다.
+    모든 척도 문항에 "왜 그 점수인가"가 붙어 있는 이유다.
+  </p>
+  <dl class="facts">
+    <div class="fact"><dt>문항</dt><dd>40문항 · 9개 파트</dd></div>
+    <div class="fact"><dt>★ 핵심만</dt><dd>15문항 (10분)</dd></div>
+    <div class="fact"><dt>권장 방식</dt><dd>폼 10분 → 인터뷰 30분</dd></div>
+    <div class="fact"><dt>두 번 묻기</dt><dd>종료 직후 · 3개월 뒤</dd></div>
+  </dl>
+</header>
+
+<div class="callout">
+  <h3>문항을 읽기 전에 — 이 설문의 설계 규칙 4가지</h3>
+  <ol>
+    <li><strong>점수는 미끼다.</strong> 1명의 "8점"은 다음 학생에게 아무 정보가 없다. 8점이 <em>왜</em> 8점인지, 9점이 되려면 무엇이 있었어야 했는지가 정보다. 척도 문항은 전부 서술형과 한 쌍으로 묶었다.</li>
+    <li><strong>만족 ≠ 재구매 ≠ 추천.</strong> 영업에 쓰이는 데이터는 만족도가 아니라 추천 의향·지불 의향·<em>망설였던 이유</em>·<em>남에게 설명하는 문장</em>이다. 이 넷을 따로 물었다.</li>
+    <li><strong>"좋았어요"를 막으려면 강제 선택으로 묻는다.</strong> "없어도 됐던 것 하나", "강사가 덜 했으면 하는 것 하나" 같은 문항은 '없음'을 답으로 받지 않는다고 미리 안내한다.</li>
+    <li><strong>1:1은 익명이 불가능하다.</strong> 사회적 바람직성 편향이 최대치로 걸린다. 부정 문항을 앞에 두고, 강사 본인이 아닌 폼·제3자를 거치고, "이 답은 당신이 아니라 다음 학생을 위한 것"이라고 프레이밍한다.</li>
+  </ol>
+</div>
+
+<div class="callout" style="border-left-color:var(--accent)">
+  <h3 style="color:var(--accent)">표기</h3>
+  <p><span class="tag t-fix">진단</span> 다음 기수를 고치는 데 쓰는 문항 &nbsp;·&nbsp;
+     <span class="tag t-sell">자산</span> 랜딩·후기·가격에 그대로 쓰이는 문항 &nbsp;·&nbsp;
+     <strong style="color:var(--mark)">★</strong> 시간이 없으면 이것만</p>
+</div>
+
+<!-- ══════════ A ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">A</span><h2>신청하기 전의 기억</h2></div>
+  <p class="sec-why">수업이 끝난 사람은 시작 전의 자신을 금방 잊는다. 그런데 <strong>다음 학생은 정확히 그 시점에 서 있다.</strong> 가장 먼저, 기억이 덜 덮이기 전에 묻는다.</p>
+
+  <div class="item">
+    <div class="code">A01<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">신청하기 전, 이 수업으로 무엇을 얻고 싶었나요? 그때 머릿속에 있던 말 그대로 적어 주세요.</p>
+      <p class="hint">다듬은 문장 말고 날것을 받아야 한다. "논문 쓸 때 데이터 좀 다뤄보고 싶어서" 같은 문장이 그대로 모집 카피가 된다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">A02<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">신청을 망설이게 한 것이 있었다면 무엇인가요? (해당되는 것 모두)</p>
+      <ul class="opts"><li>가격</li><li>시간 부담</li><li>코딩을 전혀 못 해서</li><li>정말 도움이 될지 확신이 없어서</li><li>주제가 내 관심과 맞을지</li><li>혼자 배우는 게 부담스러워서</li><li>망설이지 않았다</li></ul>
+      <p class="sub">→ 고른 것에 대해: <strong>결국 무엇이 그 망설임을 없앴나요?</strong></p>
+      <p class="hint">여기서 나온 답이 상세페이지의 FAQ 목록이 된다. 반론은 지어내는 게 아니라 수집하는 것이다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">A03</div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">시작 전에 이 수업을 한 문장으로 설명해야 했다면 뭐라고 했을까요? 그리고 <strong>지금은</strong> 뭐라고 설명하나요?</p>
+      <p class="hint">두 문장의 차이가 곧 "우리가 잘못 알린 부분"이다. 기대와 실제가 어긋난 지점은 환불·중도이탈이 생기는 자리다.</p>
+      <div class="write">전 / 후</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">A04</div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">이 수업이 없었다면, 같은 것을 얻기 위해 무엇을 했을 것 같나요?</p>
+      <ul class="opts"><li>유튜브·인터넷 강의</li><li>학교 수업·교양</li><li>스터디·동아리</li><li>혼자 책으로</li><li>대학원에 가서</li><li>아마 아무것도 안 했을 것</li></ul>
+      <p class="hint">진짜 경쟁자를 알려준다. "아무것도 안 했을 것"이라면 경쟁자는 다른 강의가 아니라 <em>포기</em>이고, 그러면 세일즈 문구도 완전히 달라진다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ B ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">B</span><h2>전체 만족과 가치</h2></div>
+  <p class="sec-why">평점을 얻으려는 파트가 아니다. <strong>어떤 요소가 값어치를 만들었는지</strong>를 분해해 헤드라인 후보를 뽑는 파트다.</p>
+
+  <div class="item">
+    <div class="code">B01<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">전체 만족도는 몇 점인가요?</p>
+      <div class="scale"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b><em>0 전혀 · 10 매우</em></div>
+      <p class="sub">→ 왜 그 점수인가요? 그리고 <strong>1점을 더 받으려면 무엇이 있었어야 했나요?</strong> (10점이어도 답해 주세요 — "11점이 되려면")</p>
+      <p class="hint">후자가 이 설문에서 가장 중요한 한 문장이다. 만점을 준 사람에게도 반드시 묻는다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">B02<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">비슷한 처지의 친구에게 이 수업을 추천할 가능성은?</p>
+      <div class="scale"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b><em>NPS</em></div>
+      <p class="sub">→ <strong>구체적으로 어떤 사람에게</strong> 추천하겠어요? (전공·학년·상황·고민을 최대한 좁혀서)</p>
+      <p class="hint">여기서 나온 묘사가 광고 타깃이자 모집 문구의 첫 줄이다. "심리학과 3학년인데 대학원 갈지 고민이고 통계는 SPSS만 해본 사람" 정도까지 좁혀야 쓸 수 있다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">B03<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span><span class="tag t-fix">진단</span></div>
+      <p class="q">이 수업에서 가장 값어치 있었던 것을 <strong>3개만</strong> 골라 순서를 매겨 주세요.</p>
+      <ul class="opts"><li>실제 연구 데이터(MAPS)를 직접 다뤄본 것</li><li>1:1이라 내 속도에 맞춘 것</li><li>대학교 심리학 연구 수업을 미리 경험한 것</li><li>슬라이드·강의 자료</li><li>실습 노트북</li><li>강사의 해석과 조언</li><li>최종 산출물(보고서·그림·repo)</li><li>파이썬·머신러닝 기술 자체</li><li>연구를 설계하고 의심하는 눈</li></ul>
+      <p class="hint">파는 사람이 생각하는 가치와 사는 사람이 느낀 가치는 거의 항상 다르다. 상위 3개가 랜딩 페이지의 세 블록이 된다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">B04</div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">가격 감각을 두 방향에서 여쭙니다.</p>
+      <p class="sub">① 얼마부터 <strong>"비싸서 못 하겠다"</strong>고 느꼈을까요? &nbsp; ② 얼마면 <strong>"이 가격이면 품질이 의심된다"</strong>고 느꼈을까요?</p>
+      <p class="hint">두 값 사이가 다음 기수의 가격 구간이다. "적정 가격이 얼마냐"고 직접 물으면 배려된 거짓말이 돌아온다.</p>
+      <div class="write">① ______원 &nbsp; ② ______원</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">B05</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">이 수업에서 <strong>없어도 됐던 것</strong>을 하나만 꼽는다면 무엇인가요?</p>
+      <p class="hint">"없다"는 답은 받지 않는다고 미리 알린다. 무엇을 뺄지 결정하지 못하면 커리큘럼은 매 기수 길어지기만 한다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">B06<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">8차시가 끝난 지금, <strong>시작 전의 나에게</strong> 이 수업을 권한다면 뭐라고 말하겠어요?</p>
+      <p class="hint">가장 후기다운 문장이 나오는 자리. 3인칭("남들에게")보다 이 형식이 훨씬 솔직하고 구체적인 답을 만든다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ C ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">C</span><h2>주제 선정</h2></div>
+  <p class="sec-why">program5의 차별점은 "교재용 예제가 아니라 실제 패널 데이터로 진짜 연구 질문을 푼다"는 것이다. <strong>그 차별점이 학생에게도 차별점으로 느껴졌는지</strong>를 검증한다.</p>
+
+  <div class="item">
+    <div class="code">C01<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-fix">진단</span><span class="tag t-sell">자산</span></div>
+      <p class="q">주제(다문화청소년의 문화적응 스트레스 예측)가 본인의 전공·관심과 얼마나 맞았나요?</p>
+      <div class="scale"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b></div>
+      <p class="sub">→ 그렇게 답한 이유는?</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">C02</div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">주제를 직접 고를 수 있었다면 <strong>어떤 데이터로 어떤 질문</strong>을 풀어보고 싶었나요?</p>
+      <p class="hint">"전공·관심사에 맞춰 주제를 함께 정한다"를 상품화할 수 있는지 판단하는 문항. 이게 되면 판매 단가와 전환율이 동시에 올라간다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">C03<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">실제 연구 데이터(MAPS 원자료)를 쓴 것이 체감상 얼마나 중요했나요? <strong>만약 타이타닉 같은 교과서용 예제 데이터였다면</strong> 이 수업의 가치가 어떻게 달라졌을까요?</p>
+      <p class="hint">반사실(counterfactual)로 물어야 차별점의 크기가 드러난다. "똑같았을 것 같다"는 답이 나오면 실데이터 확보 비용은 마케팅 포인트가 아니라는 뜻이다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">C04</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">심리학 : 코드의 비중 — <strong>실제로 체감한 비율</strong>과 <strong>원했던 비율</strong>을 각각 적어 주세요.</p>
+      <div class="write">체감 ____ : ____ &nbsp;/&nbsp; 희망 ____ : ____</div>
+      <p class="hint">"코드보다 연구 설계와 해석이 중심"이라는 이 수업의 설계 원칙이 실제로 그렇게 전달됐는지 확인하는 문항이다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ D ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">D</span><h2>슬라이드 · 노트북 · 자료</h2></div>
+  <p class="sec-why">자료 만족도는 "좋았다"로 끝나기 가장 쉬운 영역이다. <strong>기억나는 그림</strong>과 <strong>다시 열어본 적</strong>을 물어 말이 아니라 행동으로 확인한다.</p>
+
+  <div class="item">
+    <div class="code">D01</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">슬라이드에 대해 두 가지를 따로 평가해 주세요.</p>
+      <p class="sub">① <strong>수업 중</strong> 이해에 도움이 된 정도 &nbsp;/&nbsp; ② <strong>수업이 끝난 뒤</strong> 복습에 도움이 된 정도</p>
+      <div class="scale"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b><em>각각</em></div>
+      <p class="hint">이 둘은 전혀 다른 물건이다. ①만 높고 ②가 낮으면 슬라이드가 아니라 <em>요약본</em>이 없는 것이다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">D02<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">슬라이드의 그림·도식 중 <strong>지금도 기억나는 것</strong>이 있나요? 어떤 그림이었는지 말로 묘사해 주세요.</p>
+      <p class="hint">시각 자료에 들인 공이 실제로 남았는지 재는 유일하게 정직한 방법. 기억나는 게 없다면 그것도 그대로 적게 한다 — 그게 데이터다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">D03</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">실습 노트북에서 <strong>막혔던 지점</strong>이 있었나요? 어느 차시, 어느 대목이었나요?</p>
+      <ul class="opts"><li>구글 드라이브 저장·불러오기</li><li>라이브러리 설치</li><li>런타임이 끊겨서 처음부터</li><li>에러 메시지를 못 읽어서</li><li>셀 순서가 꼬여서</li><li>막힌 적 없다</li></ul>
+      <p class="hint">차시 간 파일 인계(handoff)는 이 수업의 구조적 약점 후보다. 여기서 마찰이 나왔다면 다음 기수 전에 반드시 손봐야 할 1순위다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">D04</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">수업이 끝난 뒤 <strong>혼자 다시 열어본</strong> 자료가 있나요? 무엇을, 왜 열었나요? 없다면 왜 열지 않았나요?</p>
+      <p class="hint">자료의 가치를 재는 행동 지표. "좋았다"보다 "다시 열었다"가 백 배 강한 신호이고, 후기에도 그대로 쓸 수 있다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">D05</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">있었으면 좋았을 자료를 골라 주세요.</p>
+      <ul class="opts"><li>차시별 1장 요약 치트시트</li><li>용어 사전</li><li>수업 녹화본</li><li>미니 과제 + 해설</li><li>코드 스니펫 모음</li><li>다음에 읽을 자료 목록</li><li>내 결과를 넣으면 완성되는 보고서 템플릿</li></ul>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">D06</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">자료나 설명에서 <strong>이해하기 어려웠던 표현·용어</strong>가 있었나요? 기억나는 대로 적어 주세요.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ E ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">E</span><h2>코드 수업과 난이도</h2></div>
+  <p class="sec-why">"어려웠나요?"는 쓸모없는 질문이다. <strong>어디서</strong> 어려웠고, <strong>이해한 것과 따라 친 것의 비율</strong>이 얼마인지를 묻는다.</p>
+
+  <div class="item">
+    <div class="code">E01<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">차시별로 표를 채워 주세요. 난이도는 <strong>1 너무 쉬움 · 3 딱 맞음 · 5 너무 어려움</strong>, 유용도는 1–5입니다.</p>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>#</th><th>차시</th><th>난이도</th><th>유용도</th><th>기억나는 한 줄</th></tr></thead>
+          <tbody>
+            <tr><td class="n">1</td><td>문화적응 스트레스·연구윤리<span class="topic">예측 vs 인과 · 데이터셋 기초</span></td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+            <tr><td class="n">2</td><td>심리척도·역채점<span class="topic">코드북 검증 · pandas · 결측 · join</span></td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+            <tr><td class="n">3</td><td>신뢰도 α · 분포 · 상관<span class="topic">EDA · 시각화 · 클리닝</span></td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+            <tr><td class="n">4</td><td>고스트레스의 조작적 정의<span class="topic">split · 불균형 · 데이터 누출</span></td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+            <tr><td class="n">5</td><td>계수와 방향성<span class="topic">로지스틱 회귀 · 표준화 · 부트스트랩</span></td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+            <tr><td class="n">6</td><td>심리 특성은 선형적인가<span class="topic">트리 · 랜덤 포레스트 · 과적합 · CV</span></td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+            <tr><td class="n">7</td><td>위험요인·보호요인, 인과 vs 예측<span class="topic">중요도 삼각검증 · 오류 분석</span></td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+            <tr><td class="n">8</td><td>결론·한계·윤리<span class="topic">test 최종 1회 · 재현성 · 최종 보고서</span></td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint">이 표 하나가 이 설문에서 가장 실행 가능한 데이터다. 난이도 5 + 유용도 5인 차시는 <em>쪼개고</em>, 난이도 1 + 유용도 2인 차시는 <em>합친다</em>.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">E02<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">코드 부분에서 <strong>"이해하며 따라갔다"</strong>와 <strong>"일단 따라 쳤다"</strong>의 비율은 대략 몇 대 몇이었나요? 어느 지점부터 후자로 넘어갔나요?</p>
+      <div class="write">____ : ____ &nbsp;/&nbsp; 넘어간 지점:</div>
+      <p class="hint">"어려웠나요?"에는 다들 괜찮았다고 답한다. 이 비율은 훨씬 정직하게 나온다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">E03<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span><span class="tag t-fix">진단</span></div>
+      <p class="q">지금 <strong>혼자서 할 수 있는 것</strong>에 체크해 주세요. 그리고 각 항목이 <strong>수업 전에도</strong> 가능했는지 함께 표시해 주세요.</p>
+      <ul class="checks">
+        <li>새 데이터를 받아 결측과 분포를 확인한다</li>
+        <li>척도의 Cronbach α를 계산하고 믿을지 판단한다</li>
+        <li>역채점 문항을 찾아 교정한다</li>
+        <li>train/test를 나누고 왜 나누는지 설명한다</li>
+        <li>데이터 누출이 무엇인지 예를 들어 설명한다</li>
+        <li>로지스틱 회귀 계수를 표준화해 해석한다</li>
+        <li>랜덤 포레스트를 학습시키고 교차검증으로 비교한다</li>
+        <li>변수 중요도를 보고 "여기까지만 말할 수 있다"고 선을 긋는다</li>
+        <li>결과의 한계와 윤리를 문장으로 쓴다</li>
+      </ul>
+      <p class="hint">체크된 항목이 그대로 "이 수업을 마치면 할 수 있는 것" 목록이 된다. 학생이 스스로 체크한 것이라 과장이 아니고, 수업 전/후를 같이 물어서 <em>순증분</em>만 주장할 수 있다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">E04</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">코드가 막혔을 때 실제로 어떻게 해결했나요?</p>
+      <ul class="opts"><li>바로 강사에게 물었다</li><li>혼자 에러 메시지를 읽었다</li><li>챗GPT·클로드에 물었다</li><li>검색했다</li><li>그냥 넘어갔다</li></ul>
+      <p class="hint">"그냥 넘어갔다"가 나오면 그 지점에 안전장치(체크포인트 셀·정답 노트북)를 넣어야 한다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">E05</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">설명 속도는 어땠나요? 구간마다 달랐다면 어디가 그랬는지 적어 주세요.</p>
+      <ul class="opts"><li>너무 느림</li><li>느림</li><li>적당</li><li>빠름</li><li>너무 빠름</li></ul>
+      <p class="sub">→ 특히 4차시(데이터 누출·split)는 분량이 많았습니다. 실제로 벅찼나요?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ F ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">F</span><h2>수업 길이와 운영</h2></div>
+  <p class="sec-why">90분 × 8회라는 형식 자체가 상품 사양이다. 다음 기수의 <strong>가격표와 일정표</strong>를 여기서 정한다.</p>
+
+  <div class="item">
+    <div class="code">F01<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">1회 90분이라는 길이는 어땠나요? 집중이 끊긴 순간이 있었다면 <strong>대략 몇 분쯤</strong>이었나요?</p>
+      <ul class="opts"><li>짧다</li><li>조금 짧다</li><li>적당</li><li>조금 길다</li><li>길다</li></ul>
+      <div class="write">집중이 끊긴 지점: 약 ____분</div>
+      <p class="hint">"길다/짧다"만으로는 못 고친다. 몇 분에서 끊기는지를 알면 그 자리에 쉬는 시간이나 실습 전환을 넣을 수 있다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">F02<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">총 8차시에 대해 <strong>둘 다</strong> 답해 주세요. ① 줄인다면 어느 차시를 합치겠어요? ② 늘린다면 무엇에 시간을 더 쓰겠어요?</p>
+      <p class="hint">한쪽만 물으면 "다 좋았어요"가 나온다. 줄일 곳과 늘릴 곳을 동시에 강제하면 진짜 우선순위가 드러난다.</p>
+      <div class="write">① 합칠 차시 &nbsp;/&nbsp; ② 늘릴 곳</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">F03</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">수업 간격은 적당했나요? 차시 사이에 <strong>실제로</strong> 복습에 쓴 시간은 얼마였나요?</p>
+      <div class="write">간격: ______ &nbsp;/&nbsp; 실제 복습 시간: 주 ____분</div>
+      <p class="hint">"복습하세요"가 지켜지지 않는다면 복습을 숙제가 아니라 <em>수업 첫 10분</em>으로 옮겨야 한다는 뜻이다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">F04</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">수업 외 진행(일정 조율·연락·자료 전달·환경 세팅)에서 불편했던 점이 있었나요?</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ G ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">G</span><h2>1:1과 강사</h2></div>
+  <p class="sec-why">1:1은 이 상품의 가장 비싼 원가다. <strong>그 값을 학생이 느꼈는지</strong>, 느꼈다면 어느 순간에 느꼈는지를 특정한다.</p>
+
+  <div class="item">
+    <div class="code">G01<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">1:1이라서 가능했던 <strong>구체적인 순간</strong>을 하나 떠올려 주세요. 그룹 수업이었다면 얻지 못했을 순간이요.</p>
+      <p class="hint">"1:1이라 좋았다"는 광고 문구지만, "3차시에 α가 낮게 나왔을 때 30분을 그것만 붙잡고 있었다"는 증거다. 후기에는 후자를 쓴다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">G02</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">모르는 것을 <strong>모른다고 말하기</strong> 편했나요?</p>
+      <div class="scale"><b>0</b><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b><b>9</b><b>10</b></div>
+      <p class="sub">→ 질문을 참은 적이 있다면, 왜 참았나요?</p>
+      <p class="hint">1:1에서 학생이 질문을 삼키기 시작하면 그때부터 수업은 겉돈다. 원인이 강사의 속도인지, 진도 압박인지, 미안함인지 구분해야 한다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">G03</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">강사가 <strong>덜 했으면 하는 행동</strong>을 하나만 꼽아 주세요.</p>
+      <ul class="opts"><li>말이 빠르다</li><li>혼자 앞서 나간다</li><li>배경 설명이 길다</li><li>이해했는지 확인 없이 진행한다</li><li>내가 칠 코드를 대신 쳐준다</li><li>질문에 너무 길게 답한다</li></ul>
+      <p class="hint">'없음'을 선택지에 넣지 않는다. 이 문항은 반드시 하나를 받아내야 의미가 있다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">G04</div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">설명 방식 중 본인에게 <strong>가장 잘 통했던 것</strong>은 무엇인가요?</p>
+      <ul class="opts"><li>비유로 설명</li><li>그림·도식</li><li>일단 코드를 돌려보고 설명</li><li>틀린 사례를 먼저 보여주기</li><li>직접 해보게 하기</li><li>수식으로 확인</li></ul>
+      <p class="hint">다음 학생에게 첫 시간부터 적용할 수 있는, 가장 값싸고 효과 큰 개선점이다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ H ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">H</span><h2>결과물과 다음 단계</h2></div>
+  <p class="sec-why">이 수업은 <strong>남는 물건</strong>(최종 보고서·그림·repo)이 있는 상품이다. 그 물건이 실제로 쓰이는지가 가장 강한 판매 근거이자, 후속 상품의 단서다.</p>
+
+  <div class="item">
+    <div class="code">H01<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">이 수업의 산출물을 실제로 <strong>어디에 쓸 계획</strong>인가요?</p>
+      <ul class="opts"><li>대학원 지원</li><li>이력서·포트폴리오</li><li>학부 연구·졸업논문</li><li>학회·학술대회 발표</li><li>인턴·취업 지원</li><li>아직 계획 없음</li></ul>
+      <p class="hint">"머신러닝을 배웁니다"보다 "지원서에 쓸 연구 프로젝트 하나가 남습니다"가 훨씬 잘 팔린다. 그 주장을 뒷받침할 근거를 여기서 얻는다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">H02<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">이 수업 덕분에 생긴 변화 중, 남에게 말하면 <strong>"오"라고 할 만한 것</strong>을 한 줄로 적어 주세요.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">H03<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">주변에서 "그 수업 뭐야?"라고 물으면 <strong>실제로 뭐라고 대답</strong>하나요? 대답한 그대로 적어 주세요.</p>
+      <p class="hint">이 문장이 진짜 상품 설명이다. 파는 쪽이 쓴 소개 문구보다 이쪽이 언제나 잘 팔린다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">H04</div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">이어서 더 배우고 싶은 것이 있나요?</p>
+      <ul class="opts"><li>머신러닝 심화</li><li>논문 작성·투고</li><li>통계 심화</li><li>R</li><li>데이터 수집·크롤링</li><li>대학원 준비</li><li>없음</li></ul>
+      <p class="hint">신규 고객 유치보다 기존 고객의 두 번째 결제가 훨씬 싸다. 후속 과정의 수요를 여기서 확인한다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ I ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">I</span><h2>사용 동의와 마무리</h2></div>
+  <p class="sec-why">여기까지 왔으면 호의가 최고조다. <strong>후기 공개와 소개 부탁은 반드시 이 자리에서</strong> 한다. 며칠 뒤 따로 부탁하면 성사율이 급락한다.</p>
+
+  <div class="item">
+    <div class="code">I01<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">답변을 후기로 공개해도 될까요? 공개 범위를 골라 주세요.</p>
+      <ul class="opts"><li>실명·전공 공개</li><li>이니셜·전공만</li><li>완전 익명</li><li>비공개(내부 참고만)</li></ul>
+      <p class="sub">→ 산출물(그래프·보고서 일부) 이미지 사용도 가능한가요? 1–2분 영상 후기는 어떠세요?</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">I02</div>
+    <div><div class="tags"><span class="tag t-sell">자산</span></div>
+      <p class="q">이 수업이 도움이 될 만한 사람이 주변에 있나요? 소개해 주실 수 있을까요?</p>
+      <p class="hint">막연히 묻지 말고 B02에서 학생이 직접 묘사한 사람을 그대로 되읽어 주며 묻는다 — "아까 말씀하신 그런 분이 주변에 계세요?" 소개 혜택도 이 자리에서 함께 제시한다.</p>
+    </div>
+  </div>
+
+  <div class="item">
+    <div class="code">I03<span class="star">★</span></div>
+    <div><div class="tags"><span class="tag t-fix">진단</span></div>
+      <p class="q">이 조사에서 묻지 않았지만 <strong>꼭 하고 싶은 말</strong>이 있나요?</p>
+      <p class="hint">설문 설계자가 놓친 축이 여기서 나온다. 매 기수 이 문항은 유지한다.</p>
+      <div class="write">서술</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 운영 ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">◆</span><h2>어떻게 진행하는가</h2></div>
+  <p class="sec-why">1명이 대상이면 <strong>설문은 준비운동이고 본편은 인터뷰</strong>다. 평균을 낼 수 없는 대신, 폼에서는 절대 안 나오는 문장을 얻을 수 있다.</p>
+
+  <div class="steps">
+    <div class="step"><span class="num">01</span><div><strong>폼 먼저, 혼자, 10분</strong><span>척도·선택형 위주로 학생이 혼자 채운다. 강사 앞에서 채우게 하지 않는다. 서술형은 짧아도 통과시킨다 — 어차피 인터뷰에서 판다.</span></div></div>
+    <div class="step"><span class="num">02</span><div><strong>2–3일 안에 30분 인터뷰</strong><span>기억이 살아 있을 때. 녹음 동의를 먼저 받는다. 폼의 점수를 다시 읽어주며 시작하지 말고, "가장 기억에 남는 순간"부터 연다.</span></div></div>
+    <div class="step"><span class="num">03</span><div><strong>프로브 세 문장만 반복</strong><span>"예를 들면요?" · "그때 어떤 느낌이었어요?" · "그게 왜 중요했어요?" 칭찬이 나오면 반드시 "구체적으로 어느 부분이요?"까지 밀고 간다. 인용문은 거기서만 나온다.</span></div></div>
+    <div class="step"><span class="num">04</span><div><strong>3초 침묵을 견딘다</strong><span>강사가 침묵을 채우는 순간 학생의 진짜 답이 사라진다. 특히 B05·G03 같은 부정 문항 뒤에는 반드시 기다린다.</span></div></div>
+    <div class="step"><span class="num">05</span><div><strong>3개월 뒤 한 번 더</strong><span>산출물을 실제로 썼는지(H01), 배운 것을 실제로 다시 썼는지만 5분 통화로 묻는다. 종료 직후의 감동은 과대평가되고, 3개월 뒤의 답이 진짜 영업 자산이다.</span></div></div>
+  </div>
+
+  <div class="callout">
+    <h3>편향을 줄이는 장치</h3>
+    <ul>
+      <li>서두에 한 문장으로 프레이밍한다 — <strong>"이 답은 저를 평가하려는 게 아니라 다음 학생을 위해 고칠 곳을 찾으려는 겁니다. 칭찬은 오히려 도움이 안 됩니다."</strong></li>
+      <li>부정 문항(B05·G03·D03)을 긍정 문항보다 <strong>앞</strong>에 배치해도 좋다. 칭찬 모드가 굳기 전에 물어야 한다.</li>
+      <li>가능하면 인터뷰는 강사가 아닌 제3자가 한다. 1:1은 관계가 가까워서 점수가 구조적으로 부풀려진다.</li>
+      <li>"만족하셨나요?"처럼 예/아니오로 닫히는 질문은 쓰지 않는다. 전부 서술 아니면 강제 선택이다.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ══════════ 매핑 ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">◆</span><h2>답변을 어디에 쓰는가</h2></div>
+  <p class="sec-why">쓸 곳이 정해지지 않은 문항은 넣지 않았다. 설문을 돌리기 전에 이 표를 먼저 읽어야 인터뷰에서 무엇을 놓치면 안 되는지 알 수 있다.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>문항</th><th>나오는 것</th><th>쓰는 곳</th></tr></thead>
+      <tbody>
+        <tr><td class="n">A02</td><td>구매를 막았던 장벽</td><td>상세페이지 FAQ · 반론 처리 문구</td></tr>
+        <tr><td class="n">A03</td><td>기대와 실제의 어긋남</td><td>소개 문구 수정 (환불·이탈 예방)</td></tr>
+        <tr><td class="n">A04 · B04</td><td>경쟁재와 가격 저항선</td><td>가격 책정 · 포지셔닝</td></tr>
+        <tr><td class="n">B02</td><td>구체적 타깃 페르소나</td><td>광고 타기팅 · 모집 문구 첫 줄</td></tr>
+        <tr><td class="n">B03</td><td>실제로 값어치를 만든 요소</td><td>랜딩 헤드라인 3블록</td></tr>
+        <tr><td class="n">B06 · H02 · H03</td><td>학생의 날것 문장</td><td>후기 인용 · 카피</td></tr>
+        <tr><td class="n">C01 · C02</td><td>주제 적합도와 희망 주제</td><td>"전공 맞춤 주제" 상품화 판단</td></tr>
+        <tr><td class="n">C03</td><td>실데이터의 차별점 크기</td><td>경쟁 대비 우위 문구</td></tr>
+        <tr><td class="n">E03</td><td>수료 후 가능해진 것 (전/후 증분)</td><td>"이 수업을 마치면" 목록</td></tr>
+        <tr><td class="n">E01 · E02 · F01 · F02</td><td>차시별 난이도·분량·집중도</td><td>커리큘럼 재배분 · 회차 수 조정</td></tr>
+        <tr><td class="n">D03 · E04</td><td>실습 마찰 지점</td><td>노트북·환경 개선 1순위</td></tr>
+        <tr><td class="n">G01</td><td>1:1의 값을 증명하는 장면</td><td>가격 정당화 근거</td></tr>
+        <tr><td class="n">G03 · G04</td><td>강사 행동 교정</td><td>다음 학생 1차시부터 적용</td></tr>
+        <tr><td class="n">H01</td><td>산출물의 실제 용도</td><td>결과물 중심 세일즈</td></tr>
+        <tr><td class="n">H04</td><td>후속 수요</td><td>심화·후속 상품 기획</td></tr>
+        <tr><td class="n">I01 · I02</td><td>공개 동의 · 소개</td><td>사회적 증거 · 추천 유입</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══════════ n=1 ══════════ -->
+<section>
+  <div class="sec-head"><span class="sec-letter">◆</span><h2>n = 1을 다루는 법</h2></div>
+  <div class="callout">
+    <h3>이 수업에서 이미 가르친 원칙이 여기에도 적용된다</h3>
+    <p>1명의 점수에는 신뢰구간이 없다. 8차시 내내 "표본이 작으면 어디까지만 말할 수 있는가"를 가르쳐 놓고, 학생 1명의 평점을 근거로 "만족도 9.2점"이라고 광고하면 그 수업의 논지를 스스로 배반하는 셈이다.</p>
+    <ul>
+      <li><strong>점수는 대외용이 아니라 내부 가설로만 쓴다.</strong> 대외적으로 쓸 수 있는 건 인용문·산출물·수료 후 가능해진 것 목록이다.</li>
+      <li><strong>문항을 고정한다.</strong> 다음 학생부터 같은 폼을 그대로 쓴다. 매번 문항을 바꾸면 3명이 쌓여도 비교할 수 없다. 문항 코드(A01·B03…)를 유지하는 이유가 이것이다.</li>
+      <li><strong>3명이 쌓이면</strong> 그때부터 문항별 분포를 본다. 그 전까지는 서술형만 읽는다.</li>
+      <li><strong>수정은 즉시 반영한다.</strong> n=1의 서술형은 통계로는 약하지만 개선 지시로는 충분히 강하다. 특히 E01 표에서 난이도 5가 찍힌 차시와 D03의 막힘 지점은 다음 학생 전에 손본다.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>program5 · 다문화청소년 문화적응 스트레스 예측 · 8차시 1:1 과정 &nbsp;/&nbsp; 수강 종료 직후 1회 + 3개월 후 1회</footer>
+
+</div>
